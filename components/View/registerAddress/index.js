@@ -31,9 +31,9 @@ export default function RegisterAddress({navigation}){
     const buscaCep = async () => {
         try{
             setIsLoading(true)
-            console.log(cepNumber)
+            // console.log(cepNumber)
             const response = await api.get(`/${cepNumber}/json/`)
-            console.log(response.data)
+            // console.log(response.data)
             setLogradouro(response.data.logradouro)
             setBairro(response.data.bairro)
             setCidade(response.data.localidade)
@@ -77,7 +77,7 @@ export default function RegisterAddress({navigation}){
 
     const route = useRoute();
 
-    console.log(route.params)
+    // console.log(route.params)
 
     return(
         <KeyboardAwareScrollView>

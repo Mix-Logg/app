@@ -14,12 +14,11 @@ const destiny = async () => {
         await fs.access(pasta, fs.constants.F_OK);
         // console.log('A pasta existe.');
         const arquivos = await fs.readdir(pasta);
-
+        // console.log(arquivos)
+        // console.log(arquivos.length)
         if (arquivos.length > 4) {
-            // console.log('true > 4');
             return 'uploads/motorista/' + numberId + '/carro';
         } else {
-            // console.log('false < 4');
             return 'uploads/motorista/' + numberId;
         }
     } catch (err) {
@@ -40,14 +39,13 @@ const storage = multer.diskStorage({
 
     },
     filename: function (req, file, cb) {
-      const extendFile = file.originalname.split('.')[1];
-      const newNameFile = 'icode-' + file.originalname.split('.')[0];
+      const extendFile =  file.originalname.split('.')[1];
+      const newNameFile = file.originalname.split('.')[0];
       cb(null, `${newNameFile}.${extendFile}`);
     },
 });
 
 const upload = multer({ storage });
-
 
 router.post('/register', async (req, res) => {
 
@@ -112,7 +110,8 @@ router.post('/register', async (req, res) => {
                                                         message: 'successfully',
                                                         data:{
                                                            doc:    req.body.imgDoc,
-                                                           docCar: req.body.imgDocCar
+                                                           docCar: req.body.imgDocCar,
+                                                           id: numberId
                                                         }
                                                     });
                                                 }
@@ -144,6 +143,84 @@ router.post('/register', async (req, res) => {
     );
 });
 
+router.post('/registerImage', async (req, res) => {
+    // console.log(req.body)
+    try {
+        const pasta    = 'uploads/motorista/' + numberId
+        const pastaCar = 'uploads/motorista/' + numberId + '/carro';
+        await fs.access(pasta, fs.constants.F_OK);
+        const arquivos = await fs.readdir(pasta);
+        let cnhImage = null; 
+        let addressImage = null;
+        let cpfImage = null; 
+        let selfieImage = null; 
+        for (const arquivo in arquivos) {
+                if(arquivos[arquivo] === 'carro'){
+                }else if (arquivos[arquivo].startsWith('cnhImage')) {
+                    cnhImage = arquivos[arquivo];
+                } else if (arquivos[arquivo].startsWith('addressImage')) {
+                    addressImage = arquivos[arquivo];
+                } else if (arquivos[arquivo].startsWith('cpfImage')) {
+                    cpfImage = arquivos[arquivo];
+                } else if (arquivos[arquivo].startsWith('selfieImage')) {
+                    selfieImage = arquivos[arquivo];
+                }
+
+        }
+        const sqlInsertDoc = 'INSERT INTO imgdocfisica (sou, idSou, endereco, cnh, selfie, cpf) VALUES (?, ?, ? ,?, ?, ?)';
+        const parametros = ['motorista', numberId, pasta+'/'+cnhImage, pasta+'/'+addressImage, pasta+'/'+cpfImage, pasta+'/'+selfieImage];
+        connection.execute(sqlInsertDoc,parametros, 
+            async function (err, results) {
+                let antt = null;
+                let clv = null;
+                let cnpj = null;
+                let estadual = null;
+                let cpfDono = null;
+                let addressDono = null;
+                if(err === null){
+                    await fs.access(pastaCar, fs.constants.F_OK);
+                    const arquivosCar = await fs.readdir(pastaCar);
+                    for (const arquivo in arquivosCar) {
+                        // console.log(arquivosCar[arquivo])
+                        if(arquivosCar[arquivo].startsWith('cpfDonoImage')){
+                            cpfDono =  pastaCar+'/'+arquivosCar[arquivo];
+                        }else if (arquivosCar[arquivo].startsWith('anttImage')) {
+                            antt =  pastaCar+'/'+arquivosCar[arquivo];
+                        } else if (arquivosCar[arquivo].startsWith('residenciaDono')) {
+                            addressDono =  pastaCar+'/'+arquivosCar[arquivo];
+                        } else if (arquivosCar[arquivo].startsWith('clvImage')) {
+                            clv =  pastaCar+'/'+arquivosCar[arquivo];
+                        } else if (arquivosCar[arquivo].startsWith('cnpjImage')) {
+                            cnpj =  pastaCar+'/'+arquivosCar[arquivo];
+                        } else if (arquivosCar[arquivo].startsWith('estadualImage')) {
+                            estadual =  pastaCar+'/'+arquivosCar[arquivo];
+                        }
+                }
+                console.log(clv)
+                const sqlInsertDocCar = 'INSERT INTO imgdoccar (sou, idSou, clv, antt, estadual, cnpj, residenciaDono, cpfDono) VALUES (?, ?, ? ,?, ?, ?, ?, ?)'
+                const parametrosCar = ['motorista', numberId, clv, antt, cnpj, estadual, cpfDono, addressDono];
+                connection.execute(sqlInsertDocCar,parametrosCar, 
+                    async function (err, results) {
+                        if(err === null){
+                            console.log('success')
+                            return res.status(200).send({
+                                error: false,
+                                message: 'successfully',
+                              });
+                        }else{
+                            console.log('erro: ', err)
+                        }
+                    })
+                }
+            }
+        )
+        
+    } catch (err) {
+        console.error('Erro ao verificar a pasta:', err);
+    }
+
+});
+
 router.post('/image', upload.single('file'), (req, res) => {
     const file = req.file;
     if (file !== undefined) {
@@ -158,8 +235,6 @@ router.post('/image', upload.single('file'), (req, res) => {
       });
     }
 });
-
-
 
 
 module.exports = router;

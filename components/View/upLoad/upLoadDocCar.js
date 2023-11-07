@@ -6,6 +6,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import { useRoute } from '@react-navigation/native';
 import axios from "axios";
 
+
 export default function UpLoadDocCar({navigation}){
     const route = useRoute();
     const [loading, setLoading] = useState(false);
@@ -33,12 +34,12 @@ export default function UpLoadDocCar({navigation}){
     const newParams = {
         ...route.params,
         imgDocCar:{
-            clv:clvImage,
-            antt:anttImage,
-            estadual:inscricaoEstadualImage,
-            cnpj:cnpjImage,
+            clvImage:clvImage,
+            anttImage:anttImage,
+            estadualImage:inscricaoEstadualImage,
+            cnpjImage:cnpjImage,
             residenciaDono:residenciaDonoImage,
-            cpfDono:cpfDonoImage,
+            cpfDonoImage:cpfDonoImage,
         }
     }
 
@@ -238,20 +239,15 @@ export default function UpLoadDocCar({navigation}){
         (infoCadastroCar === 'juridicoEu' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null) ||
         (infoCadastroCar === 'juridicoOutra' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null)
         ){
-            setLoading(false)
             const expoUrl =  'http://192.168.0.22:3000/motorista/register';
-            try{
-                const res  = await axios.post(expoUrl, newParams)
-                console.log('resposta:', res.data)
+            const res  = await axios.post(expoUrl, newParams)
+            
+            const imgDocCar = res.data.data.docCar;
+            const imgDocFisica = res.data.data.doc;
                 
-                const imgDocCar = res.data.data.docCar;
-                const imgDocFisica = res.data.data.doc;
-                
-                async function uploadFile(filename, valor,chave) {
+            async function uploadFile(filename, valor,chave) {
                     const extend = filename.split('.')[1];
                     const formData = new FormData();
-                    console.log(filename)
-                    console.log(chave)
                     formData.append('file', JSON.parse(JSON.stringify({
                       name: chave+'.'+extend,
                       uri: valor,
@@ -260,80 +256,57 @@ export default function UpLoadDocCar({navigation}){
                     
                     try {
                       const expoUrl = 'http://192.168.0.22:3000/motorista/image';
-                      const response = await axios.post(expoUrl, formData, {
+                      await axios.post(expoUrl, formData, {
                         headers: {
                           Accept: 'application/json',
                           'Content-Type': 'multipart/form-data',
                         },
                       });
-                    //   console.log(`Arquivo ${filename} enviado com sucesso.`);
                     } catch (error) {
                       console.error(`Erro ao enviar o arquivo ${filename}:`, error);
                     }
-                  }
+            }
                   
-                  // Percorra os arquivos de imgDocFisica
-                  for (const chave in imgDocFisica) {
+                 
+            try{
+                    for (const chave in imgDocFisica) {
                     const valor = imgDocFisica[chave];
                     if (valor != null) {
-                      console.log(chave, valor);
                       const filename = valor.substring(valor.lastIndexOf('/') + 1);
+                    //   await new Promise(resolve => setTimeout(resolve, 2000));
                       uploadFile(filename, valor, chave);
                     }
-                  }
-                  
-                  // Percorra os arquivos de imgDocCar
-                  for (const chave in imgDocCar) {
+                    }
+                    
+                    // console.log('PRE')
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    // console.log('APÓS')
+                    
+                    
+                    for (const chave in imgDocCar) {
                     const valor = imgDocCar[chave];
                     if (valor != null) {
-                      console.log(chave, valor);
                       const filename = valor.substring(valor.lastIndexOf('/') + 1);
+                    //   await new Promise(resolve => setTimeout(resolve, 2000));
                       uploadFile(filename, valor, chave);
                     }
-                  }
+                    }
+
+                    try{
+                        const expoUrl = 'http://192.168.0.22:3000/motorista/registerImage';
+                        const result = await axios.post(expoUrl,{id:res.data.data.id})
+                        console.log(result.status)
+                        navigation.navigate('RegistrationStuation');
+                        setLoading(false)
+                    }catch(err){
+                        console.error('Erro na requisição:', err);
+                    }
             }catch(err){
                 console.log('erro')
             }
+            
         }
-
-        //         for (const chave in imgDocFisica) {
-        //             const valor = imgDocFisica[chave];
-        //             if(valor != null){
-        //                 console.log(chave, valor);
-        //                 filename = valor.substring(valor.lastIndexOf('/')+1, valor.length)
-        //                 const extend = filename.split('.')[1]
-        //                 const formData = new FormData()
-        //                 formData.append('file', JSON.parse(JSON.stringify({
-        //                     name: filename,
-        //                     uri: valor,
-        //                     type:'image/' + extend,
-        //                 })))
-        //                 try {
-        //                     const expoUrl =  'http://192.168.0.22:3000/motorista/image';
-        //                     const response = await axios.post(expoUrl,formData,{
-        //                         headers: {
-        //                             Accept: 'application/json',
-        //                             'Content-Type': 'multipart/form-data',
-        //                         },
-        //                     })
-        //                 } catch (error) {
-        //                     console.log(error)
-        //                 }
-        //             }
-        //         }
-
-                
-        //         setLoading(false)
-        //     }catch(erro){
-        //         console.log('erro:'+erro)
-        //         setLoading(false)
-        //     }
-
-        // }else{
-        //     console.log('aq')
-        //     setLoading(false)    
     }
-
 
     return(
         <>

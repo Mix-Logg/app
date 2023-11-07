@@ -4,9 +4,10 @@ import { useState } from "react";
 import React, { useEffect } from 'react';
 import MaskInput from 'react-native-mask-input';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { CheckBox } from 'react-native-elements';
 
 export default function RegisterContact({navigation}){
-    
+    const [checkPermission, setCheckPermission] = useState(false);
     const [phone, setPhone] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [phoneIsValid, setPhoneIsValid] = useState(null);
@@ -44,6 +45,9 @@ export default function RegisterContact({navigation}){
         }
     }
 
+    const permission = () => {
+        setCheckPermission(!checkPermission)
+    }
     
     return(
         <KeyboardAwareScrollView>
@@ -124,21 +128,37 @@ export default function RegisterContact({navigation}){
                                 onChangeText={handleEmail}
                             ></MaskInput>
                                 <Text style={styles.txtInfo}>
-                                    Digite o <Text style={styles.span}>seu melhor</Text> número de <Text style={styles.span}>celular</Text> e <Text style={styles.span}>email</Text> , entraremos em contato com você atravez dessas informações.
+                                    Digite o <Text style={styles.span}>seu melhor</Text> número de <Text style={styles.span}>celular</Text> e <Text style={styles.span}>email</Text> , entraremos em contato com você atravez dessas informações.{'\n'}
+                                    <CheckBox
+                                            title="Concordo com os termos de uso"
+                                            checkedColor= {checkPermission ? '#28a745' :"#FF5F00"}
+                                            uncheckedColor="#FF5F00"
+                                            containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
+                                            titleProps={{
+                                                style: { 
+                                                    color:checkPermission ? '#28a745' :"#FF5F00",
+                                                    fontFamily:'Roboto_500Medium',
+                                                }
+                                                }}
+                                                checked={checkPermission ? true : false}
+                                                size={25}
+                                                onPress={permission}
+                                    />
                                 </Text>
                         </View>
                 </View>
                 <View style={styles.containerButton}>
                         <Pressable
-                            style={[styles.button,{backgroundColor: phoneIsValid && emailIsValid ? '#FF5F00' :'transparent'}]}
-                            onPress={()=>{ phoneIsValid && emailIsValid ? navigation.navigate ('RegisterAddress',{
+                            style={[styles.button,{backgroundColor: phoneIsValid && emailIsValid && checkPermission ? '#FF5F00' :'transparent'}]}
+                            onPress={()=>{ phoneIsValid && emailIsValid && checkPermission ? navigation.navigate ('RegisterAddress',{
                                 sou : route.params.sou,
                                 phone : phoneNumber,
                                 email : email
                             }) : ''}}
                         >
                             <Text style={[styles.txtButton, {
-                            color: phoneIsValid && emailIsValid ? 'white' :'#FF5F00',
+                            color: phoneIsValid && emailIsValid && checkPermission
+                             ? 'white' :'#FF5F00',
                             }]}>Continuar</Text>
                         </Pressable>
                 </View>

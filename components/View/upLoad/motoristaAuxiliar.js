@@ -4,7 +4,6 @@ import  { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import { useRoute } from '@react-navigation/native';
-import axios from "axios";
 
 
 export default function UpLoadEntregador({navigation}){
@@ -56,29 +55,6 @@ export default function UpLoadEntregador({navigation}){
                 includeBase64:true,
                 saveToPhotos:true
             });
-            
-            // filename = result.assets[0].uri.substring(result.assets[0].uri.lastIndexOf('/')+1, result.assets[0].uri.length)
-            // const extend = filename.split('.')[1]
-            // console.log(filename)
-            // const formData = new FormData()
-            // formData.append('file', JSON.parse(JSON.stringify({
-            //     name: filename,
-            //     uri: result.assets[0].uri,
-            //     type:'image/' + extend
-            // })))
-
-            // try {
-            //     const expoUrl =  'http://192.168.0.22:3000/motorista/image';
-            //     const response = await axios.post(expoUrl,formData,{
-            //         headers: {
-            //             Accept: 'application/json',
-            //             'Content-Type': 'multipart/form-data',
-            //         },
-            //     })
-            //     // console.log(responde)
-            // } catch (error) {
-            //     console.log(error)
-            // }
                         
             if(cpfVisible){
                 setCpfImage(result.assets[0].uri)
