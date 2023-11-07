@@ -1,0 +1,9 @@
+GET: Usado para recuperar informações de um recurso. Não deve ter efeitos colaterais no servidor e é considerado um método seguro.
+
+POST: Usado para criar um novo recurso. Pode ter efeitos colaterais no servidor e criar um novo recurso.
+
+PUT: Usado para atualizar um recurso existente ou criar um recurso se ele não existir. Deve ser usado para atualização completa do recurso.
+
+PATCH: Usado para atualizar parcialmente um recurso. Geralmente usado quando você deseja atualizar apenas alguns campos do recurso.
+
+DELETE: Usado para excluir um recurso.
