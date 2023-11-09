@@ -294,8 +294,9 @@ export default function UpLoadDocCar({navigation}){
 
                     try{
                         const expoUrl = 'http://192.168.0.22:3000/motorista/registerImage';
+                        
                         const result = await axios.post(expoUrl,{id:res.data.data.id})
-                        console.log(result.status)
+                        // console.log(result.status)
                         navigation.navigate('RegistrationStuation');
                         setLoading(false)
                     }catch(err){

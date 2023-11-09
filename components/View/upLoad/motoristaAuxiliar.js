@@ -1,13 +1,15 @@
-import { View, Text, StyleSheet, Image, Pressable, Modal  } from "react-native"
+import { View, Text, StyleSheet, Image, Pressable, Modal, ActivityIndicator  } from "react-native"
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import  { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import { useRoute } from '@react-navigation/native';
+import axios from "axios";
 
 
 export default function UpLoadEntregador({navigation}){
     const route = useRoute();
+    const [loading, setLoading] = useState(false);
 
     const [isVisible, setIsVisible] = useState(false);
     const [modalBtnVisible, setModalBtnVisible] = useState(false);
@@ -32,6 +34,8 @@ export default function UpLoadEntregador({navigation}){
         }
     };
 
+   
+
     useEffect(() => {
         // Função que verifica o estado de cada variável e atualiza o contador
         const updateCount = () => {    
@@ -40,7 +44,6 @@ export default function UpLoadEntregador({navigation}){
           if (EnderecoImage != null) newCount++;
           if (cnhImage != null) newCount++;
           if (selfieImage != null) newCount++;
-          console.log(newCount)  
           setCountDocument(newCount);
         };
         // Chama a função de atualização sempre que alguma variável muda de estado
@@ -73,7 +76,6 @@ export default function UpLoadEntregador({navigation}){
             };
             const result = await ImagePicker.launchCameraAsync(options);
             if (!result.cancelled) {
-                // console.log('Caminho da imagem capturada: ', result);
                 if(cpfVisible){
                     setCpfImage(result.uri)
 
@@ -90,7 +92,7 @@ export default function UpLoadEntregador({navigation}){
         if(escolha === 'arquivo'){
             try {
                 const result = await DocumentPicker.getDocumentAsync({});
-                console.log(result.assets[0].uri)
+                // console.log(result.assets[0].uri)
                 if(cpfVisible){
                 setCpfImage(result.assets[0].uri)
                 }else if(enderecoVisible){
@@ -140,19 +142,71 @@ export default function UpLoadEntregador({navigation}){
         setModalBtnVisible(!modalBtnVisible)
     }
 
-    const navegacao = () => {
+    const navegacao = async () => {
         if(cpfImage && EnderecoImage && (route.params.sou === 'auxiliar' || cnhImage) && selfieImage != null  ){
             if(route.params.sou === 'motorista'){
                 navigation.navigate('RegisterCar',newParam)
             }else if(route.params.sou === 'auxiliar'){
                 // ENVIAR PRA API
-                
+                setLoading(true)
+                const expoUrl =  'http://192.168.0.22:3000/auxiliar/register';
+                try{
+                    const response = await axios.post(expoUrl,newParam)
+                    const imgDocFisica = response.data.doc;
+                    for (const chave in imgDocFisica) {
+                        const valor = imgDocFisica[chave]
+                        if (valor != null) {
+                          const filename = valor.substring(valor.lastIndexOf('/') + 1);
+                          uploadFile(filename, valor, chave);
+                        }
+                    }
+                    async function uploadFile(filename, valor,chave) {
+                        const extend = filename.split('.')[1];
+                        const formData = new FormData();
+                        formData.append('file', JSON.parse(JSON.stringify({
+                          name: chave+'.'+extend,
+                          uri: valor,
+                          type: 'image/' + extend,
+                        })));
+                        
+                        try {
+                          const expoUrlImage = 'http://192.168.0.22:3000/auxiliar/image';
+                          await axios.post(expoUrlImage, formData, {
+                            headers: {
+                              Accept: 'application/json',
+                              'Content-Type': 'multipart/form-data',
+                            },
+                          });
+                        } catch (error) {
+                          console.error(`Erro ao enviar o arquivo ${filename}:`, error);
+                        }
+                    }
+
+                    try{
+                        const expoUrl = 'http://192.168.0.22:3000/auxiliar/registerImage';
+                        const result = await axios.post(expoUrl)
+                        
+                        if(result.status == 200){
+                            navigation.navigate('RegistrationStuation');
+                        }
+                        setLoading(false)
+                    }catch(err){
+                        console.error('Erro na requisição:', err);
+                        setLoading(false)
+                    }
+                    
+                }catch(err){
+                    console.log('erro:', err)
+                    setLoading(false)
+                }
+                return setLoading(false)
             }
         }
     }
 
     return(
-        <KeyboardAwareScrollView>
+    <>
+         {loading === false ? <KeyboardAwareScrollView>
             <View style={styles.container}>
                 <Text style={styles.h1}>Foto</Text>
                 <Text style={styles.txtListen}>
@@ -364,7 +418,18 @@ export default function UpLoadEntregador({navigation}){
                     </Pressable>
                 </View>
             </View>
-        </KeyboardAwareScrollView>
+        </KeyboardAwareScrollView> : 
+            <View style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    <ActivityIndicator size="large" color="#FF5F00" />
+            </View>
+        }
+
+  
+    </>
     )
 }
 

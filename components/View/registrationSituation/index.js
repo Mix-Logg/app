@@ -75,11 +75,11 @@ export default function RegistrationStuation(){
             </View>
 
            <View style={styles.containerBtn}> 
-                <Pressable style={styles.btn}>
+                {/* <Pressable style={styles.btn}>
                     <Text style={styles.bntTxt}>
                         Entendi
                     </Text>
-                </Pressable>
+                </Pressable> */}
            </View>
         </View>
     )

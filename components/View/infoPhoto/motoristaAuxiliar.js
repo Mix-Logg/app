@@ -35,7 +35,7 @@ export default function InfoPhoto({navigation}){
                     <Image style={styles.iconNumber}
                             source={require('../../../assets/icons/2.png')}
                     />
-                    <Text style={styles.label}>CNH</Text>
+                    <Text style={styles.label}>CNH { route.params.sou === 'auxiliar' ? <Text>(opcional)</Text>:''} </Text>
                 </View>
 
                 <View style={styles.containerInstrution}>
@@ -57,7 +57,8 @@ export default function InfoPhoto({navigation}){
                 <Pressable 
                     style={styles.btn}
                     onPress={() => {
-                        navigation.navigate('RegisterUploadEntregador',route.params)
+                        // navigation.navigate('RegisterUploadEntregador',route.params)
+                        console.log('route:', route.params)
                     }}
                 >
                     <Text style={styles.btnTxt}>Vamos lá!</Text>
