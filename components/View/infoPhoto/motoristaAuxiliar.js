@@ -57,8 +57,8 @@ export default function InfoPhoto({navigation}){
                 <Pressable 
                     style={styles.btn}
                     onPress={() => {
-                        // navigation.navigate('RegisterUploadEntregador',route.params)
-                        console.log('route:', route.params)
+                        navigation.navigate('RegisterUploadEntregador',route.params)
+                        // console.log('route:', route.params)
                     }}
                 >
                     <Text style={styles.btnTxt}>Vamos lá!</Text>

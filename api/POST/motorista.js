@@ -197,7 +197,7 @@ router.post('/registerImage', async (req, res) => {
                         }
                 }
                 console.log(clv)
-                const sqlInsertDocCar = 'INSERT INTO imgdoccar (sou, idSou, clv, antt, estadual, cnpj, cpfDono, cpfDono) VALUES (?, ?, ? ,?, ?, ?, ?, ?)'
+                const sqlInsertDocCar = 'INSERT INTO imgdoccar (sou, idSou, clv, antt, estadual, cnpj, cpfDono, residenciaDono) VALUES (?, ?, ? ,?, ?, ?, ?, ?)'
                 const parametrosCar = ['motorista', numberId, clv, antt, estadual, cnpj, cpfDono, addressDono];
                 connection.execute(sqlInsertDocCar,parametrosCar, 
                     async function (err, results) {
