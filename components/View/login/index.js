@@ -5,10 +5,10 @@ export default function Login({navigation}){
         <View style={styles.container}>
             <View style={styles.containerLogo}>
                 <Image style={styles.logo}
-                source={require('../../../assets/logo/logoSemArco.png')}
+                source={require('../../../src/main/res/drawable-mdpi/assets/logo/logoSemArco.png')}
                 />
                 <Image style={styles.logoNome}
-                source={require('../../../assets/logo/logoNome.png')}
+                source={require('../../../src/main/res/drawable-mdpi/assets/logo/logoNome.png')}
                 />
             </View>
             <View style={styles.containerInputs}>
@@ -16,7 +16,7 @@ export default function Login({navigation}){
                     <Text style={styles.textInput}>CPF / CNPJ</Text>
                     <Image
                         style={styles.icon}
-                        source={require('../../../assets/icons/user.png')}/>
+                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/user.png')}/>
                     <TextInput style={styles.input}
                     /> 
                 </View>
@@ -24,7 +24,7 @@ export default function Login({navigation}){
                     <Text  style={styles.textInput}>Senha</Text>
                     <Image
                         style={styles.icon}
-                        source={require('../../../assets/icons/senha.png')}/>
+                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/senha.png')}/>
                     <TextInput style={styles.input}
                     />
                 </View>

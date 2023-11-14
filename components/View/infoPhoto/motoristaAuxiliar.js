@@ -26,21 +26,21 @@ export default function InfoPhoto({navigation}){
             <View style={styles.containerIcons}>
                 <View style={styles.containerInstrution}>
                     <Image style={styles.iconNumber}
-                        source={require('../../../assets/icons/1.png')}
+                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/1.png')}
                     />
                     <Text style={styles.label}>RG e CPF</Text>
                 </View>
 
                 <View style={[styles.containerInstrution,{marginTop:15,marginBottom:15}]}>
                     <Image style={styles.iconNumber}
-                            source={require('../../../assets/icons/2.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/2.png')}
                     />
                     <Text style={styles.label}>CNH { route.params.sou === 'auxiliar' ? <Text>(opcional)</Text>:''} </Text>
                 </View>
 
                 <View style={styles.containerInstrution}>
                     <Image style={styles.iconNumber}
-                            source={require('../../../assets/icons/3.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/3.png')}
                     />
                     <Text style={styles.label}>Comprovante de Residência</Text>
                 </View>
@@ -65,7 +65,8 @@ export default function InfoPhoto({navigation}){
                 </Pressable>
                 <Image
                     style={styles.imgSelfie}
-                    source={require('../../../assets/icons/selfie.png')}
+                    source={require('../../../src/main/res/drawable-mdpi/assets/icons/selfie.png')}
+
                 />
             </View>
             

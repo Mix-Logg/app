@@ -56,25 +56,25 @@ export default function RegisterContact({navigation}){
                         { empresa ?
                         <Image
                             style={[styles.icon]}
-                            source={require('../../../assets/icons/redePessoas.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/redePessoas.png')}
                         /> : ''}
 
                         {transportadora ?
                             <Image
                                 style={[styles.icon]}
-                                source={require('../../../assets/icons/caminhao.png')}
+                                source={require('../../../src/main/res/drawable-mdpi/assets/icons/caminhao.png')}
                             /> : ''
                         }
 
                         { motorista ? <Image
                             style={[styles.icon]}
-                            source={require('../../../assets/icons/volante.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/volante.png')}
                             /> : '' 
                         }
 
                         { auxiliar ? <Image
                             style={[styles.icon]}
-                            source={require('../../../assets/icons/cargaCoracao2.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/cargaCoracao2.png')}
                             /> : ''
                         }
 
@@ -85,13 +85,13 @@ export default function RegisterContact({navigation}){
                             { phoneIsValid === true ? 
                                 <Image
                                     style={[styles.iconValid]}
-                                    source={require('../../../assets/icons/ok.png')}
+                                    source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
                                 /> : '' 
                             }
                             { phoneIsValid === false ? 
                                 <Image
                                     style={[styles.iconValid,{height:24, width:24, top:26, left:315 }]}
-                                    source={require('../../../assets/icons/x.png')}
+                                    source={require('../../../src/main/res/drawable-mdpi/assets/icons/x.png')}
                                 /> : '' 
                             }
                             <MaskInput
@@ -109,13 +109,13 @@ export default function RegisterContact({navigation}){
                             { emailIsValid === true ? 
                                 <Image
                                     style={[styles.iconValid,{top:116}]}
-                                    source={require('../../../assets/icons/ok.png')}
+                                    source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
                                 /> : '' 
                             }
                             { emailIsValid === false ? 
                                 <Image
                                     style={[styles.iconValid,{height:24, width:24, top:116, left:315 }]}
-                                    source={require('../../../assets/icons/x.png')}
+                                    source={require('../../../src/main/res/drawable-mdpi/assets/icons/x.png')}
                                 /> : '' 
                             }
                             <MaskInput

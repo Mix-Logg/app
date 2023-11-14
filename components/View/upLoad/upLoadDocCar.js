@@ -239,7 +239,7 @@ export default function UpLoadDocCar({navigation}){
         (infoCadastroCar === 'juridicoEu' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null) ||
         (infoCadastroCar === 'juridicoOutra' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null)
         ){
-            const expoUrl =  'http://192.168.0.22:3000/motorista/register';
+            const expoUrl =  'https://teste-mix.shop/motorista/register';
             const res  = await axios.post(expoUrl, newParams)
             
             const imgDocCar = res.data.data.docCar;
@@ -255,7 +255,7 @@ export default function UpLoadDocCar({navigation}){
                     })));
                     
                     try {
-                      const expoUrl = 'http://192.168.0.22:3000/motorista/image';
+                      const expoUrl = 'https://teste-mix.shop/motorista/image';
                       await axios.post(expoUrl, formData, {
                         headers: {
                           Accept: 'application/json',
@@ -293,7 +293,7 @@ export default function UpLoadDocCar({navigation}){
                     }
 
                     try{
-                        const expoUrl = 'http://192.168.0.22:3000/motorista/registerImage';
+                        const expoUrl = 'https://teste-mix.shop/motorista/registerImage';
                         
                         const result = await axios.post(expoUrl,{id:res.data.data.id})
                         // console.log(result.status)
@@ -334,14 +334,14 @@ export default function UpLoadDocCar({navigation}){
                     >
                         <Image
                             style={[styles.icon, {tintColor: clvImage != null ? '#28a745' : '#FF5F00'}]}
-                            source={require('../../../assets/icons/upload.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/upload.png')}
                         />
                         <Text style={[styles.btnTxt, {color: clvImage != null ? '#28a745' : '#FF5F00'}]}>CLV (Documento do Veículo)</Text>
 
                         { clvImage != null ?
                             <Image
                             style={[styles.icon, {width:30,height:30,tintColor: clvImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../assets/icons/ok.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
                         /> : <View></View> }
                     </Pressable>
 
@@ -351,13 +351,13 @@ export default function UpLoadDocCar({navigation}){
                     >
                         <Image
                             style={[styles.icon, {tintColor: anttImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../assets/icons/upload.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/upload.png')}
                         />
                         <Text style={[styles.btnTxt, {color:anttImage != null ? '#28a745' : '#FF5F00' }]}>ANTT</Text>
                         {anttImage != null ?
                             <Image
                             style={[styles.icon, {width:30,height:30 ,tintColor: anttImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../assets/icons/ok.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
                         /> : <View></View> }
                     </Pressable>
 
@@ -368,14 +368,14 @@ export default function UpLoadDocCar({navigation}){
                     >
                         <Image
                             style={[styles.icon, {tintColor : cnpjImage != null ? '#28a745' : '#FF5F00'}]}
-                            source={require('../../../assets/icons/upload.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/upload.png')}
                         />
                         <Text style={[styles.btnTxt,{marginLeft:5, color: cnpjImage != null ? '#28a745' : '#FF5F00'}]}>CNPJ</Text>
 
                         {cnpjImage != null ?
                             <Image
                             style={[styles.icon, {width:30,height:30,tintColor: cnpjImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../assets/icons/ok.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
                         /> : <View></View> }
                     </Pressable> : ''}
                     
@@ -386,13 +386,13 @@ export default function UpLoadDocCar({navigation}){
                     >
                         <Image
                             style={[styles.icon, {tintColor: inscricaoEstadualImage != null  ?  '#28a745' : '#FF5F00' }]}
-                            source={require('../../../assets/icons/upload.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/upload.png')}
                         />
                         <Text style={[styles.btnTxt, { color: inscricaoEstadualImage != null  ?  '#28a745' : '#FF5F00' }]}> Inscrição Estadual </Text>
                         {inscricaoEstadualImage != null ?
                             <Image
                             style={[styles.icon, {width:30,height:30, tintColor: inscricaoEstadualImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../assets/icons/ok.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
                         /> : <View></View> }
                     </Pressable> : ''}
 
@@ -403,13 +403,13 @@ export default function UpLoadDocCar({navigation}){
                     >
                         <Image
                             style={[styles.icon, {tintColor: residenciaDonoImage != null  ?  '#28a745' : '#FF5F00' }]}
-                            source={require('../../../assets/icons/upload.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/upload.png')}
                         />
                         <Text style={[styles.btnTxt, { color: residenciaDonoImage != null  ?  '#28a745' : '#FF5F00', fontSize:15 }]}> Compravante de Resedência (DONO) </Text>
                         {residenciaDonoImage != null ?
                             <Image
                             style={[styles.icon, {width:30,height:30, tintColor: residenciaDonoImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../assets/icons/ok.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
                         /> : <View></View> }
                     </Pressable> : ''}
 
@@ -420,13 +420,13 @@ export default function UpLoadDocCar({navigation}){
                     >
                         <Image
                             style={[styles.icon, {tintColor: cpfDonoImage != null  ?  '#28a745' : '#FF5F00' }]}
-                            source={require('../../../assets/icons/upload.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/upload.png')}
                         />
                         <Text style={[styles.btnTxt, { color: cpfDonoImage != null  ?  '#28a745' : '#FF5F00'}]}> RG/CPF (DONO)</Text>
                         {cpfDonoImage != null ?
                             <Image
                             style={[styles.icon, {width:30,height:30, tintColor: cpfDonoImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../assets/icons/ok.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
                         /> : <View></View> }
                     </Pressable> : ''}
 
@@ -443,7 +443,7 @@ export default function UpLoadDocCar({navigation}){
                                 <Pressable onPress={showModalDoc}>
                                     <Image
                                         style={[styles.icon, {height:25, width:25, marginTop:5}]}
-                                        source={require('../../../assets/icons/x.png')}
+                                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/x.png')}
                                     />
                                 </Pressable>
                             </View>
@@ -455,7 +455,7 @@ export default function UpLoadDocCar({navigation}){
                                     <View style={styles.containerBtn}>
                                         <Image
                                             style={styles.icon}
-                                            source={require('../../../assets/icons/camera.png')}
+                                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/camera.png')}
                                         />
                                         <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Câmera</Text>
                                     </View>
@@ -468,7 +468,7 @@ export default function UpLoadDocCar({navigation}){
                                     <View style={styles.containerBtn}>
                                         <Image
                                             style={styles.icon}
-                                            source={require('../../../assets/icons/galeria.png')}
+                                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/galeria.png')}
                                         />
                                         <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Galereria</Text>
                                     </View>
@@ -481,7 +481,7 @@ export default function UpLoadDocCar({navigation}){
                                     <View style={[styles.containerBtn, {width:'80%'} ]}>
                                         <Image
                                             style={styles.icon}
-                                            source={require('../../../assets/icons/arquivo.png')}
+                                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/arquivo.png')}
                                         />
                                         <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Documentos</Text>
                                     </View>
@@ -500,7 +500,7 @@ export default function UpLoadDocCar({navigation}){
                                 <Pressable onPress={openModalDocCar}>
                                     <Image
                                         style={[styles.icon, {height:25, width:25, marginTop:5}]}
-                                        source={require('../../../assets/icons/x.png')}
+                                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/x.png')}
                                     />
                                 </Pressable>
                             </View>
@@ -515,17 +515,17 @@ export default function UpLoadDocCar({navigation}){
                                     }]}
                                     source={
                                           cpfVisible
-                                          ? require('../../../assets/imgExemplo/cpfRg.png')
+                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/cpfRg.png')
                                           : clvVisible
-                                          ? require('../../../assets/imgExemplo/clv.png')
+                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/clv.png')
                                           : anttVisible
-                                          ? require('../../../assets/imgExemplo/antt.png')
+                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/antt.png')
                                           : cnpjVisible
-                                          ? require('../../../assets/imgExemplo/cnpj.png')
+                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/cnpj.png')
                                           : inscicaoEstadualVisible
-                                          ? require('../../../assets/imgExemplo/inscricaoEstadual.png')
+                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/inscricaoEstadual.png')
                                           : residenciaVisible
-                                          ? require('../../../assets/imgExemplo/compravanteResidencia.png')
+                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/compravanteResidencia.png')
                                           : null // Defina um valor padrão ou nulo, se necessário
                                       }
                                 />

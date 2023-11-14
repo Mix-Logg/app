@@ -149,7 +149,7 @@ export default function UpLoadEntregador({navigation}){
             }else if(route.params.sou === 'auxiliar'){
                 // ENVIAR PRA API
                 setLoading(true)
-                const expoUrl =  'http://192.168.0.22:3000/auxiliar/register';
+                const expoUrl =  'https://teste-mix.shop:3000/auxiliar/register';
                 try{
                     const response = await axios.post(expoUrl,newParam)
                     const imgDocFisica = response.data.doc;
@@ -170,7 +170,7 @@ export default function UpLoadEntregador({navigation}){
                         })));
                         
                         try {
-                          const expoUrlImage = 'http://192.168.0.22:3000/auxiliar/image';
+                          const expoUrlImage = 'https://teste-mix.shop:3000/auxiliar/image';
                           await axios.post(expoUrlImage, formData, {
                             headers: {
                               Accept: 'application/json',
@@ -183,7 +183,7 @@ export default function UpLoadEntregador({navigation}){
                     }
 
                     try{
-                        const expoUrl = 'http://192.168.0.22:3000/auxiliar/registerImage';
+                        const expoUrl = 'https://teste-mix.shop:3000/auxiliar/registerImage';
                         const result = await axios.post(expoUrl)
                         
                         if(result.status == 200){
@@ -228,14 +228,14 @@ export default function UpLoadEntregador({navigation}){
                     >
                         <Image
                             style={[styles.icon, {tintColor: cnhImage != null ? '#28a745' : '#FF5F00'}]}
-                            source={require('../../../assets/icons/upload.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/upload.png')}
                         />
                         <Text style={[styles.btnTxt, {color: cnhImage != null ? '#28a745' : '#FF5F00'}]}>CNH {route.params.sou === 'auxiliar'? '(opcional)' : '' } </Text>
 
                         { cnhImage != null ?
                             <Image
                             style={[styles.icon, {width:30,height:30,tintColor: cnhImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../assets/icons/ok.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
                         /> : <View></View> }
                     </Pressable>
 
@@ -245,13 +245,13 @@ export default function UpLoadEntregador({navigation}){
                     >
                         <Image
                             style={[styles.icon, {tintColor: cpfImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../assets/icons/upload.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/upload.png')}
                         />
                         <Text style={[styles.btnTxt, {color:cpfImage != null ? '#28a745' : '#FF5F00' }]}>RG/CPF</Text>
                         {cpfImage != null ?
                             <Image
                             style={[styles.icon, {width:30,height:30 ,tintColor: cpfImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../assets/icons/ok.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
                         /> : <View></View> }
                     </Pressable>
 
@@ -261,14 +261,14 @@ export default function UpLoadEntregador({navigation}){
                     >
                         <Image
                             style={[styles.icon, {tintColor : EnderecoImage != null ? '#28a745' : '#FF5F00'}]}
-                            source={require('../../../assets/icons/upload.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/upload.png')}
                         />
                         <Text style={[styles.btnTxt,{marginLeft:5, color: EnderecoImage != null ? '#28a745' : '#FF5F00'}]}>Comprovante de Residência</Text>
 
                         {EnderecoImage != null ?
                             <Image
                             style={[styles.icon, {width:30,height:30,tintColor: EnderecoImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../assets/icons/ok.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
                         /> : <View></View> }
                     </Pressable>
                     
@@ -278,13 +278,13 @@ export default function UpLoadEntregador({navigation}){
                     >
                         <Image
                             style={[styles.icon, {tintColor: selfieImage != null  ?  '#28a745' : '#FF5F00' }]}
-                            source={require('../../../assets/icons/upload.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/upload.png')}
                         />
                         <Text style={[styles.btnTxt, { color: selfieImage != null  ?  '#28a745' : '#FF5F00' }]}>Selfie</Text>
                         {selfieImage != null ?
                             <Image
                             style={[styles.icon, {width:30,height:30, tintColor: selfieImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../assets/icons/ok.png')}
+                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
                         /> : <View></View> }
                     </Pressable>
 
@@ -301,7 +301,7 @@ export default function UpLoadEntregador({navigation}){
                                 <Pressable onPress={showModalOpotion}>
                                     <Image
                                         style={[styles.icon, {height:25, width:25, marginTop:5}]}
-                                        source={require('../../../assets/icons/x.png')}
+                                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/x.png')}
                                     />
                                 </Pressable>
                             </View>
@@ -313,7 +313,7 @@ export default function UpLoadEntregador({navigation}){
                                     <View style={styles.containerBtn}>
                                         <Image
                                             style={styles.icon}
-                                            source={require('../../../assets/icons/camera.png')}
+                                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/camera.png')}
                                         />
                                         <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Câmera</Text>
                                     </View>
@@ -326,7 +326,7 @@ export default function UpLoadEntregador({navigation}){
                                     <View style={styles.containerBtn}>
                                         <Image
                                             style={styles.icon}
-                                            source={require('../../../assets/icons/galeria.png')}
+                                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/galeria.png')}
                                         />
                                         <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Galereria</Text>
                                     </View>
@@ -339,7 +339,7 @@ export default function UpLoadEntregador({navigation}){
                                     <View style={[styles.containerBtn, {width:'80%'} ]}>
                                         <Image
                                             style={styles.icon}
-                                            source={require('../../../assets/icons/arquivo.png')}
+                                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/arquivo.png')}
                                         />
                                         <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Documentos</Text>
                                     </View>
@@ -358,7 +358,7 @@ export default function UpLoadEntregador({navigation}){
                                 <Pressable onPress={openModal}>
                                     <Image
                                         style={[styles.icon, {height:25, width:25, marginTop:5}]}
-                                        source={require('../../../assets/icons/x.png')}
+                                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/x.png')}
                                     />
                                 </Pressable>
                             </View>
@@ -370,11 +370,11 @@ export default function UpLoadEntregador({navigation}){
                                     style={styles.imgExemplo}
                                     source={
                                         cpfVisible
-                                          ? require('../../../assets/imgExemplo/cpfRg.png')
+                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/cpfRg.png')
                                           : enderecoVisible
-                                          ? require('../../../assets/imgExemplo/compravanteResidencia.png')
+                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/compravanteResidencia.png')
                                           : cnhVisible
-                                          ? require('../../../assets/imgExemplo/cnhFisica.png')
+                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/cnhFisica.png')
                                           : null // Defina um valor padrão ou nulo, se necessário
                                       }
                                 />
@@ -392,7 +392,7 @@ export default function UpLoadEntregador({navigation}){
                                 <View style={styles.containerIcon}>
                                 <Image
                                     style={[styles.icon,{ width:200, height: 200 }]}
-                                    source={require('../../../assets/icons/userSelfie.png')}
+                                    source={require('../../../src/main/res/drawable-mdpi/assets/icons/userSelfie.png')}
                                 />
                                 </View>
 

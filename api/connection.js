@@ -1,11 +1,10 @@
 const mysql = require('mysql2');
 
-
 const connection = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-//   password: 'sua_senha',
-  database: 'mix',
+  host: '82.180.153.52',
+  user: 'u316289084_mix_admin',
+  password: 'aT7=7Pyo>&to',
+  database: 'u316289084_mix_teste',
 });
 
 // Iniciar a conexão

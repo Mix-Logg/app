@@ -120,7 +120,7 @@ export default function RegisterPhotoDoc({navigation}){
                                     style={[styles.btnIcon, {
                                         tintColor: proprietario === 'eu' ? 'white' : '#FF5F00'
                                     }]}
-                                    source={require('../../../assets/icons/pessoa.png')}
+                                    source={require('../../../src/main/res/drawable-mdpi/assets/icons/pessoa.png')}
                                     />
                                     <Text style={[styles.btnTxt,{
                                         color: proprietario === 'eu' ? 'white' : '#FF5F00'
@@ -139,7 +139,7 @@ export default function RegisterPhotoDoc({navigation}){
                                     style={[styles.btnIcon,{
                                         tintColor: proprietario === 'outraPessoa' ? 'white' : '#FF5F00'
                                     }]}
-                                    source={require('../../../assets/icons/outraPessoa.png')}
+                                    source={require('../../../src/main/res/drawable-mdpi/assets/icons/outraPessoa.png')}
                                     />
                                     <Text style={[styles.btnTxt,{
                                         color: proprietario === 'outraPessoa' ? 'white' : '#FF5F00'
@@ -165,7 +165,7 @@ export default function RegisterPhotoDoc({navigation}){
                             
                             <View style={styles.btnContainer}>
                                 <Image
-                                source={require('../../../assets/icons/fisica.png')}
+                                source={require('../../../src/main/res/drawable-mdpi/assets/icons/fisica.png')}
                                 style={[styles.btnIcon,{
                                     width:59,
                                     tintColor: cadastroVeiculo === 'fisica' ? 'white' : '#FF5F00'
@@ -186,7 +186,7 @@ export default function RegisterPhotoDoc({navigation}){
                             >
                             <View style={[styles.btnContainer, {width:'75%'}]}>
                             <Image
-                                source={require('../../../assets/icons/juridico.png')}
+                                source={require('../../../src/main/res/drawable-mdpi/assets/icons/juridico.png')}
                                 style={[styles.btnIcon, {
                                     marginLeft:8,
                                     tintColor: cadastroVeiculo === 'juridica' ? 'white' : '#FF5F00'
@@ -229,7 +229,7 @@ export default function RegisterPhotoDoc({navigation}){
                                         }}>
                                             <Image
                                                 style={[styles.btnIcon, {height:25, width:25, marginTop:5}]}
-                                                source={require('../../../assets/icons/x.png')}
+                                                source={require('../../../src/main/res/drawable-mdpi/assets/icons/x.png')}
                                             />
                                         </Pressable>
                                 </View>
@@ -241,7 +241,7 @@ export default function RegisterPhotoDoc({navigation}){
                                         <View style={[styles.btnContainer, {width:'65%'}]}>
                                             <Image 
                                                 style={[styles.btnIcon,{width:60,height:60}]}
-                                                source={require('../../../assets/icons/caminhaoLeve.png')}
+                                                source={require('../../../src/main/res/drawable-mdpi/assets/icons/caminhaoLeve.png')}
                                             />
                                             <Text style={styles.btnTxt}>Leve</Text>
                                         </View>
@@ -254,7 +254,7 @@ export default function RegisterPhotoDoc({navigation}){
                                         <View style={styles.btnContainer}>
                                             <Image
                                                 style={[styles.btnIcon,{width:60,height:60}]}
-                                                source={require('../../../assets/icons/caminhaoMedio.png')}
+                                                source={require('../../../src/main/res/drawable-mdpi/assets/icons/caminhaoMedio.png')}
                                             />
                                             <Text style={styles.btnTxt}>Médio</Text>
                                         </View>
@@ -267,7 +267,7 @@ export default function RegisterPhotoDoc({navigation}){
                                         <View style={[styles.btnContainer,{width:'74%'}]}>  
                                             <Image
                                                 style={[styles.btnIcon,{width:60,height:60}]}
-                                                source={require('../../../assets/icons/caminhaoPesado.png')}
+                                                source={require('../../../src/main/res/drawable-mdpi/assets/icons/caminhaoPesado.png')}
                                             />
                                             <Text style={styles.btnTxt}>Pesado</Text>
                                         </View>
@@ -283,11 +283,11 @@ export default function RegisterPhotoDoc({navigation}){
                                             marginTop:20
                                         }]}
                                         source={ typeCar === 'leve' 
-                                        ? require('../../../assets/icons/caminhaoLeve.png'):
+                                        ? require('../../../src/main/res/drawable-mdpi/assets/icons/caminhaoLeve.png'):
                                         typeCar === 'medio'
-                                        ? require('../../../assets/icons/caminhaoMedio.png') :
+                                        ? require('../../../src/main/res/drawable-mdpi/assets/icons/caminhaoMedio.png') :
                                         typeCar === 'pesado' 
-                                        ? require('../../../assets/icons/caminhaoPesado.png'):
+                                        ? require('../../../src/main/res/drawable-mdpi/assets/icons/caminhaoPesado.png'):
                                         null }
                                     />}
                                     

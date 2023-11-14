@@ -12,10 +12,10 @@
     "slug": "MIX",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./src/main/res/drawable-mdpi/assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./src/main/res/drawable-mdpi/assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -27,13 +27,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./src/main/res/drawable-mdpi/assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.mixtrans.MIX"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./src/main/res/drawable-mdpi/assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "954638a6-a9ee-44c7-8b16-e0a2f88c3eb7"
+      }
     }
-    
   }
 }
