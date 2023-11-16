@@ -12,7 +12,7 @@ const postAuxiliar = require('./POST/auxiliar.js');
 app.use('/motorista', postMotorista);
 app.use('/auxiliar', postAuxiliar);
 
-const port = 8080;
+const port = 8081;
 app.listen(port, () => {
   console.log(`Servidor intermediário está em execução na porta ${port}`);
 });
