@@ -21,6 +21,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 try{router.post('/register', async (req, res) => {
+    console.log('caiu aqui register')
     // 1 insert
     const email   = req.body.email;
     const celular = req.body.phone;
