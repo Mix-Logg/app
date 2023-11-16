@@ -149,7 +149,8 @@ export default function UpLoadEntregador({navigation}){
             }else if(route.params.sou === 'auxiliar'){
                 // ENVIAR PRA API
                 setLoading(true)
-                const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/register';
+                const expoUrl = 'http://localhost:8081/auxiliar/register';
+                console.log(newParam)
                 try{
                     const response = await axios.post(expoUrl,newParam)
                     const imgDocFisica = response.data.doc;
@@ -168,9 +169,8 @@ export default function UpLoadEntregador({navigation}){
                           uri: valor,
                           type: 'image/' + extend,
                         })));
-                        
                         try {
-                          const expoUrlImage = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/image';
+                          const expoUrlImage = 'http://localhost:8081/auxiliar/image';
                           await axios.post(expoUrlImage, formData, {
                             headers: {
                               Accept: 'application/json',
@@ -183,7 +183,7 @@ export default function UpLoadEntregador({navigation}){
                     }
 
                     try{
-                        const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/registerImage';
+                        const expoUrl = 'http://localhost:8081/auxiliar/registerImage';
                         const result = await axios.post(expoUrl)
                         
                         if(result.status == 200){
@@ -196,7 +196,7 @@ export default function UpLoadEntregador({navigation}){
                     }
                     
                 }catch(err){
-                    console.log('erro:', err)
+                    console.log('não chegou erro:', err)
                     setLoading(false)
                 }
                 return setLoading(false)

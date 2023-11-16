@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post('/register', async (req, res) => {
-    console.log('caiu aqui register')
+    console.log('api')
     // 1 insert
     const email   = req.body.email;
     const celular = req.body.phone;
@@ -70,7 +70,8 @@ router.post('/register', async (req, res) => {
                     }
                 })
           }else{
-            console.log('erro')
+            // console.log(err)
+            console.log('erro no BD:', err)
             res.status(500).send({
                 error: true,
                 message: 'err first!',

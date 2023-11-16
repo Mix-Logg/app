@@ -13,7 +13,7 @@ const connection = mysql.createConnection({
     password: 'AVNS_qetteE6jvV3iQswf6hQ',
     database: 'mix',
     port: '25060'
-  });
+});
 
 // Iniciar a conexão
 connection.connect((err) => {
