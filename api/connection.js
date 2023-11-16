@@ -1,11 +1,19 @@
 const mysql = require('mysql2');
 
+// const connection = mysql.createConnection({
+//   host: '82.180.153.52',
+//   user: 'u316289084_mix_admin',
+//   password: 'aT7=7Pyo>&to',
+//   database: 'u316289084_mix_teste',
+// });
+
 const connection = mysql.createConnection({
-  host: '82.180.153.52',
-  user: 'u316289084_mix_admin',
-  password: 'aT7=7Pyo>&to',
-  database: 'u316289084_mix_teste',
-});
+    host: 'db-test-do-user-15124696-0.c.db.ondigitalocean.com',
+    user: 'doadmin',
+    password: 'AVNS_qetteE6jvV3iQswf6hQ',
+    database: 'mix',
+    port: '25060'
+  });
 
 // Iniciar a conexão
 connection.connect((err) => {
