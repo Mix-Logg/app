@@ -239,7 +239,7 @@ export default function UpLoadDocCar({navigation}){
         (infoCadastroCar === 'juridicoEu' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null) ||
         (infoCadastroCar === 'juridicoOutra' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null)
         ){
-            const expoUrl =  'https://clownfish-app-nc7ss.ondigitalocean.app//motorista/register';
+            const expoUrl =  'https://clownfish-app-nc7ss.ondigitalocean.app/motorista/register';
             const res  = await axios.post(expoUrl, newParams)
             
             const imgDocCar = res.data.data.docCar;
@@ -255,7 +255,7 @@ export default function UpLoadDocCar({navigation}){
                     })));
                     
                     try {
-                      const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app//motorista/image';
+                      const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/motorista/image';
                       await axios.post(expoUrl, formData, {
                         headers: {
                           Accept: 'application/json',
@@ -293,7 +293,7 @@ export default function UpLoadDocCar({navigation}){
                     }
 
                     try{
-                        const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app//motorista/registerImage';
+                        const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/motorista/registerImage';
                         
                         const result = await axios.post(expoUrl,{id:res.data.data.id})
                         // console.log(result.status)

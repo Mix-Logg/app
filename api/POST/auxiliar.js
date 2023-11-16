@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post('/register', async (req, res) => {
+try{router.post('/register', async (req, res) => {
     // 1 insert
     const email   = req.body.email;
     const celular = req.body.phone;
@@ -77,7 +77,9 @@ router.post('/register', async (req, res) => {
           }
         }
     );
-});
+})}catch(err){
+    connsole.log('erro api', err)
+}
 
 router.post('/image', upload.single('file'), (req, res) => {
     const file = req.file;

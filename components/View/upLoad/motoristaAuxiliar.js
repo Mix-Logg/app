@@ -149,7 +149,7 @@ export default function UpLoadEntregador({navigation}){
             }else if(route.params.sou === 'auxiliar'){
                 // ENVIAR PRA API
                 setLoading(true)
-                const expoUrl =  'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/register';
+                const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/register';
                 try{
                     const response = await axios.post(expoUrl,newParam)
                     const imgDocFisica = response.data.doc;
