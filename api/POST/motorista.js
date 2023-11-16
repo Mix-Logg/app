@@ -236,9 +236,5 @@ router.post('/image', upload.single('file'), (req, res) => {
     }
 });
 
-router.get('/teste', async (req, res) => {
-    res.send('Hello World!')
-})
-
 
 module.exports = router;
