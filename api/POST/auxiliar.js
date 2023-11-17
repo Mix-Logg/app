@@ -5,28 +5,42 @@ const fss = require('fs')
 const connection = require('../connection');
 const multer = require('multer');
 let numberId
+const AWS = require('aws-sdk');
+const moment = require('moment-timezone');
+
+const spacesEndpoint = new AWS.Endpoint('nyc3.digitaloceanspaces.com');
+const bucket = new AWS.S3({
+    endpoint: spacesEndpoint,
+    accessKeyId: 'DO0036EUWG2DKLNMYVT6',
+    secretAccessKey: 'TWXtI00AUnHVkgpZuYAjEYyKiWkv/mMH1KAvUIN5qeY'
+});
+const bucketName = 'miximg';
 
 
+/////////////////////////////////////////
 const storage = multer.diskStorage({
     destination: async function (req, file, cb) {
         cb(null, 'uploads/auxiliar/'+ numberId); 
     },
     filename: function (req, file, cb) {
       const extendFile =  file.originalname.split('.')[1];
-      const newNameFile = file.originalname.split('.')[0];
+      const newNameFile = file.originalname.split('.')[0]; 
       cb(null, `${newNameFile}.${extendFile}`);
     },
 });
-
 const upload = multer({ storage });
+///////////////////////////////////////////
+
+
 
 router.post('/register', async (req, res) => {
     console.log('api')
     // 1 insert
+    const dataHora = moment().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
     const email   = req.body.email;
     const celular = req.body.phone;
-    const sqlInsertMotorista = 'INSERT INTO auxiliar (email, celular) VALUES (?, ?)';
-    const parametros = [email, celular];
+    const sqlInsertMotorista = 'INSERT INTO auxiliar (email, celular, create_at) VALUES (?, ?, ?)';
+    const parametros = [email, celular, dataHora];
 
     // 2 insert
     let souId = ''
@@ -49,7 +63,23 @@ router.post('/register', async (req, res) => {
                 async function (err, results) {
                     if(err  === null){
                         numberId = souId
-                        console.log('Success')
+                        // const paramBucket = {
+                        //     Bucket: bucketName,
+                        //     Key: 'uploads/auxiliar/' + numberId + '/',
+                        // };
+                        // bucket.putObject(paramBucket, (err, data) => {
+                        //     if (err) {
+                        //       console.error('Erro ao enviar arquivo para o Space:', err);
+                        //       return;
+                        //     }
+                        //     console.log('Arquivo enviado com sucesso para o Space:', data);
+                        //     res.status(200).send({
+                        //         error: false,
+                        //         message: 'successfully',
+                        //         doc:req.body.imgDoc,
+                        //         id: numberId
+                        //     });
+                        // });
                         fss.mkdir('uploads/auxiliar/'+souId, (err) => {
                             if (err) {
                                 console.error(err);
@@ -59,9 +89,9 @@ router.post('/register', async (req, res) => {
                                     message: 'successfully',
                                     doc:req.body.imgDoc,
                                     id: numberId
-                                });
-                    }   })
-                        
+                                })
+                            }
+                        });
                     }else{
                         res.status(500).send({
                             error: true,
@@ -131,11 +161,90 @@ router.post('/registerImage', async (req, res) => {
                 }
             }
         )
-        
     } catch (err) {
         console.error('Erro ao verificar a pasta:', err);
     }
 
 });
+
+router.post('/uploadBucker', async (req, res) => {
+    // console.log('entrou na API')
+    const diretorio = `uploads/auxiliar/${numberId}/`
+    // const diretorio = `uploads/auxiliar/25/`
+    const paramsDir = {
+        Bucket: bucketName,
+        Key: diretorio,
+        Body: 'uploads/auxiliar/'
+    };
+    bucket.upload(paramsDir, (err, data) => {
+        if (err) {
+        //   console.error('Erro ao enviar o diretorio para o bucket:', err);
+          return;
+        }
+        // console.log('Diretorio enviado com sucesso. Informações:', data);
+    });
+    fss.readdir(diretorio, (err, files) => {
+        if (err) {
+        //   console.error('Erro ao ler diretório local:', err);
+          return;
+        }
+        files.forEach((file) => {
+          const filePath = `${diretorio}/${file}`;
+          fss.readFile(filePath, (err, data) => {
+            // console.log(data)
+            if (err) {
+            //   console.error(`Erro ao ler arquivo ${filePath}:`, err);
+              return;
+            }
+            const params = {
+              Bucket: bucketName,
+              Key: `${diretorio}${file}`,
+              Body: data, 
+            };
+            bucket.upload(params, (err, data) => {
+              if (err) {
+                console.error(`Erro ao enviar arquivo ${filePath} para o S3:`, err);
+                return;
+              }
+            });
+          });
+        });
+    })
+    setTimeout(() => {
+        let direExist = deleteDiretorio(diretorio)
+        if(direExist === true){
+            res.send(200)
+        }else{
+            console.log('?')
+        }
+    }, 5000); // 5000 milissegundos = 5 segundos
+
+   
+})
+
+router.get('/testbucket', async (req,res) => {
+    bucket.listBuckets((err, data) => {
+        if (err) {
+          res.send('Erro ao conectar-se ao DigitalOcean Space:', err);
+          return;
+        }
+        console.log(data.Buckets)
+        res.send('Conexão bem-sucedida! Buckets disponíveis: ' + JSON.stringify(data.Buckets));
+    });
+})
+
+
+function deleteDiretorio(diretorio){
+    if (fss.existsSync(diretorio)) {
+        try {
+            fss.rmSync(diretorio, { recursive: true });
+            return true; // Retorna true se a exclusão foi bem-sucedida
+        } catch (err) {
+            deleteDiretorio(diretorio)
+        }
+    } else {
+        return true; // Retorna true se o diretório não existir
+    }
+}
 
 module.exports = router;

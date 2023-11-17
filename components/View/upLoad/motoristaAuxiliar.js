@@ -181,20 +181,24 @@ export default function UpLoadEntregador({navigation}){
                           console.error(`Erro ao enviar o arquivo ${filename}:`, error);
                         }
                     }
-
                     try{
                         const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/registerImage';
                         const result = await axios.post(expoUrl)
-                        
-                        if(result.status == 200){
-                            navigation.navigate('RegistrationStuation');
+                        try{
+                            const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/uploadBucker';
+                            const result = await axios.post(expoUrl)
+                            console.log(result)
+                            if(result.status == 200){
+                                navigation.navigate('RegistrationStuation');
+                                setLoading(false)
+                            }
+                        }catch(err){
+                            console.log('erro ao enviar a pasta: ', err)
                         }
-                        setLoading(false)
                     }catch(err){
                         console.error('Erro na requisição:', err);
                         setLoading(false)
                     }
-                    
                 }catch(err){
                     console.log('não chegou erro:', err)
                     setLoading(false)
