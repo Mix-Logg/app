@@ -252,7 +252,7 @@ router.post('/uploadBucker', async (req, res) => {
     const diretorio = `/workspace/uploads/motorista/${numberId}/`
     const diretorioCar = `/workspace/uploads/motorista/${numberId}/carro/`
     const diretorioBucket = `uploads/motorista/${numberId}/`
-    const diretorioBucketCar = `uploads/motorista/${numberId}/`
+    const diretorioBucketCar = `uploads/motorista/${numberId}/carro/`
     // const diretorio = `uploads/auxiliar/25/`
     const paramsDir = {
         Bucket: bucketName,
@@ -266,20 +266,21 @@ router.post('/uploadBucker', async (req, res) => {
     };
     bucket.upload(paramsDir, (err, data) => {
         if (err) {
-        //   console.error('Erro ao enviar o diretorio para o bucket:', err);
+          console.error('Erro ao enviar o diretorio para o bucket:', err);
           return;
         }
-        // console.log('Diretorio enviado com sucesso. Informações:', data);
+        console.log('Diretorio enviado com sucesso. Informações:', data);
     });
     bucket.upload(paramsCar, (err, data) => {
         if (err) {
-        //   console.error('Erro ao enviar o diretorio para o bucket:', err);
+          console.error('Erro ao enviar o diretorio para o bucket:', err);
           return;
         }
-        // console.log('Diretorio enviado com sucesso. Informações:', data);
+        console.log('Diretorio enviado com sucesso. Informações:', data);
     });
     
     setTimeout(() => {
+        console.log('entrando no fss')
         fss.readdir(diretorio, (err, files) => {
         console.log(`arquivos:${files}`)
             if (err) {
@@ -287,11 +288,12 @@ router.post('/uploadBucker', async (req, res) => {
             return;
             }
             files.forEach((file) => {
+            console.log(file)
             const filePath = `${diretorio}/${file}`;
             fss.readFile(filePath, (err, data) => {
                 // console.log(data)
                 if (err) {
-                //   console.error(`Erro ao ler arquivo ${filePath}:`, err);
+                  console.error(`Erro ao ler arquivo ${filePath}:`, err);
                 return;
                 }
                 const params = {
@@ -309,6 +311,7 @@ router.post('/uploadBucker', async (req, res) => {
             });
         })
         fss.readdir(diretorioCar, (err, files) => {
+            console.log('diretorio carro fss')
             if (err) {
             console.error('Erro ao ler diretório local:', err);
             return;
@@ -319,7 +322,7 @@ router.post('/uploadBucker', async (req, res) => {
             fss.readFile(filePath, (err, data) => {
                 // console.log(data)
                 if (err) {
-                //   console.error(`Erro ao ler arquivo ${filePath}:`, err);
+                  console.error(`Erro ao ler arquivo ${filePath}:`, err);
                 return;
                 }
                 const params = {
