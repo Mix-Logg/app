@@ -82,7 +82,7 @@ router.post('/register', async (req, res) => {
                         // });
                         fss.mkdir('uploads/auxiliar/'+souId, (err) => {
                             if (err) {
-                                console.error(err);
+                                console.log('não crio a pasta LOCAL:', err)
                             } else {
                                 res.status(200).send({
                                     error: false,
@@ -183,11 +183,12 @@ router.post('/uploadBucker', async (req, res) => {
         }
         console.log('Diretorio enviado com sucesso. Informações:', data);
     });
-    fss.readdir(path.join(__dirname, 'uploads', 'auxiliar', `${numberId}`), (err, files) => {
+    fss.readdir(diretorio, (err, files) => {
+        console.log('caminho:', __dirname);
         console.log('entrou no read: ', files)
         if (err) {
           console.log('Erro ao ler diretório local:', err);
-          return res(500);
+          return
         }
         files.forEach((file) => {
           console.log('entrou no read 2')
