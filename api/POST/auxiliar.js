@@ -198,6 +198,7 @@ router.post('/uploadBucker', async (req, res) => {
               console.error(`Erro ao ler arquivo ${filePath}:`, err);
               return;
             }
+            console.log(file)
             const params = {
               Bucket: bucketName,
               Key: `${diretorio}${file}`,
@@ -207,6 +208,8 @@ router.post('/uploadBucker', async (req, res) => {
               if (err) {
                 console.error(`Erro ao enviar arquivo ${filePath} para o S3:`, err);
                 return;
+              }else{
+                console.log('upload erro:', err)
               }
             });
           });
