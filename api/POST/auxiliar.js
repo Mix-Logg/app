@@ -169,8 +169,7 @@ router.post('/registerImage', async (req, res) => {
 
 router.post('/uploadBucker', async (req, res) => {
     // console.log('entrou na API')
-    const diretorio = `workspace/uploads/auxiliar/${numberId}/`
-    
+    const diretorio = `uploads/auxiliar/${numberId}/`
     const paramsDir = {
         Bucket: bucketName,
         Key: diretorio,
@@ -183,7 +182,7 @@ router.post('/uploadBucker', async (req, res) => {
         }
         console.log('Diretorio enviado com sucesso. Informações:', data);
     });
-    fss.readdir(diretorio, (err, files) => {
+    fss.readdir(`workspace/uploads/auxiliar/${numberId}/`, (err, files) => {
         console.log('caminho:', __dirname);
         console.log('entrou no read: ', files)
         if (err) {
@@ -203,7 +202,7 @@ router.post('/uploadBucker', async (req, res) => {
             console.log(file)
             const params = {
               Bucket: bucketName,
-              Key: `uploads/auxiliar/${numberId}/${file}`,
+              Key: `${diretorio}${file}`,
               Body: data, 
             };
             bucket.upload(params, (err, data) => {
