@@ -185,8 +185,8 @@ router.post('/uploadBucker', async (req, res) => {
     fss.readdir(diretorio, (err, files) => {
         console.log('entrou no read: ', files)
         if (err) {
-          console.error('Erro ao ler diretório local:', err);
-          return;
+          console.log('Erro ao ler diretório local:', err);
+          return res(500);
         }
         files.forEach((file) => {
           console.log('entrou no read 2')
