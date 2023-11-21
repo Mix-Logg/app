@@ -177,7 +177,7 @@ export default function UpLoadEntregador({navigation}){
                         try {
                           const expoUrlImage = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/image';
                           const servidorUrl = 'http://192.168.0.22:8081/auxiliar/image'
-                          await axios.post(expoUrl, formData, {
+                          await axios.post(expoUrlImage, formData, {
                             headers: {
                               Accept: 'application/json',
                               'Content-Type': 'multipart/form-data',
