@@ -154,7 +154,7 @@ export default function UpLoadEntregador({navigation}){
 
                 // console.log(newParam)
                 try{
-                    const response = await axios.post(servidorUrl,newParam)
+                    const response = await axios.post(expoUrl,newParam)
                     const imgDocFisica = response.data.doc;
                     for (const chave in imgDocFisica) {
                         const valor = imgDocFisica[chave]
@@ -177,7 +177,7 @@ export default function UpLoadEntregador({navigation}){
                         try {
                           const expoUrlImage = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/image';
                           const servidorUrl = 'http://192.168.0.22:8081/auxiliar/image'
-                          await axios.post(servidorUrl, formData, {
+                          await axios.post(expoUrl, formData, {
                             headers: {
                               Accept: 'application/json',
                               'Content-Type': 'multipart/form-data',
@@ -192,13 +192,13 @@ export default function UpLoadEntregador({navigation}){
                         const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/registerImage';
                         const servidorUrl = 'http://192.168.0.22:8081/auxiliar/registerImage'
 
-                        const result = await axios.post(servidorUrl)
+                        const result = await axios.post(expoUrl)
                         console.log(result.body)
                         try{
                             const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/uploadBucker';
                             const servidorUrl = 'http://192.168.0.22:8081/auxiliar/uploadBucker'
                             
-                            const result = await axios.post(servidorUrl)
+                            const result = await axios.post(expoUrl)
                             console.log(result)
                             if(result.status == 200){
                                 navigation.navigate('RegistrationStuation');
