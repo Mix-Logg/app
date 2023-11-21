@@ -185,7 +185,7 @@ router.post('/uploadBucker', async (req, res) => {
     });
     fss.readdir(diretorio, (err, files) => {
         if (err) {
-        //   console.error('Erro ao ler diretório local:', err);
+          console.error('Erro ao ler diretório local:', err);
           return;
         }
         files.forEach((file) => {
@@ -193,7 +193,7 @@ router.post('/uploadBucker', async (req, res) => {
           fss.readFile(filePath, (err, data) => {
             // console.log(data)
             if (err) {
-            //   console.error(`Erro ao ler arquivo ${filePath}:`, err);
+              console.error(`Erro ao ler arquivo ${filePath}:`, err);
               return;
             }
             const params = {

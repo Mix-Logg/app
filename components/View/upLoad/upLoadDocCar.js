@@ -241,9 +241,14 @@ export default function UpLoadDocCar({navigation}){
         (infoCadastroCar === 'juridicoOutra' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null)
         ){     
             const expoUrl =  'clownfish-app-nc7ss.ondigitalocean.app/motorista/register';
-            const res  = await axios.post(expoUrl, newParams)
-            const imgDocCar = res.data.data.docCar;
-            const imgDocFisica = res.data.data.doc;
+            try{
+                const res  = await axios.post(expoUrl, newParams)
+                console.log('foi e voltou')
+                const imgDocCar = res.data.data.docCar;
+                const imgDocFisica = res.data.data.doc;
+            }catch(err){
+                console.log('DEU ERRO NA REQUISIÇÃO:' , err.response)
+            }
             
             async function uploadFile(filename, valor,chave) {
                     const extend = filename.split('.')[1];
@@ -266,7 +271,6 @@ export default function UpLoadDocCar({navigation}){
                       console.error(`Erro ao enviar o arquivo ${filename}:`, error);
                     }
             }
-                  
                  
             try{
                     for (const chave in imgDocFisica) {
