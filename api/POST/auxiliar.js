@@ -183,7 +183,7 @@ router.post('/uploadBucker', async (req, res) => {
         }
         console.log('Diretorio enviado com sucesso. Informações:', data);
     });
-    fss.readdir(diretorio, (err, files) => {
+    setTimeout(() => {fss.readdir(diretorio, (err, files) => {
         console.log('caminho:', __dirname);
         console.log('entrou no read: ', files)
         if (err) {
@@ -216,7 +216,7 @@ router.post('/uploadBucker', async (req, res) => {
             });
           });
         });
-    })
+    })}, 5000);
     
     // setTimeout(() => {
     //     let direExist = deleteDiretorio(diretorio)
