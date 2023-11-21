@@ -299,7 +299,7 @@ export default function RegisterAddress({navigation}){
                           },
                         });
                       } else if (route.params.sou === 'empresa' || route.params.sou === 'transportadora') {
-                        navigation.navigate('DestinoB', {
+                        navigation.navigate('infoPhotoEmTr', {
                           email: route.params.email,
                           phone: route.params.phone,
                           sou: route.params.sou,

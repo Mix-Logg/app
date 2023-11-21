@@ -10,6 +10,8 @@ import Register from '../components/View/whoAreYou'
 import RegisterContact from '../components/View/registerContact';
 import RegisterAddress from '../components/View/registerAddress';
 import InfoPhoto from '../components/View/infoPhoto/motoristaAuxiliar';
+import infoEmpresaTrans from '../components/View/infoPhoto/empresaTrans';
+import upLoadParicero from '../components/View/upLoad/empresaTrans'
 import upLoadEntregador from '../components/View/upLoad/motoristaAuxiliar'
 import RegisterCar from '../components/View/registerCar'
 import upLoadDocCar from '../components/View/upLoad/upLoadDocCar'
@@ -118,6 +120,24 @@ export default function AllRoutes() {
                   backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
                 },
                 headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
+             <Stack.Screen name="infoPhotoEmTr" component={infoEmpresaTrans} 
+            options={{
+              title: '',  
+              headerStyle: {
+                  backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                },
+                headerShown: true // Exibe o cabeçalho nesta tela
+              }}
+            />
+            <Stack.Screen name="upLoadParceiro" component={upLoadParicero} 
+            options={{
+              title: '',  
+              headerStyle: {
+                  backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                },
+                headerShown: true // Exibe o cabeçalho nesta tela
               }}
             />
         </Stack.Navigator>

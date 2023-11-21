@@ -150,7 +150,8 @@ export default function RegisterContact({navigation}){
                 <View style={styles.containerButton}>
                         <Pressable
                             style={[styles.button,{backgroundColor: phoneIsValid && emailIsValid && checkPermission ? '#FF5F00' :'transparent'}]}
-                            onPress={()=>{ phoneIsValid && emailIsValid && checkPermission ? navigation.navigate ('RegisterAddress',{
+                            onPress={()=>{ phoneIsValid && emailIsValid && checkPermission ? 
+                                navigation.navigate ('RegisterAddress',{
                                 sou : route.params.sou,
                                 phone : phoneNumber,
                                 email : email
