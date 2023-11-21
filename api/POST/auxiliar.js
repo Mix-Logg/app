@@ -169,7 +169,7 @@ router.post('/registerImage', async (req, res) => {
 
 router.post('/uploadBucker', async (req, res) => {
     // console.log('entrou na API')
-    const diretorio = `uploads/auxiliar/${numberId}/`
+    const diretorio = `workspace/uploads/auxiliar/${numberId}/`
     const paramsDir = {
         Bucket: bucketName,
         Key: diretorio,
@@ -182,7 +182,7 @@ router.post('/uploadBucker', async (req, res) => {
         }
         console.log('Diretorio enviado com sucesso. Informações:', data);
     });
-    fss.readdir(`workspace/uploads/auxiliar/${numberId}/`, (err, files) => {
+    fss.readdir(diretorio, (err, files) => {
         console.log('caminho:', __dirname);
         console.log('entrou no read: ', files)
         if (err) {
@@ -199,10 +199,10 @@ router.post('/uploadBucker', async (req, res) => {
               console.error(`Erro ao ler arquivo ${filePath}:`, err);
               return;
             }
-            console.log(file)
+            // console.log(file)
             const params = {
               Bucket: bucketName,
-              Key: `${diretorio}${file}`,
+              Key: `uploads/auxiliar/${numberId}//${file}`,
               Body: data, 
             };
             bucket.upload(params, (err, data) => {
