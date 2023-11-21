@@ -200,7 +200,7 @@ export default function UpLoadEntregador({navigation}){
                         setLoading(false)
                     }
                 }catch(err){
-                    console.log('não chegou erro:', err)
+                    console.log('não chegou erro:', err.response.data)
                     setLoading(false)
                 }
                 return setLoading(false)

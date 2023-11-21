@@ -232,7 +232,7 @@ export default function UpLoadDocCar({navigation}){
     }
 
     const navegacao = async () => {
-        // setLoading(true)
+        setLoading(true)
         console.log('cliq')
         if(
         (infoCadastroCar === 'fisicaEu' && clvImage != null && anttImage != null) ||
@@ -307,7 +307,7 @@ export default function UpLoadDocCar({navigation}){
                         console.error('Erro na requisição:', err);
                     }
             }catch(err){
-                console.log('erro')
+                console.log('erro: ')
             }
             
         }
