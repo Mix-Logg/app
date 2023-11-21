@@ -233,7 +233,7 @@ export default function UpLoadDocCar({navigation}){
 
     const navegacao = async () => {
         setLoading(true)
-        console.log('cliq')
+        // console.log('cliq')
         if(
         (infoCadastroCar === 'fisicaEu' && clvImage != null && anttImage != null) ||
         (infoCadastroCar === 'fisicaOutra' && clvImage != null && anttImage != null && residenciaDonoImage != null && cpfDonoImage != null) ||
