@@ -189,8 +189,11 @@ router.post('/uploadBucker', async (req, res) => {
           return;
         }
         files.forEach((file) => {
+          console.log('entrou no read 2')
           const filePath = `${diretorio}/${file}`;
           fss.readFile(filePath, (err, data) => {
+            console.log('entrou no read 3')
+            console.log(data)
             if (err) {
               console.error(`Erro ao ler arquivo ${filePath}:`, err);
               return;

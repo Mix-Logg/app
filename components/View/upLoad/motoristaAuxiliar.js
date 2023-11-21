@@ -193,7 +193,7 @@ export default function UpLoadEntregador({navigation}){
                                 setLoading(false)
                             }
                         }catch(err){
-                            console.log('erro ao enviar a pasta: ', err)
+                            console.log('erro ao enviar a pasta: ', err.response.data)
                         }
                     }catch(err){
                         console.error('Erro na requisição:', err);
