@@ -256,12 +256,12 @@ router.post('/uploadBucker', async (req, res) => {
     // const diretorio = `uploads/auxiliar/25/`
     const paramsDir = {
         Bucket: bucketName,
-        Key: diretorio,
+        Key: diretorioBucket,
         Body: 'uploads/motorista/'
     };
     const paramsCar = {
         Bucket: bucketName,
-        Key: diretorioCar,
+        Key: diretorioBucketCar,
         Body: `uploads/motorista/${numberId}/car/`
     };
     bucket.upload(paramsDir, (err, data) => {
