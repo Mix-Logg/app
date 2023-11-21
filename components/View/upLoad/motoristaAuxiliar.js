@@ -163,12 +163,15 @@ export default function UpLoadEntregador({navigation}){
                     }
                     async function uploadFile(filename, valor,chave) {
                         const extend = filename.split('.')[1];
+                        
                         const formData = new FormData();
-                        formData.append('file', JSON.parse(JSON.stringify({
-                          name: chave+'.'+extend,
-                          uri: valor,
-                          type: 'image/' + extend,
-                        })));
+                            formData.append('file', JSON.parse(JSON.stringify({
+                            name: chave+'.'+extend,
+                            uri: valor,
+                            type: 'image/' + extend,
+                            }))
+                        );
+                        
                         try {
                           const expoUrlImage = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/image';
                           await axios.post(expoUrlImage, formData, {
@@ -177,6 +180,7 @@ export default function UpLoadEntregador({navigation}){
                               'Content-Type': 'multipart/form-data',
                             },
                           });
+                          console.log(`arquivo enviado: ${filename}`)
                         } catch (error) {
                           console.error(`Erro ao enviar o arquivo ${filename}:`, error);
                         }
@@ -184,6 +188,7 @@ export default function UpLoadEntregador({navigation}){
                     try{
                         const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/registerImage';
                         const result = await axios.post(expoUrl)
+                        console.log(result.body)
                         try{
                             const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/uploadBucker';
                             const result = await axios.post(expoUrl)

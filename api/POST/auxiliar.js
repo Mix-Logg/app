@@ -154,7 +154,7 @@ router.post('/registerImage', async (req, res) => {
         connection.execute(sqlInsertDoc,parametros, 
             async function (err, results) {
                 if(err === null){
-                    return res.status(200).send({
+                    return res.status(200).body({
                         error: false,
                         message: 'successfully',
                     });
@@ -182,9 +182,8 @@ router.post('/uploadBucker', async (req, res) => {
         }
         console.log('Diretorio enviado com sucesso. Informações:', data);
     });
-    fss.readdir(diretorio, (err, files) => {
+    fss.readdir(`../../uploads/auxiliar/${numberId}`, (err, files) => {
         console.log('entrou no read: ', files)
-        
         if (err) {
           console.log('Erro ao ler diretório local:', err);
           return res(500);
@@ -216,7 +215,7 @@ router.post('/uploadBucker', async (req, res) => {
           });
         });
     })
-
+    
     // setTimeout(() => {
     //     let direExist = deleteDiretorio(diretorio)
     //     if(direExist === true){
