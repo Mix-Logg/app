@@ -240,12 +240,13 @@ export default function UpLoadDocCar({navigation}){
         (infoCadastroCar === 'juridicoEu' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null) ||
         (infoCadastroCar === 'juridicoOutra' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null)
         ){     
-            const expoUrl =  'clownfish-app-nc7ss.ondigitalocean.app/motorista/register';
-            
+          
+            const expoUrl =  'https://clownfish-app-nc7ss.ondigitalocean.app/motorista/register';
             const res  = await axios.post(expoUrl, newParams)
+
             const imgDocCar = res.data.data.docCar;
             const imgDocFisica = res.data.data.doc;
-            
+
             async function uploadFile(filename, valor,chave) {
                     const extend = filename.split('.')[1];
                     const formData = new FormData();
@@ -256,13 +257,14 @@ export default function UpLoadDocCar({navigation}){
                     })));
                     
                     try {
-                      const expoUrl = 'clownfish-app-nc7ss.ondigitalocean.app/motorista/image';
+                      const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/motorista/image';
                       await axios.post(expoUrl, formData, {
                         headers: {
                           Accept: 'application/json',
                           'Content-Type': 'multipart/form-data',
                         },
                       });
+                      console.log('img enviada')
                     } catch (error) {
                       console.error(`Erro ao enviar o arquivo ${filename}:`, error);
                     }
@@ -293,10 +295,10 @@ export default function UpLoadDocCar({navigation}){
                     }
 
                     try{
-                        const expoUrl = 'clownfish-app-nc7ss.ondigitalocean.app/motorista/registerImage';
+                        const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/motorista/registerImage';
                         await axios.post(expoUrl,{id:res.data.data.id})
                         try{
-                            const expoUrl = 'clownfish-app-nc7ss.ondigitalocean.app/motorista/uploadBucker';
+                            const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/motorista/uploadBucker';
                             await axios.post(expoUrl)
                             navigation.navigate('RegistrationStuation');
                             setLoading(false)

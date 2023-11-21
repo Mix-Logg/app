@@ -156,8 +156,8 @@ router.post('/register', async (req, res) => {
 router.post('/registerImage', async (req, res) => {
     // console.log(req.body)
     try {
-        const pasta    = 'uploads/motorista/' + numberId
-        const pastaCar = 'uploads/motorista/' + numberId + '/carro';
+        const pasta    = '/workspace/uploads/motorista/' + numberId
+        const pastaCar = '/workspace/uploads/motorista/' + numberId + '/carro';
         await fs.access(pasta, fs.constants.F_OK);
         const arquivos = await fs.readdir(pasta);
         let cnhImage = null; 
@@ -179,7 +179,8 @@ router.post('/registerImage', async (req, res) => {
         }
         const sqlInsertDoc ='INSERT INTO imgdocfisica (sou, idSou, cnh, endereco, cpf, selfie) VALUES (?, ?, ? ,?, ?, ?)';
         const parametros = ['motorista', numberId, pasta+'/'+cnhImage, pasta+'/'+addressImage, pasta+'/'+cpfImage, pasta+'/'+selfieImage];
-        connection.execute(sqlInsertDoc,parametros, 
+        setTimeout(() => {
+            connection.execute(sqlInsertDoc,parametros, 
             async function (err, results) {
                 let antt = null;
                 let clv = null;
@@ -222,9 +223,8 @@ router.post('/registerImage', async (req, res) => {
                         }
                     })
                 }
-            }
-        )
-        
+            })
+        }, 5000);
     } catch (err) {
         console.error('Erro ao verificar a pasta:', err);
     }
