@@ -154,7 +154,7 @@ router.post('/registerImage', async (req, res) => {
         connection.execute(sqlInsertDoc,parametros, 
             async function (err, results) {
                 if(err === null){
-                    return res.status(200).body({
+                    return res.status(200).json({
                         error: false,
                         message: 'successfully',
                     });
