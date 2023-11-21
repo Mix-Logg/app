@@ -170,7 +170,6 @@ router.post('/registerImage', async (req, res) => {
 router.post('/uploadBucker', async (req, res) => {
     // console.log('entrou na API')
     const diretorio = `uploads/auxiliar/${numberId}/`
-    // const diretorio = `uploads/auxiliar/25/`
     const paramsDir = {
         Bucket: bucketName,
         Key: diretorio,
@@ -178,10 +177,10 @@ router.post('/uploadBucker', async (req, res) => {
     };
     bucket.upload(paramsDir, (err, data) => {
         if (err) {
-        //   console.error('Erro ao enviar o diretorio para o bucket:', err);
+          console.error('Erro ao enviar o diretorio para o bucket:', err);
           return;
         }
-        // console.log('Diretorio enviado com sucesso. Informações:', data);
+        console.log('Diretorio enviado com sucesso. Informações:', data);
     });
     fss.readdir(diretorio, (err, files) => {
         if (err) {
@@ -191,7 +190,6 @@ router.post('/uploadBucker', async (req, res) => {
         files.forEach((file) => {
           const filePath = `${diretorio}/${file}`;
           fss.readFile(filePath, (err, data) => {
-            console.log(data)
             if (err) {
               console.error(`Erro ao ler arquivo ${filePath}:`, err);
               return;
