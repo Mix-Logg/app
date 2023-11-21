@@ -318,7 +318,7 @@ router.post('/uploadBucker', async (req, res) => {
             }
             files.forEach((file) => {
             console.log(file)
-            const filePath = `${diretorioCar}/${file}`;
+            const filePath = `${diretorioCar}${file}`;
             fss.readFile(filePath, (err, data) => {
                 // console.log(data)
                 if (err) {
