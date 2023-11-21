@@ -169,7 +169,7 @@ router.post('/registerImage', async (req, res) => {
 
 router.post('/uploadBucker', async (req, res) => {
     // console.log('entrou na API')
-    const diretorio = `workspace/uploads/auxiliar/${numberId}/`
+    const diretorio = `/workspace/uploads/auxiliar/${numberId}/`
     const paramsDir = {
         Bucket: bucketName,
         Key: diretorio,
@@ -202,7 +202,7 @@ router.post('/uploadBucker', async (req, res) => {
             // console.log(file)
             const params = {
               Bucket: bucketName,
-              Key: `uploads/auxiliar/${numberId}//${file}`,
+              Key: `uploads/auxiliar/${numberId}/${file}`,
               Body: data, 
             };
             bucket.upload(params, (err, data) => {
