@@ -150,6 +150,8 @@ export default function UpLoadEntregador({navigation}){
                 // ENVIAR PRA API
                 setLoading(true)
                 const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/register';
+                const servidorUrl = 'http://192.168.0.22:8081/auxiliar/uploadBucker'
+
                 console.log(newParam)
                 try{
                     const response = await axios.post(expoUrl,newParam)
@@ -187,10 +189,14 @@ export default function UpLoadEntregador({navigation}){
                     }
                     try{
                         const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/registerImage';
+                        const servidorUrl = 'http://192.168.0.22:8081/auxiliar/uploadBucker'
+
                         const result = await axios.post(expoUrl)
                         console.log(result.body)
                         try{
                             const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/uploadBucker';
+                            const servidorUrl = 'http://192.168.0.22:8081/auxiliar/uploadBucker'
+                            
                             const result = await axios.post(expoUrl)
                             console.log(result)
                             if(result.status == 200){
