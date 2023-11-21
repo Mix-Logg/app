@@ -148,7 +148,7 @@ export default function UpLoadEntregador({navigation}){
                 navigation.navigate('RegisterCar',newParam)
             }else if(route.params.sou === 'auxiliar'){
                 // ENVIAR PRA API
-                // setLoading(true)
+                setLoading(true)
                 const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/register';
                 const servidorUrl = 'http://192.168.0.22:8081/auxiliar/register'
 

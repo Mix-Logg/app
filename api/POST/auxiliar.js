@@ -216,16 +216,14 @@ router.post('/uploadBucker', async (req, res) => {
             });
           });
         });
-    })}, 5000);
         let direExist = deleteDiretorio(diretorio)
         if(direExist === true){
             res.send(200)
         }else{
             console.log('?')
         }
-  
+    })}, 5000);
 
-   
 })
 
 router.get('/testbucket', async (req,res) => {
