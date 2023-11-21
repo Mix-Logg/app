@@ -156,6 +156,7 @@ router.post('/register', async (req, res) => {
 router.post('/registerImage', async (req, res) => {
     // console.log(req.body)
     try {
+        setTimeout(() => {
         const pasta    = '/workspace/uploads/motorista/' + numberId
         const pastaCar = '/workspace/uploads/motorista/' + numberId + '/carro';
         await fs.access(pasta, fs.constants.F_OK);
@@ -179,7 +180,7 @@ router.post('/registerImage', async (req, res) => {
         }
         const sqlInsertDoc ='INSERT INTO imgdocfisica (sou, idSou, cnh, endereco, cpf, selfie) VALUES (?, ?, ? ,?, ?, ?)';
         const parametros = ['motorista', numberId, pasta+'/'+cnhImage, pasta+'/'+addressImage, pasta+'/'+cpfImage, pasta+'/'+selfieImage];
-        setTimeout(() => {
+        
             connection.execute(sqlInsertDoc,parametros, 
             async function (err, results) {
                 let antt = null;
