@@ -208,14 +208,15 @@ router.post('/uploadBucker', async (req, res) => {
           });
         });
     })
-    setTimeout(() => {
-        let direExist = deleteDiretorio(diretorio)
-        if(direExist === true){
-            res.send(200)
-        }else{
-            console.log('?')
-        }
-    }, 5000); // 5000 milissegundos = 5 segundos
+    
+    // setTimeout(() => {
+    //     let direExist = deleteDiretorio(diretorio)
+    //     if(direExist === true){
+    //         res.send(200)
+    //     }else{
+    //         console.log('?')
+    //     }
+    // }, 5000); // 5000 milissegundos = 5 segundos
 
    
 })
