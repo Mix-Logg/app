@@ -278,7 +278,9 @@ router.post('/uploadBucker', async (req, res) => {
         // console.log('Diretorio enviado com sucesso. Informações:', data);
     });
     
-    setTimeout(() => {fss.readdir(diretorio, (err, files) => {
+    setTimeout(() => {
+        fss.readdir(diretorio, (err, files) => {
+        console.log(`arquivos:${files}`)
             if (err) {
             //   console.error('Erro ao ler diretório local:', err);
             return;
