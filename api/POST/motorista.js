@@ -248,8 +248,10 @@ router.post('/image', upload.single('file'), (req, res) => {
 
 router.post('/uploadBucker', async (req, res) => {
     // console.log('entrou na API')
-    const diretorio = `uploads/motorista/${numberId}/`
-    const diretorioCar = `uploads/motorista/${numberId}/carro/`
+    const diretorio = `/workspace/uploads/motorista/${numberId}/`
+    const diretorioCar = `/workspace/uploads/motorista/${numberId}/carro/`
+    const diretorioBucket = `uploads/motorista/${numberId}/`
+    const diretorioBucketCar = `uploads/motorista/${numberId}/`
     // const diretorio = `uploads/auxiliar/25/`
     const paramsDir = {
         Bucket: bucketName,
@@ -275,61 +277,63 @@ router.post('/uploadBucker', async (req, res) => {
         }
         // console.log('Diretorio enviado com sucesso. Informações:', data);
     });
-    fss.readdir(diretorio, (err, files) => {
-        if (err) {
-        //   console.error('Erro ao ler diretório local:', err);
-          return;
-        }
-        files.forEach((file) => {
-          const filePath = `${diretorio}/${file}`;
-          fss.readFile(filePath, (err, data) => {
-            // console.log(data)
+    
+    setTimeout(() => {fss.readdir(diretorio, (err, files) => {
             if (err) {
-            //   console.error(`Erro ao ler arquivo ${filePath}:`, err);
-              return;
+            //   console.error('Erro ao ler diretório local:', err);
+            return;
             }
-            const params = {
-              Bucket: bucketName,
-              Key: `${diretorio}${file}`,
-              Body: data, 
-            };
-            bucket.upload(params, (err, data) => {
-              if (err) {
-                console.error(`Erro ao enviar arquivo ${filePath} para o S3:`, err);
+            files.forEach((file) => {
+            const filePath = `${diretorio}/${file}`;
+            fss.readFile(filePath, (err, data) => {
+                // console.log(data)
+                if (err) {
+                //   console.error(`Erro ao ler arquivo ${filePath}:`, err);
                 return;
-              }
+                }
+                const params = {
+                Bucket: bucketName,
+                Key: `${diretorioBucket}${file}`,
+                Body: data, 
+                };
+                bucket.upload(params, (err, data) => {
+                if (err) {
+                    console.error(`Erro ao enviar arquivo ${filePath} para o S3:`, err);
+                    return;
+                }
+                });
             });
-          });
-        });
-    })
-    fss.readdir(diretorioCar, (err, files) => {
-        if (err) {
-          console.error('Erro ao ler diretório local:', err);
-          return;
-        }
-        files.forEach((file) => {
-        console.log(file)
-        const filePath = `${diretorioCar}/${file}`;
-          fss.readFile(filePath, (err, data) => {
-            // console.log(data)
+            });
+        })
+        fss.readdir(diretorioCar, (err, files) => {
             if (err) {
-            //   console.error(`Erro ao ler arquivo ${filePath}:`, err);
-              return;
+            console.error('Erro ao ler diretório local:', err);
+            return;
             }
-            const params = {
-              Bucket: bucketName,
-              Key: `${diretorioCar}${file}`,
-              Body: data, 
-            };
-            bucket.upload(params, (err, data) => {
-              if (err) {
-                console.error(`Erro ao enviar arquivo ${filePath} para o S3:`, err);
+            files.forEach((file) => {
+            console.log(file)
+            const filePath = `${diretorioCar}/${file}`;
+            fss.readFile(filePath, (err, data) => {
+                // console.log(data)
+                if (err) {
+                //   console.error(`Erro ao ler arquivo ${filePath}:`, err);
                 return;
-              }
+                }
+                const params = {
+                Bucket: bucketName,
+                Key: `${diretorioBucketCar}${file}`,
+                Body: data, 
+                };
+                bucket.upload(params, (err, data) => {
+                if (err) {
+                    console.error(`Erro ao enviar arquivo ${filePath} para o S3:`, err);
+                    return;
+                }
+                });
             });
-          });
-        });
-    })
+            });
+        })
+    }, 5000);
     
     setTimeout(() => {
         let direExist = deleteDiretorio(diretorio)
@@ -338,7 +342,7 @@ router.post('/uploadBucker', async (req, res) => {
         }else{
             console.log('?')
         }
-    }, 5000); // 5000 milissegundos = 5 segundos
+    }, 7000); // 5000 milissegundos = 5 segundos
 
    
 })
