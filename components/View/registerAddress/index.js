@@ -304,7 +304,7 @@ export default function RegisterAddress({navigation}){
                           phone: route.params.phone,
                           sou: route.params.sou,
                           address: {
-                            cep: cep,
+                            cep: cepNumber,
                             logradouro: logradouro,
                             numero: numero,
                             complemento: complemento,

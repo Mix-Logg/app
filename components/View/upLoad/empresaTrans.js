@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Pressable, Modal, ActivityIndicator  } from "react-native"
+import { View, Text, StyleSheet, Image, Pressable, Modal, ActivityIndicator, TextInput  } from "react-native"
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import  { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
@@ -15,39 +15,65 @@ export default function UpLoadEntregador({navigation}){
     const [modalBtnVisible, setModalBtnVisible] = useState(false);
     const [contDocument, setCountDocument] = useState(0)
     
-    const [cpfVisible , setCpfVisible ] = useState(false)
+    const [inscricaoEstadualVisible , setInscricaoEstadualVisible ] = useState(false)
     const [enderecoVisible , setenderecoVisible ] = useState(false)
     const [cnpjVisible , setCnpjVisible] = useState(false)
     
-    const [cpfImage, setCpfImage] = useState(null);
+    const [inscricaoEstadualImage, setInscricaoEstadualImage] = useState(null);
     const [EnderecoImage, setEnderecoImage] = useState(null);
     const [cnpjImage, setCnpjImage] = useState(null);
+    const [ramo, setRamo] = useState('');
+
+    const [api, setApi] = useState('');
 
     const newParam = {
         ...route.params,
+        ramo:ramo,
         imgDoc:{
             addressImage: EnderecoImage,
-            cnpjmage: cnpjImage,
-            cpfImage:cpfImage
+            cnpjimage: cnpjImage,
+            inscricaoEstadual:inscricaoEstadualImage,
         }
     };
 
-   
-
+    async function uploadFile(filename, valor,chave) {
+        const extend = filename.split('.')[1];
+        const formData = new FormData();
+        formData.append('file', JSON.parse(JSON.stringify({
+          name: chave+'.'+extend,
+          uri: valor,
+          type: 'image/' + extend,
+        })));
+        
+        try {
+          let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/empresa/image';
+          let urlLocal = 'http://192.168.0.22:8081/empresa/image'
+          await axios.post(urlLocal, formData, {
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+        } catch (error) {
+          console.error(`Erro ao enviar o arquivo ${filename}:`, error);
+        }
+    }
+    
     useEffect(() => {
         // Função que verifica o estado de cada variável e atualiza o contador
         const updateCount = () => {    
           let newCount = 0
-          if (cpfImage != null) newCount++;
+          if (inscricaoEstadualImage != null) newCount++;
           if (EnderecoImage != null) newCount++;
           if (cnpjImage != null) newCount++;
           setCountDocument(newCount);
         };
         // Chama a função de atualização sempre que alguma variável muda de estado
         updateCount();
-      }, [cpfImage, EnderecoImage, cnpjImage]);
+      }, [inscricaoEstadualImage, EnderecoImage, cnpjImage]);
     
     const SelectOpition = async (escolha) =>{        
+        
         if(escolha === 'galeria'){
             let result = await ImagePicker.launchImageLibraryAsync({
                 allowsEditing: true,
@@ -56,8 +82,8 @@ export default function UpLoadEntregador({navigation}){
                 saveToPhotos:true
             });
                         
-            if(cpfVisible){
-                setCpfImage(result.assets[0].uri)
+            if(inscricaoEstadualVisible){
+                setInscricaoEstadualImage(result.assets[0].uri)
             }else if(enderecoVisible){
                 setEnderecoImage(result.assets[0].uri)
             }else if(cnpjVisible){
@@ -71,8 +97,8 @@ export default function UpLoadEntregador({navigation}){
             };
             const result = await ImagePicker.launchCameraAsync(options);
             if (!result.cancelled) {
-                if(cpfVisible){
-                    setCpfImage(result.uri)
+                if(inscricaoEstadualVisible){
+                    setInscricaoEstadualImage(result.uri)
 
                 }else if(enderecoVisible){
                     setEnderecoImage(result.uri)
@@ -86,8 +112,8 @@ export default function UpLoadEntregador({navigation}){
             try {
                 const result = await DocumentPicker.getDocumentAsync({});
                 // console.log(result.assets[0].uri)
-                if(cpfVisible){
-                setCpfImage(result.assets[0].uri)
+                if(inscricaoEstadualVisible){
+                setInscricaoEstadualImage(result.assets[0].uri)
                 }else if(enderecoVisible){
                     setEnderecoImage(result.assets[0].uri)
                 }else if(cnpjVisible){
@@ -98,31 +124,32 @@ export default function UpLoadEntregador({navigation}){
                 console.error('Erro ao selecionar o documento:', error);
             }
         }
+        
         openModal()
     }
 
     const openModal = (option = '') => {
         setenderecoVisible(false)
-        setCpfVisible(false)
+        setInscricaoEstadualVisible(false)
         setCnpjVisible(false)
         if(option === "cnpj"){
             setenderecoVisible(false)
-            setCpfVisible(false)
+            setInscricaoEstadualVisible(false)
             setCnpjVisible(true)
 
             return setIsVisible(!isVisible)
         }
         else if(option === "endereco"){
-            setCpfVisible(false)
+            setInscricaoEstadualVisible(false)
             setCnpjVisible(false)
             setenderecoVisible(true)
 
             return setIsVisible(!isVisible)
         }
-        else if(option === "cpf"){
+        else if(option === "inscricaoEstadual"){
             setCnpjVisible(false)
             setenderecoVisible(false)
-            setCpfVisible(true)
+            setInscricaoEstadualVisible(true)
 
             return setIsVisible(!isVisible)
         }
@@ -134,86 +161,49 @@ export default function UpLoadEntregador({navigation}){
     }
 
     const navegacao = async () => {
-        if(cpfImage && EnderecoImage && cnpjImage){
-            if(route.params.sou === 'motorista'){
-                navigation.navigate('RegisterCar',newParam)
-            }else if(route.params.sou === 'auxiliar'){
-                // ENVIAR PRA API
-                setLoading(true)
-                const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/register';
-                const servidorUrl = 'http://192.168.0.22:8081/auxiliar/register'
-
-                // console.log(newParam)
+        if(inscricaoEstadualImage && EnderecoImage && cnpjImage && ramo.length > 2){
+            // console.log(newParam)
+            setApi('Avaliando os dados.')
+            try{
+                setApi('Inserindo os dados.')
+                let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/empresa/register'
+                let urlLocal = 'http://192.168.0.22:8081/empresa/register'
+                let response = await axios.post(urlLocal, newParam) 
+                const imgDoc = response.data.doc;
+                for (const chave in imgDoc) {
+                    const valor = imgDoc[chave];
+                    if (valor != null) {
+                        const filename = valor.substring(valor.lastIndexOf('/') + 1);
+                        uploadFile(filename, valor, chave);
+                        }
+                }
                 try{
-                    const response = await axios.post(expoUrl,newParam)
-                    const imgDocFisica = response.data.doc;
-                    for (const chave in imgDocFisica) {
-                        const valor = imgDocFisica[chave]
-                        if (valor != null) {
-                          const filename = valor.substring(valor.lastIndexOf('/') + 1);
-                          uploadFile(filename, valor, chave);
-                        }
-                    }
-                    async function uploadFile(filename, valor,chave) {
-                        const extend = filename.split('.')[1];
-                        
-                        const formData = new FormData();
-                            formData.append('file', JSON.parse(JSON.stringify({
-                            name: chave+'.'+extend,
-                            uri: valor,
-                            type: 'image/' + extend,
-                            }))
-                        );
-                        
-                        try {
-                          const expoUrlImage = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/image';
-                          const servidorUrl = 'http://192.168.0.22:8081/auxiliar/image'
-                          await axios.post(expoUrlImage, formData, {
-                            headers: {
-                              Accept: 'application/json',
-                              'Content-Type': 'multipart/form-data',
-                            },
-                          });
-                          console.log(`arquivo enviado: ${filename}`)
-                        } catch (error) {
-                          console.error(`Erro ao enviar o arquivo ${filename}:`, error);
-                        }
-                    }
+                    setApi('Avaliando as imagens.')
+                    let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/empresa/registerImage'
+                    let urlLocal = 'http://192.168.0.22:8081/empresa/registerImage'
+                    await axios.post(urlLocal)
                     try{
-                        const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/registerImage';
-                        const servidorUrl = 'http://192.168.0.22:8081/auxiliar/registerImage'
-
-                        const result = await axios.post(expoUrl)
-                        console.log(result.body)
-                        try{
-                            const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/uploadBucker';
-                            const servidorUrl = 'http://192.168.0.22:8081/auxiliar/uploadBucker'
-                            
-                            const result = await axios.post(expoUrl)
-                            console.log(result)
-                            if(result.status == 200){
-                                navigation.navigate('RegistrationStuation');
-                                setLoading(false)
-                            }
-                        }catch(err){
-                            console.log('erro ao enviar a pasta: ', err)
-                        }
+                        let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/empresa/uploadBucker'
+                        let urlLocal = 'http://192.168.0.22:8081/empresa/uploadBucker'
+                        let response = await axios.post(urlLocal)
+                        console.log(response.status)
                     }catch(err){
-                        console.error('Erro na requisição:', err);
-                        setLoading(false)
+                        console.log('erro ao enviar pro bucket', err)
                     }
                 }catch(err){
-                    console.log('não chegou erro:', err.response.data)
-                    setLoading(false)
+                    console.log('erro ao registrar a imagem: ',err)
                 }
-                return setLoading(false)
+            }catch(err){
+                console.log('erro na inserção de uma nova empresa na api: ', err)
             }
         }
     }
 
     return(
     <>
-         {loading === false ? <KeyboardAwareScrollView>
+        {loading === false ? 
+         
+        <KeyboardAwareScrollView>
             <View style={styles.container}>
                 <Text style={styles.h1}>Foto</Text>
                 <Text style={styles.txtListen}>
@@ -247,17 +237,17 @@ export default function UpLoadEntregador({navigation}){
                     </Pressable>
 
                     <Pressable
-                        onPress={()=>{openModal('cpf')}}
-                        style={[styles.btn,{ borderColor: cpfImage != null ? '#28a745' : '#FF5F00' }]}
+                        onPress={()=>{openModal('inscricaoEstadual')}}
+                        style={[styles.btn,{ borderColor: inscricaoEstadualImage != null ? '#28a745' : '#FF5F00' }]}
                     >
                         <Image
-                            style={[styles.icon, {tintColor: cpfImage != null ? '#28a745' : '#FF5F00'} ]}
+                            style={[styles.icon, {tintColor: inscricaoEstadualImage != null ? '#28a745' : '#FF5F00'} ]}
                             source={require('../../../src/main/res/drawable-mdpi/assets/icons/upload.png')}
                         />
-                        <Text style={[styles.btnTxt, {color:cpfImage != null ? '#28a745' : '#FF5F00' }]}>Inscrição Estadual</Text>
-                        {cpfImage != null ?
+                        <Text style={[styles.btnTxt, {color:inscricaoEstadualImage != null ? '#28a745' : '#FF5F00' }]}>Inscrição Estadual</Text>
+                        {inscricaoEstadualImage != null ?
                             <Image
-                            style={[styles.icon, {width:30,height:30 ,tintColor: cpfImage != null ? '#28a745' : '#FF5F00'} ]}
+                            style={[styles.icon, {width:30,height:30 ,tintColor: inscricaoEstadualImage != null ? '#28a745' : '#FF5F00'} ]}
                             source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
                         /> : <View></View> }
                     </Pressable>
@@ -279,7 +269,33 @@ export default function UpLoadEntregador({navigation}){
                         /> : <View></View> }
                     </Pressable>
                 
+                    <Pressable style={{
+                        borderColor: ramo.length > 2  ? '#28a745':'#FF5F00',
+                        width:'65%',
+                        height:65,
+                        borderWidth: 2,
+                        borderRadius:15,
+                        marginTop:20
+                    }}>
+                        <Text style={{
+                            position:'absolute',
+                            marginLeft:10,
+                            top:5,
+                            color: ramo.length > 2  ? '#28a745':'#FF5F00',
+                            fontFamily:'Roboto_500Medium'
+                        }}>Ramo</Text>
+                        <TextInput 
+                        style={{
+                            top:28,
+                            left:15,
+                            fontFamily:'Roboto_500Medium',
+                        }}
+                        placeholder="Exemplo: Restaurante"
+                        onChangeText={(value) => setRamo(value)}
+                        >
 
+                        </TextInput>
+                    </Pressable>      
                 </View>
                 <Modal visible={isVisible} animationType='slide' transparent={true}>
                     {modalBtnVisible  ?  
@@ -361,14 +377,14 @@ export default function UpLoadEntregador({navigation}){
                                     Se for tirar foto não se esqueça de abrir o documento assim como o exemplo abaixo: 
                                 </Text> 
                                 <Image
-                                    style={styles.imgExemplo}
+                                    style={[styles.imgExemplo,{width:cnpjVisible? 315: 280 }]}
                                     source={
-                                        cpfVisible
-                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/cpfRg.png')
+                                          inscricaoEstadualVisible
+                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/inscricaoEstadual.png')
                                           : enderecoVisible
                                           ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/compravanteResidencia.png')
                                           : cnpjVisible
-                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/cnhFisica.png')
+                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/cnpjExemplo.png')
                                           : null // Defina um valor padrão ou nulo, se necessário
                                       }
                                 />
@@ -386,10 +402,10 @@ export default function UpLoadEntregador({navigation}){
                 </Modal>
                 <View style={styles.containerInfo}>
                     <Pressable 
-                        style={[styles.btnContinue,{backgroundColor:cpfImage && EnderecoImage && cnpjImage ? '#FF5F00' : ''}]}
+                        style={[styles.btnContinue,{backgroundColor:inscricaoEstadualImage && EnderecoImage && cnpjImage && ramo.length > 2 ? '#FF5F00' : 'transparent'}]}
                         onPress={navegacao}
                     >
-                        <Text style={[styles.btnTxt,{color: cpfImage && EnderecoImage && cnpjImage ? 'white' : '#FF5F00'}]}>Continuar</Text>
+                        <Text style={[styles.btnTxt,{color: inscricaoEstadualImage && EnderecoImage && cnpjImage && ramo.length > 2 ? 'white' : '#FF5F00'}]}>Continuar</Text>
                     </Pressable>
                 </View>
             </View>
@@ -494,7 +510,7 @@ const styles = StyleSheet.create({
     },
     imgExemplo:{
         marginTop:15,
-        width:250,
+        width:280,
         height:355
     },
     containerIcon:{
