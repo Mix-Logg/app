@@ -193,8 +193,11 @@ export default function UpLoadEntregador({navigation}){
                         let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/empresa/uploadBucker'
                         let urlLocal = 'http://192.168.0.22:8081/empresa/uploadBucker'
                         let response = await axios.post(urlProducao)
-                        console.log(response.status)
-                        setLoading(false)
+                        if(response.status === 200){
+                            navigation.navigate('RegistrationStuation');
+                        }else{
+                            setApi('Algo deu errado, tente mais tarde!')
+                        }
                     }catch(err){
                         console.log('erro ao enviar pro bucket', err)
                     }
@@ -227,12 +230,16 @@ export default function UpLoadEntregador({navigation}){
                     let urlLocal = 'http://192.168.0.22:8081/transportadora/registerImage'
                     await axios.post(urlProducao)
                     try{
-                        setApi('Inserindo as imagens.')
+                        setApi('Inserindo as imagens em nosso banco de talentos.')
                         let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/transportadora/uploadBucker'
                         let urlLocal = 'http://192.168.0.22:8081/transportadora/uploadBucker'
                         let response = await axios.post(urlProducao)
                         setLoading(false)
-                        console.log(response.status)
+                        if(response.status === 200){
+                            navigation.navigate('RegistrationStuation');
+                        }else{
+                            setApi('Algo deu errado, tente mais tarde!')
+                        }
                     }catch(err){
                         console.log('erro ao enviar pro bucket', err)
                     }
