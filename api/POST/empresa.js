@@ -122,7 +122,7 @@ router.post('/registerImage', async (req, res) => {
             console.log(arquivos)
             for (const arquivo in arquivos) {
                 console.log(arquivos)
-                if (arquivos[arquivo].startsWith('cnpjimage')) {
+                if (arquivos[arquivo].startsWith('cnpjImage')) {
                     cnpj = arquivos[arquivo];
                 } else if (arquivos[arquivo].startsWith('addressImage')) {
                     comprovanteResidencia = arquivos[arquivo];

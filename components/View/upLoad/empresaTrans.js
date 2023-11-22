@@ -46,8 +46,13 @@ export default function UpLoadEntregador({navigation}){
         })));
         
         try {
-          let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/empresa/image';
-          let urlLocal = 'http://192.168.0.22:8081/empresa/image'
+          let urlProducao;
+          if(route.params.sou === 'empresa'){
+            urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/empresa/image';
+            }else{
+            urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/transportadora/image';
+            }
+            let urlLocal = 'http://192.168.0.22:8081/empresa/image'
           await axios.post(urlProducao, formData, {
             headers: {
               Accept: 'application/json',
@@ -163,6 +168,7 @@ export default function UpLoadEntregador({navigation}){
     const navegacao = async () => {
         if(route.params.sou === 'empresa' && inscricaoEstadualImage && EnderecoImage && cnpjImage && ramo.length > 2){
             // console.log(newParam)
+            setLoading(true)
             setApi('Avaliando os dados.')
             try{
                 setApi('Inserindo os dados.')
@@ -188,6 +194,7 @@ export default function UpLoadEntregador({navigation}){
                         let urlLocal = 'http://192.168.0.22:8081/empresa/uploadBucker'
                         let response = await axios.post(urlProducao)
                         console.log(response.status)
+                        setLoading(false)
                     }catch(err){
                         console.log('erro ao enviar pro bucket', err)
                     }
@@ -199,7 +206,42 @@ export default function UpLoadEntregador({navigation}){
             }
         }
         else if(route.params.sou === 'transportadora' && inscricaoEstadualImage && EnderecoImage && cnpjImage){
-            console.log('pronto pra ir pra API')
+            setLoading(true)
+            setApi('Avaliando os dados.')
+            try{
+                setApi('Inserindo os dados.')
+                let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/transportadora/register'
+                let urlLocal = 'http://192.168.0.22:8081/transportadora/register'
+                let response = await axios.post(urlProducao, newParam) 
+                const imgDoc = response.data.doc;
+                for (const chave in imgDoc) {
+                    const valor = imgDoc[chave];
+                    if (valor != null) {
+                        const filename = valor.substring(valor.lastIndexOf('/') + 1);
+                        uploadFile(filename, valor, chave);
+                        }
+                }
+                try{
+                    setApi('Avaliando as imagens.')
+                    let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/transportadora/registerImage'
+                    let urlLocal = 'http://192.168.0.22:8081/transportadora/registerImage'
+                    await axios.post(urlProducao)
+                    try{
+                        setApi('Inserindo as imagens.')
+                        let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/transportadora/uploadBucker'
+                        let urlLocal = 'http://192.168.0.22:8081/transportadora/uploadBucker'
+                        let response = await axios.post(urlProducao)
+                        setLoading(false)
+                        console.log(response.status)
+                    }catch(err){
+                        console.log('erro ao enviar pro bucket', err)
+                    }
+                }catch(err){
+                    console.log('erro ao registrar a imagem: ',err)
+                }
+            }catch(err){
+                console.log('erro na inserção de uma nova transportadora na api: ', err)
+            }
         }
     }
 
@@ -421,6 +463,7 @@ export default function UpLoadEntregador({navigation}){
                     alignItems: 'center',
                 }}>
                     <ActivityIndicator size="large" color="#FF5F00" />
+                    <Text>{api}</Text>
             </View>
         }
 
