@@ -20,7 +20,7 @@ const bucketName = 'miximg';
 /////////////////////////////////////////
 const storage = multer.diskStorage({
     destination: async function (req, file, cb) {
-        cb(null, 'uploads/auxiliar/'+ numberId); 
+        cb(null, 'uploads/transportadora/'+ numberId); 
     },
     filename: function (req, file, cb) {
       const extendFile =  file.originalname.split('.')[1];
@@ -39,7 +39,7 @@ router.post('/register', async (req, res) => {
     const dataHora = moment().tz('America/Sao_Paulo').format('YYYY-MM-DD HH:mm:ss');
     const email   = req.body.email;
     const celular = req.body.phone;
-    const sqlInsertMotorista = 'INSERT INTO auxiliar (email, celular, create_at) VALUES (?, ?, ?)';
+    const sqlInsertMotorista = 'INSERT INTO transportadora (email, celular, create_at) VALUES (?, ?, ?)';
     const parametros = [email, celular, dataHora];
 
     // 2 insert
@@ -58,7 +58,7 @@ router.post('/register', async (req, res) => {
           if(err  === null){
             souId = results.insertId;
             console.log('Success 1:', souId)
-            const parametrosEndereco = ['auxiliar', souId, cep, logradouro, numero, complemento, bairro, cidade, uf];
+            const parametrosEndereco = ['transportadora', souId, cep, logradouro, numero, complemento, bairro, cidade, uf];
             connection.execute(sqlInsertAuxiliarEndereco,parametrosEndereco,
                 async function (err, results) {
                     if(err  === null){
@@ -80,7 +80,7 @@ router.post('/register', async (req, res) => {
                         //         id: numberId
                         //     });
                         // });
-                        fss.mkdir('uploads/auxiliar/'+souId, (err) => {
+                        fss.mkdir('uploads/transportadora/'+souId, (err) => {
                             if (err) {
                                 console.log('não crio a pasta LOCAL:', err)
                             } else {
@@ -130,51 +130,57 @@ router.post('/image', upload.single('file'), (req, res) => {
 router.post('/registerImage', async (req, res) => {
     console.log(req.body)
     try {
-        const pasta    = 'uploads/auxiliar/' + numberId
-        await fs.access(pasta, fs.constants.F_OK);
-        const arquivos = await fs.readdir(pasta);
-        let cnhImage = null; 
-        let addressImage = null;
-        let cpfImage = null; 
-        let selfieImage = null; 
-        for (const arquivo in arquivos) {
-                if (arquivos[arquivo].startsWith('cnhImage')) {
-                    cnhImage = arquivos[arquivo];
-                } else if (arquivos[arquivo].startsWith('addressImage')) {
-                    addressImage = arquivos[arquivo];
-                } else if (arquivos[arquivo].startsWith('cpfImage')) {
-                    cpfImage = arquivos[arquivo];
-                } else if (arquivos[arquivo].startsWith('selfieImage')) {
-                    selfieImage = arquivos[arquivo];
-                }
-
-        }
-        const sqlInsertDoc = 'INSERT INTO imgdocfisica (sou, idSou, cnh, endereco, cpf, selfie) VALUES (?, ?, ? ,?, ?, ?)';
-        const parametros = ['auxiliar', numberId, pasta+'/'+cnhImage, pasta+'/'+addressImage, pasta+'/'+cpfImage, pasta+'/'+selfieImage];
-        connection.execute(sqlInsertDoc,parametros, 
-            async function (err, results) {
-                if(err === null){
-                    return res.status(200).json({
-                        error: false,
-                        message: 'successfully',
-                    });
-                }
-            }
-        )
-    } catch (err) {
-        console.error('Erro ao verificar a pasta:', err);
-    }
+      setTimeout(async () => {
+          const pasta    = '/workspace/uploads/transportadora/' + numberId
+          await fs.access(pasta, fs.constants.F_OK);
+          const arquivos = await fs.readdir(pasta);
+          let cnpj = null; 
+          let inscricaoEstadual = null;
+          let comprovanteResidencia = null; 
+          console.log(arquivos)
+          for (const arquivo in arquivos) {
+              console.log(arquivos)
+              if (arquivos[arquivo].startsWith('cnpjimage')) {
+                  cnpj = arquivos[arquivo];
+              } else if (arquivos[arquivo].startsWith('addressImage')) {
+                  comprovanteResidencia = arquivos[arquivo];
+              } else if (arquivos[arquivo].startsWith('inscricaoEstadual')) {
+                  inscricaoEstadual = arquivos[arquivo];
+              }
+          }
+          const sqlInsertDoc = 'INSERT INTO imgdocparceiro (sou, idSou, cnpj, endereco, inscricaoEstadual) VALUES (?, ?, ? ,?, ?)';
+          const parametros = ['transportadora', numberId, pasta+'/'+cnpj, pasta+'/'+comprovanteResidencia, pasta+'/'+inscricaoEstadual];
+          connection.execute(sqlInsertDoc,parametros, 
+              async function (err, results) {
+                  if(err === null){
+                      res.status(200).json({
+                          error: false,
+                          message: 'successfully',
+                      });
+                  }else{
+                      console.log('erro:', err)
+                      res.status(500).json({
+                          error: true,
+                          message: 'error',
+                      });
+                  }
+              }
+          )
+      }, 5000);
+  } catch (err) {
+      console.error('Erro ao verificar a pasta:', err);
+  }
 
 });
 
 router.post('/uploadBucker', async (req, res) => {
     // console.log('entrou na API')
-    const diretorio = `/workspace/uploads/auxiliar/${numberId}/`
-    const diretorioBucket = `uploads/auxiliar/${numberId}/`
+    const diretorio = `/workspace/uploads/transportadora/${numberId}/`
+    const diretorioBucket = `uploads/transportadora/${numberId}/`
     const paramsDir = {
         Bucket: bucketName,
         Key: diretorioBucket,
-        Body: 'uploads/auxiliar/'
+        Body: 'uploads/transportadora/'
     };
     bucket.upload(paramsDir, (err, data) => {
         if (err) {

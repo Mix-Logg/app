@@ -29,9 +29,7 @@ const storage = multer.diskStorage({
     },
 });
 const upload = multer({ storage });
-///////////////////////////////////////////
-
-
+/////////////////////////////////////////
 
 router.post('/register', async (req, res) => {
     console.log('api')

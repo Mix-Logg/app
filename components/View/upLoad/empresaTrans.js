@@ -25,13 +25,13 @@ export default function UpLoadEntregador({navigation}){
     const [ramo, setRamo] = useState('');
 
     const [api, setApi] = useState('');
-
+    console.log(route.params)
     const newParam = {
         ...route.params,
         ramo:ramo,
         imgDoc:{
             addressImage: EnderecoImage,
-            cnpjimage: cnpjImage,
+            cnpjImage: cnpjImage,
             inscricaoEstadual:inscricaoEstadualImage,
         }
     };
@@ -48,7 +48,7 @@ export default function UpLoadEntregador({navigation}){
         try {
           let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/empresa/image';
           let urlLocal = 'http://192.168.0.22:8081/empresa/image'
-          await axios.post(urlLocal, formData, {
+          await axios.post(urlProducao, formData, {
             headers: {
               Accept: 'application/json',
               'Content-Type': 'multipart/form-data',
@@ -161,14 +161,14 @@ export default function UpLoadEntregador({navigation}){
     }
 
     const navegacao = async () => {
-        if(inscricaoEstadualImage && EnderecoImage && cnpjImage && ramo.length > 2){
+        if(route.params.sou === 'empresa' && inscricaoEstadualImage && EnderecoImage && cnpjImage && ramo.length > 2){
             // console.log(newParam)
             setApi('Avaliando os dados.')
             try{
                 setApi('Inserindo os dados.')
                 let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/empresa/register'
                 let urlLocal = 'http://192.168.0.22:8081/empresa/register'
-                let response = await axios.post(urlLocal, newParam) 
+                let response = await axios.post(urlProducao, newParam) 
                 const imgDoc = response.data.doc;
                 for (const chave in imgDoc) {
                     const valor = imgDoc[chave];
@@ -181,12 +181,12 @@ export default function UpLoadEntregador({navigation}){
                     setApi('Avaliando as imagens.')
                     let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/empresa/registerImage'
                     let urlLocal = 'http://192.168.0.22:8081/empresa/registerImage'
-                    await axios.post(urlLocal)
+                    await axios.post(urlProducao)
                     try{
                         setApi('Inserindo as imagens.')
                         let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/empresa/uploadBucker'
                         let urlLocal = 'http://192.168.0.22:8081/empresa/uploadBucker'
-                        let response = await axios.post(urlLocal)
+                        let response = await axios.post(urlProducao)
                         console.log(response.status)
                     }catch(err){
                         console.log('erro ao enviar pro bucket', err)
@@ -197,6 +197,9 @@ export default function UpLoadEntregador({navigation}){
             }catch(err){
                 console.log('erro na inserção de uma nova empresa na api: ', err)
             }
+        }
+        else if(route.params.sou === 'transportadora' && inscricaoEstadualImage && EnderecoImage && cnpjImage){
+            console.log('pronto pra ir pra API')
         }
     }
 
@@ -270,7 +273,7 @@ export default function UpLoadEntregador({navigation}){
                         /> : <View></View> }
                     </Pressable>
                 
-                    <Pressable style={{
+                    {route.params.sou != 'transportadora' ?<Pressable style={{
                         borderColor: ramo.length > 2  ? '#28a745':'#FF5F00',
                         width:'65%',
                         height:65,
@@ -296,7 +299,8 @@ export default function UpLoadEntregador({navigation}){
                         >
 
                         </TextInput>
-                    </Pressable>      
+                    </Pressable> : ''}      
+                
                 </View>
                 <Modal visible={isVisible} animationType='slide' transparent={true}>
                     {modalBtnVisible  ?  
@@ -403,10 +407,10 @@ export default function UpLoadEntregador({navigation}){
                 </Modal>
                 <View style={styles.containerInfo}>
                     <Pressable 
-                        style={[styles.btnContinue,{backgroundColor:inscricaoEstadualImage && EnderecoImage && cnpjImage && ramo.length > 2 ? '#FF5F00' : 'transparent'}]}
+                        style={[styles.btnContinue,{backgroundColor:inscricaoEstadualImage && EnderecoImage && cnpjImage && (route.params.sou === 'transportadora' || ramo.length > 2) ? '#FF5F00' : 'transparent'}]}
                         onPress={navegacao}
                     >
-                        <Text style={[styles.btnTxt,{color: inscricaoEstadualImage && EnderecoImage && cnpjImage && ramo.length > 2 ? 'white' : '#FF5F00'}]}>Continuar</Text>
+                        <Text style={[styles.btnTxt,{color: inscricaoEstadualImage && EnderecoImage && cnpjImage && (route.params.sou === 'transportadora' || ramo.length > 2) ? 'white' : '#FF5F00'}]}>Continuar</Text>
                     </Pressable>
                 </View>
             </View>

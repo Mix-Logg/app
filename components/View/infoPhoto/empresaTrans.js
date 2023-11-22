@@ -45,12 +45,12 @@ export default function InfoPhoto({navigation}){
                     <Text style={styles.label}>Comprovante de Residência</Text>
                 </View>
 
-                <View style={[styles.containerInstrution, {marginTop:15,marginBottom:5}]}>
+                {route.params.sou != 'transportadora' ? <View style={[styles.containerInstrution, {marginTop:15,marginBottom:5}]}>
                     <Image style={styles.iconNumber}
                             source={require('../../../src/main/res/drawable-mdpi/assets/icons/4.png')}
                     />
                     <Text style={styles.label}>Ramo de Atividade</Text>
-                </View>
+                </View>:''}
             </View>
             <View style={styles.containerInfoTwo}>
                 <Text style={styles.txtInfoTwo}>
