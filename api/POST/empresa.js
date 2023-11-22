@@ -114,41 +114,43 @@ router.post('/image', upload.single('file'), (req, res) => {
 
 router.post('/registerImage', async (req, res) => {
     try {
-        const pasta    = 'uploads/empresa/' + numberId
-        await fs.access(pasta, fs.constants.F_OK);
-        const arquivos = await fs.readdir(pasta);
-        let cnpj = null; 
-        let inscricaoEstadual = null;
-        let comprovanteResidencia = null; 
-        console.log(arquivos)
-        res.status(200)
-        for (const arquivo in arquivos) {
-            if (arquivos[arquivo].startsWith('cnpjimage')) {
-                cnpj = arquivos[arquivo];
-            } else if (arquivos[arquivo].startsWith('addressImage')) {
-                comprovanteResidencia = arquivos[arquivo];
-            } else if (arquivos[arquivo].startsWith('inscricaoEstadual')) {
-                inscricaoEstadual = arquivos[arquivo];
-            }
-        }
-        const sqlInsertDoc = 'INSERT INTO imgdocparceiro (sou, idSou, cnpj, endereco, inscricaoEstadual) VALUES (?, ?, ? ,?, ?)';
-        const parametros = ['empresa', numberId, pasta+'/'+cnpj, pasta+'/'+comprovanteResidencia, pasta+'/'+inscricaoEstadual];
-        connection.execute(sqlInsertDoc,parametros, 
-            async function (err, results) {
-                if(err === null){
-                    res.status(200).json({
-                        error: false,
-                        message: 'successfully',
-                    });
-                }else{
-                    console.log('erro:', err)
-                    res.status(500).json({
-                        error: true,
-                        message: 'error',
-                    });
+        setTimeout(async () => {
+            const pasta    = '/workspace/uploads/empresa/' + numberId
+            await fs.access(pasta, fs.constants.F_OK);
+            const arquivos = await fs.readdir(pasta);
+            let cnpj = null; 
+            let inscricaoEstadual = null;
+            let comprovanteResidencia = null; 
+            console.log(arquivos)
+            for (const arquivo in arquivos) {
+                console.log(arquivos)
+                if (arquivos[arquivo].startsWith('cnpjimage')) {
+                    cnpj = arquivos[arquivo];
+                } else if (arquivos[arquivo].startsWith('addressImage')) {
+                    comprovanteResidencia = arquivos[arquivo];
+                } else if (arquivos[arquivo].startsWith('inscricaoEstadual')) {
+                    inscricaoEstadual = arquivos[arquivo];
                 }
             }
-        )
+            const sqlInsertDoc = 'INSERT INTO imgdocparceiro (sou, idSou, cnpj, endereco, inscricaoEstadual) VALUES (?, ?, ? ,?, ?)';
+            const parametros = ['empresa', numberId, pasta+'/'+cnpj, pasta+'/'+comprovanteResidencia, pasta+'/'+inscricaoEstadual];
+            connection.execute(sqlInsertDoc,parametros, 
+                async function (err, results) {
+                    if(err === null){
+                        res.status(200).json({
+                            error: false,
+                            message: 'successfully',
+                        });
+                    }else{
+                        console.log('erro:', err)
+                        res.status(500).json({
+                            error: true,
+                            message: 'error',
+                        });
+                    }
+                }
+            )
+        }, 5000);
     } catch (err) {
         console.error('Erro ao verificar a pasta:', err);
     }

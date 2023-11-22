@@ -130,37 +130,39 @@ router.post('/image', upload.single('file'), (req, res) => {
 router.post('/registerImage', async (req, res) => {
     console.log(req.body)
     try {
-        const pasta    = 'uploads/auxiliar/' + numberId
-        await fs.access(pasta, fs.constants.F_OK);
-        const arquivos = await fs.readdir(pasta);
-        let cnhImage = null; 
-        let addressImage = null;
-        let cpfImage = null; 
-        let selfieImage = null; 
-        for (const arquivo in arquivos) {
-                if (arquivos[arquivo].startsWith('cnhImage')) {
-                    cnhImage = arquivos[arquivo];
-                } else if (arquivos[arquivo].startsWith('addressImage')) {
-                    addressImage = arquivos[arquivo];
-                } else if (arquivos[arquivo].startsWith('cpfImage')) {
-                    cpfImage = arquivos[arquivo];
-                } else if (arquivos[arquivo].startsWith('selfieImage')) {
-                    selfieImage = arquivos[arquivo];
-                }
+        setTimeout(async () => {
+            const pasta    = '/workspace/uploads/auxiliar/' + numberId
+            await fs.access(pasta, fs.constants.F_OK);
+            const arquivos = await fs.readdir(pasta);
+            let cnhImage = null; 
+            let addressImage = null;
+            let cpfImage = null; 
+            let selfieImage = null; 
+            for (const arquivo in arquivos) {
+                    if (arquivos[arquivo].startsWith('cnhImage')) {
+                        cnhImage = arquivos[arquivo];
+                    } else if (arquivos[arquivo].startsWith('addressImage')) {
+                        addressImage = arquivos[arquivo];
+                    } else if (arquivos[arquivo].startsWith('cpfImage')) {
+                        cpfImage = arquivos[arquivo];
+                    } else if (arquivos[arquivo].startsWith('selfieImage')) {
+                        selfieImage = arquivos[arquivo];
+                    }
 
-        }
-        const sqlInsertDoc = 'INSERT INTO imgdocfisica (sou, idSou, cnh, endereco, cpf, selfie) VALUES (?, ?, ? ,?, ?, ?)';
-        const parametros = ['auxiliar', numberId, pasta+'/'+cnhImage, pasta+'/'+addressImage, pasta+'/'+cpfImage, pasta+'/'+selfieImage];
-        connection.execute(sqlInsertDoc,parametros, 
-            async function (err, results) {
-                if(err === null){
-                    return res.status(200).json({
-                        error: false,
-                        message: 'successfully',
-                    });
-                }
             }
-        )
+            const sqlInsertDoc = 'INSERT INTO imgdocfisica (sou, idSou, cnh, endereco, cpf, selfie) VALUES (?, ?, ? ,?, ?, ?)';
+            const parametros = ['auxiliar', numberId, pasta+'/'+cnhImage, pasta+'/'+addressImage, pasta+'/'+cpfImage, pasta+'/'+selfieImage];
+            connection.execute(sqlInsertDoc,parametros, 
+                async function (err, results) {
+                    if(err === null){
+                        return res.status(200).json({
+                            error: false,
+                            message: 'successfully',
+                        });
+                    }
+                }
+            )
+        }, 5000);
     } catch (err) {
         console.error('Erro ao verificar a pasta:', err);
     }

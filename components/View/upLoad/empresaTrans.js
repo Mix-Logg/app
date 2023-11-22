@@ -183,6 +183,7 @@ export default function UpLoadEntregador({navigation}){
                     let urlLocal = 'http://192.168.0.22:8081/empresa/registerImage'
                     await axios.post(urlLocal)
                     try{
+                        setApi('Inserindo as imagens.')
                         let urlProducao = 'https://clownfish-app-nc7ss.ondigitalocean.app/empresa/uploadBucker'
                         let urlLocal = 'http://192.168.0.22:8081/empresa/uploadBucker'
                         let response = await axios.post(urlLocal)
