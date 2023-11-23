@@ -148,7 +148,7 @@ router.post('/registerImage', async (req, res) => {
                     }
                 }
             )
-        }, 5000);
+        }, 8000);
     } catch (err) {
         console.error('Erro ao verificar a pasta:', err);
     }
