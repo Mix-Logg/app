@@ -59,7 +59,7 @@ export default function App() {
             width: 287,
             height: 283,
           }}
-          source={require('./src/main/res/drawable-mdpi/assets/logo/logo.png')}
+          source={require('./img/logo/logoSemArco.png')}
         />
       </View>
     );
@@ -79,7 +79,7 @@ export default function App() {
           width: 287,
           height: 283,
         }}
-        source={require('./src/main/res/drawable-mdpi/assets/logo/logoSemArco.png')}
+        source={require('./img/logo/logoSemArco.png')}
       />
     </View>
   );

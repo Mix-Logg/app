@@ -26,28 +26,28 @@ export default function InfoPhoto({navigation}){
             <View style={styles.containerIcons}>
                 <View style={styles.containerInstrution}>
                     <Image style={styles.iconNumber}
-                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/1.png')}
+                        source={require('../../../img/icons/1.png')}
                     />
                     <Text style={styles.label}>CNPJ</Text>
                 </View>
 
                 <View style={[styles.containerInstrution,{marginTop:15,marginBottom:15}]}>
                     <Image style={styles.iconNumber}
-                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/2.png')}
+                            source={require('../../../img/icons/2.png')}
                     />
                     <Text style={styles.label}>Incrição Estadual</Text>
                 </View>
 
                 <View style={styles.containerInstrution}>
                     <Image style={styles.iconNumber}
-                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/3.png')}
+                            source={require('../../../img/icons/3.png')}
                     />
                     <Text style={styles.label}>Comprovante de Residência</Text>
                 </View>
 
                 {route.params.sou != 'transportadora' ? <View style={[styles.containerInstrution, {marginTop:15,marginBottom:5}]}>
                     <Image style={styles.iconNumber}
-                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/4.png')}
+                            source={require('../../../img/icons/4.png')}
                     />
                     <Text style={styles.label}>Ramo de Atividade</Text>
                 </View>:''}

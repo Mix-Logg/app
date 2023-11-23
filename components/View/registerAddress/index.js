@@ -2,7 +2,7 @@ import { useState } from "react";
 import { StyleSheet ,View, Text, Image, TextInput, Pressable, ActivityIndicator, Alert } from "react-native";
 import MaskInput from 'react-native-mask-input';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import api from '../../../api/serviceCep'
+import api from './serviceCep'
 import { CheckBox } from 'react-native-elements';
 import { useRoute } from '@react-navigation/native';
 
@@ -107,13 +107,13 @@ export default function RegisterAddress({navigation}){
                         
                             { cepValid === true ? <Image
                                 style={[styles.iconValid,{left:130, tintColor:'#28a745'}]}
-                                source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
+                                source={require('../../../img/icons/ok.png')}
                             /> : '' }
                             
                             { cepValid === false ? 
                                 <Image
                                     style={[styles.iconValid,{height:16,width:16,left:135,top:33}]}
-                                    source={require('../../../src/main/res/drawable-mdpi/assets/icons/x.png')}
+                                    source={require('../../../img/icons/x.png')}
                                 /> : '' 
                             }
                         <Pressable
@@ -128,7 +128,7 @@ export default function RegisterAddress({navigation}){
                                     </Text>
                                     <Image
                                         style={[styles.icon, { tintColor: cepValid === true ? 'white' : '#FF5F00', transform: [{ scaleX: -1 }] }]}
-                                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/buscaCep.png')}
+                                            source={require('../../../img/icons/buscaCep.png')}
                                     />
                                 </View>
                                 

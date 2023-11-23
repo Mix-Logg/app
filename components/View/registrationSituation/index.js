@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Pressable } from "react-native"
+import { View, Text, StyleSheet, Image } from "react-native"
 
 export default function RegistrationStuation(){
     
@@ -8,7 +8,7 @@ export default function RegistrationStuation(){
             <View style={styles.containerInfo}>
                 <Image
                     style={styles.logo}
-                    source={require('../../../src/main/res/drawable-mdpi/assets/logo/logoSemArco.png')}
+                    source={require('../../../img/logo/logoSemArco.png')}
                 />
                 <Text style={styles.h1}> Essa é sua <Text style={styles.span}>situação cadastral</Text> </Text>  
                 <View style={styles.containerTime}>
@@ -17,7 +17,7 @@ export default function RegistrationStuation(){
                         <Image style={[styles.iconTime,{
                             tintColor:'#28a745'
                         }]}
-                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/redondoOk.png')}
+                            source={require('../../../img/icons/redondoOk.png')}
                         />
                         <Text style={[styles.txtTime, {
                             color:'#28a745'
@@ -30,7 +30,7 @@ export default function RegistrationStuation(){
 
                     <View style={styles.containerTxtIcon}>
                         <Image style={styles.iconTime}
-                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/relogioRedondo.png')}
+                            source={require('../../../img/icons/relogioRedondo.png')}
                         />
                         <Text style={styles.txtTime}>Análise</Text>
                     </View>
@@ -39,7 +39,7 @@ export default function RegistrationStuation(){
 
                     <View style={styles.containerTxtIcon}>
                         <Image style={styles.iconTime}
-                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/relogioRedondo.png')}
+                            source={require('../../../img/icons/relogioRedondo.png')}
                         />
                         <Text style={styles.txtTime}>Aprovado</Text>
                     </View>
@@ -48,7 +48,7 @@ export default function RegistrationStuation(){
 
                     <View style={styles.containerTxtIcon}>
                         <Image style={styles.iconTime}
-                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/relogioRedondo.png')}
+                            source={require('../../../img/icons/relogioRedondo.png')}
                         />
                         <Text style={styles.txtTime}>Integração</Text>
                     </View>
@@ -62,7 +62,7 @@ export default function RegistrationStuation(){
                             width:60,
                             height:60
                         }]}
-                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/megaFone.png')}
+                        source={require('../../../img/icons/megaFone.png')}
                     />
                     <Text style={[styles.span,{
                         fontSize:18,

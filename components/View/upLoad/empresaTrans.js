@@ -278,14 +278,14 @@ export default function UpLoadEntregador({navigation}){
                     >
                         <Image
                             style={[styles.icon, {tintColor: cnpjImage != null ? '#28a745' : '#FF5F00'}]}
-                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/upload.png')}
+                            source={require('../../../img/icons/upload.png')}
                         />
                         <Text style={[styles.btnTxt, {color: cnpjImage != null ? '#28a745' : '#FF5F00'}]}> CNPJ  </Text>
 
                         { cnpjImage != null ?
                             <Image
                             style={[styles.icon, {width:30,height:30,tintColor: cnpjImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
+                            source={require('../../../img/icons/ok.png')}
                         /> : <View></View> }
                     </Pressable>
 
@@ -295,13 +295,13 @@ export default function UpLoadEntregador({navigation}){
                     >
                         <Image
                             style={[styles.icon, {tintColor: inscricaoEstadualImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/upload.png')}
+                            source={require('../../../img/icons/upload.png')}
                         />
                         <Text style={[styles.btnTxt, {color:inscricaoEstadualImage != null ? '#28a745' : '#FF5F00' }]}>Inscrição Estadual</Text>
                         {inscricaoEstadualImage != null ?
                             <Image
                             style={[styles.icon, {width:30,height:30 ,tintColor: inscricaoEstadualImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
+                            source={require('../../../img/icons/ok.png')}
                         /> : <View></View> }
                     </Pressable>
 
@@ -311,14 +311,14 @@ export default function UpLoadEntregador({navigation}){
                     >
                         <Image
                             style={[styles.icon, {tintColor : EnderecoImage != null ? '#28a745' : '#FF5F00'}]}
-                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/upload.png')}
+                            source={require('../../../img/icons/upload.png')}
                         />
                         <Text style={[styles.btnTxt,{marginLeft:5, color: EnderecoImage != null ? '#28a745' : '#FF5F00'}]}>Comprovante de Residência</Text>
 
                         {EnderecoImage != null ?
                             <Image
                             style={[styles.icon, {width:30,height:30,tintColor: EnderecoImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/ok.png')}
+                            source={require('../../../img/icons/ok.png')}
                         /> : <View></View> }
                     </Pressable>
                 
@@ -363,7 +363,7 @@ export default function UpLoadEntregador({navigation}){
                                 <Pressable onPress={showModalOpotion}>
                                     <Image
                                         style={[styles.icon, {height:25, width:25, marginTop:5}]}
-                                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/x.png')}
+                                        source={require('../../../img/icons/x.png')}
                                     />
                                 </Pressable>
                             </View>
@@ -375,7 +375,7 @@ export default function UpLoadEntregador({navigation}){
                                     <View style={styles.containerBtn}>
                                         <Image
                                             style={styles.icon}
-                                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/camera.png')}
+                                            source={require('../../../img/icons/camera.png')}
                                         />
                                         <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Câmera</Text>
                                     </View>
@@ -388,7 +388,7 @@ export default function UpLoadEntregador({navigation}){
                                     <View style={styles.containerBtn}>
                                         <Image
                                             style={styles.icon}
-                                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/galeria.png')}
+                                            source={require('../../../img/icons/galeria.png')}
                                         />
                                         <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Galereria</Text>
                                     </View>
@@ -401,7 +401,7 @@ export default function UpLoadEntregador({navigation}){
                                     <View style={[styles.containerBtn, {width:'80%'} ]}>
                                         <Image
                                             style={styles.icon}
-                                            source={require('../../../src/main/res/drawable-mdpi/assets/icons/arquivo.png')}
+                                            source={require('../../../img/icons/arquivo.png')}
                                         />
                                         <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Documentos</Text>
                                     </View>
@@ -422,7 +422,7 @@ export default function UpLoadEntregador({navigation}){
                                 <Pressable onPress={openModal}>
                                     <Image
                                         style={[styles.icon, {height:25, width:25, marginTop:5}]}
-                                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/x.png')}
+                                        source={require('../../../img/icons/x.png')}
                                     />
                                 </Pressable>
                             </View>
@@ -434,11 +434,11 @@ export default function UpLoadEntregador({navigation}){
                                     style={[styles.imgExemplo,{width:cnpjVisible? 315: 280 }]}
                                     source={
                                           inscricaoEstadualVisible
-                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/inscricaoEstadual.png')
+                                          ? require('../../../img/imgExemplo/inscricaoEstadual.png')
                                           : enderecoVisible
-                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/compravanteResidencia.png')
+                                          ? require('../../../img/imgExemplo/compravanteResidencia.png')
                                           : cnpjVisible
-                                          ? require('../../../src/main/res/drawable-mdpi/assets/imgExemplo/cnpjExemplo.png')
+                                          ? require('../../../img/imgExemplo/cnpjExemplo.png')
                                           : null // Defina um valor padrão ou nulo, se necessário
                                       }
                                 />

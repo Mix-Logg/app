@@ -4,7 +4,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 
 //IMPORT VIEWS
-import Teste from '../components/test'
 import Login from '../components/View/login'
 import Register from '../components/View/whoAreYou'
 import RegisterContact from '../components/View/registerContact';
@@ -77,15 +76,6 @@ export default function AllRoutes() {
                 headerShown: true // Exibe o cabeçalho nesta tela
               }}
             />
-            {/* <Stack.Screen name="Teste" component={Teste} 
-            options={{
-              title: '',  
-              headerStyle: {
-                  backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
-                },
-                headerShown: false // Exibe o cabeçalho nesta tela
-              }}
-            /> */}
             <Stack.Screen name="RegisterCar" component={RegisterCar} 
             options={{
               title: '',  

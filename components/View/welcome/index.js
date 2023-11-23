@@ -5,10 +5,10 @@ export default function Welcome(){
         <View style={styles.container}>
             <View style={styles.containerLogo}>
                 <Image style={styles.logo}
-                    source={require('../../../src/main/res/drawable-mdpi/assets/logo/logoSemArco.png')}
+                    source={require('../../../img/logo/logoSemArco.png')}
                 />
                 <Image style={styles.logoNome}
-                    source={require('../../../src/main/res/drawable-mdpi/assets/logo/logoNome.png')}
+                    source={require('../../../img/logo/logoNome.png')}
                 />
             </View>
             <View style={styles.containerInfo}>
@@ -18,7 +18,7 @@ export default function Welcome(){
             </View>
             <View style={styles.containerIcon}>
                 <Image style={styles.icon}
-                source={require('../../../src/main/res/drawable-mdpi/assets/icons/palmas.png')}
+                source={require('../../../img/icons/palmas.png')}
                 />
             </View>
             <View style={styles.containerBtn}> 

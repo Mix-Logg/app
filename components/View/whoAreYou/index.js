@@ -5,7 +5,7 @@ export default function Register({navigation}){
         <View style={styles.container}>
             <View style={styles.containerLogo}> 
                 <Image style={styles.logo}
-                source={require('../../../src/main/res/drawable-mdpi/assets/logo/logoSemArco.png')}
+                source={require('../../../img/logo/logoSemArco.png')}
                 />
                 <Text style={[styles.label,{marginStart:'0%'}]}>O que você é?</Text>
             </View>
@@ -17,7 +17,7 @@ export default function Register({navigation}){
                     onPress={()=>{navigation.navigate('RegisterContact',{sou:'empresa'})}}
                 >
                     <Image style={styles.icon}
-                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/empresa.png')}
+                        source={require('../../../img/icons/empresa.png')}
                     />
                     <Text style={styles.label}>Empresa</Text>
                 </Pressable>
@@ -27,7 +27,7 @@ export default function Register({navigation}){
                     onPress={()=>{navigation.navigate('RegisterContact',{sou:'transportadora'})}}
                 >
                     <Image style={[styles.icon,{height:80,width:80}]}
-                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/caminhao.png')}
+                        source={require('../../../img/icons/caminhao.png')}
                     />
                     <Text style={[styles.label,{marginStart:'10%'}]}>Transportadora</Text>
                 </Pressable>
@@ -37,7 +37,7 @@ export default function Register({navigation}){
                     onPress={()=>{navigation.navigate('RegisterContact',{sou:'motorista'})}}
                 >
                     <Image style={styles.icon}
-                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/volante.png')}
+                        source={require('../../../img/icons/volante.png')}
                     />
                     <Text style={styles.label}>Motorista de Entrega</Text>
                 </Pressable>
@@ -47,7 +47,7 @@ export default function Register({navigation}){
                     onPress={()=>{navigation.navigate('RegisterContact',{sou:'auxiliar'})}}
                 >
                     <Image style={styles.icon}
-                        source={require('../../../src/main/res/drawable-mdpi/assets/icons/ajudante.png')}
+                        source={require('../../../img/icons/ajudante.png')}
                     />
                     <Text style={styles.label}>Auxiliar de Entrega</Text>
                 </Pressable>
@@ -58,7 +58,7 @@ export default function Register({navigation}){
                     width:30,
                     height:30,
                 }]}
-                    source={require('../../../src/main/res/drawable-mdpi/assets/icons/whats.png')}
+                    source={require('../../../img/icons/whats.png')}
                 />
                 <Text style={[styles.label, {
                     marginStart:0,
