@@ -24,6 +24,8 @@ export default function UpLoadEntregador({navigation}){
     const [cnhImage, setCnhImage] = useState(null);
     const [selfieImage, setSelfieImage] = useState(null);
 
+    const [api, setApi] = useState(null);
+
     const newParam = {
         ...route.params,
         imgDoc:{
@@ -149,12 +151,14 @@ export default function UpLoadEntregador({navigation}){
             }else if(route.params.sou === 'auxiliar'){
                 // ENVIAR PRA API
                 setLoading(true)
-                const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/register';
-                const servidorUrl = 'http://192.168.0.22:8081/auxiliar/register'
+                setApi('Cadastrando os dados.')
+                const servidorUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/register';
+                const expoUrl = 'http://192.168.0.22:8081/auxiliar/register'
 
                 // console.log(newParam)
                 try{
-                    const response = await axios.post(expoUrl,newParam)
+                    setApi('Avalianda as fotos.')
+                    const response = await axios.post(servidorUrl,newParam)
                     const imgDocFisica = response.data.doc;
                     for (const chave in imgDocFisica) {
                         const valor = imgDocFisica[chave]
@@ -189,20 +193,22 @@ export default function UpLoadEntregador({navigation}){
                         }
                     }
                     try{
-                        const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/registerImage';
-                        const servidorUrl = 'http://192.168.0.22:8081/auxiliar/registerImage'
+                        setApi('Cadastrando as fotos.')
+                        const servidorUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/registerImage';
+                        const expoUrl = 'http://192.168.0.22:8081/auxiliar/registerImage'
 
-                        const result = await axios.post(expoUrl)
-                        console.log(result.body)
+                        const result = await axios.post(servidorUrl)
+                        // console.log(result.body)
                         try{
+                            setApi('Finalizando cadastro.')
                             const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/uploadBucker';
                             const servidorUrl = 'http://192.168.0.22:8081/auxiliar/uploadBucker'
-                            
                             const result = await axios.post(expoUrl)
-                            console.log(result)
                             if(result.status == 200){
                                 navigation.navigate('RegistrationStuation');
                                 setLoading(false)
+                            }else{
+                                setApi('Algo deu errado, tente mais tarde!')
                             }
                         }catch(err){
                             console.log('erro ao enviar a pasta: ', err)
@@ -441,6 +447,7 @@ export default function UpLoadEntregador({navigation}){
                     alignItems: 'center',
                 }}>
                     <ActivityIndicator size="large" color="#FF5F00" />
+                    <Text>{api}</Text>
             </View>
         }
 

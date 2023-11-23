@@ -30,6 +30,8 @@ export default function UpLoadDocCar({navigation}){
     const [residenciaDonoImage, setResidenciaDonoImage] = useState(null);
     const [cpfDonoImage, setCpfDonoImage] = useState(null);
     const [cnpjImage, setCnpjImage] = useState(null);
+
+    const [api, setApi] = useState(null);
     
     const newParams = {
         ...route.params,
@@ -240,7 +242,7 @@ export default function UpLoadDocCar({navigation}){
         (infoCadastroCar === 'juridicoEu' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null) ||
         (infoCadastroCar === 'juridicoOutra' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null)
         ){     
-          
+            setApi('Cadastrando os dados.')
             const expoUrl =  'https://clownfish-app-nc7ss.ondigitalocean.app/motorista/register';
             const res  = await axios.post(expoUrl, newParams)
 
@@ -590,6 +592,7 @@ export default function UpLoadDocCar({navigation}){
                 alignItems: 'center',
            }}>
                 <ActivityIndicator size="large" color="#FF5F00" />
+                <Text>{api}</Text>
             </View> : ''}
         </>
     )

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, StatusBar } from 'react-native';
 import AllRoutes from './router';
 import {
   useFonts,
@@ -65,7 +65,14 @@ export default function App() {
     );
   }
 
-  return count ? <AllRoutes /> : (
+  return count ? 
+  <>
+    <AllRoutes /> 
+    <StatusBar
+        backgroundColor='#FF5F00'
+    /> 
+    </>
+  : (
     <View
       style={{
         flex: 1,
