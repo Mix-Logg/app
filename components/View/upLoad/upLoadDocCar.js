@@ -32,7 +32,40 @@ export default function UpLoadDocCar({navigation}){
     const [cnpjImage, setCnpjImage] = useState(null);
 
     const [api, setApi] = useState(null);
+
+    const URLproduction  = 'https://starfish-app-56ne9.ondigitalocean.app/'
+    const URLdevelopment = 'http://192.168.0.45:8080/'
     
+    async function uploadFile(filename, valor,chave, ID, am, functionn ) {
+        console.log(valor)
+        const extend = filename.split('.')[1];
+        const formData = new FormData();
+        formData.append('file', JSON.parse(JSON.stringify({
+          name: chave+'.'+extend,
+          uri: valor,
+          type: 'image/' + extend,
+        })));
+        formData.append('id', ID)
+        formData.append('am', am)
+        formData.append('function', functionn)
+        try {
+          const expoUrl = URLdevelopment+'upload-bucket/upload';
+          const response = await axios.post(expoUrl, formData, {
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          if(await response.data.msg === 'success'){
+            return true
+          }else{
+            return false
+          }
+        } catch (error) {
+          console.error(`Erro ao enviar o arquivo ${filename}:`, error);
+        }
+    }
+
     const newParams = {
         ...route.params,
         imgDocCar:{
@@ -44,6 +77,7 @@ export default function UpLoadDocCar({navigation}){
             cpfDonoImage:cpfDonoImage,
         }
     }
+
 
     useEffect(() => {
         if(route.params.dataCar.cadastroVeiculo === 'fisica' && route.params.dataCar.proprietario === 'eu'){
@@ -235,7 +269,6 @@ export default function UpLoadDocCar({navigation}){
 
     const navegacao = async () => {
         setLoading(true)
-        // console.log('cliq')
         if(
         (infoCadastroCar === 'fisicaEu' && clvImage != null && anttImage != null) ||
         (infoCadastroCar === 'fisicaOutra' && clvImage != null && anttImage != null && residenciaDonoImage != null && cpfDonoImage != null) ||
@@ -243,34 +276,145 @@ export default function UpLoadDocCar({navigation}){
         (infoCadastroCar === 'juridicoOutra' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null)
         ){     
             setApi('Cadastrando os dados.')
-            const expoUrl =  'https://clownfish-app-nc7ss.ondigitalocean.app/motorista/register';
-            const res  = await axios.post(expoUrl, newParams)
+            const res  = await axios.get('https://worldtimeapi.org/api/timezone/America/Sao_Paulo')    
+            const driver={
+                "email":   newParams.email,
+                "phone":   newParams.phone,
+                "create_at" : res.data.datetime,
+                "update_at" : null,
+                "delete_at" : null
+            }
+            // DRIVER
+            let driverID;
+            try{
+                const res  = await axios.post(URLdevelopment+'driver',driver)
+                driverID = res.data
+                setApi('Cadastrando o endereço.')
+            }catch(err){
+                setApi('ERRO ao inserir dados. Você sera redirecionado para o ínicio')
+                setTimeout(() => {
+                    return navigation.navigate('Login');
+                }, 5000);
+            }
+            const address = {
+                "am" : "driver",
+                "uuid" : driverID,
+                "zipCode" : newParams.address.zipCode,
+                "street" : newParams.address.street,
+                "number" : newParams.address.number,
+                "complement" : newParams.address.complement,
+                "district" : newParams.address.district,
+                "city" : newParams.address.city,
+                "uf" : newParams.address.uf,
+                "create_at" : res.data.datetime,
+                "update_at" : null,
+                "delete_at" : null
+            }
+            // ADDRESS
+            try{
+                const res  = await axios.post(URLdevelopment+'address',address)
+            }catch(err){
+                setApi('ERRO ao inserir dados de endereço. Você sera redirecionado para o ínicio')
+                setTimeout(() => {
+                    return navigation.navigate('Login');
+                }, 5000);
+            }
+            // IMAGE/DOC PHYSICAL
+            setApi('Cadastrando imagens.')
+            try{
+                const promises = [];
+                for (const chave in newParams.imgDoc) {
+                    const valor = newParams.imgDoc[chave];
+                    if (valor != null) {
+                      const filename = valor.substring(valor.lastIndexOf('/') + 1);
+                      const promise = await uploadFile(filename, valor, chave, driverID, 'driver', 'physical')
+                      promises.push(promise);
+                    }
+                }
+                const results = await Promise.all(promises);
+                const allTrue = results.every(result => result === true);
+                if(!allTrue){
+                    setApi('ERRO ao enviar as fotos. Você sera redirecionado para o ínicio')
+                    setTimeout(() => {
+                        return navigation.navigate('Login');
+                    }, 5000);
+                }
+            }catch(err){
+                setApi('ERRO ao enviar as fotos. Você sera redirecionado para o ínicio')
+                setTimeout(() => {
+                    return navigation.navigate('Login');
+                }, 5000);
+            }
+            // IMAGE/DOC VEHICLE
+            setApi('Cadastrando documentos do veículo.')
+            try{
+                const promises = [];
+                for (const chave in newParams.imgDocCar) {
+                    const valor = newParams.imgDocCar[chave];
+                    if (valor != null) {
+                      const filename = valor.substring(valor.lastIndexOf('/') + 1);
+                      const promise = await uploadFile(filename, valor, chave, driverID, 'driver', 'vehicle')
+                      promises.push(promise);
+                    }
+                }
+                const results = await Promise.all(promises);
+                const allTrue = results.every(result => result === true);
+                console.log('alltrue:', allTrue)
+                if(!allTrue){
+                    setApi('ERRO ao enviar as fotos. Você sera redirecionado para o ínicio')
+                    setTimeout(() => {
+                        return navigation.navigate('Login');
+                    }, 5000);
+                }
+            }catch(err){
+                setApi('ERRO ao enviar as fotos. Você sera redirecionado para o ínicio')
+                setTimeout(() => {
+                    return navigation.navigate('Login');
+                }, 5000);
+            }
+            // VEHICLE
+            console.log(route.params.dataCar)
+            const vehicle={
+                "am":   'driver',
+                "iduu":   driverID,
+                "cadastre" : route.params.dataCar.cadastroVeiculo,
+                "owner" : route.params.dataCar.proprietario,
+                "type" : route.params.dataCar.checkCar.length > 0 ? route.params.dataCar.checkCar : route.params.dataCar.txtInputCar,
+                "weight" : route.params.dataCar.typeCar
+            }
+            console.log(vehicle)
+            setLoading(false)
+            try{
 
+            }catch(err){
+
+            }
+            return
             const imgDocCar = res.data.data.docCar;
             const imgDocFisica = res.data.data.doc;
 
-            async function uploadFile(filename, valor,chave) {
-                    const extend = filename.split('.')[1];
-                    const formData = new FormData();
-                    formData.append('file', JSON.parse(JSON.stringify({
-                      name: chave+'.'+extend,
-                      uri: valor,
-                      type: 'image/' + extend,
-                    })));
+            // async function uploadFile(filename, valor,chave) {
+            //         const extend = filename.split('.')[1];
+            //         const formData = new FormData();
+            //         formData.append('file', JSON.parse(JSON.stringify({
+            //           name: chave+'.'+extend,
+            //           uri: valor,
+            //           type: 'image/' + extend,
+            //         })));
                     
-                    try {
-                      const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/motorista/image';
-                      await axios.post(expoUrl, formData, {
-                        headers: {
-                          Accept: 'application/json',
-                          'Content-Type': 'multipart/form-data',
-                        },
-                      });
-                      console.log('img enviada')
-                    } catch (error) {
-                      console.error(`Erro ao enviar o arquivo ${filename}:`, error);
-                    }
-            }
+            //         try {
+            //           const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/motorista/image';
+            //           await axios.post(expoUrl, formData, {
+            //             headers: {
+            //               Accept: 'application/json',
+            //               'Content-Type': 'multipart/form-data',
+            //             },
+            //           });
+            //           console.log('img enviada')
+            //         } catch (error) {
+            //           console.error(`Erro ao enviar o arquivo ${filename}:`, error);
+            //         }
+            // }
                  
             try{
                     for (const chave in imgDocFisica) {

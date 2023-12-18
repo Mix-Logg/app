@@ -287,14 +287,14 @@ export default function RegisterAddress({navigation}){
                         navigation.navigate('InfoPhotoAuMo', {
                           email: route.params.email,
                           phone: route.params.phone,
-                          sou: route.params.sou,
+                          am: route.params.sou,
                           address: {
-                            cep: cepNumber,
-                            logradouro: logradouro,
-                            numero: numero,
-                            complemento: complemento,
-                            bairro: bairro,
-                            cidade: cidade,
+                            zipCode: cepNumber,
+                            street: logradouro,
+                            number: numero,
+                            complement: complemento,
+                            district: bairro,
+                            city: cidade,
                             uf: uf,
                           },
                         });
@@ -302,7 +302,7 @@ export default function RegisterAddress({navigation}){
                         navigation.navigate('infoPhotoEmTr', {
                           email: route.params.email,
                           phone: route.params.phone,
-                          sou: route.params.sou,
+                          am: route.params.sou,
                           address: {
                             cep: cepNumber,
                             logradouro: logradouro,

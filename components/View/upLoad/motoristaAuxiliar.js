@@ -145,10 +145,12 @@ export default function UpLoadEntregador({navigation}){
     }
 
     const navegacao = async () => {
-        if(cpfImage && EnderecoImage && (route.params.sou === 'auxiliar' || cnhImage) && selfieImage != null  ){
-            if(route.params.sou === 'motorista'){
+        console.log('navigation')
+        if(cpfImage && EnderecoImage && (route.params.am === 'auxiliar' || cnhImage) && selfieImage != null  ){
+            if(route.params.am === 'motorista'){
+                console.log('driver')
                 navigation.navigate('RegisterCar',newParam)
-            }else if(route.params.sou === 'auxiliar'){
+            }else if(route.params.am === 'auxiliar'){
                 // ENVIAR PRA API
                 setLoading(true)
                 setApi('Cadastrando os dados.')
