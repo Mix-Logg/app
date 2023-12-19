@@ -274,7 +274,9 @@ export default function UpLoadDocCar({navigation}){
         (infoCadastroCar === 'fisicaOutra' && clvImage != null && anttImage != null && residenciaDonoImage != null && cpfDonoImage != null) ||
         (infoCadastroCar === 'juridicoEu' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null) ||
         (infoCadastroCar === 'juridicoOutra' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null)
-        ){     
+        )
+        //FLUXO API
+        {     
             setApi('Cadastrando os dados.')
             const res  = await axios.get('https://worldtimeapi.org/api/timezone/America/Sao_Paulo')    
             const driver={
@@ -292,7 +294,7 @@ export default function UpLoadDocCar({navigation}){
                 setApi('Cadastrando o endereço.')
             }catch(err){
                 setApi('ERRO ao inserir dados. Você sera redirecionado para o ínicio')
-                setTimeout(() => {
+                return setTimeout(() => {
                     return navigation.navigate('Login');
                 }, 5000);
             }
@@ -315,7 +317,7 @@ export default function UpLoadDocCar({navigation}){
                 const res  = await axios.post(URLdevelopment+'address',address)
             }catch(err){
                 setApi('ERRO ao inserir dados de endereço. Você sera redirecionado para o ínicio')
-                setTimeout(() => {
+                return setTimeout(() => {
                     return navigation.navigate('Login');
                 }, 5000);
             }
@@ -341,7 +343,7 @@ export default function UpLoadDocCar({navigation}){
                 }
             }catch(err){
                 setApi('ERRO ao enviar as fotos. Você sera redirecionado para o ínicio')
-                setTimeout(() => {
+                return setTimeout(() => {
                     return navigation.navigate('Login');
                 }, 5000);
             }
@@ -368,7 +370,7 @@ export default function UpLoadDocCar({navigation}){
                 }
             }catch(err){
                 setApi('ERRO ao enviar as fotos. Você sera redirecionado para o ínicio')
-                setTimeout(() => {
+                return setTimeout(() => {
                     return navigation.navigate('Login');
                 }, 5000);
             }
@@ -376,88 +378,28 @@ export default function UpLoadDocCar({navigation}){
             console.log(route.params.dataCar)
             const vehicle={
                 "am":   'driver',
-                "iduu":   driverID,
+                "uuid":   driverID,
                 "cadastre" : route.params.dataCar.cadastroVeiculo,
                 "owner" : route.params.dataCar.proprietario,
-                "type" : route.params.dataCar.checkCar.length > 0 ? route.params.dataCar.checkCar : route.params.dataCar.txtInputCar,
+                "type" : route.params.dataCar.checkCar != 'Outro' ? route.params.dataCar.checkCar : route.params.dataCar.txtInputCar,
                 "weight" : route.params.dataCar.typeCar
             }
-            console.log(vehicle)
-            setLoading(false)
             try{
-
+                const res  = await axios.post(URLdevelopment+'vehicle',vehicle)
+                if(res.status === 201){
+                    return navigation.navigate('RegistrationStuation');
+                }else{
+                    setApi('Algo deu errado. Você será redirecionado para o ínicio')
+                    return setTimeout(() => {
+                        return navigation.navigate('Login');
+                    }, 5000);
+                }
             }catch(err){
-
+                setApi('ERRO ao enviar os dados do carro. Você sera redirecionado para o ínicio')
+                return setTimeout(() => {
+                    return navigation.navigate('Login');
+                }, 5000);
             }
-            return
-            const imgDocCar = res.data.data.docCar;
-            const imgDocFisica = res.data.data.doc;
-
-            // async function uploadFile(filename, valor,chave) {
-            //         const extend = filename.split('.')[1];
-            //         const formData = new FormData();
-            //         formData.append('file', JSON.parse(JSON.stringify({
-            //           name: chave+'.'+extend,
-            //           uri: valor,
-            //           type: 'image/' + extend,
-            //         })));
-                    
-            //         try {
-            //           const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/motorista/image';
-            //           await axios.post(expoUrl, formData, {
-            //             headers: {
-            //               Accept: 'application/json',
-            //               'Content-Type': 'multipart/form-data',
-            //             },
-            //           });
-            //           console.log('img enviada')
-            //         } catch (error) {
-            //           console.error(`Erro ao enviar o arquivo ${filename}:`, error);
-            //         }
-            // }
-                 
-            try{
-                    for (const chave in imgDocFisica) {
-                    const valor = imgDocFisica[chave];
-                    if (valor != null) {
-                      const filename = valor.substring(valor.lastIndexOf('/') + 1);
-                    //   await new Promise(resolve => setTimeout(resolve, 2000));
-                      uploadFile(filename, valor, chave);
-                    }
-                    }
-                    
-                    // console.log('PRE')
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                    // console.log('APÓS')
-                    
-                    
-                    for (const chave in imgDocCar) {
-                    const valor = imgDocCar[chave];
-                    if (valor != null) {
-                      const filename = valor.substring(valor.lastIndexOf('/') + 1);
-                    //   await new Promise(resolve => setTimeout(resolve, 2000));
-                      uploadFile(filename, valor, chave);
-                    }
-                    }
-
-                    try{
-                        const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/motorista/registerImage';
-                        await axios.post(expoUrl,{id:res.data.data.id})
-                        try{
-                            const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/motorista/uploadBucker';
-                            await axios.post(expoUrl)
-                            navigation.navigate('RegistrationStuation');
-                            setLoading(false)
-                        }catch(err){
-                            console.error('Erro na requisição Bucket:', err);
-                        }
-                    }catch(err){
-                        console.error('Erro na requisição:', err);
-                    }
-            }catch(err){
-                console.log('erro: ')
-            }
-            
         }
     }
 
