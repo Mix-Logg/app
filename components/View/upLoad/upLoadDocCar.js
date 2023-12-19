@@ -33,7 +33,7 @@ export default function UpLoadDocCar({navigation}){
 
     const [api, setApi] = useState(null);
 
-    const URLproduction  = 'https://starfish-app-56ne9.ondigitalocean.app/'
+    const URLproduction  = 'https://jellyfish-app-qc69e.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.45:8080/'
     
     async function uploadFile(filename, valor,chave, ID, am, functionn ) {
@@ -49,8 +49,7 @@ export default function UpLoadDocCar({navigation}){
         formData.append('am', am)
         formData.append('function', functionn)
         try {
-          const expoUrl = URLdevelopment+'upload-bucket/upload';
-          const response = await axios.post(expoUrl, formData, {
+          const response = await axios.post(URLproduction+'upload-bucket/upload', formData, {
             headers: {
               Accept: 'application/json',
               'Content-Type': 'multipart/form-data',
@@ -289,7 +288,7 @@ export default function UpLoadDocCar({navigation}){
             // DRIVER
             let driverID;
             try{
-                const res  = await axios.post(URLdevelopment+'driver',driver)
+                const res  = await axios.post(URLproduction+'driver',driver)
                 driverID = res.data
                 setApi('Cadastrando o endereço.')
             }catch(err){
@@ -314,7 +313,7 @@ export default function UpLoadDocCar({navigation}){
             }
             // ADDRESS
             try{
-                const res  = await axios.post(URLdevelopment+'address',address)
+                const res  = await axios.post(URLproduction+'address',address)
             }catch(err){
                 setApi('ERRO ao inserir dados de endereço. Você sera redirecionado para o ínicio')
                 return setTimeout(() => {
@@ -375,7 +374,6 @@ export default function UpLoadDocCar({navigation}){
                 }, 5000);
             }
             // VEHICLE
-            console.log(route.params.dataCar)
             const vehicle={
                 "am":   'driver',
                 "uuid":   driverID,
@@ -385,7 +383,7 @@ export default function UpLoadDocCar({navigation}){
                 "weight" : route.params.dataCar.typeCar
             }
             try{
-                const res  = await axios.post(URLdevelopment+'vehicle',vehicle)
+                const res  = await axios.post(URLproduction+'vehicle',vehicle)
                 if(res.status === 201){
                     return navigation.navigate('RegistrationStuation');
                 }else{
@@ -401,6 +399,7 @@ export default function UpLoadDocCar({navigation}){
                 }, 5000);
             }
         }
+        setLoading(false)
     }
 
     return(
