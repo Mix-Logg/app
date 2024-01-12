@@ -1,6 +1,9 @@
 
 import { View, StyleSheet, Image,Text ,TextInput, Pressable  } from 'react-native';
+
+
 export default function Login({navigation}){
+    
     return(
         <View style={styles.container}>
             <View style={styles.containerLogo}>
@@ -31,13 +34,16 @@ export default function Login({navigation}){
             </View>
             <View>
                 {/* ENTRAR */}
-                <Pressable style={[styles.defaultButtons, {backgroundColor:'#FF5F00'}]}>
-                    <Text style={{
+                <Pressable style={[styles.defaultButtons, {backgroundColor:'#FF5F00'}]}
+                >
+                    <Text 
+                    
+                    style={{
                         color:'white',
                         fontFamily:'Roboto_500Medium'
                     }}>Entrar</Text>
                 </Pressable>
-                {/* CADASTRAR A SENHA */}
+                {/* CADASTRAR  */}
                 <Pressable style={[styles.defaultButtons, {
                     borderWidth: 2,
                     borderRadius: 5,

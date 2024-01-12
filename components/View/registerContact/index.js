@@ -1,12 +1,17 @@
-import { View, Text, Image, StyleSheet, Pressable, } from "react-native"
+import { View, Text, Image, StyleSheet, Pressable, Alert } from "react-native"
 import { useRoute } from '@react-navigation/native';
 import { useState } from "react";
 import React, { useEffect } from 'react';
 import MaskInput from 'react-native-mask-input';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CheckBox } from 'react-native-elements';
+import axios from "axios";
 
 export default function RegisterContact({navigation}){
+    const URLproduction  = 'https://jellyfish-app-qc69e.ondigitalocean.app/'
+    const URLdevelopment = 'http://192.168.0.45:8080/'
+    const URL = URLproduction
+    
     const [checkPermission, setCheckPermission] = useState(false);
     const [phone, setPhone] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -47,6 +52,51 @@ export default function RegisterContact({navigation}){
 
     const permission = () => {
         setCheckPermission(!checkPermission)
+    }
+
+    const acess = async () => {
+        if(phoneIsValid && emailIsValid && checkPermission){
+            const verify = {
+                am : route.params.sou === 'motorista' ? 'driver' : '',
+                phone : phoneNumber,
+                email : email
+            }
+            const verifyTest = {
+                am : 'driver',
+                phone : 11934481240,
+                email : 'ga2015fria@gmail.com'
+            }
+            try{
+                const res = await axios.get(URL+'auth/'+verify.phone+'/'+verify.email+'/'+verify.am)
+                driver = res.data.driver
+                if(driver === 'notExist'){
+                    navigation.navigate ('RegisterAddress',
+                    {
+                        sou : route.params.sou,
+                        phone : phoneNumber,
+                        email : email
+                    }
+                    )
+                }else if(driver === 'erroEmail'){
+                    Alert.alert('Cadastro já Existe. \n email ou telefone inválido.');
+                }else if(driver === 'erroPhone'){
+                    Alert.alert('Cadastro já Existe. \n email ou telefone inválido.');
+                }else{
+                    navigation.navigate('RegistrationStuation');
+                }
+            }catch(err){
+                console.log(err)
+            }
+            
+            // navigation.navigate ('RegisterAddress',
+            //     {
+            //         sou : route.params.sou,
+            //         phone : phoneNumber,
+            //         email : email
+            //     }
+            // )
+        }
+            
     }
     
     return(
@@ -150,12 +200,7 @@ export default function RegisterContact({navigation}){
                 <View style={styles.containerButton}>
                         <Pressable
                             style={[styles.button,{backgroundColor: phoneIsValid && emailIsValid && checkPermission ? '#FF5F00' :'transparent'}]}
-                            onPress={()=>{ phoneIsValid && emailIsValid && checkPermission ? 
-                                navigation.navigate ('RegisterAddress',{
-                                sou : route.params.sou,
-                                phone : phoneNumber,
-                                email : email
-                            }) : ''}}
+                            onPress={()=>{ acess() }}
                         >
                             <Text style={[styles.txtButton, {
                             color: phoneIsValid && emailIsValid && checkPermission

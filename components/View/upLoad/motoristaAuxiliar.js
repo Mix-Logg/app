@@ -5,6 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import { useRoute } from '@react-navigation/native';
 import axios from "axios";
+import {API_URL} from "@env"
 
 
 export default function UpLoadEntregador({navigation}){
@@ -35,9 +36,7 @@ export default function UpLoadEntregador({navigation}){
             cpfImage:cpfImage
         }
     };
-
-   
-
+    
     useEffect(() => {
         // Função que verifica o estado de cada variável e atualiza o contador
         const updateCount = () => {    
@@ -154,13 +153,11 @@ export default function UpLoadEntregador({navigation}){
                 // ENVIAR PRA API
                 setLoading(true)
                 setApi('Cadastrando os dados.')
-                const servidorUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/register';
-                const expoUrl = 'http://192.168.0.22:8081/auxiliar/register'
 
                 // console.log(newParam)
                 try{
                     setApi('Avalianda as fotos.')
-                    const response = await axios.post(servidorUrl,newParam)
+                    const response = await axios.post(API_URL,newParam)
                     const imgDocFisica = response.data.doc;
                     for (const chave in imgDocFisica) {
                         const valor = imgDocFisica[chave]
@@ -181,9 +178,7 @@ export default function UpLoadEntregador({navigation}){
                         );
                         
                         try {
-                          const expoUrlImage = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/image';
-                          const servidorUrl = 'http://192.168.0.22:8081/auxiliar/image'
-                          await axios.post(expoUrlImage, formData, {
+                          await axios.post(API_URL, formData, {
                             headers: {
                               Accept: 'application/json',
                               'Content-Type': 'multipart/form-data',
@@ -196,16 +191,11 @@ export default function UpLoadEntregador({navigation}){
                     }
                     try{
                         setApi('Cadastrando as fotos.')
-                        const servidorUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/registerImage';
-                        const expoUrl = 'http://192.168.0.22:8081/auxiliar/registerImage'
-
-                        const result = await axios.post(servidorUrl)
+                        const result = await axios.post(API_URL)
                         // console.log(result.body)
                         try{
                             setApi('Finalizando cadastro.')
-                            const expoUrl = 'https://clownfish-app-nc7ss.ondigitalocean.app/auxiliar/uploadBucker';
-                            const servidorUrl = 'http://192.168.0.22:8081/auxiliar/uploadBucker'
-                            const result = await axios.post(expoUrl)
+                            const result = await axios.post(API_URL)
                             if(result.status == 200){
                                 navigation.navigate('RegistrationStuation');
                                 setLoading(false)

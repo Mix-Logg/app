@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import { useRoute } from '@react-navigation/native';
 import axios from "axios";
-
+import {API_URL} from "@env"
 
 export default function UpLoadDocCar({navigation}){
     const route = useRoute();
@@ -33,9 +33,7 @@ export default function UpLoadDocCar({navigation}){
 
     const [api, setApi] = useState(null);
 
-    const URLproduction  = 'https://jellyfish-app-qc69e.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.0.45:8080/'
-    
+
     async function uploadFile(filename, valor,chave, ID, am, functionn ) {
         console.log(valor)
         const extend = filename.split('.')[1];
@@ -49,7 +47,7 @@ export default function UpLoadDocCar({navigation}){
         formData.append('am', am)
         formData.append('function', functionn)
         try {
-          const response = await axios.post(URLproduction+'upload-bucket/upload', formData, {
+          const response = await axios.post(API_URL+'upload-bucket/upload', formData, {
             headers: {
               Accept: 'application/json',
               'Content-Type': 'multipart/form-data',
@@ -288,7 +286,7 @@ export default function UpLoadDocCar({navigation}){
             // DRIVER
             let driverID;
             try{
-                const res  = await axios.post(URLproduction+'driver',driver)
+                const res  = await axios.post(API_URL+'driver',driver)
                 driverID = res.data
                 setApi('Cadastrando o endereço.')
             }catch(err){
@@ -313,7 +311,7 @@ export default function UpLoadDocCar({navigation}){
             }
             // ADDRESS
             try{
-                const res  = await axios.post(URLproduction+'address',address)
+                const res  = await axios.post(API_URL+'address',address)
             }catch(err){
                 setApi('ERRO ao inserir dados de endereço. Você sera redirecionado para o ínicio')
                 return setTimeout(() => {
@@ -383,7 +381,7 @@ export default function UpLoadDocCar({navigation}){
                 "weight" : route.params.dataCar.typeCar
             }
             try{
-                const res  = await axios.post(URLproduction+'vehicle',vehicle)
+                const res  = await axios.post(API_URL+'vehicle',vehicle)
                 if(res.status === 201){
                     return navigation.navigate('RegistrationStuation');
                 }else{
