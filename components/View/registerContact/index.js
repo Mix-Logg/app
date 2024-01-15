@@ -13,6 +13,7 @@ export default function RegisterContact({navigation}){
     const URL = URLproduction
     
     const [checkPermission, setCheckPermission] = useState(false);
+    const [pix, setPix] = useState('');
     const [phone, setPhone] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [phoneIsValid, setPhoneIsValid] = useState(null);
@@ -50,12 +51,16 @@ export default function RegisterContact({navigation}){
         }
     }
 
+    const handlePix = (text) =>{
+        setPix(text)
+    }
+
     const permission = () => {
         setCheckPermission(!checkPermission)
     }
 
-    const acess = async () => {
-        if(phoneIsValid && emailIsValid && checkPermission){
+    const access = async () => {
+        if(phoneIsValid && emailIsValid && checkPermission && pix){
             const verify = {
                 am : route.params.sou === 'motorista' ? 'driver' : '',
                 phone : phoneNumber,
@@ -74,7 +79,8 @@ export default function RegisterContact({navigation}){
                     {
                         sou : route.params.sou,
                         phone : phoneNumber,
-                        email : email
+                        email : email,
+                        pix : pix
                     }
                     )
                 }else if(driver === 'erroEmail'){
@@ -177,6 +183,14 @@ export default function RegisterContact({navigation}){
                                 placeholder="exemplo@email.com"
                                 onChangeText={handleEmail}
                             ></MaskInput>
+                            <Text style={styles.labelPix}>PIX para pagamento</Text>
+                            <MaskInput
+                                style={[styles.input,{marginTop:15, fontSize:16}]}
+                                value={pix}
+                                autoCapitalize="none"
+                                placeholder="PIX"
+                                onChangeText={handlePix}
+                            ></MaskInput>
                                 <Text style={styles.txtInfo}>
                                     Digite o <Text style={styles.span}>seu melhor</Text> número de <Text style={styles.span}>celular</Text> e <Text style={styles.span}>email</Text> , entraremos em contato com você atravez dessas informações.{'\n'}
                                     <CheckBox
@@ -195,15 +209,16 @@ export default function RegisterContact({navigation}){
                                                 onPress={permission}
                                     />
                                 </Text>
+                                
                         </View>
                 </View>
                 <View style={styles.containerButton}>
                         <Pressable
-                            style={[styles.button,{backgroundColor: phoneIsValid && emailIsValid && checkPermission ? '#FF5F00' :'transparent'}]}
-                            onPress={()=>{ acess() }}
+                            style={[styles.button,{backgroundColor: phoneIsValid && emailIsValid && checkPermission && pix ? '#FF5F00' :'transparent'}]}
+                            onPress={()=>{ access() }}
                         >
                             <Text style={[styles.txtButton, {
-                            color: phoneIsValid && emailIsValid && checkPermission
+                            color: phoneIsValid && emailIsValid && checkPermission && pix
                              ? 'white' :'#FF5F00',
                             }]}>Continuar</Text>
                         </Pressable>
@@ -290,5 +305,13 @@ const styles = StyleSheet.create({
         left:310,
         top:23,
         tintColor:'#FF5F00'
+    },
+    labelPix:{
+        position:'absolute',
+        fontSize:12,
+        top:185,
+        left:15,
+        fontFamily:'Roboto_500Medium',
+        color:'#FF5F00'
     }
 })

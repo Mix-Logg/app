@@ -10,7 +10,7 @@ import {API_URL} from "@env"
 export default function UpLoadDocCar({navigation}){
     const route = useRoute();
     const [loading, setLoading] = useState(false);
-    
+
     const [infoCadastroCar, setInfoCadastroCar] = useState(false);
     const [numberDocument, setNumberDocument] = useState(0)
     const [isVisible, setIsVisible] = useState(false);
@@ -33,9 +33,7 @@ export default function UpLoadDocCar({navigation}){
 
     const [api, setApi] = useState(null);
 
-
     async function uploadFile(filename, valor,chave, ID, am, functionn ) {
-        console.log(valor)
         const extend = filename.split('.')[1];
         const formData = new FormData();
         formData.append('file', JSON.parse(JSON.stringify({
@@ -74,7 +72,6 @@ export default function UpLoadDocCar({navigation}){
             cpfDonoImage:cpfDonoImage,
         }
     }
-
 
     useEffect(() => {
         if(route.params.dataCar.cadastroVeiculo === 'fisica' && route.params.dataCar.proprietario === 'eu'){
@@ -264,6 +261,7 @@ export default function UpLoadDocCar({navigation}){
         setModalBtn(!modalBtn)
     }
 
+
     const navegacao = async () => {
         setLoading(true)
         if(
@@ -279,6 +277,7 @@ export default function UpLoadDocCar({navigation}){
             const driver={
                 "email":   newParams.email,
                 "phone":   newParams.phone,
+                "pix":     newParams.pix,
                 "create_at" : res.data.datetime,
                 "update_at" : null,
                 "delete_at" : null
@@ -358,7 +357,6 @@ export default function UpLoadDocCar({navigation}){
                 }
                 const results = await Promise.all(promises);
                 const allTrue = results.every(result => result === true);
-                console.log('alltrue:', allTrue)
                 if(!allTrue){
                     setApi('ERRO ao enviar as fotos. Você sera redirecionado para o ínicio')
                     setTimeout(() => {
@@ -380,6 +378,7 @@ export default function UpLoadDocCar({navigation}){
                 "type" : route.params.dataCar.checkCar != 'Outro' ? route.params.dataCar.checkCar : route.params.dataCar.txtInputCar,
                 "weight" : route.params.dataCar.typeCar
             }
+
             try{
                 const res  = await axios.post(API_URL+'vehicle',vehicle)
                 if(res.status === 201){
@@ -391,6 +390,7 @@ export default function UpLoadDocCar({navigation}){
                     }, 5000);
                 }
             }catch(err){
+                console.log(err)
                 setApi('ERRO ao enviar os dados do carro. Você sera redirecionado para o ínicio')
                 return setTimeout(() => {
                     return navigation.navigate('Login');
