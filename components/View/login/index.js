@@ -1,11 +1,10 @@
-
+import twrnc from 'twrnc';
 import { View, StyleSheet, Image,Text ,TextInput, Pressable  } from 'react-native';
 
-
 export default function Login({navigation}){
-    
+
     return(
-        <View style={styles.container}>
+        <View style={[twrnc`dark:bg-white`,styles.container]} >
             <View style={styles.containerLogo}>
                 <Image style={styles.logo}
                 source={require('../../../img/logo/logoSemArco.png')}
@@ -37,7 +36,6 @@ export default function Login({navigation}){
                 <Pressable style={[styles.defaultButtons, {backgroundColor:'#FF5F00'}]}
                 >
                     <Text 
-                    
                     style={{
                         color:'white',
                         fontFamily:'Roboto_500Medium'

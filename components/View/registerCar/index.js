@@ -4,18 +4,19 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { useRoute } from '@react-navigation/native';
 import  { useState, useEffect } from 'react';
 import { CheckBox } from 'react-native-elements';
+import twrnc from 'twrnc';
 
 export default function RegisterPhotoDoc({navigation}){
     const route = useRoute();
     
     const [proprietario, setProprietario] = useState(false);
     const [cadastroVeiculo, setCadastroVeiculo] = useState(false);
-
     const [modalVisible,setModalVisible] = useState(false);
     const [checkCar,setCheckCar] = useState(false);
     const [txtInputCar,setTxtInputCar] = useState(false);
     const [typeCar,setTypeCar] = useState(false)
     const [btnIsVisible, setBtnIsVisible] = useState(true)
+    const [tracker, setTracker] = useState(null)
 
     console.log(route.params)
     const newParams = {
@@ -29,6 +30,14 @@ export default function RegisterPhotoDoc({navigation}){
         }
     }
 
+    const haveTracker = (tracker) => {
+        if(tracker){
+
+            setTracker(true)
+        }else{
+            setTracker(false)
+        }
+    }
 
     const whoTheOwner = (proprietarioParams) => {
         // if( proprietario != false){
@@ -99,116 +108,203 @@ export default function RegisterPhotoDoc({navigation}){
             <View style={styles.container}>
                 <View>
                     <Text style={styles.h1}>Foto</Text>
-                    <Text style={styles.info}>Vamos registrar o seu veículo na <Text style={styles.span}>MIX</Text> </Text>
+                    <Text style={twrnc`text-lg mt-5`}>Vamos registrar o seu veículo na <Text style={styles.span}>MIX</Text> </Text>
                 </View>
-                <View style={styles.containerOpitions}>
-                    <View>
-                        <View style={styles.containerTitle}>
-                            <Text style={[styles.info, {marginTop:0,}]}>Quem é o <Text style={styles.span}>proprietário</Text> do veículo?</Text>
-                        </View>
-
-                        <View style={styles.containerOpition}>
-                            
+                <View style={twrnc`mt-5`}>
+                        
+                        <View style={twrnc`px-14`}>
+                            <Text style={twrnc`text-sm`}>Quem é o <Text style={styles.span}>proprietário</Text> do veículo?</Text>
+                           
                             <Pressable 
-                                style={[styles.btn,{
+                                style={[twrnc`border border-[#FF5F00] p-4 flex flex-row justify-center items-center  mt-2 gap-5 rounded-lg ` , {
                                     backgroundColor: proprietario === 'eu' ? '#FF5F00' : 'transparent'
                                 }]}
                                 onPress={()=>{whoTheOwner('eu')}}
                             >
-                                <View style={[styles.btnContainer, {width:'80%'}]}>
                                     <Image 
-                                    style={[styles.btnIcon, {
-                                        tintColor: proprietario === 'eu' ? 'white' : '#FF5F00'
-                                    }]}
-                                    source={require('../../../img/icons/pessoa.png')}
+                                        style={[twrnc`w-5 h-5`, {
+                                            tintColor: proprietario === 'eu' ? 'white' : '#FF5F00'
+                                        }]}
+                                        source={require('../../../img/icons/pessoa.png')}
                                     />
-                                    <Text style={[styles.btnTxt,{
+                                    <Text 
+                                    style={[twrnc`font-bold w-40`,{
                                         color: proprietario === 'eu' ? 'white' : '#FF5F00'
                                     }]}>Eu sou proprietário</Text>
-                                </View>
                             </Pressable>
+
                             <Pressable 
-                                style={[styles.btn,{
+                                style={[twrnc`border border-[#FF5F00] p-4 flex flex-row justify-center items-center mt-2 gap-5 rounded-lg` ,{
                                     backgroundColor: proprietario === 'outraPessoa' ? '#FF5F00' : 'transparent'
                                 }]}
-                                onPress={()=>{whoTheOwner('outraPessoa')
-                            }}
+                                onPress={()=>{whoTheOwner('outraPessoa')}}
                             >
-                                <View style={styles.btnContainer}>
                                     <Image 
-                                    style={[styles.btnIcon,{
-                                        tintColor: proprietario === 'outraPessoa' ? 'white' : '#FF5F00'
+                                        style={[twrnc`w-5 h-5`,{
+                                            tintColor: proprietario === 'outraPessoa' ? 'white' : '#FF5F00'
                                     }]}
                                     source={require('../../../img/icons/outraPessoa.png')}
-                                    />
-                                    <Text style={[styles.btnTxt,{
-                                        color: proprietario === 'outraPessoa' ? 'white' : '#FF5F00'
+                                        />
+                                        <Text style={[twrnc`font-bold w-40`,{
+                                            color: proprietario === 'outraPessoa' ? 'white' : '#FF5F00'
                                     }]}>Outra Pessoa</Text>
-                                </View>
                             </Pressable>
                         </View>
 
-                    </View>
+                    {proprietario !== false && ( 
+                        <View style={twrnc`mt-5 px-14`}>
+                            <Text style={twrnc`text-sm`} >O veículo está <Text style={styles.span}>cadastrado</Text> como?</Text>
 
-                    {proprietario  != false? 
-                    <View style={styles.containerOpitions}>
-                        <View style={styles.containerTitle}>
-                            <Text style={[styles.info, {marginTop:0,}]} >O veículo está <Text style={styles.span}>cadastrado</Text> como?</Text>
-                        </View>
-                        <View style={styles.containerOpition}>
                             <Pressable 
-                                style={[styles.btn, {
-                                    backgroundColor: cadastroVeiculo === 'fisica' ? '#FF5F00' : 'transparent'
-                                }]}
-                                onPress={()=>{HowAreYouRegistered('fisica')}}
-                            >
-                            
-                            <View style={styles.btnContainer}>
+                                    style={[twrnc`border border-[#FF5F00] p-2 flex flex-row justify-center items-center  mt-2 gap-5 rounded-lg ` ,
+                                        { backgroundColor: cadastroVeiculo === 'fisica' ? '#FF5F00' : 'transparent'}
+                                    ]}
+                                    onPress={()=>{HowAreYouRegistered('fisica')}}
+                                >
+                                    <Image
+                                    source={require('../../../img/icons/fisica.png')}
+                                    style={[twrnc`w-8 h-8`,{
+                                        tintColor: cadastroVeiculo === 'fisica' ? 'white' : '#FF5F00'
+                                    }]}
+                                    />
+                                    <Text style={[twrnc`font-bold w-40`,{
+                                        color: cadastroVeiculo === 'fisica' ? 'white' : '#FF5F00'
+                                    }]}>Pessoa Física</Text>
+                            </Pressable>
+
+                            <Pressable 
+                                    style={[twrnc`border border-[#FF5F00] p-2 flex flex-row justify-center items-center mt-2 gap-5 rounded-lg ` ,{
+                                        backgroundColor: cadastroVeiculo === 'juridica' ? '#FF5F00' : 'transparent'
+                                    }]}
+                                    onPress={()=>{HowAreYouRegistered('juridica')}}
+                                >
                                 <Image
-                                source={require('../../../img/icons/fisica.png')}
-                                style={[styles.btnIcon,{
-                                    width:59,
-                                    tintColor: cadastroVeiculo === 'fisica' ? 'white' : '#FF5F00'
-                                }]}
-                                />
-                                <Text style={[styles.btnTxt,{
-                                    color: cadastroVeiculo === 'fisica' ? 'white' : '#FF5F00'
-                                }]}>Pessoa Física</Text>
-                            </View>
-                               
-                            </Pressable>
-
-                            <Pressable 
-                                style={[styles.btn,{
-                                    backgroundColor: cadastroVeiculo === 'juridica' ? '#FF5F00' : 'transparent'
-                                }]}
-                                onPress={()=>{HowAreYouRegistered('juridica')}}
-                            >
-                            <View style={[styles.btnContainer, {width:'75%'}]}>
-                            <Image
-                                source={require('../../../img/icons/juridico.png')}
-                                style={[styles.btnIcon, {
-                                    marginLeft:8,
-                                    tintColor: cadastroVeiculo === 'juridica' ? 'white' : '#FF5F00'
-                                }]}
-                                />
-                                <Text style={[styles.btnTxt,{
-                                    color: cadastroVeiculo === 'juridica' ? 'white' : '#FF5F00'
-                                }]}>Pessoa Jurídica</Text>
-                            </View>
+                                    source={require('../../../img/icons/juridico.png')}
+                                    style={[twrnc`w-8 h-8`, {
+                                        marginLeft:8,
+                                        tintColor: cadastroVeiculo === 'juridica' ? 'white' : '#FF5F00'
+                                    }]}
+                                    />
+                                    <Text style={[twrnc`font-bold w-40`,{
+                                        color: cadastroVeiculo === 'juridica' ? 'white' : '#FF5F00'
+                                    }]}>Pessoa Jurídica</Text>
                             </Pressable>
                         </View>
-                    </View>:''}
+                    )}
+
+                    {proprietario && cadastroVeiculo != false && ( 
+                        <View style={twrnc`mt-5 px-14`}>
+                            <Text style={twrnc`text-sm`} >O veículo tem <Text style={styles.span}>rastreador</Text> ?</Text>
+
+                            { tracker === true ?
+                                <View style={twrnc`flex mt-2 gap-5`}>
+                                    <View style={twrnc`flex border border-[#FF5F00]`}>
+                                        <Text style={twrnc`flex text-xs ml-2 font-bold text-[#FF5F00]`}>Tecnologia</Text>
+                                        <TextInput style={twrnc`flex  p-1 pl-5`}></TextInput>
+                                    </View>
+                                    <View style={twrnc`flex border border-[#FF5F00]`}>
+                                        <Text style={twrnc`flex text-xs ml-2 font-bold text-[#FF5F00]`}>Nº Terminal</Text>
+                                        <TextInput style={twrnc`flex p-1 pl-5`}></TextInput>
+                                    </View>
+
+                                    <View style={twrnc`flex flex-row`}>
+                                        <Pressable 
+
+                                        >
+                                            <Image 
+                                                style={[twrnc`w-13 h-10`,{
+                                                    tintColor: proprietario === 'outraPessoa' ? 'white' : '#FF5F00'
+                                                }]}
+                                                source={require('../../../img/icons/arrowLeft.png')}
+                                            />
+                                        </Pressable>
+                                        <CheckBox
+                                                title="Inativo"
+                                                checkedColor= {true ? '#28a745' :"#FF5F00"}
+                                                uncheckedColor="#FF5F00"
+                                                containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
+                                                titleProps={{
+                                                    style: { 
+                                                        color:true ? '#28a745' :"#FF5F00",
+                                                        fontFamily:'Roboto_500Medium',
+                                                    }
+                                                    }}
+                                                    checked={true}
+                                                    size={25}
+                                                    onPress={()=>{}}
+                                        />
+                                        <CheckBox
+                                                title="Ativo"
+                                                checkedColor= {true ? '#28a745' :"#FF5F00"}
+                                                uncheckedColor="#FF5F00"
+                                                containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
+                                                titleProps={{
+                                                    style: { 
+                                                        color:true ? '#28a745' :"#FF5F00",
+                                                        fontFamily:'Roboto_500Medium',
+                                                    }
+                                                    }}
+                                                    checked={false}
+                                                    size={25}
+                                                    onPress={()=>{}}
+                                        />
+                                    </View>
+                                </View>
+                                :
+                                <>
+                                    <Pressable 
+                                            style={[twrnc`border border-[#FF5F00] p-2 flex flex-row justify-center items-center  mt-2 gap-5 rounded-lg ` ,
+                                                { backgroundColor: tracker === true ? '#FF5F00' : 'transparent'}
+                                            ]}
+                                            onPress={()=>{haveTracker(true)}}
+                                        >
+                                            <Image
+                                            source={require('../../../img/icons/trackerOn.png')}
+                                            style={[twrnc`w-7 h-7`,{
+                                                tintColor: tracker === true ? 'white' : '#FF5F00'
+                                            }]}
+                                            />
+                                            <Text style={[twrnc`font-bold w-40`,{
+                                                color: tracker === true ? 'white' : '#FF5F00'
+                                            }]}>Sim</Text>
+                                    </Pressable>
+
+                                    <Pressable 
+                                            style={[twrnc`border border-[#FF5F00] p-2 flex flex-row justify-center items-center mt-2 gap-5 rounded-lg ` ,{
+                                                backgroundColor: tracker === false ? '#FF5F00' : 'transparent'
+                                            }]}
+                                            onPress={()=>{haveTracker(false)}}
+                                        >
+                                        <Image
+                                            source={require('../../../img/icons/trackerOf.png')}
+                                            style={[twrnc`w-7 h-7`, {
+                                                tintColor: tracker === false ? 'white' : '#FF5F00'
+                                            }]}
+                                            />
+                                            <Text style={[twrnc`font-bold w-40`,{
+                                                color: tracker === false ? 'white' : '#FF5F00'
+                                            }]}>Não</Text>
+                                    </Pressable> 
+                                </>
+                            }
+
+                        </View>
+                    )} 
+
                 </View>
-                {proprietario && cadastroVeiculo != false?<View style={styles.containerBtnNext}>
-                    <Pressable 
-                        style={styles.btnNext}
-                        onPress={modalIsVisible}
-                    >
-                        <Text style={[styles.btnNextTxt]}>Continuar</Text>
-                    </Pressable>
-                </View>:''}
+                {/* {proprietario && cadastroVeiculo != false && (
+                    <View style={styles.containerBtnNext}>
+                        <Pressable 
+                            style={styles.btnNext}
+                            onPress={modalIsVisible}
+                        >
+                            <Text style={[styles.btnNextTxt]}>Continuar</Text>
+                        </Pressable>
+                    </View>
+                )} */}
             </View>
+
+
             <Modal
                 visible={modalVisible} animationType='slide' transparent={true}
             >

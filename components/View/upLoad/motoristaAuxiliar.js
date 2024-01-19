@@ -145,9 +145,8 @@ export default function UpLoadEntregador({navigation}){
 
     const navegacao = async () => {
         console.log('navigation')
-        if(cpfImage && EnderecoImage && (route.params.am === 'auxiliar' || cnhImage) && selfieImage != null  ){
+        // if(cpfImage && EnderecoImage && (route.params.am === 'auxiliar' || cnhImage) && selfieImage != null  ){
             if(route.params.am === 'motorista'){
-                console.log('driver')
                 navigation.navigate('RegisterCar',newParam)
             }else if(route.params.am === 'auxiliar'){
                 // ENVIAR PRA API
@@ -215,7 +214,7 @@ export default function UpLoadEntregador({navigation}){
                 }
                 return setLoading(false)
             }
-        }
+        // }
     }
 
     return(

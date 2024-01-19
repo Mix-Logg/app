@@ -6,6 +6,7 @@ import MaskInput from 'react-native-mask-input';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CheckBox } from 'react-native-elements';
 import axios from "axios";
+import twrnc from 'twrnc';
 
 export default function RegisterContact({navigation}){
     const URLproduction  = 'https://jellyfish-app-qc69e.ondigitalocean.app/'
@@ -13,7 +14,8 @@ export default function RegisterContact({navigation}){
     const URL = URLproduction
     
     const [checkPermission, setCheckPermission] = useState(false);
-    const [pix, setPix] = useState('');
+    const [plate, setPlate] = useState('');
+    const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [phoneIsValid, setPhoneIsValid] = useState(null);
@@ -51,8 +53,12 @@ export default function RegisterContact({navigation}){
         }
     }
 
-    const handlePix = (text) =>{
-        setPix(text)
+    const handlePlate = (text) =>{
+        setPlate(text)
+    }
+
+    const handleName = (text) => {
+        setName(text)
     }
 
     const permission = () => {
@@ -60,16 +66,11 @@ export default function RegisterContact({navigation}){
     }
 
     const access = async () => {
-        if(phoneIsValid && emailIsValid && checkPermission && pix){
+        if(phoneIsValid && emailIsValid && checkPermission && plate && name ){
             const verify = {
                 am : route.params.sou === 'motorista' ? 'driver' : '',
                 phone : phoneNumber,
                 email : email
-            }
-            const verifyTest = {
-                am : 'driver',
-                phone : 11934481240,
-                email : 'ga2015fria@gmail.com'
             }
             try{
                 const res = await axios.get(URL+'auth/'+verify.phone+'/'+verify.email+'/'+verify.am)
@@ -77,10 +78,11 @@ export default function RegisterContact({navigation}){
                 if(driver === 'notExist'){
                     navigation.navigate ('RegisterAddress',
                     {
-                        sou : route.params.sou,
+                        sou   : route.params.sou,
                         phone : phoneNumber,
                         email : email,
-                        pix : pix
+                        plate : plate,
+                        name  : name
                     }
                     )
                 }else if(driver === 'erroEmail'){
@@ -106,91 +108,86 @@ export default function RegisterContact({navigation}){
     }
     
     return(
-        <KeyboardAwareScrollView>
-            <View style={styles.container}>
+        <KeyboardAwareScrollView style={twrnc`bg-white`}>
+            <View style={[styles.container]}>
                 <View style={styles.containerIconTxt}>
                         { empresa ?
                         <Image
-                            style={[styles.icon]}
+                            style={[twrnc`h-20 w-20 mb-5`, {tintColor:'#FF5F00'} ]}
                             source={require('../../../img/icons/redePessoas.png')}
                         /> : ''}
 
                         {transportadora ?
                             <Image
-                                style={[styles.icon]}
+                                style={[twrnc`h-20 w-20 mb-5`, {tintColor:'#FF5F00'} ]}
                                 source={require('../../../img/icons/caminhao.png')}
                             /> : ''
                         }
 
                         { motorista ? <Image
-                            style={[styles.icon]}
+                            style={[twrnc`h-20 w-20 mb-5`, {tintColor:'#FF5F00'} ]}
                             source={require('../../../img/icons/volante.png')}
                             /> : '' 
                         }
 
                         { auxiliar ? <Image
-                            style={[styles.icon]}
+                            style={[twrnc`h-20 w-20 mb-5`, {tintColor:'#FF5F00'} ]}
                             source={require('../../../img/icons/cargaCoracao2.png')}
                             /> : ''
                         }
 
-                        {transportadora || empresa ?<Text style={[styles.txtIcon]}>Torne-se nosso parceiro</Text>:''}
-                        {motorista || auxiliar ?<Text style={[styles.txtIcon]}>Torne-se nosso entregador</Text>:''}
+                        {transportadora || empresa ?<Text style={twrnc`text-sm`}>Torne-se nosso parceiro</Text>:''}
+                        {motorista || auxiliar ?<Text style={twrnc`text-lg font-bold`}>Torne-se nosso entregador</Text>:''}
                         <View style={styles.containerInputTxtinfo}>
-                            <Text style={styles.label}>Número de celular</Text>
-                            { phoneIsValid === true ? 
-                                <Image
-                                    style={[styles.iconValid]}
-                                    source={require('../../../img/icons/ok.png')}
-                                /> : '' 
-                            }
-                            { phoneIsValid === false ? 
-                                <Image
-                                    style={[styles.iconValid,{height:24, width:24, top:26, left:315 }]}
-                                    source={require('../../../img/icons/x.png')}
-                                /> : '' 
-                            }
-                            <MaskInput
-                                style={[styles.input]}
-                                value={phone}
-                                keyboardType="phone-pad"
-                                onChangeText={(masked, unmasked) => {
-                                    setPhone(masked);
-                                    setPhoneNumber(unmasked);
-                                    unmasked.length === 11 ? setPhoneIsValid(true) : setPhoneIsValid(false) 
-                                }}
-                                mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
-                            />
-                            <Text style={[styles.label,{top:95,bottom:0}]}>Endereço de email</Text>
-                            { emailIsValid === true ? 
-                                <Image
-                                    style={[styles.iconValid,{top:116}]}
-                                    source={require('../../../img/icons/ok.png')}
-                                /> : '' 
-                            }
-                            { emailIsValid === false ? 
-                                <Image
-                                    style={[styles.iconValid,{height:24, width:24, top:116, left:315 }]}
-                                    source={require('../../../img/icons/x.png')}
-                                /> : '' 
-                            }
-                            <MaskInput
-                                style={[styles.input,{marginTop:15, fontSize:16}]}
-                                value={email}
-                                autoCompleteType="email"
-                                keyboardType="email-address"
-                                autoCapitalize="none"
-                                placeholder="exemplo@email.com"
-                                onChangeText={handleEmail}
-                            ></MaskInput>
-                            <Text style={styles.labelPix}>PIX para pagamento</Text>
-                            <MaskInput
-                                style={[styles.input,{marginTop:15, fontSize:16}]}
-                                value={pix}
-                                autoCapitalize="none"
-                                placeholder="PIX"
-                                onChangeText={handlePix}
-                            ></MaskInput>
+
+                                <View style={twrnc`mt-2 mb-3`}>
+                                    <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Nome Completo</Text>
+                                    <MaskInput
+                                        style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl capitalize`}
+                                        value={name}
+                                        onChangeText={handleName}
+                                    />
+                                </View>
+
+                                <View style={twrnc`mt-2 mb-3`}>
+                                    <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Número de celular</Text>
+                                    <MaskInput
+                                        style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl`}
+                                        value={phone}
+                                        keyboardType="phone-pad"
+                                        onChangeText={(masked, unmasked) => {
+                                            setPhone(masked);
+                                            setPhoneNumber(unmasked);
+                                            unmasked.length === 11 ? setPhoneIsValid(true) : setPhoneIsValid(false) 
+                                        }}
+                                        mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+                                    />
+                                </View>
+
+                                <View style={twrnc`mt-2 mb-3`}>
+                                    <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Endereço de email</Text>
+                                    <MaskInput
+                                        style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl`}
+                                        value={email}
+                                        autoCompleteType="email"
+                                        keyboardType="email-address"
+                                        autoCapitalize="none"
+                                        placeholder="exemplo@email.com"
+                                        onChangeText={handleEmail}
+                                    ></MaskInput>
+                                </View>
+                           
+                                <View style={twrnc`mt-2 mb-3`}>
+                                    <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Placa do Carro</Text>
+                                    <MaskInput
+                                        style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl`}
+                                        value={plate}
+                                        autoCapitalize="none"
+                                        placeholder="Placa do Carro"
+                                        onChangeText={handlePlate}
+                                    ></MaskInput>
+                                </View>
+
                                 <Text style={styles.txtInfo}>
                                     Digite o <Text style={styles.span}>seu melhor</Text> número de <Text style={styles.span}>celular</Text> e <Text style={styles.span}>email</Text> , entraremos em contato com você atravez dessas informações.{'\n'}
                                     <CheckBox
@@ -212,13 +209,13 @@ export default function RegisterContact({navigation}){
                                 
                         </View>
                 </View>
-                <View style={styles.containerButton}>
+                <View style={twrnc`w-full flex items-center mt-7`}>
                         <Pressable
-                            style={[styles.button,{backgroundColor: phoneIsValid && emailIsValid && checkPermission && pix ? '#FF5F00' :'transparent'}]}
+                            style={twrnc`rounded-xl py-2 px-10 border border-[#FF5F00]  ${phoneIsValid && emailIsValid && checkPermission && plate && name ? 'bg-orange-500' : 'bg-transparent'}`}
                             onPress={()=>{ access() }}
                         >
                             <Text style={[styles.txtButton, {
-                            color: phoneIsValid && emailIsValid && checkPermission && pix
+                            color: phoneIsValid && emailIsValid && checkPermission && plate && name 
                              ? 'white' :'#FF5F00',
                             }]}>Continuar</Text>
                         </Pressable>
@@ -306,7 +303,7 @@ const styles = StyleSheet.create({
         top:23,
         tintColor:'#FF5F00'
     },
-    labelPix:{
+    labelPlate:{
         position:'absolute',
         fontSize:12,
         top:185,

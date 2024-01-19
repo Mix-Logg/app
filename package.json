@@ -21,6 +21,7 @@
     "expo-image-picker": "~14.3.2",
     "expo-status-bar": "~1.6.0",
     "moment-timezone": "^0.5.43",
+    "nativewind": "^2.0.11",
     "path": "^0.12.7",
     "path-exists": "^5.0.0",
     "react": "18.2.0",
@@ -39,11 +40,13 @@
     "react-native-safe-area-context": "4.6.3",
     "react-native-screens": "~3.22.0",
     "react-native-web": "~0.19.6",
+    "twrnc": "^3.6.8",
     "url": "^0.11.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
-    "react-native-dotenv": "^3.4.9"
+    "react-native-dotenv": "^3.4.9",
+    "tailwindcss": "^3.3.2"
   },
   "private": true
 }

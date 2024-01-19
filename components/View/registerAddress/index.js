@@ -288,7 +288,8 @@ export default function RegisterAddress({navigation}){
                           email: route.params.email,
                           phone: route.params.phone,
                           am: route.params.sou,
-                          pix: route.params.pix,
+                          plate: route.params.plate,
+                          name: route.params.name,
                           address: {
                             zipCode: cepNumber,
                             street: logradouro,
