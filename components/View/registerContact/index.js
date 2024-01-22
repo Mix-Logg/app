@@ -70,7 +70,7 @@ export default function RegisterContact({navigation}){
             const verify = {
                 am : route.params.sou === 'motorista' ? 'driver' : '',
                 phone : phoneNumber,
-                email : email
+                email : email,
             }
             try{
                 const res = await axios.get(URL+'auth/'+verify.phone+'/'+verify.email+'/'+verify.am)

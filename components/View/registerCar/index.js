@@ -18,8 +18,8 @@ export default function RegisterPhotoDoc({navigation}){
     const [btnIsVisible, setBtnIsVisible] = useState(true)
     const [tracker, setTracker] = useState(null)
     const [statusTracker, setStatusTracker] = useState(null)
-     const [brandTracker, setBrandTracker] = useState(null)
-     const [numberTracker, setNumberTracker] = useState(null)
+    const [brandTracker, setBrandTracker] = useState(null)
+    const [numberTracker, setNumberTracker] = useState(null)
 
     const newParams = {
         ...route.params,
@@ -29,6 +29,12 @@ export default function RegisterPhotoDoc({navigation}){
             checkCar:checkCar,
             txtInputCar:txtInputCar,
             typeCar:typeCar,
+        },
+        tracker:{
+            status:statusTracker,
+            brand:brandTracker,
+            number:numberTracker
+            
         }
     }
 

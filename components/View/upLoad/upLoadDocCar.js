@@ -6,6 +6,8 @@ import * as DocumentPicker from 'expo-document-picker';
 import { useRoute } from '@react-navigation/native';
 import axios from "axios";
 import {API_URL} from "@env"
+import MaskInput from 'react-native-mask-input';
+import twrnc from 'twrnc';
 
 export default function UpLoadDocCar({navigation}){
     const route = useRoute();
@@ -30,8 +32,11 @@ export default function UpLoadDocCar({navigation}){
     const [residenciaDonoImage, setResidenciaDonoImage] = useState(null);
     const [cpfDonoImage, setCpfDonoImage] = useState(null);
     const [cnpjImage, setCnpjImage] = useState(null);
-
+    const [phoneOwner, setPhoneOwner] = useState(null);
     const [api, setApi] = useState(null);
+
+    console.log(newParams)
+
 
     async function uploadFile(filename, valor,chave, ID, am, functionn ) {
         const extend = filename.split('.')[1];
@@ -70,7 +75,8 @@ export default function UpLoadDocCar({navigation}){
             cnpjImage:cnpjImage,
             residenciaDono:residenciaDonoImage,
             cpfDonoImage:cpfDonoImage,
-        }
+        },
+        phoneOwner:phoneOwner
     }
 
     useEffect(() => {
@@ -277,18 +283,20 @@ export default function UpLoadDocCar({navigation}){
             const driver={
                 "email":   newParams.email,
                 "phone":   newParams.phone,
-                "pix":     newParams.pix,
+                "name":     newParams.name,
                 "create_at" : res.data.datetime,
                 "update_at" : null,
                 "delete_at" : null
             }
             // DRIVER
             let driverID;
+            console.log(API_URL)
             try{
                 const res  = await axios.post(API_URL+'driver',driver)
                 driverID = res.data
                 setApi('Cadastrando o endereço.')
             }catch(err){
+                console.log(err)
                 setApi('ERRO ao inserir dados. Você sera redirecionado para o ínicio')
                 return setTimeout(() => {
                     return navigation.navigate('Login');
@@ -312,6 +320,7 @@ export default function UpLoadDocCar({navigation}){
             try{
                 const res  = await axios.post(API_URL+'address',address)
             }catch(err){
+                console.log(err)
                 setApi('ERRO ao inserir dados de endereço. Você sera redirecionado para o ínicio')
                 return setTimeout(() => {
                     return navigation.navigate('Login');
@@ -376,15 +385,21 @@ export default function UpLoadDocCar({navigation}){
                 "cadastre" : route.params.dataCar.cadastroVeiculo,
                 "owner" : route.params.dataCar.proprietario,
                 "type" : route.params.dataCar.checkCar != 'Outro' ? route.params.dataCar.checkCar : route.params.dataCar.txtInputCar,
-                "weight" : route.params.dataCar.typeCar
+                "weight" : route.params.dataCar.typeCar,
+                "plate" : newParams.plate,
+                "phoneOwner": newParams.phoneOwner,
+                "trackerStatus":newParams.tracker.status,
+                "trackerBrand":newParams.tracker.brand,
+                "trackerNumber":newParams.tracker.number
             }
-
+            console.log(vehicle)
             try{
                 const res  = await axios.post(API_URL+'vehicle',vehicle)
                 if(res.status === 201){
                     return navigation.navigate('RegistrationStuation');
                 }else{
                     setApi('Algo deu errado. Você será redirecionado para o ínicio')
+                    console.log(err)
                     return setTimeout(() => {
                         return navigation.navigate('Login');
                     }, 5000);
@@ -513,13 +528,28 @@ export default function UpLoadDocCar({navigation}){
                             style={[styles.icon, {tintColor: cpfDonoImage != null  ?  '#28a745' : '#FF5F00' }]}
                             source={require('../../../img/icons/upload.png')}
                         />
-                        <Text style={[styles.btnTxt, { color: cpfDonoImage != null  ?  '#28a745' : '#FF5F00'}]}> RG/CPF (DONO)</Text>
+                        <Text style={[styles.btnTxt, { color: cpfDonoImage != null  ?  '#28a745' : '#FF5F00'}]}> RG (DONO)</Text>
                         {cpfDonoImage != null ?
                             <Image
                             style={[styles.icon, {width:30,height:30, tintColor: cpfDonoImage != null ? '#28a745' : '#FF5F00'} ]}
                             source={require('../../../img/icons/ok.png')}
                         /> : <View></View> }
-                    </Pressable> : ''}
+                    </Pressable> : ''
+                    }
+                    {infoCadastroCar === 'fisicaOutra' && (
+                        <View style={twrnc`h-15 border-2 border-[#ff5f00] rounded-xl mt-5 `}>
+                            <Text style={twrnc`text-xs px-3 py-1 font-bold text-[#ff5f00]`}>Celular do proprietário</Text>
+                            <MaskInput
+                            style={twrnc`px-3`}
+                                value={phoneOwner}
+                                keyboardType="phone-pad"
+                                onChangeText={(masked, unmasked) => {
+                                    setPhoneOwner(unmasked);
+                                }}
+                                mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+                            />
+                        </View>
+                    )}
 
                 </View>
                 <Modal visible={isVisible} animationType='slide' transparent={true}>
