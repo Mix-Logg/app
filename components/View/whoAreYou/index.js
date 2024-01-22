@@ -1,16 +1,18 @@
-import { View, Text, Image, StyleSheet, Pressable } from "react-native"
+import { View, Text, Image, StyleSheet, Pressable, StatusBar } from "react-native"
+import twrnc from 'twrnc';
 
 export default function Register({navigation}){
     return(
-        <View style={styles.container}>
-            <View style={styles.containerLogo}> 
-                <Image style={styles.logo}
-                source={require('../../../img/logo/logoSemArco.png')}
+        
+        <View style={twrnc`flex items-center justify-between gap-5`}>
+            <View style={[twrnc`flex items-center gap-2 mt-5`,{height:'15%',width:'30%'}]}> 
+                <Image style={[twrnc`mr-6 h-full w-full mr-10`]}
+                    source={require('../../../img/logo/logoAsa.png')}
                 />
-                <Text style={[styles.label,{marginStart:'0%'}]}>O que você é?</Text>
+                <Text style={twrnc`font-bold text-[#FF5F00] text-lg`}>O que você é ?</Text>
             </View>
 
-            <View style={styles.containerButton}>
+            <View style={twrnc`w-full px-8 py-10`}>
                 {/* Empresa */}
                 <Pressable 
                     style={styles.button}
@@ -26,7 +28,7 @@ export default function Register({navigation}){
                     style={styles.button}
                     onPress={()=>{navigation.navigate('RegisterContact',{sou:'transportadora'})}}
                 >
-                    <Image style={[styles.icon,{height:80,width:80}]}
+                    <Image style={[styles.icon,{height:60,width:60}]}
                         source={require('../../../img/icons/caminhao.png')}
                     />
                     <Text style={[styles.label,{marginStart:'10%'}]}>Transportadora</Text>
@@ -53,17 +55,13 @@ export default function Register({navigation}){
                 </Pressable>
             </View>
                 
-            <View style={styles.containerHelp}>
-                <Image style={[styles.icon,{
-                    width:30,
-                    height:30,
-                }]}
-                    source={require('../../../img/icons/whats.png')}
-                />
-                <Text style={[styles.label, {
-                    marginStart:0,
-                    fontFamily:'Roboto_300Light'
-                    }]}>Precisa de ajuda?</Text>
+            <View style={twrnc`w-full flex flex-row items-center justify-center`}>
+                <View style={twrnc`flex flex-row bg-[#FF5F00] rounded-xl px-5 py-3 items-center gap-3`}>
+                    <Image style={[styles.icon,{ width:30, height:30, tintColor:'white'}]}
+                        source={require('../../../img/icons/whats.png')}
+                    />
+                    <Text style={[twrnc`font-bold text-white` ,{fontFamily:'Roboto_300Light'}]}>Precisa de ajuda?</Text>
+                </View>
             </View>
         </View>
     )
@@ -101,8 +99,8 @@ const styles = StyleSheet.create({
         marginBottom: 15,
     },
     icon:{
-        width:65,
-        height:65,
+        width:50,
+        height:50,
         tintColor:'#FF5F00',
         marginStart:'5%'
     },

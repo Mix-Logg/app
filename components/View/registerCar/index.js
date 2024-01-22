@@ -17,8 +17,10 @@ export default function RegisterPhotoDoc({navigation}){
     const [typeCar,setTypeCar] = useState(false)
     const [btnIsVisible, setBtnIsVisible] = useState(true)
     const [tracker, setTracker] = useState(null)
+    const [statusTracker, setStatusTracker] = useState(null)
+     const [brandTracker, setBrandTracker] = useState(null)
+     const [numberTracker, setNumberTracker] = useState(null)
 
-    console.log(route.params)
     const newParams = {
         ...route.params,
         dataCar:{
@@ -30,12 +32,17 @@ export default function RegisterPhotoDoc({navigation}){
         }
     }
 
-    const haveTracker = (tracker) => {
-        if(tracker){
-
-            setTracker(true)
-        }else{
-            setTracker(false)
+    const handleTracker = (param) => {
+        console.log(param)
+        if (param === true){
+            setTracker(true);
+        }
+        if (param == 'back') {
+            setTracker(null);
+            setStatusTracker(null);
+        }
+        if(param == false){
+            setTracker(false);
         }
     }
 
@@ -105,10 +112,9 @@ export default function RegisterPhotoDoc({navigation}){
 
     return(
         <KeyboardAwareScrollView>
-            <View style={styles.container}>
+            <View style={[styles.container]}>
                 <View>
-                    <Text style={styles.h1}>Foto</Text>
-                    <Text style={twrnc`text-lg mt-5`}>Vamos registrar o seu veículo na <Text style={styles.span}>MIX</Text> </Text>
+                    <Text style={twrnc`text-lg mt-2`}>Vamos registrar o seu veículo na <Text style={styles.span}>MIX</Text> </Text>
                 </View>
                 <View style={twrnc`mt-5`}>
                         
@@ -199,40 +205,30 @@ export default function RegisterPhotoDoc({navigation}){
                             { tracker === true ?
                                 <View style={twrnc`flex mt-2 gap-5`}>
                                     <View style={twrnc`flex border border-[#FF5F00]`}>
-                                        <Text style={twrnc`flex text-xs ml-2 font-bold text-[#FF5F00]`}>Tecnologia</Text>
-                                        <TextInput style={twrnc`flex  p-1 pl-5`}></TextInput>
+                                        <Text style={twrnc`flex text-xs ml-2 font-bold text-[#FF5F00]`}>Marca</Text>
+                                        <TextInput style={twrnc`flex  p-1 pl-5`}
+                                        onChangeText={(txt)=>{setBrandTracker(txt)}}
+                                        value={brandTracker}
+                                        ></TextInput>
                                     </View>
                                     <View style={twrnc`flex border border-[#FF5F00]`}>
                                         <Text style={twrnc`flex text-xs ml-2 font-bold text-[#FF5F00]`}>Nº Terminal</Text>
-                                        <TextInput style={twrnc`flex p-1 pl-5`}></TextInput>
+                                        <TextInput style={twrnc`flex p-1 pl-5`}
+                                        onChangeText={(txt)=>{setNumberTracker(txt)}}
+                                        value={numberTracker}
+                                        ></TextInput>
                                     </View>
 
-                                    <View style={twrnc`flex flex-row`}>
+                                    <View style={twrnc`flex flex-row justify-center items-center`}>
                                         <Pressable 
-
+                                        style={twrnc`bg-[#FF5F00] py-2 px-3`}
+                                            onPress={()=>{
+                                                handleTracker('back')
+                                            }}
                                         >
-                                            <Image 
-                                                style={[twrnc`w-13 h-10`,{
-                                                    tintColor: proprietario === 'outraPessoa' ? 'white' : '#FF5F00'
-                                                }]}
-                                                source={require('../../../img/icons/arrowLeft.png')}
-                                            />
+                                            <Text style={twrnc`font-bold text-white rounded-xl`}>Voltar</Text>
+
                                         </Pressable>
-                                        <CheckBox
-                                                title="Inativo"
-                                                checkedColor= {true ? '#28a745' :"#FF5F00"}
-                                                uncheckedColor="#FF5F00"
-                                                containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                titleProps={{
-                                                    style: { 
-                                                        color:true ? '#28a745' :"#FF5F00",
-                                                        fontFamily:'Roboto_500Medium',
-                                                    }
-                                                    }}
-                                                    checked={true}
-                                                    size={25}
-                                                    onPress={()=>{}}
-                                        />
                                         <CheckBox
                                                 title="Ativo"
                                                 checkedColor= {true ? '#28a745' :"#FF5F00"}
@@ -240,13 +236,28 @@ export default function RegisterPhotoDoc({navigation}){
                                                 containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
                                                 titleProps={{
                                                     style: { 
-                                                        color:true ? '#28a745' :"#FF5F00",
+                                                        color: statusTracker  ? '#28a745' :"#FF5F00",
                                                         fontFamily:'Roboto_500Medium',
                                                     }
                                                     }}
-                                                    checked={false}
+                                                    checked={statusTracker}
                                                     size={25}
-                                                    onPress={()=>{}}
+                                                    onPress={()=>{setStatusTracker(true)}}
+                                        />
+                                        <CheckBox
+                                                title="Inativo"
+                                                checkedColor= {statusTracker === false ? '#28a745' :"#FF5F00"}
+                                                uncheckedColor="#FF5F00"
+                                                containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
+                                                titleProps={{
+                                                    style: { 
+                                                        color: statusTracker === false  ? '#28a745' :"#FF5F00",
+                                                        fontFamily:'Roboto_500Medium',
+                                                    }
+                                                    }}
+                                                    checked={statusTracker === false }
+                                                    size={25}
+                                                    onPress={()=>{setStatusTracker(false)}}
                                         />
                                     </View>
                                 </View>
@@ -256,7 +267,7 @@ export default function RegisterPhotoDoc({navigation}){
                                             style={[twrnc`border border-[#FF5F00] p-2 flex flex-row justify-center items-center  mt-2 gap-5 rounded-lg ` ,
                                                 { backgroundColor: tracker === true ? '#FF5F00' : 'transparent'}
                                             ]}
-                                            onPress={()=>{haveTracker(true)}}
+                                            onPress={()=>{ handleTracker(true) }}
                                         >
                                             <Image
                                             source={require('../../../img/icons/trackerOn.png')}
@@ -273,7 +284,7 @@ export default function RegisterPhotoDoc({navigation}){
                                             style={[twrnc`border border-[#FF5F00] p-2 flex flex-row justify-center items-center mt-2 gap-5 rounded-lg ` ,{
                                                 backgroundColor: tracker === false ? '#FF5F00' : 'transparent'
                                             }]}
-                                            onPress={()=>{haveTracker(false)}}
+                                            onPress={()=>{handleTracker(false)}}
                                         >
                                         <Image
                                             source={require('../../../img/icons/trackerOf.png')}
@@ -292,16 +303,16 @@ export default function RegisterPhotoDoc({navigation}){
                     )} 
 
                 </View>
-                {/* {proprietario && cadastroVeiculo != false && (
-                    <View style={styles.containerBtnNext}>
+                {proprietario && cadastroVeiculo != false && (tracker === false || statusTracker != null && numberTracker != null && brandTracker != null ) && (
+                    <View style={twrnc`mt-5 flex items-center`}>
                         <Pressable 
-                            style={styles.btnNext}
+                            style={twrnc`bg-[#FF5F00] rounded py-2 px-5`}
                             onPress={modalIsVisible}
                         >
-                            <Text style={[styles.btnNextTxt]}>Continuar</Text>
+                            <Text style={twrnc`font-bold text-white`}>Continuar</Text>
                         </Pressable>
                     </View>
-                )} */}
+                )}
             </View>
 
 

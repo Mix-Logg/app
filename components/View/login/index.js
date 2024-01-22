@@ -4,58 +4,56 @@ import { View, StyleSheet, Image,Text ,TextInput, Pressable  } from 'react-nativ
 export default function Login({navigation}){
 
     return(
-        <View style={[twrnc`dark:bg-white`,styles.container]} >
-            <View style={styles.containerLogo}>
-                <Image style={styles.logo}
-                source={require('../../../img/logo/logoSemArco.png')}
-                />
-                <Image style={styles.logoNome}
-                source={require('../../../img/logo/logoNome.png')}
+        <View style={[twrnc`dark:bg-white flex items-center`]} >
+            
+            <View style={[twrnc`flex items-center mt-8 w-full`,{height:'25%'} ]}>
+                <Image style={[twrnc``, {width:'25%', height:'50%',} ] }
+                source={require('../../../img/logo/logoAsa.png')}
                 />
             </View>
-            <View style={styles.containerInputs}>
-                <View style={[styles.containerInput,{marginBottom:25}]}>
-                    <Text style={styles.textInput}>CPF / CNPJ</Text>
-                    <Image
-                        style={styles.icon}
-                        source={require('../../../img/icons/user.png')}/>
-                    <TextInput style={styles.input}
-                    /> 
+
+            <View style={twrnc`w-full p-2 gap-5`}>
+                <View style={twrnc`px-5`}>
+                    <Text style={twrnc`text-[#FF5F00] font-bold text-sm px-4`}>CPF / CNPJ</Text>
+                    <View style={twrnc`w-full border-2 border-[#FF5F00] rounded-xl flex flex-row items-center p-2`}>
+                        <Image
+                            style={[twrnc``, {width:'7%', height:'55%',tintColor: '#FF5F00'}]}
+                            source={require('../../../img/icons/user.png')}/>
+                        <TextInput style={twrnc`p-2 w-full text-lg`}
+                            keyboardType="numeric"
+                        /> 
+                    </View>
                 </View>
-                <View style={styles.containerInput}>
-                    <Text  style={styles.textInput}>Senha</Text>
-                    <Image
-                        style={styles.icon}
-                        source={require('../../../img/icons/senha.png')}/>
-                    <TextInput style={styles.input}
-                    />
+
+                <View style={twrnc`px-5`}>
+                    <Text style={twrnc`text-[#FF5F00] font-bold text-sm px-4`}>Senha</Text>
+                    <View style={twrnc`w-full border-2 border-[#FF5F00] rounded-xl flex flex-row items-center p-2`}>
+                        <Image
+                            style={[twrnc``, {width:'7%', height:'55%',tintColor: '#FF5F00'}]}
+                            source={require('../../../img/icons/senha.png')}/>
+                        <TextInput style={twrnc`p-2 w-full text-lg`}
+                            secureTextEntry
+                        />
+                    </View>
                 </View>
             </View>
-            <View>
+
+            <View style={twrnc`flex w-3/6 mt-10 gap-5`}>
                 {/* ENTRAR */}
-                <Pressable style={[styles.defaultButtons, {backgroundColor:'#FF5F00'}]}
-                >
-                    <Text 
-                    style={{
-                        color:'white',
-                        fontFamily:'Roboto_500Medium'
-                    }}>Entrar</Text>
+                <Pressable style={twrnc`bg-[#FF5F00] font-bold flex justify-center flex-row py-5 rounded-lg`}>
+                    <Text style={twrnc`font-bold text-white`}>
+                        Entrar
+                    </Text>
                 </Pressable>
                 {/* CADASTRAR  */}
-                <Pressable style={[styles.defaultButtons, {
-                    borderWidth: 2,
-                    borderRadius: 5,
-                    borderColor:'#FF5F00',}]}
+                <Pressable style={twrnc`border-2 border-[#FF5F00] font-bold flex justify-center flex-row py-5 rounded-lg`}
                     onPress={()=>{navigation.navigate('Register')}}
                     >
-                    <Text style={styles.textInput}>Não sou cadastrado</Text>
+                    <Text style={twrnc`font-bold text-[#FF5F00]`}>Não sou cadastrado</Text>
                 </Pressable>
                 {/* ESQUECI A SENHA */}
-                <Pressable style={{
-                    justifyContent:'center',
-                    alignItems:'center'
-                }}>
-                    <Text style={styles.textInput}>Esqueci minha senha</Text>
+                <Pressable style={twrnc`items-center`}>
+                    <Text style={twrnc`font-bold text-[#FF5F00]`}>Esqueci minha senha</Text>
                 </Pressable>
             </View>
         </View>
