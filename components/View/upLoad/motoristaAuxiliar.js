@@ -145,7 +145,7 @@ export default function UpLoadEntregador({navigation}){
 
     const navegacao = async () => {
         console.log('navigation')
-        // if(cpfImage && EnderecoImage && (route.params.am === 'auxiliar' || cnhImage) && selfieImage != null  ){
+        if(cpfImage && EnderecoImage && (route.params.am === 'auxiliar' || cnhImage) && selfieImage != null  ){
             if(route.params.am === 'motorista'){
                 navigation.navigate('RegisterCar',newParam)
             }else if(route.params.am === 'auxiliar'){
@@ -214,7 +214,7 @@ export default function UpLoadEntregador({navigation}){
                 }
                 return setLoading(false)
             }
-        // }
+        }
     }
 
     return(

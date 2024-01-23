@@ -4,15 +4,15 @@ import { View, StyleSheet, Image,Text ,TextInput, Pressable  } from 'react-nativ
 export default function Login({navigation}){
 
     return(
-        <View style={[twrnc`dark:bg-white flex items-center`]} >
+        <View style={[twrnc`flex items-center  justify-center h-full `]} >
             
-            <View style={[twrnc`flex items-center mt-8 w-full`,{height:'25%'} ]}>
-                <Image style={[twrnc``, {width:'25%', height:'50%',} ] }
+            <View style={[twrnc`flex w-full items-center mt-3`,{height:'20%'} ]}>
+                <Image style={[twrnc``, {width:'45%', height:'90%',} ] }
                 source={require('../../../img/logo/logoAsa.png')}
                 />
             </View>
 
-            <View style={twrnc`w-full p-2 gap-5`}>
+            <View style={twrnc`w-full gap-5`}>
                 <View style={twrnc`px-5`}>
                     <Text style={twrnc`text-[#FF5F00] font-bold text-sm px-4`}>CPF / CNPJ</Text>
                     <View style={twrnc`w-full border-2 border-[#FF5F00] rounded-xl flex flex-row items-center p-2`}>
@@ -56,6 +56,7 @@ export default function Login({navigation}){
                     <Text style={twrnc`font-bold text-[#FF5F00]`}>Esqueci minha senha</Text>
                 </Pressable>
             </View>
+
         </View>
     )
 }

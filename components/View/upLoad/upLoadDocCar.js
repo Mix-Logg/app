@@ -35,9 +35,6 @@ export default function UpLoadDocCar({navigation}){
     const [phoneOwner, setPhoneOwner] = useState(null);
     const [api, setApi] = useState(null);
 
-    console.log(newParams)
-
-
     async function uploadFile(filename, valor,chave, ID, am, functionn ) {
         const extend = filename.split('.')[1];
         const formData = new FormData();
@@ -290,7 +287,6 @@ export default function UpLoadDocCar({navigation}){
             }
             // DRIVER
             let driverID;
-            console.log(API_URL)
             try{
                 const res  = await axios.post(API_URL+'driver',driver)
                 driverID = res.data

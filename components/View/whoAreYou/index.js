@@ -4,15 +4,15 @@ import twrnc from 'twrnc';
 export default function Register({navigation}){
     return(
         
-        <View style={twrnc`flex items-center justify-between gap-5`}>
-            <View style={[twrnc`flex items-center gap-2 mt-5`,{height:'15%',width:'30%'}]}> 
-                <Image style={[twrnc`mr-6 h-full w-full mr-10`]}
+        <View style={twrnc`flex justify-between p-3 h-full`}>
+            <View style={[twrnc`flex items-center gap-2 mt-5 w-full`,]}> 
+                <Image  style={{ height: 50, width: 60 }}
                     source={require('../../../img/logo/logoAsa.png')}
                 />
-                <Text style={twrnc`font-bold text-[#FF5F00] text-lg`}>O que você é ?</Text>
+                <Text style={twrnc`font-bold text-[#FF5F00] text-lg `}>O que você é ?</Text>
             </View>
 
-            <View style={twrnc`w-full px-8 py-10`}>
+            <View style={twrnc`w-full px-6`}>
                 {/* Empresa */}
                 <Pressable 
                     style={styles.button}
@@ -31,7 +31,7 @@ export default function Register({navigation}){
                     <Image style={[styles.icon,{height:60,width:60}]}
                         source={require('../../../img/icons/caminhao.png')}
                     />
-                    <Text style={[styles.label,{marginStart:'10%'}]}>Transportadora</Text>
+                    <Text style={[styles.label,{marginStart:'3%'}]}>Transportadora</Text>
                 </Pressable>
                 {/* Motorista */}
                 <Pressable 
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
         fontFamily:'Roboto_500Medium',
         color:'#FF5F00',
         fontSize:20,
-        marginStart:'15%'
+        marginStart:'5%'
     },
     containerHelp:{
         height:20,
