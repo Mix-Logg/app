@@ -5,7 +5,6 @@ import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import { useRoute } from '@react-navigation/native';
 import axios from "axios";
-import {API_URL} from "@env"
 
 
 export default function UpLoadEntregador({navigation}){
@@ -26,7 +25,6 @@ export default function UpLoadEntregador({navigation}){
     const [selfieImage, setSelfieImage] = useState(null);
 
     const [api, setApi] = useState(null);
-
     const newParam = {
         ...route.params,
         imgDoc:{
@@ -36,6 +34,11 @@ export default function UpLoadEntregador({navigation}){
             cpfImage:cpfImage
         }
     };
+
+    const URLproduction  = 'https://jellyfish-app-qc69e.ondigitalocean.app/'
+    const URLdevelopment = 'http://192.168.0.35:8080/'
+    const URL = URLdevelopment
+    
     
     useEffect(() => {
         // Função que verifica o estado de cada variável e atualiza o contador
@@ -50,6 +53,34 @@ export default function UpLoadEntregador({navigation}){
         // Chama a função de atualização sempre que alguma variável muda de estado
         updateCount();
       }, [cpfImage, EnderecoImage, cnhImage, selfieImage]);
+
+      async function uploadFile(filename, valor,chave, ID, am, functionn ) {
+        const extend = filename.split('.')[1];
+        const formData = new FormData();
+        formData.append('file', JSON.parse(JSON.stringify({
+          name: chave+'.'+extend,
+          uri: valor,
+          type: 'image/' + extend,
+        })));
+        formData.append('id', ID)
+        formData.append('am', am)
+        formData.append('function', functionn)
+        try {
+          const response = await axios.post(URL+'upload-bucket/upload', formData, {
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          if(await response.data.msg === 'success'){
+            return true
+          }else{
+            return false
+          }
+        } catch (error) {
+          console.error(`Erro ao enviar o arquivo ${filename}:`, error);
+        }
+    }
     
     const SelectOpition = async (escolha) =>{        
         if(escolha === 'galeria'){
@@ -144,74 +175,81 @@ export default function UpLoadEntregador({navigation}){
     }
 
     const navegacao = async () => {
-        console.log('navigation')
-        if(cpfImage && EnderecoImage && (route.params.am === 'auxiliar' || cnhImage) && selfieImage != null  ){
+        if(cpfImage && EnderecoImage && (route.params.am === 'auxiliary' || cnhImage) && selfieImage != null  ){
             if(route.params.am === 'motorista'){
                 navigation.navigate('RegisterCar',newParam)
-            }else if(route.params.am === 'auxiliar'){
-                // ENVIAR PRA API
+            }else if(route.params.am === 'auxiliary'){
                 setLoading(true)
                 setApi('Cadastrando os dados.')
-
-                // console.log(newParam)
+                const resTime  = await axios.get('https://worldtimeapi.org/api/timezone/America/Sao_Paulo')
+                let auxiliaryID;
+                const auxiliary={
+                    "email":  route.params.email,
+                    "phone":  route.params.phone,
+                    "name":   route.params.name,
+                    "create_at" : resTime.data.datetime,
+                    "update_at" : null,
+                    "delete_at" : null
+                }
                 try{
-                    setApi('Avalianda as fotos.')
-                    const response = await axios.post(API_URL,newParam)
-                    const imgDocFisica = response.data.doc;
-                    for (const chave in imgDocFisica) {
-                        const valor = imgDocFisica[chave]
+                    const res = await axios.post(URL+'auxiliary',auxiliary)
+                    auxiliaryID = res.data
+                }catch(error){
+                    console.log('Erro:', error)
+                }
+                const address = {
+                    "am" : "auxiliary",
+                    "uuid" : auxiliaryID,
+                    "zipCode" : route.params.address.zipCode,
+                    "street" : route.params.address.street,
+                    "number" : route.params.address.number,
+                    "complement" : route.params.address.complement,
+                    "district" : route.params.address.district,
+                    "city" : route.params.address.city,
+                    "uf" : route.params.address.uf,
+                    "create_at" : resTime.data.datetime,
+                    "update_at" : null,
+                    "delete_at" : null
+                }
+                try{
+                    const res  = await axios.post(URL+'address',address)
+                }catch(error){
+                    console.log('Erro Address:', error)
+                }
+                let imgDoc = {
+                    addressImage: EnderecoImage,
+                    cnhImage: cnhImage,
+                    selfieImage:  selfieImage,
+                    cpfImage:cpfImage
+                }
+                try{
+                    const promises = [];
+                    for (const chave in imgDoc) {
+                        const valor = imgDoc[chave];
                         if (valor != null) {
                           const filename = valor.substring(valor.lastIndexOf('/') + 1);
-                          uploadFile(filename, valor, chave);
+                          const promise = await uploadFile(filename, valor, chave, auxiliaryID, 'auxiliary', 'physical')
+                          promises.push(promise);
                         }
                     }
-                    async function uploadFile(filename, valor,chave) {
-                        const extend = filename.split('.')[1];
-                        
-                        const formData = new FormData();
-                            formData.append('file', JSON.parse(JSON.stringify({
-                            name: chave+'.'+extend,
-                            uri: valor,
-                            type: 'image/' + extend,
-                            }))
-                        );
-                        
-                        try {
-                          await axios.post(API_URL, formData, {
-                            headers: {
-                              Accept: 'application/json',
-                              'Content-Type': 'multipart/form-data',
-                            },
-                          });
-                          console.log(`arquivo enviado: ${filename}`)
-                        } catch (error) {
-                          console.error(`Erro ao enviar o arquivo ${filename}:`, error);
-                        }
+                    const results = await Promise.all(promises);
+                    const allTrue = results.every(result => result === true);
+                    if(!allTrue){
+                        setApi('ERRO ao enviar as fotos. Você sera redirecionado para o ínicio')
+                        setTimeout(() => {
+                            return navigation.navigate('Login');
+                        }, 5000);
+                    }else{
+                        return navigation.navigate('RegistrationStuation');
                     }
-                    try{
-                        setApi('Cadastrando as fotos.')
-                        const result = await axios.post(API_URL)
-                        // console.log(result.body)
-                        try{
-                            setApi('Finalizando cadastro.')
-                            const result = await axios.post(API_URL)
-                            if(result.status == 200){
-                                navigation.navigate('RegistrationStuation');
-                                setLoading(false)
-                            }else{
-                                setApi('Algo deu errado, tente mais tarde!')
-                            }
-                        }catch(err){
-                            console.log('erro ao enviar a pasta: ', err)
-                        }
-                    }catch(err){
-                        console.error('Erro na requisição:', err);
-                        setLoading(false)
-                    }
-                }catch(err){
-                    console.log('não chegou erro:', err.response.data)
-                    setLoading(false)
+                }catch(error){
+                    console.log('Erro Upload Docs:', error)
+                    setApi('ERRO ao enviar as fotos. Você sera redirecionado para o ínicio')
+                    return setTimeout(() => {
+                        return navigation.navigate('Login');
+                    }, 5000);
                 }
+                
                 return setLoading(false)
             }
         }
@@ -243,7 +281,7 @@ export default function UpLoadEntregador({navigation}){
                             style={[styles.icon, {tintColor: cnhImage != null ? '#28a745' : '#FF5F00'}]}
                             source={require('../../../img/icons/upload.png')}
                         />
-                        <Text style={[styles.btnTxt, {color: cnhImage != null ? '#28a745' : '#FF5F00'}]}>CNH {route.params.sou === 'auxiliar'? '(opcional)' : '' } </Text>
+                        <Text style={[styles.btnTxt, {color: cnhImage != null ? '#28a745' : '#FF5F00'}]}>CNH {route.params.am === 'auxiliary'? '(opcional)' : '' } </Text>
 
                         { cnhImage != null ?
                             <Image
@@ -424,10 +462,10 @@ export default function UpLoadEntregador({navigation}){
                 </Modal>
                 <View style={styles.containerInfo}>
                     <Pressable 
-                        style={[styles.btnContinue,{backgroundColor:cpfImage && EnderecoImage && (route.params.sou === 'auxiliar' || cnhImage) && selfieImage != null ? '#FF5F00' : ''}]}
+                        style={[styles.btnContinue,{backgroundColor:cpfImage && EnderecoImage && (route.params.am === 'auxiliary' || cnhImage) && selfieImage != null ? '#FF5F00' : ''}]}
                         onPress={navegacao}
                     >
-                        <Text style={[styles.btnTxt,{color: cpfImage && EnderecoImage && (route.params.sou === 'auxiliar' || cnhImage) && selfieImage != null ? 'white' : '#FF5F00'}]}>Continuar</Text>
+                        <Text style={[styles.btnTxt,{color: cpfImage && EnderecoImage && (route.params.am === 'auxiliary' || cnhImage) && selfieImage != null ? 'white' : '#FF5F00'}]}>Continuar</Text>
                     </Pressable>
                 </View>
             </View>

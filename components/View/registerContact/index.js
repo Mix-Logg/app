@@ -10,8 +10,8 @@ import twrnc from 'twrnc';
 
 export default function RegisterContact({navigation}){
     const URLproduction  = 'https://jellyfish-app-qc69e.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.0.45:8080/'
-    const URL = URLproduction
+    const URLdevelopment = 'http://192.168.0.35:8080/'
+    const URL = URLdevelopment
     
     const [checkPermission, setCheckPermission] = useState(false);
     const [plate, setPlate] = useState('');
@@ -32,7 +32,7 @@ export default function RegisterContact({navigation}){
     useEffect(() => {
       if (route.params.sou === 'motorista' && !motorista) {
         setMotorista(true);
-      } else if (route.params.sou === 'auxiliar' && !auxiliar) {
+      } else if (route.params.sou === 'auxiliary' && !auxiliar) {
         setAuxiliar(true);
       } else if (route.params.sou === 'empresa' && !empresa) {
         setEmpresa(true);
@@ -66,7 +66,7 @@ export default function RegisterContact({navigation}){
     }
 
     const access = async () => {
-        if(phoneIsValid && emailIsValid && checkPermission && plate && name ){
+        if(phoneIsValid && emailIsValid && checkPermission && plate && name && route.params.sou === 'motorista'){
             const verify = {
                 am : route.params.sou === 'motorista' ? 'driver' : '',
                 phone : phoneNumber,
@@ -93,18 +93,41 @@ export default function RegisterContact({navigation}){
                     navigation.navigate('RegistrationStuation');
                 }
             }catch(err){
+                Alert.alert('Algo deu errado, tente novamente.');
                 console.log(err)
             }
             
-            // navigation.navigate ('RegisterAddress',
-            //     {
-            //         sou : route.params.sou,
-            //         phone : phoneNumber,
-            //         email : email
-            //     }
-            // )
         }
-            
+        if(phoneIsValid && emailIsValid && checkPermission && name && route.params.sou === 'auxiliary'){
+            try{
+                const verify = {
+                    am : route.params.sou,
+                    phone : phoneNumber,
+                    email : email,
+                }
+                const res = await axios.get(URL+'auth/'+verify.phone+'/'+verify.email+'/'+verify.am)
+                const auxiliary = res.data.auxiliary
+                if(auxiliary === 'notExist'){
+                    navigation.navigate ('RegisterAddress',
+                    {
+                        sou   : route.params.sou,
+                        phone : phoneNumber,
+                        email : email,
+                        name  : name
+                    }
+                    )
+                }else if(auxiliary === 'erroEmail'){
+                    Alert.alert('Cadastro já Existe. \n email ou telefone inválido.');
+                }else if(auxiliary === 'erroPhone'){
+                    Alert.alert('Cadastro já Existe. \n email ou telefone inválido.');
+                }else{
+                    navigation.navigate('RegistrationStuation');
+                }
+            }catch(err){
+                Alert.alert('Algo deu errado, tente novamente.');
+                console.log(err)
+            }
+        }
     }
     
     return(
@@ -177,16 +200,18 @@ export default function RegisterContact({navigation}){
                                     ></MaskInput>
                                 </View>
                            
-                                <View style={twrnc`mt-2 mb-3`}>
-                                    <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Placa do Carro</Text>
-                                    <MaskInput
-                                        style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl`}
-                                        value={plate}
-                                        autoCapitalize="none"
-                                        placeholder="Placa do Carro"
-                                        onChangeText={handlePlate}
-                                    ></MaskInput>
-                                </View>
+                                { motorista &&  (
+                                    <View style={twrnc`mt-2 mb-3`}>
+                                        <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Placa do Carro</Text>
+                                        <MaskInput
+                                            style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl`}
+                                            value={plate}
+                                            autoCapitalize="none"
+                                            placeholder="Placa do Carro"
+                                            onChangeText={handlePlate}
+                                        ></MaskInput>
+                                    </View>)
+                                }
 
                                 <Text style={styles.txtInfo}>
                                     Digite o <Text style={styles.span}>seu melhor</Text> número de <Text style={styles.span}>celular</Text> e <Text style={styles.span}>email</Text> , entraremos em contato com você atravez dessas informações.{'\n'}
@@ -211,11 +236,11 @@ export default function RegisterContact({navigation}){
                 </View>
                 <View style={twrnc`w-full flex items-center mt-7`}>
                         <Pressable
-                            style={twrnc`rounded-xl py-2 px-10 border border-[#FF5F00]  ${phoneIsValid && emailIsValid && checkPermission && plate && name ? 'bg-orange-500' : 'bg-transparent'}`}
+                            style={twrnc`rounded-xl py-2 px-10 border border-[#FF5F00]  ${( phoneIsValid && emailIsValid && checkPermission && plate && name && route.params.sou === 'motorista' ) || ( phoneIsValid && emailIsValid && checkPermission && name && route.params.sou === 'auxiliary' ) ? 'bg-orange-500' : 'bg-transparent'}`}
                             onPress={()=>{ access() }}
                         >
                             <Text style={[styles.txtButton, {
-                            color: phoneIsValid && emailIsValid && checkPermission && plate && name 
+                            color:( phoneIsValid && emailIsValid && checkPermission && plate && name && route.params.sou === 'motorista' ) || ( phoneIsValid && emailIsValid && checkPermission && name && route.params.sou === 'auxiliary' )
                              ? 'white' :'#FF5F00',
                             }]}>Continuar</Text>
                         </Pressable>
