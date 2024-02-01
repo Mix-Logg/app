@@ -5,7 +5,6 @@ import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import { useRoute } from '@react-navigation/native';
 import axios from "axios";
-import {API_URL} from "@env"
 import MaskInput from 'react-native-mask-input';
 import twrnc from 'twrnc';
 
@@ -47,7 +46,7 @@ export default function UpLoadDocCar({navigation}){
         formData.append('am', am)
         formData.append('function', functionn)
         try {
-          const response = await axios.post(API_URL+'upload-bucket/upload', formData, {
+          const response = await axios.post('https://seashell-app-inyzf.ondigitalocean.app/'+'upload-bucket/upload', formData, {
             headers: {
               Accept: 'application/json',
               'Content-Type': 'multipart/form-data',
@@ -288,7 +287,7 @@ export default function UpLoadDocCar({navigation}){
             // DRIVER
             let driverID;
             try{
-                const res  = await axios.post(API_URL+'driver',driver)
+                const res  = await axios.post('https://seashell-app-inyzf.ondigitalocean.app/'+'driver',driver)
                 driverID = res.data
                 setApi('Cadastrando o endereço.')
             }catch(err){
@@ -314,7 +313,7 @@ export default function UpLoadDocCar({navigation}){
             }
             // ADDRESS
             try{
-                const res  = await axios.post(API_URL+'address',address)
+                const res  = await axios.post('https://seashell-app-inyzf.ondigitalocean.app/'+'address',address)
             }catch(err){
                 console.log(err)
                 setApi('ERRO ao inserir dados de endereço. Você sera redirecionado para o ínicio')
@@ -390,7 +389,7 @@ export default function UpLoadDocCar({navigation}){
             }
             console.log(vehicle)
             try{
-                const res  = await axios.post(API_URL+'vehicle',vehicle)
+                const res  = await axios.post('https://seashell-app-inyzf.ondigitalocean.app/'+'vehicle',vehicle)
                 if(res.status === 201){
                     return navigation.navigate('RegistrationStuation');
                 }else{

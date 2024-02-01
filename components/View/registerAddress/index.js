@@ -283,7 +283,7 @@ export default function RegisterAddress({navigation}){
                       cidadeValid &&
                       ufValid
                     ) {
-                      if (route.params.sou === 'motorista' || route.params.sou === 'auxiliar') {
+                      if (route.params.sou === 'motorista' || route.params.sou === 'auxiliary') {
                         navigation.navigate('InfoPhotoAuMo', {
                           email: route.params.email,
                           phone: route.params.phone,

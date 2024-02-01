@@ -35,7 +35,7 @@ export default function InfoPhoto({navigation}){
                     <Image style={styles.iconNumber}
                             source={require('../../../img/icons/2.png')}
                     />
-                    <Text style={styles.label}>CNH { route.params.sou === 'auxiliar' ? <Text>(opcional)</Text>:''} </Text>
+                    <Text style={styles.label}>CNH { route.params.am === 'auxiliary' ? <Text>(opcional)</Text>:''} </Text>
                 </View>
 
                 <View style={styles.containerInstrution}>

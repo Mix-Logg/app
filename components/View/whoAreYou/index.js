@@ -14,7 +14,7 @@ export default function Register({navigation}){
 
             <View style={twrnc`w-full px-6`}>
                 {/* Empresa */}
-                <Pressable 
+                {/* <Pressable 
                     style={styles.button}
                     onPress={()=>{navigation.navigate('RegisterContact',{sou:'empresa'})}}
                 >
@@ -22,9 +22,9 @@ export default function Register({navigation}){
                         source={require('../../../img/icons/empresa.png')}
                     />
                     <Text style={styles.label}>Empresa</Text>
-                </Pressable>
+                </Pressable> */}
                 {/* Transportadora */}
-                <Pressable 
+                {/* <Pressable 
                     style={styles.button}
                     onPress={()=>{navigation.navigate('RegisterContact',{sou:'transportadora'})}}
                 >
@@ -32,7 +32,7 @@ export default function Register({navigation}){
                         source={require('../../../img/icons/caminhao.png')}
                     />
                     <Text style={[styles.label,{marginStart:'3%'}]}>Transportadora</Text>
-                </Pressable>
+                </Pressable> */}
                 {/* Motorista */}
                 <Pressable 
                     style={styles.button}
@@ -46,7 +46,7 @@ export default function Register({navigation}){
                 {/* Auxiliar */}
                 <Pressable 
                     style={styles.button}
-                    onPress={()=>{navigation.navigate('RegisterContact',{sou:'auxiliar'})}}
+                    onPress={()=>{navigation.navigate('RegisterContact',{sou:'auxiliary'})}}
                 >
                     <Image style={styles.icon}
                         source={require('../../../img/icons/ajudante.png')}
