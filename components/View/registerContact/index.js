@@ -11,7 +11,7 @@ import twrnc from 'twrnc';
 export default function RegisterContact({navigation}){
     const URLproduction  = 'https://jellyfish-app-qc69e.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLdevelopment
+    const URL = URLproduction
     
     const [checkPermission, setCheckPermission] = useState(false);
     const [plate, setPlate] = useState('');
