@@ -37,7 +37,7 @@ export default function UpLoadEntregador({navigation}){
 
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLdevelopment
+    const URL = URLproduction
     
     
     useEffect(() => {
@@ -250,7 +250,7 @@ export default function UpLoadEntregador({navigation}){
                     }, 5000);
                 }
                 
-                return setLoading(false)
+                setLoading(false)
             }
         }
     }

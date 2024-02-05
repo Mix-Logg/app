@@ -385,7 +385,9 @@ export default function UpLoadDocCar({navigation}){
                 "phoneOwner": newParams.phoneOwner,
                 "trackerStatus":newParams.tracker.status,
                 "trackerBrand":newParams.tracker.brand,
-                "trackerNumber":newParams.tracker.number
+                "trackerNumber":newParams.tracker.number,
+                "relationOwner" : null,
+                "noStop" : null
             }
             console.log(vehicle)
             try{
