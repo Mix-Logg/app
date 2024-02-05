@@ -9,7 +9,7 @@ import axios from "axios";
 import twrnc from 'twrnc';
 
 export default function RegisterContact({navigation}){
-    const URLproduction  = 'https://jellyfish-app-qc69e.ondigitalocean.app/'
+    const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLproduction
     
@@ -206,6 +206,7 @@ export default function RegisterContact({navigation}){
                                         <MaskInput
                                             style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl`}
                                             value={plate}
+                                            maxLength={8}
                                             autoCapitalize="none"
                                             placeholder="Placa do Carro"
                                             onChangeText={handlePlate}
