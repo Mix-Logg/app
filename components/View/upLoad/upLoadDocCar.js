@@ -383,9 +383,9 @@ export default function UpLoadDocCar({navigation}){
                 "weight" : route.params.dataCar.typeCar,
                 "plate" : newParams.plate,
                 "phoneOwner": newParams.phoneOwner,
-                "trackerStatus":newParams.tracker.status,
-                "trackerBrand":newParams.tracker.brand,
-                "trackerNumber":newParams.tracker.number,
+                "trackerStatus":newParams.tracker.status ,
+                "trackerBrand":newParams.tracker.brand , 
+                "trackerNumber":newParams.tracker.number ,
                 // "relationOwner" : null,
                 // "noStop" : null
             }
@@ -397,9 +397,9 @@ export default function UpLoadDocCar({navigation}){
                 }else{
                     setApi('Algo deu errado. Você será redirecionado para o ínicio')
                     console.log(err)
-                    return setTimeout(() => {
-                        return navigation.navigate('Login');
-                    }, 5000);
+                    // return setTimeout(() => {
+                    //     return navigation.navigate('Login');
+                    // }, 5000);
                 }
             }catch(err){
                 console.log(err)

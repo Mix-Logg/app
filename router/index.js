@@ -1,6 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const Stack = createNativeStackNavigator();
 
 //IMPORT VIEWS
@@ -16,17 +16,29 @@ import RegisterCar from '../components/View/registerCar'
 import upLoadDocCar from '../components/View/upLoad/upLoadDocCar'
 import RegistrationStuation from '../components/View/registrationSituation'
 import Welcome from '../components/View/welcome'
-//IMPORT VIEWS
+import Home from '../components/View/Home';
+import Profile from '../components/View/profile';
 
 export default function AllRoutes() {
+
   return (
     <NavigationContainer>
-        <Stack.Navigator initialRouteName="Login">
+        <Stack.Navigator initialRouteName={Login}>
+            
             <Stack.Screen name="Login" component={Login} 
             options={{
               title: '',  
               headerStyle: {
                   backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                },
+                headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
+            <Stack.Screen name="Home" component={Home} 
+            options={{
+              title: '',  
+              headerStyle: {
+                  backgroundColor: 'transparent', // Define a cor de fundo do cabeçalho
                 },
                 headerShown: false // Exibe o cabeçalho nesta tela
               }}
@@ -129,6 +141,15 @@ export default function AllRoutes() {
                 },
                 headerShown: true // Exibe o cabeçalho nesta tela
               }}
+            />
+            <Stack.Screen name="Profile" component={Profile} 
+              options={{
+                title: '',  
+                headerStyle: {
+                    backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                  },
+                  headerShown: false // Exibe o cabeçalho nesta tela
+                }}
             />
         </Stack.Navigator>
     </NavigationContainer>
