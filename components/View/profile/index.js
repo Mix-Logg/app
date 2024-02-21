@@ -1,39 +1,97 @@
-import twrnc from 'twrnc';
-import { View, Image,Text , Pressable } from 'react-native';
+import twrnc, { style } from 'twrnc';
+import { useEffect, useState } from 'react';
+import { View, Image,Text , Pressable, StatusBar } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FixBar from '../../fixBar';
+import GetDelivery from '../../../api/getDelivery';
+import GetPicture from '../../../api/getPicture';
+import { Octicons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 export default function Profile({navigation}){
+    
     const handleLogout = async () => {
         await AsyncStorage.removeItem('access');
         navigation.navigate('Login')
     }
 
+    const handleAvalidPhoto = async () => {
+        navigation.navigate('AvalidPhoto')
+    }
+
+    const [email,setEmail] = useState('Aguarde...')
+    const [name,setName] = useState('Aguarde...')
+    const [buffer,setBuffer] = useState('')
+    const [type,setType] = useState('')
+    const [wait,setWait] = useState(true)
+
+    useEffect(() => {
+        dataEffect = async () => {
+            const delivery = await GetDelivery()
+            const image = await GetPicture('selfie')
+            setBuffer(image[0])
+            setType(image[1])
+            setEmail(delivery.email)
+            setName(delivery.name)
+            setWait(false)
+        }
+        dataEffect()
+    }, []);
+
     return(
         <View style={twrnc`flex h-full items-center`}>
-            <FixBar navigation={navigation}/>
-            <View>
-                <View style={twrnc`w-full justify-center items-center`}>
-                    <View style={twrnc`rounded-full border h-30 w-30`}>
-
-                    </View>
-                    <View>
-                        <Text>Sua Foto foi reprovada, clique</Text>
-                        <Text>no ícone e mande uma nova</Text>
-                    </View>
-                </View>
-                <View style={twrnc`w-full h-20 bg-black`}>
-                    <View style={twrnc`w-full bg-[#EFEFEF]`}>
-                        <Text>AQUI</Text>
-                    </View>
-                    <View style={twrnc`w-2/5 bg-[#EFEFEF] h-10`}>
-                        <Text>AQUI</Text>
-                    </View>
-                </View>
-                {/* <Pressable
-                onPress={handleLogout}
+            <FixBar navigation={navigation} opition={'profile'}/>
+                <Pressable style={[twrnc`absolute flex-row gap-2 justify-center items-center`,{top:'9%'}]}
+                    onPress={handleLogout}
                 >
-                    <Text>LOGOUT</Text>
-                </Pressable> */}
+                    <Text style={twrnc`text-red-600`}>Sair</Text>
+                    <Ionicons name="exit-outline" size={24} style={twrnc`text-red-600`} /> 
+                </Pressable>
+            <View style={twrnc`mt-15 h-full items-center`}>
+                <View style={[twrnc`w-full justify-center items-center absolute`, { width:'38%', height:'18%'}]}>
+                    <View style={[twrnc`rounded-full border-2 absolute`, {zIndex:0, width:'100%', height:'100%'}]}>
+                    { wait ?
+                        <Image
+                            source={require('../../../img/logo/logoAsa.png')}
+                            style={twrnc`h-full w-full rounded-full`}
+                            resizeMode="contain"
+                        />
+                        :
+                        <Image
+                            source={{ uri: `data:${type};base64,${buffer}` }}
+                            style={twrnc`w-full h-full rounded-full`}
+                            
+                        />
+                    }
+                    </View>
+                    <Pressable onPress={handleAvalidPhoto}
+                    style={[twrnc`rounded-full border-2 w-9 h-9 justify-center items-center bg-white`,{left:'40%', top:'30%', zIndex:5}]}>
+                        <Octicons name="pencil" size={24} color="black" />
+                    </Pressable>
+                </View>
+                <View style={twrnc`justify-center items-center h-full gap-20`}>
+                    <View style={twrnc`w-full h-20 gap-5`}>
+                        <View style={twrnc`py-3 px-5 bg-[#EFEFEF] flex flex-row justify-center items-center gap-2`}>
+                            <AntDesign name="user" size={24} color="black" />
+                            <Text style={twrnc`text-[#7B7B7B]`}>{name}</Text>
+                        </View>
+                        <View style={twrnc`py-3 px-5 bg-[#EFEFEF] flex flex-row justify-center items-center gap-2`}>
+                            <MaterialCommunityIcons name="email-outline" size={24} color="black" />
+                            <Text style={twrnc`text-[#7B7B7B]`}>{email}</Text>
+                        </View>
+                    </View>
+                    <View style={twrnc`bg-[#191919] rounded-lg flex flex-row justify-center items-center py-3 px-2 gap-2`}>
+                        <Octicons name="key" size={24} color="white" />
+                        <Text style={twrnc`text-white`}> MUDAR SENHA</Text>
+                    </View>
+                    {/* <Pressable style={twrnc`flex flex-row rounded-lg  items-center justify-center gap-2 px-2 py-3 gap-2 bg-red-500`}
+                        onPress={handleLogout}
+                        >
+                            <MaterialCommunityIcons name="logout" size={24} color="black" />
+                            <Text style={twrnc`font-bold`}>SAIR</Text>
+                    </Pressable> */}
+                </View>
             </View>
         </View>
     )

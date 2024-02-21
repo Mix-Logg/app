@@ -13,7 +13,6 @@ export default function Bar({navigation}){
     useEffect(() => {
         dataEffect = async () => {
             const res = await GetDelivery()
-            console.log(res.name)
             const name = await Mask(res.name, 'firstName')
             setName(name)
         }
@@ -22,6 +21,7 @@ export default function Bar({navigation}){
 
     return(
         <View style={[twrnc`bg-[#EFEFEF] flex flex-row items-center w-full justify-between`,{height:'10%'}]}>
+            
             <View style={twrnc`flex flex-row h-full w-1/2 gap-2 px-5 items-center`}>
             <View style={twrnc`w-2/8 h-1/2`}>
                 <Image 

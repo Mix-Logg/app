@@ -263,7 +263,6 @@ export default function UpLoadDocCar({navigation}){
         setModalBtn(!modalBtn)
     }
 
-
     const navegacao = async () => {
         setLoading(true)
         if(

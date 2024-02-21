@@ -6,9 +6,10 @@ import Modal from "react-native-modal";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Wating from '../../wating';
+import GetDelivery from '../../../api/getDelivery';
 export default function Login({navigation}){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.0.45:8080/'
+    const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLdevelopment
     const [cpf,setCpf] = useState('')
     const [password,setPassword] = useState('')
@@ -31,15 +32,16 @@ export default function Login({navigation}){
         try{
             const res = await axios.post(`${URL}user/auth`, auth)
             if(res.data != null){
+                console.log(res.data.uuid.toString())
                 await AsyncStorage.setItem('access', '1');
                 await AsyncStorage.setItem('am', res.data.am);
-                await AsyncStorage.setItem('cpf', res.data.cpf);
+                await AsyncStorage.setItem('uuid', res.data.uuid.toString());
                 return navigation.navigate('Home')
             }
             setAcessModal(!acessModal)
             return
         }catch(error){
-            console.log('err:',error)
+            console.log('erro:',error)
             setAcessModal(!acessModal)
             return
         }

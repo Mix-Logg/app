@@ -80,7 +80,7 @@ export default function UpLoadEntregador({navigation}){
         } catch (error) {
           console.error(`Erro ao enviar o arquivo ${filename}:`, error);
         }
-    }
+        }
     
     const SelectOpition = async (escolha) =>{        
         if(escolha === 'galeria'){
