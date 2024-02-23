@@ -1,5 +1,6 @@
+import VerifyCPFUser from "../../api/VerifyCPFUser";
 
-export default function validateCPF(cpf){
+export default async function validateCPF(cpf){
     cpf = cpf.replace(/[^\d]/g, ''); // Remove caracteres não numéricos
     
      // Verifica se o CPF possui 11 dígitos
@@ -44,6 +45,9 @@ export default function validateCPF(cpf){
     if (remainder !== parseInt(cpf.substring(10, 11))) {
         return false;
     }
-    
-    return true;
+    response = await VerifyCPFUser(cpf)
+    if(response === 200){
+        return true;
+    } 
+    return false;
 }

@@ -10,23 +10,34 @@ export default function RegisterUser({navigation}){
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLdevelopment
     const [cpf,setCpf] = useState(null)
+    const [cpfValid,setCpfValid] = useState(null)
     const [password,setPassword] = useState(null)
+    const [passwordValid,setPasswordValid] = useState(null)
     const [passwordAgain,setPasswordAgain] = useState(null)
+    const [passwordAgainValid,setPasswordAgainValid] = useState(null)
 
     const handleCpf = async (txt) => {
-        setCpf(txt)
-        const valid = validateCPF(txt)
-        console.log('CPF:',cpf, 'VALID:', valid)
+        setCpf(txt);
+        const valid = await validateCPF(txt);
+        setCpfValid(valid);
     }
 
     const handlePassword = async (txt) => {
-        setPassword(txt)
-        console.log('Password:',password)
+        setPassword(txt);
+        if(txt.length === 8){
+            setPasswordValid(true);
+            return;
+        }
+        setPasswordValid(false);
     }
 
     const handlePasswordAgain = async (txt) => {
         setPasswordAgain(txt)
-        console.log('Again:',passwordAgain)
+        if(txt.length === 8 && txt === password){
+            setPasswordAgainValid(true);
+            return;
+        }
+        setPasswordAgainValid(false);
     }
 
     return(
@@ -52,11 +63,11 @@ export default function RegisterUser({navigation}){
                             keyboardType="numeric"
                             placeholder="000.000.000-00"
                         />
-                    { cpf === true ?
+                    { cpfValid === true ?
                         <View>
                             <FontAwesome name="check" size={35} style={twrnc`text-[#FF5F00]`} />
                         </View>
-                        : cpf === false ?
+                        : cpfValid === false ?
                         <View>
                             <FontAwesome name="close" size={37} style={twrnc`text-[#FF5F00]`} />
                         </View> : ''
@@ -73,11 +84,11 @@ export default function RegisterUser({navigation}){
                                 value={password}
                                 onChangeText={(txt)=>{handlePassword(txt)}}
                             />
-                            { password === true ?
+                            { passwordValid === true ?
                             <View>
                                 <FontAwesome name="check" size={35} style={twrnc`text-[#FF5F00]`} />
                             </View>
-                            : password === false ?
+                            : passwordValid === false ?
                             <View>
                                 <FontAwesome name="close" size={37} style={twrnc`text-[#FF5F00]`} />
                             </View> : ''
@@ -93,11 +104,11 @@ export default function RegisterUser({navigation}){
                                 value={passwordAgain}
                                 onChangeText={(txt)=>{handlePasswordAgain(txt)}}
                             />
-                            { passwordAgain === true ?
+                            { passwordAgainValid === true ?
                             <View>
                                 <FontAwesome name="check" size={35} style={twrnc`text-[#FF5F00]`} />
                             </View>
-                            : passwordAgain === false ?
+                            : passwordAgainValid === false ?
                             <View>
                                 <FontAwesome name="close" size={37} style={twrnc`text-[#FF5F00]`} />
                             </View> : ''

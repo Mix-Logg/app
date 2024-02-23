@@ -6,7 +6,7 @@ export default async function VerifyCPFUser(cpf){
     const URL = URLdevelopment
     
     try{
-        // const res = await axios.(`${URL}upload-bucket/upload`)
+        const res = await axios.get(`${URL}user/${cpf}`)
         return res.data
     }catch(erro){
         console.log(erro)
