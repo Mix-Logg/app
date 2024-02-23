@@ -76,7 +76,7 @@ export default function AllRoutes() {
               headerStyle: {
                   backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
                 },
-                headerShown: true // Exibe o cabeçalho nesta tela
+                headerShown: false // Exibe o cabeçalho nesta tela
               }}
             />
             <Stack.Screen name="RegisterAddress" component={RegisterAddress} 
@@ -85,7 +85,7 @@ export default function AllRoutes() {
               headerStyle: {
                   backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
                 },
-                headerShown: true // Exibe o cabeçalho nesta tela
+                headerShown: false // Exibe o cabeçalho nesta tela
               }}
             />
             <Stack.Screen name="InfoPhotoAuMo" component={InfoPhoto} 
@@ -103,7 +103,7 @@ export default function AllRoutes() {
               headerStyle: {
                   backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
                 },
-                headerShown: true // Exibe o cabeçalho nesta tela
+                headerShown: false // Exibe o cabeçalho nesta tela
               }}
             />
             <Stack.Screen name="RegisterCar" component={RegisterCar} 

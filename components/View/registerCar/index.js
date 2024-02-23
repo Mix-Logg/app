@@ -5,7 +5,7 @@ import { useRoute } from '@react-navigation/native';
 import  { useState, useEffect } from 'react';
 import { CheckBox } from 'react-native-elements';
 import twrnc from 'twrnc';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 export default function RegisterPhotoDoc({navigation}){
     const route = useRoute();
     
@@ -20,6 +20,9 @@ export default function RegisterPhotoDoc({navigation}){
     const [statusTracker, setStatusTracker] = useState(null)
     const [brandTracker, setBrandTracker] = useState(null)
     const [numberTracker, setNumberTracker] = useState(null)
+    const [noStop, setNoStop] = useState(null)
+    const [statusNoStop, setStatusNoStop] = useState(null)
+    const [noStopNumber, setNoStopNumber] = useState(null)
 
     const newParams = {
         ...route.params,
@@ -49,6 +52,20 @@ export default function RegisterPhotoDoc({navigation}){
         }
         if(param == false){
             setTracker(false);
+        }
+    }
+
+    const handleNoStop = (param) => {
+        console.log(param)
+        if (param === true){
+            setNoStop(true);
+        }
+        if (param == 'back') {
+            setNoStop(null);
+            setStatusNoStop(null);
+        }
+        if(param == false){
+            setNoStop(false);
         }
     }
 
@@ -123,8 +140,7 @@ export default function RegisterPhotoDoc({navigation}){
                     <Text style={twrnc`text-lg mt-2`}>Vamos registrar o seu veículo na <Text style={styles.span}>MIX</Text> </Text>
                 </View>
                 <View style={twrnc`mt-5`}>
-                        
-                        <View style={twrnc`px-14`}>
+                    <View style={twrnc`px-14`}>
                             <Text style={twrnc`text-sm`}>Quem é o <Text style={styles.span}>proprietário</Text> do veículo?</Text>
                            
                             <Pressable 
@@ -161,7 +177,7 @@ export default function RegisterPhotoDoc({navigation}){
                                             color: proprietario === 'outraPessoa' ? 'white' : '#FF5F00'
                                     }]}>Outra Pessoa</Text>
                             </Pressable>
-                        </View>
+                    </View>
 
                     {proprietario !== false && ( 
                         <View style={twrnc`mt-5 px-14`}>
@@ -300,6 +316,93 @@ export default function RegisterPhotoDoc({navigation}){
                                             />
                                             <Text style={[twrnc`font-bold w-40`,{
                                                 color: tracker === false ? 'white' : '#FF5F00'
+                                            }]}>Não</Text>
+                                    </Pressable> 
+                                </>
+                            }
+
+                        </View>
+                    )} 
+
+                    {proprietario && cadastroVeiculo != false && (tracker === false || statusTracker != null && numberTracker != null && brandTracker != null ) && ( 
+                        <View style={twrnc`mt-5 px-14`}>
+                            <Text style={twrnc`text-sm`} >O veículo tem <Text style={styles.span}>Sem Parar</Text> ?</Text>
+
+                            { noStop === true ?
+                                <View style={twrnc`flex mt-2 gap-5`}>
+                                    <View style={twrnc`flex border border-[#FF5F00]`}>
+                                        <Text style={twrnc`flex text-xs ml-2 font-bold text-[#FF5F00]`}>Tag</Text>
+                                        <TextInput style={twrnc`flex p-1 pl-5`}
+                                        onChangeText={(txt)=>{setNumberTracker(txt)}}
+                                        value={numberTracker}
+                                        ></TextInput>
+                                    </View>
+
+                                    <View style={twrnc`flex flex-row justify-center items-center`}>
+                                        <Pressable 
+                                        style={twrnc`bg-[#FF5F00] py-2 px-3`}
+                                            onPress={()=>{
+                                                handleNoStop('back')
+                                            }}
+                                        >
+                                            <Text style={twrnc`font-bold text-white rounded-xl`}>Voltar</Text>
+
+                                        </Pressable>
+                                        <CheckBox
+                                                title="Ativo"
+                                                checkedColor= {true ? '#28a745' :"#FF5F00"}
+                                                uncheckedColor="#FF5F00"
+                                                containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
+                                                titleProps={{
+                                                    style: { 
+                                                        color: statusNoStop  ? '#28a745' :"#FF5F00",
+                                                        fontFamily:'Roboto_500Medium',
+                                                    }
+                                                    }}
+                                                    checked={statusNoStop}
+                                                    size={25}
+                                                    onPress={()=>{setStatusNoStop(true)}}
+                                        />
+                                        <CheckBox
+                                                title="Inativo"
+                                                checkedColor= {statusNoStop === false ? '#28a745' :"#FF5F00"}
+                                                uncheckedColor="#FF5F00"
+                                                containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
+                                                titleProps={{
+                                                    style: { 
+                                                        color: statusNoStop === false  ? '#28a745' :"#FF5F00",
+                                                        fontFamily:'Roboto_500Medium',
+                                                    }
+                                                    }}
+                                                    checked={statusNoStop === false }
+                                                    size={25}
+                                                    onPress={()=>{setStatusNoStop(false)}}
+                                        />
+                                    </View>
+                                </View>
+                                :
+                                <>
+                                    <Pressable 
+                                            style={[twrnc`border border-[#FF5F00] p-2 flex flex-row justify-center items-center  mt-2 gap-5 rounded-lg ` ,
+                                                { backgroundColor: noStop === true ? '#FF5F00' : 'transparent'}
+                                            ]}
+                                            onPress={()=>{handleNoStop(true) }}
+                                        >
+                                            <MaterialCommunityIcons name="flag-outline" size={24} style={twrnc`text-[#FF5F00]`} />
+                                            <Text style={[twrnc`font-bold w-40`,{
+                                                color: tracker === true ? 'white' : '#FF5F00'
+                                            }]}>Sim</Text>
+                                    </Pressable>
+
+                                    <Pressable 
+                                            style={[twrnc`border border-[#FF5F00] p-2 flex flex-row justify-center items-center mt-2 gap-5 rounded-lg ` ,{
+                                                backgroundColor: noStop === false ? '#FF5F00' : 'transparent'
+                                            }]}
+                                            onPress={()=>{handleNoStop(false)}}
+                                        >
+                                            <MaterialCommunityIcons name="flag-off-outline" size={24} style={twrnc`${noStop === false ? 'text-white': 'text-[#FF5F00]'}`} />
+                                            <Text style={[twrnc`font-bold w-40`,{
+                                                color: noStop === false ? 'white' : '#FF5F00'
                                             }]}>Não</Text>
                                     </Pressable> 
                                 </>

@@ -1,13 +1,12 @@
-import { View, Text, Image, StyleSheet, Pressable, Alert } from "react-native"
+import { View, Text, Image, StyleSheet, Pressable, Alert, ScrollView } from "react-native"
 import { useRoute } from '@react-navigation/native';
 import { useState } from "react";
 import React, { useEffect } from 'react';
 import MaskInput from 'react-native-mask-input';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { CheckBox } from 'react-native-elements';
 import axios from "axios";
 import twrnc from 'twrnc';
-
+import FixBar from "../../fixBar";
 export default function RegisterContact({navigation}){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
@@ -30,18 +29,18 @@ export default function RegisterContact({navigation}){
     const route = useRoute();
 
     useEffect(() => {
-      if (route.params.sou === 'motorista' && !motorista) {
+      if (route.params.am === 'driver' && !motorista) {
         setMotorista(true);
-      } else if (route.params.sou === 'auxiliary' && !auxiliar) {
+      } else if (route.params.am === 'auxiliary' && !auxiliar) {
         setAuxiliar(true);
-      } else if (route.params.sou === 'empresa' && !empresa) {
+      } else if (route.params.am === 'empresa' && !empresa) {
         setEmpresa(true);
-      } else if (route.params.sou === 'transportadora' && !transportadora) {
+      } else if (route.params.am === 'transportadora' && !transportadora) {
         setTransportadora(true);
       } else {
         console.log('Não foi identificada uma escolha.');
       }
-    }, [route.params.sou]);
+    }, [route.params.am]);
     
     const handleEmail = (text) => {
         const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -66,23 +65,26 @@ export default function RegisterContact({navigation}){
     }
 
     const access = async () => {
-        if(phoneIsValid && emailIsValid && checkPermission && plate && name && route.params.sou === 'motorista'){
+        if(phoneIsValid && emailIsValid && checkPermission && plate && name && route.params.am === 'driver'){
             const verify = {
-                am : route.params.sou === 'motorista' ? 'driver' : '',
+                am : route.params.am ,
                 phone : phoneNumber,
                 email : email,
             }
             try{
                 const res = await axios.get(URL+'auth/'+verify.phone+'/'+verify.email+'/'+verify.am)
-                driver = res.data.driver
+                console.log(res.data)
+                let driver = res.data.driver
                 if(driver === 'notExist'){
                     navigation.navigate ('RegisterAddress',
                     {
-                        sou   : route.params.sou,
-                        phone : phoneNumber,
-                        email : email,
-                        plate : plate,
-                        name  : name
+                        ...route.params,
+                        contact:{
+                            phone : phoneNumber,
+                            email : email,
+                            plate : plate,
+                            name  : name
+                        }
                     }
                     )
                 }else if(driver === 'erroEmail'){
@@ -98,10 +100,10 @@ export default function RegisterContact({navigation}){
             }
             
         }
-        if(phoneIsValid && emailIsValid && checkPermission && name && route.params.sou === 'auxiliary'){
+        if(phoneIsValid && emailIsValid && checkPermission && name && route.params.am === 'auxiliary'){
             try{
                 const verify = {
-                    am : route.params.sou,
+                    am : route.params.am,
                     phone : phoneNumber,
                     email : email,
                 }
@@ -110,7 +112,7 @@ export default function RegisterContact({navigation}){
                 if(auxiliary === 'notExist'){
                     navigation.navigate ('RegisterAddress',
                     {
-                        sou   : route.params.sou,
+                        am   : route.params.am,
                         phone : phoneNumber,
                         email : email,
                         name  : name
@@ -131,123 +133,126 @@ export default function RegisterContact({navigation}){
     }
     
     return(
-        <KeyboardAwareScrollView style={twrnc`bg-white`}>
-            <View style={[styles.container]}>
-                <View style={styles.containerIconTxt}>
-                        { empresa ?
-                        <Image
-                            style={[twrnc`h-20 w-20 mb-5`, {tintColor:'#FF5F00'} ]}
-                            source={require('../../../img/icons/redePessoas.png')}
-                        /> : ''}
-
-                        {transportadora ?
+        <ScrollView style={twrnc`bg-white`}>
+           <View style={twrnc`h-200`}>
+                <FixBar navigation={navigation} opition={'register'} />
+                <View style={twrnc`p-5`}>
+                    <View style={styles.containerIconTxt}>
+                            { empresa ?
                             <Image
                                 style={[twrnc`h-20 w-20 mb-5`, {tintColor:'#FF5F00'} ]}
-                                source={require('../../../img/icons/caminhao.png')}
-                            /> : ''
-                        }
+                                source={require('../../../img/icons/redePessoas.png')}
+                            /> : ''}
 
-                        { motorista ? <Image
-                            style={[twrnc`h-20 w-20 mb-5`, {tintColor:'#FF5F00'} ]}
-                            source={require('../../../img/icons/volante.png')}
-                            /> : '' 
-                        }
+                            {transportadora ?
+                                <Image
+                                    style={[twrnc`h-20 w-20 mb-5`, {tintColor:'#FF5F00'} ]}
+                                    source={require('../../../img/icons/caminhao.png')}
+                                /> : ''
+                            }
 
-                        { auxiliar ? <Image
-                            style={[twrnc`h-20 w-20 mb-5`, {tintColor:'#FF5F00'} ]}
-                            source={require('../../../img/icons/cargaCoracao2.png')}
-                            /> : ''
-                        }
+                            { motorista ? <Image
+                                style={[twrnc`h-20 w-20 mb-5`, {tintColor:'#FF5F00'} ]}
+                                source={require('../../../img/icons/volante.png')}
+                                /> : '' 
+                            }
 
-                        {transportadora || empresa ?<Text style={twrnc`text-sm`}>Torne-se nosso parceiro</Text>:''}
-                        {motorista || auxiliar ?<Text style={twrnc`text-lg font-bold`}>Torne-se nosso entregador</Text>:''}
-                        <View style={styles.containerInputTxtinfo}>
+                            { auxiliar ? <Image
+                                style={[twrnc`h-20 w-20 mb-5`, {tintColor:'#FF5F00'} ]}
+                                source={require('../../../img/icons/cargaCoracao2.png')}
+                                /> : ''
+                            }
 
-                                <View style={twrnc`mt-2 mb-3`}>
-                                    <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Nome Completo</Text>
-                                    <MaskInput
-                                        style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl capitalize`}
-                                        value={name}
-                                        onChangeText={handleName}
-                                    />
-                                </View>
+                            {transportadora || empresa ?<Text style={twrnc`text-sm`}>Torne-se nosso parceiro</Text>:''}
+                            {motorista || auxiliar ?<Text style={twrnc`text-lg font-bold`}>Torne-se nosso entregador</Text>:''}
+                            <View style={styles.containerInputTxtinfo}>
 
-                                <View style={twrnc`mt-2 mb-3`}>
-                                    <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Número de celular</Text>
-                                    <MaskInput
-                                        style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl`}
-                                        value={phone}
-                                        keyboardType="phone-pad"
-                                        onChangeText={(masked, unmasked) => {
-                                            setPhone(masked);
-                                            setPhoneNumber(unmasked);
-                                            unmasked.length === 11 ? setPhoneIsValid(true) : setPhoneIsValid(false) 
-                                        }}
-                                        mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
-                                    />
-                                </View>
-
-                                <View style={twrnc`mt-2 mb-3`}>
-                                    <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Endereço de email</Text>
-                                    <MaskInput
-                                        style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl`}
-                                        value={email}
-                                        autoCompleteType="email"
-                                        keyboardType="email-address"
-                                        autoCapitalize="none"
-                                        placeholder="exemplo@email.com"
-                                        onChangeText={handleEmail}
-                                    ></MaskInput>
-                                </View>
-                           
-                                { motorista &&  (
                                     <View style={twrnc`mt-2 mb-3`}>
-                                        <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Placa do Carro</Text>
+                                        <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Nome Completo</Text>
+                                        <MaskInput
+                                            style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl capitalize`}
+                                            value={name}
+                                            onChangeText={handleName}
+                                        />
+                                    </View>
+
+                                    <View style={twrnc`mt-2 mb-3`}>
+                                        <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Número de celular</Text>
                                         <MaskInput
                                             style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl`}
-                                            value={plate}
-                                            maxLength={8}
-                                            autoCapitalize="none"
-                                            placeholder="Placa do Carro"
-                                            onChangeText={handlePlate}
-                                        ></MaskInput>
-                                    </View>)
-                                }
+                                            value={phone}
+                                            keyboardType="phone-pad"
+                                            onChangeText={(masked, unmasked) => {
+                                                setPhone(masked);
+                                                setPhoneNumber(unmasked);
+                                                unmasked.length === 11 ? setPhoneIsValid(true) : setPhoneIsValid(false) 
+                                            }}
+                                            mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+                                        />
+                                    </View>
 
-                                <Text style={styles.txtInfo}>
-                                    Digite o <Text style={styles.span}>seu melhor</Text> número de <Text style={styles.span}>celular</Text> e <Text style={styles.span}>email</Text> , entraremos em contato com você atravez dessas informações.{'\n'}
-                                    <CheckBox
-                                            title="Concordo com os termos de uso"
-                                            checkedColor= {checkPermission ? '#28a745' :"#FF5F00"}
-                                            uncheckedColor="#FF5F00"
-                                            containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                            titleProps={{
-                                                style: { 
-                                                    color:checkPermission ? '#28a745' :"#FF5F00",
-                                                    fontFamily:'Roboto_500Medium',
-                                                }
-                                                }}
-                                                checked={checkPermission ? true : false}
-                                                size={25}
-                                                onPress={permission}
-                                    />
-                                </Text>
-                                
-                        </View>
+                                    <View style={twrnc`mt-2 mb-3`}>
+                                        <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Endereço de email</Text>
+                                        <MaskInput
+                                            style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl`}
+                                            value={email}
+                                            autoCompleteType="email"
+                                            keyboardType="email-address"
+                                            autoCapitalize="none"
+                                            placeholder="exemplo@email.com"
+                                            onChangeText={handleEmail}
+                                        ></MaskInput>
+                                    </View>
+                            
+                                    { motorista &&  (
+                                        <View style={twrnc`mt-2 mb-3`}>
+                                            <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Placa do Carro</Text>
+                                            <MaskInput
+                                                style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl`}
+                                                value={plate}
+                                                maxLength={8}
+                                                autoCapitalize="none"
+                                                placeholder="Placa do Carro"
+                                                onChangeText={handlePlate}
+                                            ></MaskInput>
+                                        </View>)
+                                    }
+
+                                    <Text style={styles.txtInfo}>
+                                        Digite o <Text style={styles.span}>seu melhor</Text> número de <Text style={styles.span}>celular</Text> e <Text style={styles.span}>email</Text> , entraremos em contato com você atravez dessas informações.{'\n'}
+                                        <CheckBox
+                                                title="Concordo com os termos de uso"
+                                                checkedColor= {checkPermission ? '#28a745' :"#FF5F00"}
+                                                uncheckedColor="#FF5F00"
+                                                containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
+                                                titleProps={{
+                                                    style: { 
+                                                        color:checkPermission ? '#28a745' :"#FF5F00",
+                                                        fontFamily:'Roboto_500Medium',
+                                                    }
+                                                    }}
+                                                    checked={checkPermission ? true : false}
+                                                    size={25}
+                                                    onPress={permission}
+                                        />
+                                    </Text>
+                                    
+                            </View>
+                    </View>
+                    <View style={twrnc`w-full flex items-center mt-7`}>
+                            <Pressable
+                                style={twrnc`rounded-xl py-2 px-10 border border-[#FF5F00]  ${( phoneIsValid && emailIsValid && checkPermission && plate && name && route.params.am === 'driver' ) || ( phoneIsValid && emailIsValid && checkPermission && name && route.params.am === 'auxiliary' ) ? 'bg-orange-500' : 'bg-transparent'}`}
+                                onPress={()=>{ access() }}
+                            >
+                                <Text style={[styles.txtButton, {
+                                color:( phoneIsValid && emailIsValid && checkPermission && plate && name && route.params.am === 'driver' ) || ( phoneIsValid && emailIsValid && checkPermission && name && route.params.am === 'auxiliary' )
+                                ? 'white' :'#FF5F00',
+                                }]}>Continuar</Text>
+                            </Pressable>
+                    </View>
                 </View>
-                <View style={twrnc`w-full flex items-center mt-7`}>
-                        <Pressable
-                            style={twrnc`rounded-xl py-2 px-10 border border-[#FF5F00]  ${( phoneIsValid && emailIsValid && checkPermission && plate && name && route.params.sou === 'motorista' ) || ( phoneIsValid && emailIsValid && checkPermission && name && route.params.sou === 'auxiliary' ) ? 'bg-orange-500' : 'bg-transparent'}`}
-                            onPress={()=>{ access() }}
-                        >
-                            <Text style={[styles.txtButton, {
-                            color:( phoneIsValid && emailIsValid && checkPermission && plate && name && route.params.sou === 'motorista' ) || ( phoneIsValid && emailIsValid && checkPermission && name && route.params.sou === 'auxiliary' )
-                             ? 'white' :'#FF5F00',
-                            }]}>Continuar</Text>
-                        </Pressable>
-                </View>
-            </View>
-        </KeyboardAwareScrollView>
+           </View>
+        </ScrollView>
     )
 }
 

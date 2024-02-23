@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 import { useRoute } from '@react-navigation/native';
 import axios from "axios";
-
+import FixBar from "../../fixBar";
 
 export default function UpLoadEntregador({navigation}){
     const route = useRoute();
@@ -176,7 +176,7 @@ export default function UpLoadEntregador({navigation}){
 
     const navegacao = async () => {
         if(cpfImage && EnderecoImage && (route.params.am === 'auxiliary' || cnhImage) && selfieImage != null  ){
-            if(route.params.am === 'motorista'){
+            if(route.params.am === 'driver'){
                 navigation.navigate('RegisterCar',newParam)
             }else if(route.params.am === 'auxiliary'){
                 setLoading(true)
@@ -258,6 +258,7 @@ export default function UpLoadEntregador({navigation}){
     return(
     <>
          {loading === false ? <KeyboardAwareScrollView>
+            <FixBar navigation={navigation} opition={'register'} />
             <View style={styles.container}>
                 <Text style={styles.h1}>Foto</Text>
                 <Text style={styles.txtListen}>

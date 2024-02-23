@@ -1,10 +1,12 @@
 import twrnc from "twrnc";
 import { View, Image,Text ,TextInput, Pressable, ScrollView, Button } from 'react-native';
 import { useEffect, useState } from 'react';
-import MaskInput from 'react-native-mask-input';
+import { useRoute } from '@react-navigation/native';
 import { FontAwesome } from '@expo/vector-icons';
+import MaskInput from 'react-native-mask-input';
 import FixBar from "../../../fixBar";
 import validateCPF from "../../../../function/validCPF";
+
 export default function RegisterUser({navigation}){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
@@ -15,6 +17,8 @@ export default function RegisterUser({navigation}){
     const [passwordValid,setPasswordValid] = useState(null)
     const [passwordAgain,setPasswordAgain] = useState(null)
     const [passwordAgainValid,setPasswordAgainValid] = useState(null)
+    const [fullAvalid,setFullAvalid] = useState(null)
+    const route = useRoute();
 
     const handleCpf = async (txt) => {
         setCpf(txt);
@@ -40,6 +44,28 @@ export default function RegisterUser({navigation}){
         setPasswordAgainValid(false);
     }
 
+    const handleSubmit = async () => {
+       if(passwordAgainValid && passwordValid && cpfValid){
+            const params = {
+                ...route.params,
+                user:{
+                    login:cpf,
+                    pass:password
+                }
+            }
+            navigation.navigate('RegisterContact',params);
+            return;
+       }
+       const params = {
+        ...route.params,
+        user:{
+            login:cpf,
+            pass:password
+        }
+    }
+       navigation.navigate('RegisterContact',params);
+    }
+
     return(
         <ScrollView>
             <View style={twrnc`h-200`}>
@@ -56,7 +82,7 @@ export default function RegisterUser({navigation}){
                     <Text style={twrnc`font-bold`}>Digite seu CPF</Text>
                     <View style={twrnc`flex-row items-center gap-6`}>
                         <MaskInput
-                            style={twrnc`p-2 text-2xl border-[#FF5F00] border-2 rounded-lg w-4/6`}
+                            style={twrnc`p-2 text-2xl border-[#FF5F00] border-2 rounded-lg w-5/6`}
                             mask={[/\d/, /\d/, /\d/,'.', /\d/, /\d/,/\d/,'.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
                             onChangeText={(masked, unmasked)=>handleCpf(unmasked)}
                             value={cpf}
@@ -78,7 +104,7 @@ export default function RegisterUser({navigation}){
                     <View>
                         <Text style={twrnc`font-bold`}>Digite sua senha</Text>
                         <View style={twrnc`flex-row items-center gap-6`}>
-                            <TextInput style={twrnc`p-2 text-2xl border-[#FF5F00] border-2 rounded-lg w-4/6`}
+                            <TextInput style={twrnc`p-2 text-2xl border-[#FF5F00] border-2 rounded-lg w-5/6`}
                                 maxLength={8}
                                 secureTextEntry={true}
                                 value={password}
@@ -98,7 +124,7 @@ export default function RegisterUser({navigation}){
                     <View>
                         <Text style={twrnc`font-bold`}>Redigite sua senha</Text>
                         <View style={twrnc`flex-row items-center gap-6`}>
-                            <TextInput style={twrnc`p-2 text-2xl border-[#FF5F00] border-2 rounded-lg w-4/6`}
+                            <TextInput style={twrnc`p-2 text-2xl border-[#FF5F00] border-2 rounded-lg w-5/6`}
                                 maxLength={8}
                                 secureTextEntry={true}
                                 value={passwordAgain}
@@ -117,8 +143,10 @@ export default function RegisterUser({navigation}){
                     </View>
                 </View>
                 <View style={twrnc`w-full justify-center items-center mt-8`}>
-                    <Pressable style={twrnc`w-2/6 rounded py-2 border border-[#FF5F00] items-center `}>
-                        <Text style={twrnc`text-[#FF5F00] font-bold`}>Continuar</Text>
+                    <Pressable style={twrnc`w-2/6 rounded py-2 bg-[#FF5F00] items-center `}
+                        onPress={handleSubmit}
+                    >
+                        <Text style={twrnc`text-white font-bold`}>Continuar</Text>
                     </Pressable>
                 </View>
             </View>
