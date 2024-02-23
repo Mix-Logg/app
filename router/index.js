@@ -19,6 +19,7 @@ import Welcome from '../components/View/welcome'
 import Home from '../components/View/Home';
 import Profile from '../components/View/profile';
 import AvalidPhoto from '../components/View/profile/avalidPhoto';
+import RegisterUser from '../components/View/cadastre/registerUser';
 export default function AllRoutes() {
 
   return (
@@ -34,6 +35,15 @@ export default function AllRoutes() {
               }}
             />
             <Stack.Screen name="Home" component={Home} 
+            options={{
+              title: '',  
+              headerStyle: {
+                  backgroundColor: 'transparent', // Define a cor de fundo do cabeçalho
+                },
+                headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
+            <Stack.Screen name="RegisterUser" component={RegisterUser} 
             options={{
               title: '',  
               headerStyle: {

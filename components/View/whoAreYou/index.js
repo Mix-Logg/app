@@ -36,7 +36,7 @@ export default function Register({navigation}){
                 {/* Motorista */}
                 <Pressable 
                     style={styles.button}
-                    onPress={()=>{navigation.navigate('RegisterContact',{sou:'motorista'})}}
+                    onPress={()=>{navigation.navigate('RegisterUser',{am:'motorista'})}}
                 >
                     <Image style={styles.icon}
                         source={require('../../../img/icons/volante.png')}
@@ -46,7 +46,7 @@ export default function Register({navigation}){
                 {/* Auxiliar */}
                 <Pressable 
                     style={styles.button}
-                    onPress={()=>{navigation.navigate('RegisterContact',{sou:'auxiliary'})}}
+                    onPress={()=>{navigation.navigate('RegisterUser',{am:'auxiliary'})}}
                 >
                     <Image style={styles.icon}
                         source={require('../../../img/icons/ajudante.png')}

@@ -1,6 +1,6 @@
 import React from 'react';
 import twrnc from 'twrnc';
-import { View, Image,Text ,TextInput, Pressable, ActivityIndicator } from 'react-native';
+import { View, Image,Text ,TextInput, Pressable } from 'react-native';
 import { useEffect, useState } from 'react';
 import MaskInput from 'react-native-mask-input';
 import Modal from "react-native-modal";
@@ -13,6 +13,7 @@ export default function Login({navigation}){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLdevelopment
+    
     const [cpf,setCpf] = useState('')
     const [password,setPassword] = useState('')
     const [acessModal,setAcessModal] = useState(false)

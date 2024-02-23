@@ -2,14 +2,20 @@ import twrnc from 'twrnc';
 import { View, Image,Text , Pressable, StatusBar  } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useEffect, useState } from 'react';
+import { AntDesign } from '@expo/vector-icons';
 export default function FixBar({navigation, opition}){
     
     const [title,setTitle] = useState('')
     const [back,setBack] = useState('')
 
     const handleBack = () => {
-        navigation.navigate(back)
+        if(opition === 'register'){
+            navigation.goBack();
+        }else{
+            navigation.navigate(back)
+        }
     }
+
 
     useEffect(() => {
         dataEffect = async () => {
@@ -18,11 +24,14 @@ export default function FixBar({navigation, opition}){
                     setTitle('Perfil')
                     setBack('Home')
                     break;
-
                 case 'avalidPhoto':
                     setTitle('Situação Cadastral')
                     setBack('Profile')
                     break;
+                case 'register':
+                    setTitle('Cadastro')
+                    setBack('Profile')
+                break;
                 default:
                     break;
             }
@@ -49,6 +58,7 @@ export default function FixBar({navigation, opition}){
                     <View style={twrnc`flex flex-row`}>
                         { opition === 'profile' ? <FontAwesome5 name="user-circle" size={18} color="#7B7B7B" /> 
                         : opition === 'avalidPhoto' ? <FontAwesome5 name="clipboard-list" size={18} color="#7B7B7B" />
+                        : opition === 'register' ? <AntDesign name="adduser" size={18} color="#7B7B7B" />
                         : null }
                         <Text style={twrnc`text-[#7B7B7B] text-sm font-medium`}> {title} </Text>
                     </View>
