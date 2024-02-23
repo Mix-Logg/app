@@ -10,7 +10,7 @@ export default async function warningPicture(){
     const analyze = Object.values(info).find(value => value === null);
     const reprove = Object.values(info).find(value => value === false);
     if(reprove === undefined && analyze === undefined){
-        return 'success'
+        return {'picture':'success','txt':'Fotos aprovada!'}
     }else if(reprove != undefined){
         return {'picture':'reprove','txt':'Foto reprovada, clique no botão abaixo pra reenviar.'}
     }else{

@@ -1,3 +1,4 @@
+import React from 'react';
 import twrnc from 'twrnc';
 import { View, Image,Text ,TextInput, Pressable, ActivityIndicator } from 'react-native';
 import { useEffect, useState } from 'react';
@@ -5,6 +6,7 @@ import MaskInput from 'react-native-mask-input';
 import Modal from "react-native-modal";
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
 import Wating from '../../wating';
 import GetDelivery from '../../../api/getDelivery';
 export default function Login({navigation}){
@@ -14,7 +16,7 @@ export default function Login({navigation}){
     const [cpf,setCpf] = useState('')
     const [password,setPassword] = useState('')
     const [acessModal,setAcessModal] = useState(false)
-    const [wating,setWating] = useState(true)
+    const [waiting,setWaiting] = useState(true)
 
     const handleCpf = async (txt) => {
         setCpf(txt)
@@ -47,21 +49,37 @@ export default function Login({navigation}){
         }
     }
 
-    useEffect(() => {
-        dataEffect = async () => {
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         isLoggedIn.current = true;
+    //         const access = await AsyncStorage.getItem('access');
+    //         if (access === '1') {
+    //             navigation.navigate('Home');
+    //         } else {
+    //             setWaiting(false);
+    //         }
+    //     };
+    
+    //     fetchData();
+    // }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+          const fetchData = async () => {
             const access = await AsyncStorage.getItem('access');
-            if(access === '1'){
-                navigation.navigate('Home')
-            }else{
-                setWating(false)
+            if (access === '1') {
+              navigation.navigate('Home');
+            } else {
+              setWaiting(false);
             }
-        }
-        dataEffect()
-    }, []);
+          };
+          fetchData();
+        }, [navigation])
+    );
 
     return(
         <>
-        { !wating ?
+        { !waiting ?
             <View style={[twrnc`flex items-center  justify-center h-full `]} >
                 
                 <View style={[twrnc`flex w-full items-center mt-3`,{height:'20%'} ]}>
