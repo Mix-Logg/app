@@ -13,7 +13,6 @@ export default function RegisterContact({navigation}){
     const URL = URLproduction
     
     const [checkPermission, setCheckPermission] = useState(false);
-    const [plate, setPlate] = useState('');
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -52,9 +51,6 @@ export default function RegisterContact({navigation}){
         }
     }
 
-    const handlePlate = (text) =>{
-        setPlate(text)
-    }
 
     const handleName = (text) => {
         setName(text)
@@ -65,7 +61,7 @@ export default function RegisterContact({navigation}){
     }
 
     const access = async () => {
-        if(phoneIsValid && emailIsValid && checkPermission && plate && name && route.params.am === 'driver'){
+        if(phoneIsValid && emailIsValid && checkPermission && name && route.params.am === 'driver'){
             const verify = {
                 am : route.params.am ,
                 phone : phoneNumber,
@@ -82,7 +78,6 @@ export default function RegisterContact({navigation}){
                         contact:{
                             phone : phoneNumber,
                             email : email,
-                            plate : plate,
                             name  : name
                         }
                     }
@@ -203,20 +198,6 @@ export default function RegisterContact({navigation}){
                                             onChangeText={handleEmail}
                                         ></MaskInput>
                                     </View>
-                            
-                                    { motorista &&  (
-                                        <View style={twrnc`mt-2 mb-3`}>
-                                            <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Placa do Carro</Text>
-                                            <MaskInput
-                                                style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl`}
-                                                value={plate}
-                                                maxLength={8}
-                                                autoCapitalize="none"
-                                                placeholder="Placa do Carro"
-                                                onChangeText={handlePlate}
-                                            ></MaskInput>
-                                        </View>)
-                                    }
 
                                     <Text style={styles.txtInfo}>
                                         Digite o <Text style={styles.span}>seu melhor</Text> número de <Text style={styles.span}>celular</Text> e <Text style={styles.span}>email</Text> , entraremos em contato com você atravez dessas informações.{'\n'}
@@ -241,11 +222,11 @@ export default function RegisterContact({navigation}){
                     </View>
                     <View style={twrnc`w-full flex items-center mt-7`}>
                             <Pressable
-                                style={twrnc`rounded-xl py-2 px-10 border border-[#FF5F00]  ${( phoneIsValid && emailIsValid && checkPermission && plate && name && route.params.am === 'driver' ) || ( phoneIsValid && emailIsValid && checkPermission && name && route.params.am === 'auxiliary' ) ? 'bg-orange-500' : 'bg-transparent'}`}
+                                style={twrnc`rounded-xl py-2 px-10 border border-[#FF5F00]  ${( phoneIsValid && emailIsValid && checkPermission && name && route.params.am === 'driver' ) || ( phoneIsValid && emailIsValid && checkPermission && name && route.params.am === 'auxiliary' ) ? 'bg-orange-500' : 'bg-transparent'}`}
                                 onPress={()=>{ access() }}
                             >
                                 <Text style={[styles.txtButton, {
-                                color:( phoneIsValid && emailIsValid && checkPermission && plate && name && route.params.am === 'driver' ) || ( phoneIsValid && emailIsValid && checkPermission && name && route.params.am === 'auxiliary' )
+                                color:( phoneIsValid && emailIsValid && checkPermission && name && route.params.am === 'driver' ) || ( phoneIsValid && emailIsValid && checkPermission && name && route.params.am === 'auxiliary' )
                                 ? 'white' :'#FF5F00',
                                 }]}>Continuar</Text>
                             </Pressable>
@@ -334,12 +315,4 @@ const styles = StyleSheet.create({
         top:23,
         tintColor:'#FF5F00'
     },
-    labelPlate:{
-        position:'absolute',
-        fontSize:12,
-        top:185,
-        left:15,
-        fontFamily:'Roboto_500Medium',
-        color:'#FF5F00'
-    }
 })

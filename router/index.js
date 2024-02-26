@@ -20,6 +20,7 @@ import Home from '../components/View/Home';
 import Profile from '../components/View/profile';
 import AvalidPhoto from '../components/View/profile/avalidPhoto';
 import RegisterUser from '../components/View/cadastre/registerUser';
+import RegisterCarProfile from '../components/View/registerCar/registerCarProfile';
 export default function AllRoutes() {
 
   return (
@@ -112,7 +113,16 @@ export default function AllRoutes() {
               headerStyle: {
                   backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
                 },
-                headerShown: true // Exibe o cabeçalho nesta tela
+                headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
+            <Stack.Screen name="RegisterCarProfile" component={RegisterCarProfile} 
+            options={{
+              title: '',  
+              headerStyle: {
+                  backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                },
+                headerShown: false // Exibe o cabeçalho nesta tela
               }}
             />
             <Stack.Screen name="upLoadDocCar" component={upLoadDocCar} 

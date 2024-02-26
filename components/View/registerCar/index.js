@@ -1,11 +1,12 @@
+import twrnc from 'twrnc';
 import { View, Text, StyleSheet, Pressable, Image, Modal, TextInput, Keyboard  } from "react-native";
-import axios from "axios";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useRoute } from '@react-navigation/native';
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { CheckBox } from 'react-native-elements';
-import twrnc from 'twrnc';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import FixBar from '../../fixBar';
+
 export default function RegisterPhotoDoc({navigation}){
     const route = useRoute();
     
@@ -29,20 +30,20 @@ export default function RegisterPhotoDoc({navigation}){
         dataCar:{
             cadastroVeiculo:cadastroVeiculo,
             proprietario:proprietario,
-            checkCar:checkCar,
-            txtInputCar:txtInputCar,
-            typeCar:typeCar,
         },
         tracker:{
             status:statusTracker,
             brand:brandTracker,
             number:numberTracker
             
+        },
+        noStop : {
+            status:statusNoStop,
+            number:noStopNumber
         }
     }
 
     const handleTracker = (param) => {
-        console.log(param)
         if (param === true){
             setTracker(true);
         }
@@ -90,31 +91,8 @@ export default function RegisterPhotoDoc({navigation}){
         }
     }
 
-    const modalIsVisible = () => {
-        setModalVisible(!modalVisible)
-    }
-
-    const CheckCar = (car) => {
-        if(checkCar === 'Outro'){
-            setTxtInputCar('')
-            return setCheckCar(false)
-        }
-        setCheckCar(car)
-    }
-
-    const typeCars = (car = '') => {
-        if(car === ''){
-            setCheckCar(false)
-            return setTypeCar(false)
-        }
-        setTypeCar(car)
-    }
-
-    const navegacao = () => {
-        if((checkCar != false || txtInputCar.length > 1) && (checkCar != 'Outro' || txtInputCar.length > 1)){
-            modalIsVisible()
-            navigation.navigate('upLoadDocCar', newParams)
-        }
+    const navegation = () => {
+        navigation.navigate('RegisterCarProfile', newParams)
     }
 
     useEffect(() => {
@@ -135,8 +113,9 @@ export default function RegisterPhotoDoc({navigation}){
 
     return(
         <KeyboardAwareScrollView>
-            <View style={[styles.container]}>
-                <View>
+            <View style={twrnc`px-1 mb-10 h-200`}>
+                <FixBar navigation={navigation} opition={'register'} />
+                <View style={twrnc`px-2`}>
                     <Text style={twrnc`text-lg mt-2`}>Vamos registrar o seu veículo na <Text style={styles.span}>MIX</Text> </Text>
                 </View>
                 <View style={twrnc`mt-5`}>
@@ -333,8 +312,8 @@ export default function RegisterPhotoDoc({navigation}){
                                     <View style={twrnc`flex border border-[#FF5F00]`}>
                                         <Text style={twrnc`flex text-xs ml-2 font-bold text-[#FF5F00]`}>Tag</Text>
                                         <TextInput style={twrnc`flex p-1 pl-5`}
-                                        onChangeText={(txt)=>{setNumberTracker(txt)}}
-                                        value={numberTracker}
+                                        onChangeText={(txt)=>{setNoStopNumber(txt)}}
+                                        value={noStopNumber}
                                         ></TextInput>
                                     </View>
 
@@ -390,7 +369,7 @@ export default function RegisterPhotoDoc({navigation}){
                                         >
                                             <MaterialCommunityIcons name="flag-outline" size={24} style={twrnc`text-[#FF5F00]`} />
                                             <Text style={[twrnc`font-bold w-40`,{
-                                                color: tracker === true ? 'white' : '#FF5F00'
+                                                color: noStop === true ? 'white' : '#FF5F00'
                                             }]}>Sim</Text>
                                     </Pressable>
 
@@ -412,11 +391,11 @@ export default function RegisterPhotoDoc({navigation}){
                     )} 
 
                 </View>
-                {proprietario && cadastroVeiculo != false && (tracker === false || statusTracker != null && numberTracker != null && brandTracker != null ) && (
+                {proprietario && cadastroVeiculo != false && (tracker === false || statusTracker != null && numberTracker != null && brandTracker != null ) &&  (noStop === false || statusNoStop != null && noStop != null && noStopNumber != null ) && (
                     <View style={twrnc`mt-5 flex items-center`}>
                         <Pressable 
                             style={twrnc`bg-[#FF5F00] rounded py-2 px-5`}
-                            onPress={modalIsVisible}
+                            onPress={navegation}
                         >
                             <Text style={twrnc`font-bold text-white`}>Continuar</Text>
                         </Pressable>
@@ -425,7 +404,7 @@ export default function RegisterPhotoDoc({navigation}){
             </View>
 
 
-            <Modal
+            {/* <Modal
                 visible={modalVisible} animationType='slide' transparent={true}
             >
                         <View style={styles.modal}>
@@ -611,7 +590,7 @@ export default function RegisterPhotoDoc({navigation}){
                                                         padding:11,
                                                         backgroundColor: (checkCar != false || txtInputCar.length > 1) && (checkCar != 'Outro' || txtInputCar.length > 1) ? '#FF5F00' : 'transparent'
                                                     }]}
-                                                    onPress={navegacao}
+                                                    onPress={navegation}
                                                 >
                                                     <Text style={[styles.btnNextTxt,{
                                                         color: (checkCar != false || txtInputCar.length > 1) && (checkCar != 'Outro' || txtInputCar.length > 1)   ? 'white' : '#FF5F00'
@@ -840,7 +819,7 @@ export default function RegisterPhotoDoc({navigation}){
                                 </View>
                             </View>
                         </View>
-            </Modal>
+            </Modal> */}
         </KeyboardAwareScrollView>
     )
 }

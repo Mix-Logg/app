@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet, Image, Pressable, Modal, ActivityIndicator  } from "react-native"
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import  { useState, useEffect } from 'react';
-import * as ImagePicker from 'expo-image-picker';
-import * as DocumentPicker from 'expo-document-picker';
 import { useRoute } from '@react-navigation/native';
 import axios from "axios";
+import GetPath from "../../../function/getPathPicture";
 import FixBar from "../../fixBar";
+import PopUp from "../../modal";
 
 export default function UpLoadEntregador({navigation}){
     const route = useRoute();
@@ -23,6 +23,7 @@ export default function UpLoadEntregador({navigation}){
     const [EnderecoImage, setEnderecoImage] = useState(null);
     const [cnhImage, setCnhImage] = useState(null);
     const [selfieImage, setSelfieImage] = useState(null);
+    const [modal, setModal] = useState(null);
 
     const [api, setApi] = useState(null);
     const newParam = {
@@ -80,66 +81,28 @@ export default function UpLoadEntregador({navigation}){
         } catch (error) {
           console.error(`Erro ao enviar o arquivo ${filename}:`, error);
         }
-        }
+      }
     
-    const SelectOpition = async (escolha) =>{        
-        if(escolha === 'galeria'){
-            let result = await ImagePicker.launchImageLibraryAsync({
-                allowsEditing: true,
-                quality: 1,
-                includeBase64:true,
-                saveToPhotos:true
-            });
-                        
-            if(cpfVisible){
-                setCpfImage(result.assets[0].uri)
-            }else if(enderecoVisible){
-                setEnderecoImage(result.assets[0].uri)
-            }else if(cnhVisible){
-                setCnhImage(result.assets[0].uri) 
-            }else{
-                setSelfieImage(result.assets[0].uri)
-            }
+    const SelectOpition = async (option) =>{
+        const path  = await GetPath(option);
+        if(path.option === "file"){
+            setIsVisible(false);
+            setModalBtnVisible(false)
+            setModal('')
+            setModal(<PopUp type={'warning'} txt={'Aceitamos apenas arquivo do tipo PDF, e com o tamanho menor que 1GB.'} show={true}/>);
+            return;
         }
-
-        if(escolha === 'camera'){
-            const options = {
-                allowsEditing: true, // Permite a edição da imagem (opcional)
-            };
-            const result = await ImagePicker.launchCameraAsync(options);
-            if (!result.cancelled) {
-                if(cpfVisible){
-                    setCpfImage(result.uri)
-
-                }else if(enderecoVisible){
-                    setEnderecoImage(result.uri)
-                }else if(cnhVisible){
-                    setCnhImage(result.uri) 
-                }else{
-                    setSelfieImage(result.uri)
-                }
-            }
+        if(cpfVisible){
+            setCpfImage(path)
+        }else if(enderecoVisible){
+            setEnderecoImage(path)
+        }else if(cnhVisible){
+            setCnhImage(path) 
+        }else{
+            setSelfieImage(path)
         }
-
-        if(escolha === 'arquivo'){
-            try {
-                const result = await DocumentPicker.getDocumentAsync({});
-                // console.log(result.assets[0].uri)
-                if(cpfVisible){
-                setCpfImage(result.assets[0].uri)
-                }else if(enderecoVisible){
-                    setEnderecoImage(result.assets[0].uri)
-                }else if(cnhVisible){
-                    setCnhImage(result.assets[0].uri) 
-                }else{
-                    setSelfieImage(result.assets[0].uri)
-                }
-
-            } catch (error) {
-                console.error('Erro ao selecionar o documento:', error);
-            }
-        }
-        openModal()
+        setIsVisible(false)
+        setModalBtnVisible(false)
     }
 
     const openModal = (option = '') => {
@@ -259,6 +222,7 @@ export default function UpLoadEntregador({navigation}){
     <>
          {loading === false ? <KeyboardAwareScrollView>
             <FixBar navigation={navigation} opition={'register'} />
+            {modal}
             <View style={styles.container}>
                 <Text style={styles.h1}>Foto</Text>
                 <Text style={styles.txtListen}>
@@ -373,7 +337,7 @@ export default function UpLoadEntregador({navigation}){
 
                                 <Pressable 
                                     style={styles.btn}
-                                    onPress={() => SelectOpition('galeria',)}
+                                    onPress={() => SelectOpition('gallery',)}
                                 >
                                     <View style={styles.containerBtn}>
                                         <Image
@@ -386,7 +350,7 @@ export default function UpLoadEntregador({navigation}){
 
                                 <Pressable 
                                     style={styles.btn}
-                                    onPress={() => SelectOpition('arquivo')}
+                                    onPress={() => SelectOpition('file')}
                                 >
                                     <View style={[styles.containerBtn, {width:'80%'} ]}>
                                         <Image
