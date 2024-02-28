@@ -129,6 +129,7 @@ export default function RegisterContact({navigation}){
     
     return(
         <ScrollView style={twrnc`bg-white`}>
+
            <View style={twrnc`h-200`}>
                 <FixBar navigation={navigation} opition={'register'} />
                 <View style={twrnc`p-5`}>
@@ -163,18 +164,18 @@ export default function RegisterContact({navigation}){
                             <View style={styles.containerInputTxtinfo}>
 
                                     <View style={twrnc`mt-2 mb-3`}>
-                                        <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Nome Completo</Text>
+                                        <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold z-2`}>Nome Completo</Text>
                                         <MaskInput
-                                            style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl capitalize`}
+                                            style={twrnc`pt-5 h-15 pl-5 bg-white border border-[#d4d4d4] rounded-xl capitalize`}
                                             value={name}
                                             onChangeText={handleName}
                                         />
                                     </View>
 
                                     <View style={twrnc`mt-2 mb-3`}>
-                                        <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Número de celular</Text>
+                                        <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold z-2`}>Número de celular</Text>
                                         <MaskInput
-                                            style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl`}
+                                            style={twrnc`pt-5 h-15 pl-5 bg-white border border-[#d4d4d4] rounded-xl`}
                                             value={phone}
                                             keyboardType="phone-pad"
                                             onChangeText={(masked, unmasked) => {
@@ -182,19 +183,20 @@ export default function RegisterContact({navigation}){
                                                 setPhoneNumber(unmasked);
                                                 unmasked.length === 11 ? setPhoneIsValid(true) : setPhoneIsValid(false) 
                                             }}
+                                            placeholder=""
                                             mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
                                         />
                                     </View>
 
                                     <View style={twrnc`mt-2 mb-3`}>
-                                        <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold `}>Endereço de email</Text>
+                                        <Text style={twrnc`m-2 absolute text-[#ff5f00] text-xs font-bold z-2`}>Endereço de email</Text>
                                         <MaskInput
-                                            style={twrnc`pt-5 h-15 pl-5 border-2 border-[#ff5f00] rounded-xl`}
+                                            style={twrnc`pt-5 h-15 pl-5 bg-white border border-[#d4d4d4] rounded-xl`}
                                             value={email}
                                             autoCompleteType="email"
                                             keyboardType="email-address"
                                             autoCapitalize="none"
-                                            placeholder="exemplo@email.com"
+                                            placeholder=""
                                             onChangeText={handleEmail}
                                         ></MaskInput>
                                     </View>
@@ -222,7 +224,7 @@ export default function RegisterContact({navigation}){
                     </View>
                     <View style={twrnc`w-full flex items-center mt-7`}>
                             <Pressable
-                                style={twrnc`rounded-xl py-2 px-10 border border-[#FF5F00]  ${( phoneIsValid && emailIsValid && checkPermission && name && route.params.am === 'driver' ) || ( phoneIsValid && emailIsValid && checkPermission && name && route.params.am === 'auxiliary' ) ? 'bg-orange-500' : 'bg-transparent'}`}
+                                style={twrnc`rounded-xl py-2 px-10 bg-white border border-[#d4d4d4]  ${( phoneIsValid && emailIsValid && checkPermission && name && route.params.am === 'driver' ) || ( phoneIsValid && emailIsValid && checkPermission && name && route.params.am === 'auxiliary' ) ? 'bg-orange-500' : 'bg-transparent'}`}
                                 onPress={()=>{ access() }}
                             >
                                 <Text style={[styles.txtButton, {

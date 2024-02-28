@@ -414,7 +414,7 @@ export default function UpLoadDocCar({navigation}){
     return(
         <>
          {loading === false ? 
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView style={twrnc`bg-white`}>
             <View style={styles.container}>
                 <Text style={styles.h1}>Foto</Text>
                 <Text style={styles.txtListen}>

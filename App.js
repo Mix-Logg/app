@@ -66,11 +66,11 @@ export default function App() {
   }
 
   return count ? 
-  <>
-    <AllRoutes /> 
-    <StatusBar
-        backgroundColor='#FF5F00'
-    /> 
+    <>
+      <AllRoutes /> 
+    {/* <StatusBar
+        backgroundColor='white'
+    />  */}
     </>
   : (
     <View

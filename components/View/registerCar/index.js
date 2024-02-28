@@ -112,7 +112,7 @@ export default function RegisterPhotoDoc({navigation}){
     
 
     return(
-        <KeyboardAwareScrollView>
+        <KeyboardAwareScrollView style={twrnc`bg-white`}>
             <View style={twrnc`px-1 mb-10 h-200`}>
                 <FixBar navigation={navigation} opition={'register'} />
                 <View style={twrnc`px-2`}>

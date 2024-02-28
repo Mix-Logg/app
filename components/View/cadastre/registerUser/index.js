@@ -1,152 +1,175 @@
 import twrnc from "twrnc";
-import { View, Image,Text ,TextInput, Pressable, ScrollView, Button } from 'react-native';
-import { useEffect, useState } from 'react';
+import { View, Image,Text ,TextInput, Pressable, ScrollView } from 'react-native';
+import { useState } from 'react';
 import { useRoute } from '@react-navigation/native';
-import { FontAwesome } from '@expo/vector-icons';
 import MaskInput from 'react-native-mask-input';
 import FixBar from "../../../fixBar";
+import PopUp from "../../../modal";
 import validateCPF from "../../../../function/validCPF";
-
+import { Ionicons } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
 export default function RegisterUser({navigation}){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLdevelopment
-    const [cpf,setCpf] = useState(null)
-    const [cpfValid,setCpfValid] = useState(null)
-    const [password,setPassword] = useState(null)
-    const [passwordValid,setPasswordValid] = useState(null)
-    const [passwordAgain,setPasswordAgain] = useState(null)
-    const [passwordAgainValid,setPasswordAgainValid] = useState(null)
-    const [fullAvalid,setFullAvalid] = useState(null)
+    const [cpf,setCpf] = useState('')
+    const [password,setPassword] = useState('')
+    const [passwordAgain,setPasswordAgain] = useState('')
+    const [eyeAgain,setEyeAgain] = useState(true)
+    const [eye,setEye] = useState(true)
+    const [popUp,setPopUp] = useState('')
     const route = useRoute();
 
+    const handleEye = async (option) => {
+        if(option === 'password'){
+            setEye(!eye)
+            return;
+        }
+        setEyeAgain(!eyeAgain)
+        return;
+    }
+
+    const handleHelper = async () => {
+        await modal('helper')
+    }
+    
     const handleCpf = async (txt) => {
         setCpf(txt);
-        const valid = await validateCPF(txt);
-        setCpfValid(valid);
     }
 
     const handlePassword = async (txt) => {
         setPassword(txt);
-        if(txt.length === 8){
-            setPasswordValid(true);
-            return;
-        }
-        setPasswordValid(false);
     }
 
     const handlePasswordAgain = async (txt) => {
         setPasswordAgain(txt)
-        if(txt.length === 8 && txt === password){
-            setPasswordAgainValid(true);
-            return;
-        }
-        setPasswordAgainValid(false);
     }
 
     const handleSubmit = async () => {
-       if(passwordAgainValid && passwordValid && cpfValid){
-            const params = {
+        const cpfValid = await validateCPF(cpf);
+        // if(!cpfValid){
+        //     await modal('cpf')
+        //     return;
+        // }
+        // if(password.length != 8){
+        //     await modal('password')
+        //     return;
+        // }
+        // if(passwordAgain != password){
+        //     await modal('passwordAgain')
+        //     return;
+        // }
+        const params = {
                 ...route.params,
                 user:{
                     login:cpf,
                     pass:password
                 }
-            }
-            navigation.navigate('RegisterContact',params);
-            return;
-       }
-       const params = {
-        ...route.params,
-        user:{
-            login:cpf,
-            pass:password
         }
-    }
-       navigation.navigate('RegisterContact',params);
+        navigation.navigate('RegisterContact',params);
+        return;
     }
 
+    const modal = async (option) => {
+        await setPopUp('')
+        if(option === 'password'){
+            await setPopUp(<PopUp type={'warning'} txt={'A senha deve ter 8 digitos'} show={true} />);
+            return;
+        }
+        if(option === 'passwordAgain'){
+            await setPopUp(<PopUp type={'warning'} txt={'Senhas não são iguais'} show={true} />)
+            return;
+        }
+        if(option === 'cpf'){
+            await setPopUp(<PopUp type={'warning'} txt={'CPF inválido ou já registrado'} show={true} />)
+            return;
+        }
+        if(option === 'helper'){
+            await setPopUp(<PopUp txt={'Senha deve ter 8 digitos e seu CPF vai ser utilizado para acesso ao app MIX'} show={true} />)
+            return;
+        }
+    }
+
+
     return(
-        <ScrollView>
+        <ScrollView style={twrnc`bg-white`}>
+            {popUp}
             <View style={twrnc`h-200`}>
                 <FixBar navigation={navigation} opition={'register'} />
-                <View style={twrnc`mt-5 p-5 gap-2`}>
-                    <Text style={twrnc`text-[#7B7B7B] font-bold`}>
-                        O seu CPF vai ser utilizado para acesso ao aplicativo
-                    </Text>
-                    <Text style={twrnc`text-[#7B7B7B] font-bold`}>
-                        A senha tem que ter 8 digitos 
-                    </Text>
-                </View>
-                <View style={twrnc`p-2 mt-5 justify-center ml-1`}>
-                    <Text style={twrnc`font-bold`}>Digite seu CPF</Text>
-                    <View style={twrnc`flex-row items-center gap-6`}>
+                <Pressable style={twrnc`mt-5 p-5 gap-2 w-full justify-center items-center`}
+                    onPress={handleHelper}
+                >
+                    <Entypo name="help-with-circle" size={40} style={twrnc`text-[#FF5F00]`} />
+                    <Text style={twrnc`text-xs font-bold`}>Clique para tirar dúvidas!</Text>
+                </Pressable>
+                <View style={twrnc`p-5 px-20 mt-5 justify-center gap-2 `}>
+                    <Text style={twrnc`text-base`}>Digite seu CPF</Text>
+                    <View style={twrnc`flex-row items-center`}>
                         <MaskInput
-                            style={twrnc`p-2 text-2xl border-[#FF5F00] border-2 rounded-lg w-5/6`}
+                            style={twrnc`p-3 text-lg bg-white rounded-lg w-full border border-[#d4d4d4]`}
                             mask={[/\d/, /\d/, /\d/,'.', /\d/, /\d/,/\d/,'.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
                             onChangeText={(masked, unmasked)=>handleCpf(unmasked)}
                             value={cpf}
                             keyboardType="numeric"
-                            placeholder="000.000.000-00"
+                            placeholder=""
                         />
-                    { cpfValid === true ?
-                        <View>
-                            <FontAwesome name="check" size={35} style={twrnc`text-[#FF5F00]`} />
-                        </View>
-                        : cpfValid === false ?
-                        <View>
-                            <FontAwesome name="close" size={37} style={twrnc`text-[#FF5F00]`} />
-                        </View> : ''
-                    }
                     </View>
                 </View>
-                <View style={twrnc`p-2 gap-5`}>
-                    <View>
-                        <Text style={twrnc`font-bold`}>Digite sua senha</Text>
-                        <View style={twrnc`flex-row items-center gap-6`}>
-                            <TextInput style={twrnc`p-2 text-2xl border-[#FF5F00] border-2 rounded-lg w-5/6`}
-                                maxLength={8}
-                                secureTextEntry={true}
-                                value={password}
+                <View style={twrnc`gap-2 w-full`}>
+                    <View style={twrnc`px-20`}>
+                        <Text style={twrnc`text-base`}>Digite sua senha</Text>
+                        <View style={twrnc`items-center flex-row gap-2`}>
+                            <TextInput 
+                                style={twrnc`p-3 text-lg bg-white rounded-lg w-full border border-[#d4d4d4]`}
+                                    maxLength={8}
+                                    secureTextEntry={eye}
+                                    value={password}
                                 onChangeText={(txt)=>{handlePassword(txt)}}
                             />
-                            { passwordValid === true ?
-                            <View>
-                                <FontAwesome name="check" size={35} style={twrnc`text-[#FF5F00]`} />
-                            </View>
-                            : passwordValid === false ?
-                            <View>
-                                <FontAwesome name="close" size={37} style={twrnc`text-[#FF5F00]`} />
-                            </View> : ''
-                            }
+                            <Pressable
+                                onPress={()=>handleEye('password')}
+                                style={twrnc`w-2/8`}
+                            >
+                                <View>
+                                    { eye ?
+                                        <Ionicons name="eye" size={24} color="black" />
+                                        :
+                                        <Ionicons name="eye-off" size={24} color="black" />
+                                    }
+                                </View>
+                            </Pressable>
                         </View>
                     </View>
-                    <View>
-                        <Text style={twrnc`font-bold`}>Redigite sua senha</Text>
-                        <View style={twrnc`flex-row items-center gap-6`}>
-                            <TextInput style={twrnc`p-2 text-2xl border-[#FF5F00] border-2 rounded-lg w-5/6`}
-                                maxLength={8}
-                                secureTextEntry={true}
-                                value={passwordAgain}
+                    <View style={twrnc`px-20`}>
+                        <Text style={twrnc`text-base`}>Redigite sua senha</Text>
+                        <View style={twrnc`items-center flex-row gap-2`}>
+                            <TextInput 
+                                style={twrnc`p-3 text-lg bg-white rounded-lg w-full border border-[#d4d4d4]`}
+                                    maxLength={8}
+                                    secureTextEntry={eyeAgain}
+                                    value={passwordAgain}
                                 onChangeText={(txt)=>{handlePasswordAgain(txt)}}
                             />
-                            { passwordAgainValid === true ?
-                            <View>
-                                <FontAwesome name="check" size={35} style={twrnc`text-[#FF5F00]`} />
-                            </View>
-                            : passwordAgainValid === false ?
-                            <View>
-                                <FontAwesome name="close" size={37} style={twrnc`text-[#FF5F00]`} />
-                            </View> : ''
-                            }
+                            <Pressable
+                                onPress={()=>handleEye('again')}
+                                style={twrnc`w-2/8`}
+                            >
+                                <View>
+                                    { eyeAgain ?
+                                        <Ionicons name="eye" size={24} color="black" />
+                                        :
+                                        <Ionicons name="eye-off" size={24} color="black" />
+                                    }
+                                </View>
+                            </Pressable>
                         </View>
                     </View>
                 </View>
-                <View style={twrnc`w-full justify-center items-center mt-8`}>
-                    <Pressable style={twrnc`w-2/6 rounded py-2 bg-[#FF5F00] items-center `}
+                <View style={twrnc`items-center justify-center mt-15`}>
+                    <Pressable style={twrnc`px-10 rounded-lg py-2 bg-[#FF5F00]`}
                         onPress={handleSubmit}
                     >
-                        <Text style={twrnc`text-white font-bold`}>Continuar</Text>
+                        <Text style={twrnc`font-bold text-white`}>Continuar</Text>
                     </Pressable>
                 </View>
             </View>

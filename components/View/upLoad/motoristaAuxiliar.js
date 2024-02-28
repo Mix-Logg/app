@@ -6,6 +6,7 @@ import axios from "axios";
 import GetPath from "../../../function/getPathPicture";
 import FixBar from "../../fixBar";
 import PopUp from "../../modal";
+import twrnc from "twrnc";
 
 export default function UpLoadEntregador({navigation}){
     const route = useRoute();
@@ -220,7 +221,8 @@ export default function UpLoadEntregador({navigation}){
 
     return(
     <>
-         {loading === false ? <KeyboardAwareScrollView>
+         {loading === false ? 
+        <KeyboardAwareScrollView style={twrnc`bg-white`} >
             <FixBar navigation={navigation} opition={'register'} />
             {modal}
             <View style={styles.container}>
@@ -236,7 +238,7 @@ export default function UpLoadEntregador({navigation}){
                     {contDocument} de 4 arquivos.
                     </Text>
                 </View>
-                <View style={{marginTop:50,}}>
+                <View style={{marginTop:50, backgroundColor:'white'}}>
                     
                     <Pressable
                         onPress={()=>{openModal('cnh')}}
@@ -337,7 +339,7 @@ export default function UpLoadEntregador({navigation}){
 
                                 <Pressable 
                                     style={styles.btn}
-                                    onPress={() => SelectOpition('gallery',)}
+                                    onPress={() => SelectOpition('gallery')}
                                 >
                                     <View style={styles.containerBtn}>
                                         <Image
@@ -434,12 +436,13 @@ export default function UpLoadEntregador({navigation}){
                     </Pressable>
                 </View>
             </View>
-        </KeyboardAwareScrollView> : 
-            <View style={{
+        </KeyboardAwareScrollView> 
+        : 
+            <View style={[twrnc`bg-white`,{
                     flex: 1,
                     justifyContent: 'center',
                     alignItems: 'center',
-                }}>
+                }]}>
                     <ActivityIndicator size="large" color="#FF5F00" />
                     <Text>{api}</Text>
             </View>
@@ -452,13 +455,16 @@ export default function UpLoadEntregador({navigation}){
 
 const styles = StyleSheet.create({
     container:{
-        padding:16
+        padding:16,
+        backgroundColor:'white',
     },
     h1:{
+        backgroundColor:'white',
         fontFamily:'Roboto_500Medium',
         fontSize:18
     },
     txtListen:{
+        backgroundColor:'white',
         fontFamily:'Roboto_300Light',
         color:'#FF5F00',
         fontSize:16,
@@ -466,21 +472,25 @@ const styles = StyleSheet.create({
         fontSize:25
     },
     containerInfo:{
+        backgroundColor:'white',
         marginTop:25,
         padding:15,
         alignItems:'center'
     },
     txtInfo:{
+        backgroundColor:'white',
         fontFamily:'Roboto_500Medium',
         fontSize:15
     },
     icon:{
+        backgroundColor:'white',
         width:50,
         height:50,
         // marginLeft:15,
         tintColor:'#FF5F00'
     },
     btn:{
+        backgroundColor:'white',
         borderWidth: 2,
         borderColor:'#FF5F00',
         flexDirection:'row',
@@ -490,9 +500,7 @@ const styles = StyleSheet.create({
         marginTop:20,
         justifyContent:'space-between',
         paddingEnd:10,
-        paddingStart:10
-
-
+        paddingStart:10,
 
     },
     btnTxt:{
@@ -501,6 +509,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     modal:{
+        backgroundColor:'white',
         backgroundColor:'rgba(0 ,0 ,0 ,0.5)',
         flex:1,
         justifyContent:'center',

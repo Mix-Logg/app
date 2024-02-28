@@ -79,10 +79,9 @@ export default function Login({navigation}){
     );
 
     return(
-        <>
+        <View style={twrnc`bg-white`}>
         { !waiting ?
             <View style={[twrnc`flex items-center  justify-center h-full `]} >
-                
                 <View style={[twrnc`flex w-full items-center mt-3`,{height:'20%'} ]}>
                     <Image style={[twrnc``, {width:'45%', height:'90%',} ] }
                     source={require('../../../img/logo/logoAsa.png')}
@@ -93,7 +92,7 @@ export default function Login({navigation}){
                 <View style={twrnc`w-full gap-5`}>
                     <View style={twrnc`px-5`}>
                         <Text style={twrnc`text-[#FF5F00] font-bold text-sm px-4`}>CPF</Text>
-                        <View style={twrnc`w-full border-2 border-[#FF5F00] rounded-xl flex flex-row items-center p-2`}>
+                        <View style={twrnc`w-full border border-[#FF5F00] rounded-xl flex flex-row items-center p-2`}>
                             <Image
                                 style={[twrnc``, {width:'7%', height:'55%',tintColor: '#FF5F00'}]}
                                 source={require('../../../img/icons/user.png')}/>
@@ -107,13 +106,14 @@ export default function Login({navigation}){
                                 onChangeText={(masked, unmasked)=>handleCpf(unmasked)}
                                 value={cpf}
                                 keyboardType="numeric"
+                                placeholder=''
                             />
                         </View>
                     </View>
 
                     <View style={twrnc`px-5`}>
                         <Text style={twrnc`text-[#FF5F00] font-bold text-sm px-4`}>Senha</Text>
-                        <View style={twrnc`w-full border-2 border-[#FF5F00] rounded-xl flex flex-row items-center p-2`}>
+                        <View style={twrnc`w-full border border-[#FF5F00] rounded-xl flex flex-row items-center p-2`}>
                             <Image
                                 style={[twrnc``, {width:'7%', height:'55%',tintColor: '#FF5F00'}]}
                                 source={require('../../../img/icons/senha.png')}/>
@@ -137,7 +137,7 @@ export default function Login({navigation}){
                         </Text>
                     </Pressable>
                     {/* CADASTRAR  */}
-                    <Pressable style={twrnc`border-2 border-[#FF5F00] font-bold flex justify-center flex-row py-5 rounded-lg`}
+                    <Pressable style={twrnc`border border-[#FF5F00] font-bold flex justify-center flex-row py-5 rounded-lg`}
                         onPress={()=>{navigation.navigate('Register')}}
                         >
                         <Text style={twrnc`font-bold text-[#FF5F00]`}>Não sou cadastrado</Text>
@@ -156,7 +156,7 @@ export default function Login({navigation}){
                     animationInTiming={300}
                     animationOutTiming={300}
                 >
-                    <View style={twrnc`flex items-center justify-center px-3  w-1/2 mx-auto  bg-white rounded-lg`}>
+                    <View style={twrnc`flex items-center justify-center px-3  w-1/2 mx-auto rounded-lg`}>
                         <View style={[twrnc` w-full h-1/6`]}>
                             <Image
                                 style={[twrnc`w-full h-full`, {resizeMode: 'contain'}]}
@@ -178,7 +178,7 @@ export default function Login({navigation}){
                 <Wating/>
             </>
         }
-        </>
+        </View>
 
     )
 }

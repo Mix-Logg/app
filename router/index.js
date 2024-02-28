@@ -95,7 +95,7 @@ export default function AllRoutes() {
               headerStyle: {
                   backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
                 },
-                headerShown: true // Exibe o cabeçalho nesta tela
+                headerShown: false // Exibe o cabeçalho nesta tela
               }}
             />
             <Stack.Screen name="RegisterUploadEntregador" component={upLoadEntregador} 
