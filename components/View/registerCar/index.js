@@ -1,12 +1,11 @@
 import twrnc from 'twrnc';
-import { View, Text, StyleSheet, Pressable, Image, Modal, TextInput, Keyboard  } from "react-native";
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { View, Text, StyleSheet, Pressable, Image, TextInput, Keyboard, ScrollView, SafeAreaView  } from "react-native";
 import { useRoute } from '@react-navigation/native';
 import { useState, useEffect } from 'react';
 import { CheckBox } from 'react-native-elements';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FixBar from '../../fixBar';
-
+import Btn from '../../btn';
 export default function RegisterPhotoDoc({navigation}){
     const route = useRoute();
     
@@ -24,24 +23,6 @@ export default function RegisterPhotoDoc({navigation}){
     const [noStop, setNoStop] = useState(null)
     const [statusNoStop, setStatusNoStop] = useState(null)
     const [noStopNumber, setNoStopNumber] = useState(null)
-
-    const newParams = {
-        ...route.params,
-        dataCar:{
-            cadastroVeiculo:cadastroVeiculo,
-            proprietario:proprietario,
-        },
-        tracker:{
-            status:statusTracker,
-            brand:brandTracker,
-            number:numberTracker
-            
-        },
-        noStop : {
-            status:statusNoStop,
-            number:noStopNumber
-        }
-    }
 
     const handleTracker = (param) => {
         if (param === true){
@@ -91,8 +72,22 @@ export default function RegisterPhotoDoc({navigation}){
         }
     }
 
-    const navegation = () => {
-        navigation.navigate('RegisterCarProfile', newParams)
+    const handleSubmit = () => {
+        const tracker ={
+            status:statusTracker,
+            brand:brandTracker,
+            number:numberTracker
+            
+        }
+        const noStop = {
+            status:statusNoStop,
+            number:noStopNumber
+        }
+        route.params.vehicle.tracker = tracker
+        route.params.vehicle.noStop = noStop
+        route.params.vehicle.cadaster = cadastroVeiculo
+        route.params.vehicle.owner = proprietario
+        navigation.navigate('RegisterCarProfile', route.params)
     }
 
     useEffect(() => {
@@ -112,715 +107,295 @@ export default function RegisterPhotoDoc({navigation}){
     
 
     return(
-        <KeyboardAwareScrollView style={twrnc`bg-white`}>
-            <View style={twrnc`px-1 mb-10 h-200`}>
-                <FixBar navigation={navigation} opition={'register'} />
-                <View style={twrnc`px-2`}>
-                    <Text style={twrnc`text-lg mt-2`}>Vamos registrar o seu veículo na <Text style={styles.span}>MIX</Text> </Text>
-                </View>
-                <View style={twrnc`mt-5`}>
-                    <View style={twrnc`px-14`}>
-                            <Text style={twrnc`text-sm`}>Quem é o <Text style={styles.span}>proprietário</Text> do veículo?</Text>
-                           
-                            <Pressable 
-                                style={[twrnc`border border-[#FF5F00] p-4 flex flex-row justify-center items-center  mt-2 gap-5 rounded-lg ` , {
-                                    backgroundColor: proprietario === 'eu' ? '#FF5F00' : 'transparent'
-                                }]}
-                                onPress={()=>{whoTheOwner('eu')}}
-                            >
-                                    <Image 
-                                        style={[twrnc`w-5 h-5`, {
-                                            tintColor: proprietario === 'eu' ? 'white' : '#FF5F00'
-                                        }]}
-                                        source={require('../../../img/icons/pessoa.png')}
-                                    />
-                                    <Text 
-                                    style={[twrnc`font-bold w-40`,{
-                                        color: proprietario === 'eu' ? 'white' : '#FF5F00'
-                                    }]}>Eu sou proprietário</Text>
-                            </Pressable>
-
-                            <Pressable 
-                                style={[twrnc`border border-[#FF5F00] p-4 flex flex-row justify-center items-center mt-2 gap-5 rounded-lg` ,{
-                                    backgroundColor: proprietario === 'outraPessoa' ? '#FF5F00' : 'transparent'
-                                }]}
-                                onPress={()=>{whoTheOwner('outraPessoa')}}
-                            >
-                                    <Image 
-                                        style={[twrnc`w-5 h-5`,{
-                                            tintColor: proprietario === 'outraPessoa' ? 'white' : '#FF5F00'
+        <SafeAreaView style={twrnc`bg-white mt-6`}>
+            <FixBar navigation={navigation} opition={'register'} />
+            <ScrollView>
+                <View style={twrnc`px-1 mb-10 h-200 mt-5`}>
+                    <View style={twrnc`px-2`}>
+                        <Text style={twrnc`text-lg mt-2`}>Vamos registrar o seu veículo na <Text style={twrnc`font-bold text-[#FF5F00]`}>MIX</Text> </Text>
+                    </View>
+                    <View style={twrnc`mt-5 mb-10`}>
+                        <View style={twrnc`px-14`}>
+                                <Text style={twrnc`text-sm`}>Quem é o <Text style={twrnc`font-bold`}>proprietário</Text> do veículo?</Text>
+                            
+                                <Pressable 
+                                    style={[twrnc`border border-[#22c55e] p-4 flex flex-row justify-center items-center  mt-2 gap-5 rounded-lg ` , {
+                                        backgroundColor: proprietario === 'eu' ? '#22c55e' : 'transparent'
                                     }]}
-                                    source={require('../../../img/icons/outraPessoa.png')}
+                                    onPress={()=>{whoTheOwner('eu')}}
+                                >
+                                        <Image 
+                                            style={[twrnc`w-5 h-5`, {
+                                                tintColor: proprietario === 'eu' ? 'white' : '#22c55e'
+                                            }]}
+                                            source={require('../../../img/icons/pessoa.png')}
+                                        />
+                                        <Text 
+                                        style={[twrnc`font-bold w-40`,{
+                                            color: proprietario === 'eu' ? 'white' : '#22c55e'
+                                        }]}>Eu sou proprietário</Text>
+                                </Pressable>
+
+                                <Pressable 
+                                    style={[twrnc`border border-[#22c55e] p-4 flex flex-row justify-center items-center mt-2 gap-5 rounded-lg` ,{
+                                        backgroundColor: proprietario === 'outraPessoa' ? '#22c55e' : 'transparent'
+                                    }]}
+                                    onPress={()=>{whoTheOwner('outraPessoa')}}
+                                >
+                                        <Image 
+                                            style={[twrnc`w-5 h-5`,{
+                                                tintColor: proprietario === 'outraPessoa' ? 'white' : '#22c55e'
+                                        }]}
+                                        source={require('../../../img/icons/outraPessoa.png')}
+                                            />
+                                            <Text style={[twrnc`font-bold w-40`,{
+                                                color: proprietario === 'outraPessoa' ? 'white' : '#22c55e'
+                                        }]}>Outra Pessoa</Text>
+                                </Pressable>
+                        </View>
+
+                        {proprietario !== false && ( 
+                            <View style={twrnc`mt-5 px-14`}>
+                                <Text style={twrnc`text-sm`} >O veículo está <Text style={twrnc`font-bold`}>cadastrado</Text> como?</Text>
+
+                                <Pressable 
+                                        style={[twrnc`border border-[#22c55e] p-2 flex flex-row justify-center items-center  mt-2 gap-5 rounded-lg ` ,
+                                            { backgroundColor: cadastroVeiculo === 'fisica' ? '#22c55e' : 'transparent'}
+                                        ]}
+                                        onPress={()=>{HowAreYouRegistered('fisica')}}
+                                    >
+                                        <Image
+                                        source={require('../../../img/icons/fisica.png')}
+                                        style={[twrnc`w-8 h-8`,{
+                                            tintColor: cadastroVeiculo === 'fisica' ? 'white' : '#22c55e'
+                                        }]}
                                         />
                                         <Text style={[twrnc`font-bold w-40`,{
-                                            color: proprietario === 'outraPessoa' ? 'white' : '#FF5F00'
-                                    }]}>Outra Pessoa</Text>
-                            </Pressable>
-                    </View>
+                                            color: cadastroVeiculo === 'fisica' ? 'white' : '#22c55e'
+                                        }]}>Pessoa Física</Text>
+                                </Pressable>
 
-                    {proprietario !== false && ( 
-                        <View style={twrnc`mt-5 px-14`}>
-                            <Text style={twrnc`text-sm`} >O veículo está <Text style={styles.span}>cadastrado</Text> como?</Text>
-
-                            <Pressable 
-                                    style={[twrnc`border border-[#FF5F00] p-2 flex flex-row justify-center items-center  mt-2 gap-5 rounded-lg ` ,
-                                        { backgroundColor: cadastroVeiculo === 'fisica' ? '#FF5F00' : 'transparent'}
-                                    ]}
-                                    onPress={()=>{HowAreYouRegistered('fisica')}}
-                                >
+                                <Pressable 
+                                        style={[twrnc`border border-[#22c55e] p-2 flex flex-row justify-center items-center mt-2 gap-5 rounded-lg ` ,{
+                                            backgroundColor: cadastroVeiculo === 'juridica' ? '#22c55e' : 'transparent'
+                                        }]}
+                                        onPress={()=>{HowAreYouRegistered('juridica')}}
+                                    >
                                     <Image
-                                    source={require('../../../img/icons/fisica.png')}
-                                    style={[twrnc`w-8 h-8`,{
-                                        tintColor: cadastroVeiculo === 'fisica' ? 'white' : '#FF5F00'
-                                    }]}
-                                    />
-                                    <Text style={[twrnc`font-bold w-40`,{
-                                        color: cadastroVeiculo === 'fisica' ? 'white' : '#FF5F00'
-                                    }]}>Pessoa Física</Text>
-                            </Pressable>
+                                        source={require('../../../img/icons/juridico.png')}
+                                        style={[twrnc`w-8 h-8`, {
+                                            marginLeft:8,
+                                            tintColor: cadastroVeiculo === 'juridica' ? 'white' : '#22c55e'
+                                        }]}
+                                        />
+                                        <Text style={[twrnc`font-bold w-40`,{
+                                            color: cadastroVeiculo === 'juridica' ? 'white' : '#22c55e'
+                                        }]}>Pessoa Jurídica</Text>
+                                </Pressable>
+                            </View>
+                        )}
 
-                            <Pressable 
-                                    style={[twrnc`border border-[#FF5F00] p-2 flex flex-row justify-center items-center mt-2 gap-5 rounded-lg ` ,{
-                                        backgroundColor: cadastroVeiculo === 'juridica' ? '#FF5F00' : 'transparent'
-                                    }]}
-                                    onPress={()=>{HowAreYouRegistered('juridica')}}
-                                >
-                                <Image
-                                    source={require('../../../img/icons/juridico.png')}
-                                    style={[twrnc`w-8 h-8`, {
-                                        marginLeft:8,
-                                        tintColor: cadastroVeiculo === 'juridica' ? 'white' : '#FF5F00'
-                                    }]}
-                                    />
-                                    <Text style={[twrnc`font-bold w-40`,{
-                                        color: cadastroVeiculo === 'juridica' ? 'white' : '#FF5F00'
-                                    }]}>Pessoa Jurídica</Text>
-                            </Pressable>
-                        </View>
+                        {proprietario && cadastroVeiculo != false && ( 
+                            <View style={twrnc`mt-5 px-14`}>
+                                <Text style={twrnc`text-sm`} >O veículo tem <Text style={twrnc`font-bold`}>rastreador</Text> ?</Text>
+
+                                { tracker === true ?
+                                    <View style={twrnc`flex mt-2 gap-5`}>
+                                        <View style={twrnc`flex`}>
+                                            <Text style={twrnc`flex text-base`}>Marca</Text>
+                                            <TextInput style={twrnc`flex p-1 pl-5 border ${noStopNumber === null || noStopNumber === '' ? 'border-[#d4d4d4]': 'border-[#16a34a]'} rounded-xl w-5/6`}
+                                            onChangeText={(txt)=>{setBrandTracker(txt)}}
+                                            value={brandTracker}
+                                            ></TextInput>
+                                        </View>
+                                        <View style={twrnc`flex`}>
+                                            <Text style={twrnc`flex text-base`}>
+                                                Nº Terminal
+                                            </Text>
+                                            <TextInput style={twrnc`flex p-1 pl-5 border ${noStopNumber === null || noStopNumber === '' ? 'border-[#d4d4d4]': 'border-[#16a34a]'} rounded-xl w-5/6`}
+                                            onChangeText={(txt)=>{setNumberTracker(txt)}}
+                                            value={numberTracker}
+                                            ></TextInput>
+                                        </View>
+
+                                        <View style={twrnc`flex flex-row justify-center items-center`}>
+                                            <Pressable 
+                                            style={twrnc`bg-[#94a3b8] py-2 px-3`}
+                                                onPress={()=>{
+                                                    handleTracker('back')
+                                                }}
+                                            >
+                                                <Text style={twrnc`font-bold text-white rounded-xl`}>Voltar</Text>
+
+                                            </Pressable>
+                                            <CheckBox
+                                                    title="Ativo"
+                                                    checkedColor= {true ? '#28a745' :"#334155"}
+                                                    uncheckedColor="#334155"
+                                                    containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
+                                                    titleProps={{
+                                                        style: { 
+                                                            color: statusTracker  ? '#28a745' :"#334155",
+                                                            fontFamily:'Roboto_500Medium',
+                                                        }
+                                                        }}
+                                                        checked={statusTracker}
+                                                        size={25}
+                                                        onPress={()=>{setStatusTracker(true)}}
+                                            />
+                                            <CheckBox
+                                                    title="Inativo"
+                                                    checkedColor= {statusTracker === false ? '#28a745' :"#334155"}
+                                                    uncheckedColor="#334155"
+                                                    containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
+                                                    titleProps={{
+                                                        style: { 
+                                                            color: statusTracker === false  ? '#28a745' :"#334155",
+                                                            fontFamily:'Roboto_500Medium',
+                                                        }
+                                                        }}
+                                                        checked={statusTracker === false }
+                                                        size={25}
+                                                        onPress={()=>{setStatusTracker(false)}}
+                                            />
+                                        </View>
+                                    </View>
+                                    :
+                                    <>
+                                        <Pressable 
+                                                style={[twrnc`border border-[#22c55e] p-2 flex flex-row justify-center items-center  mt-2 gap-5 rounded-lg ` ,
+                                                    { backgroundColor: tracker === true ? '#22c55e' : 'transparent'}
+                                                ]}
+                                                onPress={()=>{ handleTracker(true) }}
+                                            >
+                                                <Image
+                                                source={require('../../../img/icons/trackerOn.png')}
+                                                style={[twrnc`w-7 h-7`,{
+                                                    tintColor: tracker === true ? 'white' : '#22c55e'
+                                                }]}
+                                                />
+                                                <Text style={[twrnc`font-bold w-40`,{
+                                                    color: tracker === true ? 'white' : '#22c55e'
+                                                }]}>Sim</Text>
+                                        </Pressable>
+
+                                        <Pressable 
+                                                style={[twrnc`border border-[#22c55e] p-2 flex flex-row justify-center items-center mt-2 gap-5 rounded-lg ` ,{
+                                                    backgroundColor: tracker === false ? '#22c55e' : 'transparent'
+                                                }]}
+                                                onPress={()=>{handleTracker(false)}}
+                                            >
+                                            <Image
+                                                source={require('../../../img/icons/trackerOf.png')}
+                                                style={[twrnc`w-7 h-7`, {
+                                                    tintColor: tracker === false ? 'white' : '#22c55e'
+                                                }]}
+                                                />
+                                                <Text style={[twrnc`font-bold w-40`,{
+                                                    color: tracker === false ? 'white' : '#22c55e'
+                                                }]}>Não</Text>
+                                        </Pressable> 
+                                    </>
+                                }
+
+                            </View>
+                        )} 
+
+                        {proprietario && cadastroVeiculo != false && (tracker === false || statusTracker != null && numberTracker != null && brandTracker != null ) && ( 
+                            <View style={twrnc`mt-5 px-14`}>
+                                <Text style={twrnc`text-sm`} >O veículo tem <Text style={twrnc`font-bold`}>sem parar</Text> ?</Text>
+
+                                { noStop === true ?
+                                    <View style={twrnc`flex mt-2 gap-5`}>
+                                        <View style={twrnc`flex gap-1`}>
+                                            <Text style={twrnc`flex text-base`}>Tag</Text>
+                                            <TextInput style={twrnc`flex p-1 pl-5 border ${noStopNumber === null || noStopNumber === '' ? 'border-[#d4d4d4]': 'border-[#16a34a]'} rounded-xl w-5/6`}
+                                            onChangeText={(txt)=>{setNoStopNumber(txt)}}
+                                            value={noStopNumber}
+                                            ></TextInput>
+                                        </View>
+
+                                        <View style={twrnc`flex flex-row justify-center items-center`}>
+                                            <Pressable 
+                                            style={twrnc`bg-[#94a3b8] py-2 px-3`}
+                                                onPress={()=>{
+                                                    handleNoStop('back')
+                                                }}
+                                            >
+                                                <Text style={twrnc`font-bold text-white rounded-xl`}>Voltar</Text>
+
+                                            </Pressable>
+                                            <CheckBox
+                                                    title="Ativo"
+                                                    checkedColor= {true ? '#28a745' :"#334155"}
+                                                    uncheckedColor="#334155"
+                                                    containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
+                                                    titleProps={{
+                                                        style: { 
+                                                            color: statusNoStop  ? '#28a745' :"#334155",
+                                                            fontFamily:'Roboto_500Medium',
+                                                        }
+                                                        }}
+                                                        checked={statusNoStop}
+                                                        size={25}
+                                                        onPress={()=>{setStatusNoStop(true)}}
+                                            />
+                                            <CheckBox
+                                                    title="Inativo"
+                                                    checkedColor= {statusNoStop === false ? '#28a745' :"#FF5F00"}
+                                                    uncheckedColor="#334155"
+                                                    containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
+                                                    titleProps={{
+                                                        style: { 
+                                                            color: statusNoStop === false  ? '#28a745' :"#334155",
+                                                            fontFamily:'Roboto_500Medium',
+                                                        }
+                                                        }}
+                                                        checked={statusNoStop === false }
+                                                        size={25}
+                                                        onPress={()=>{setStatusNoStop(false)}}
+                                            />
+                                        </View>
+                                    </View>
+                                    :
+                                    <>
+                                        <Pressable 
+                                                style={[twrnc`border border-[#22c55e] p-2 flex flex-row justify-center items-center  mt-2 gap-5 rounded-lg ` ,
+                                                    { backgroundColor: noStop === true ? '#22c55e' : 'transparent'}
+                                                ]}
+                                                onPress={()=>{handleNoStop(true) }}
+                                            >
+                                                <MaterialCommunityIcons name="flag-outline" size={24} style={twrnc`text-[#22c55e]`} />
+                                                <Text style={[twrnc`font-bold w-40`,{
+                                                    color: noStop === true ? 'white' : '#22c55e'
+                                                }]}>Sim</Text>
+                                        </Pressable>
+
+                                        <Pressable 
+                                                style={[twrnc`border border-[#22c55e] p-2 flex flex-row justify-center items-center mt-2 gap-5 rounded-lg ` ,{
+                                                    backgroundColor: noStop === false ? '#22c55e' : 'transparent'
+                                                }]}
+                                                onPress={()=>{handleNoStop(false)}}
+                                            >
+                                                <MaterialCommunityIcons name="flag-off-outline" size={24} style={twrnc`${noStop === false ? 'text-white': 'text-[#22c55e]'}`} />
+                                                <Text style={[twrnc`font-bold w-40`,{
+                                                    color: noStop === false ? 'white' : '#22c55e'
+                                                }]}>Não</Text>
+                                        </Pressable> 
+                                    </>
+                                }
+
+                            </View>
+                        )} 
+
+                    </View>
+                    {proprietario && cadastroVeiculo != false && (tracker === false || statusTracker != null && numberTracker != null && brandTracker != null ) &&  (noStop === false || statusNoStop != null && noStop != null && noStopNumber != null ) && (
+                        <Btn title={'Continue'} action={handleSubmit} />
                     )}
 
-                    {proprietario && cadastroVeiculo != false && ( 
-                        <View style={twrnc`mt-5 px-14`}>
-                            <Text style={twrnc`text-sm`} >O veículo tem <Text style={styles.span}>rastreador</Text> ?</Text>
-
-                            { tracker === true ?
-                                <View style={twrnc`flex mt-2 gap-5`}>
-                                    <View style={twrnc`flex border border-[#FF5F00]`}>
-                                        <Text style={twrnc`flex text-xs ml-2 font-bold text-[#FF5F00]`}>Marca</Text>
-                                        <TextInput style={twrnc`flex  p-1 pl-5`}
-                                        onChangeText={(txt)=>{setBrandTracker(txt)}}
-                                        value={brandTracker}
-                                        ></TextInput>
-                                    </View>
-                                    <View style={twrnc`flex border border-[#FF5F00]`}>
-                                        <Text style={twrnc`flex text-xs ml-2 font-bold text-[#FF5F00]`}>Nº Terminal</Text>
-                                        <TextInput style={twrnc`flex p-1 pl-5`}
-                                        onChangeText={(txt)=>{setNumberTracker(txt)}}
-                                        value={numberTracker}
-                                        ></TextInput>
-                                    </View>
-
-                                    <View style={twrnc`flex flex-row justify-center items-center`}>
-                                        <Pressable 
-                                        style={twrnc`bg-[#FF5F00] py-2 px-3`}
-                                            onPress={()=>{
-                                                handleTracker('back')
-                                            }}
-                                        >
-                                            <Text style={twrnc`font-bold text-white rounded-xl`}>Voltar</Text>
-
-                                        </Pressable>
-                                        <CheckBox
-                                                title="Ativo"
-                                                checkedColor= {true ? '#28a745' :"#FF5F00"}
-                                                uncheckedColor="#FF5F00"
-                                                containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                titleProps={{
-                                                    style: { 
-                                                        color: statusTracker  ? '#28a745' :"#FF5F00",
-                                                        fontFamily:'Roboto_500Medium',
-                                                    }
-                                                    }}
-                                                    checked={statusTracker}
-                                                    size={25}
-                                                    onPress={()=>{setStatusTracker(true)}}
-                                        />
-                                        <CheckBox
-                                                title="Inativo"
-                                                checkedColor= {statusTracker === false ? '#28a745' :"#FF5F00"}
-                                                uncheckedColor="#FF5F00"
-                                                containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                titleProps={{
-                                                    style: { 
-                                                        color: statusTracker === false  ? '#28a745' :"#FF5F00",
-                                                        fontFamily:'Roboto_500Medium',
-                                                    }
-                                                    }}
-                                                    checked={statusTracker === false }
-                                                    size={25}
-                                                    onPress={()=>{setStatusTracker(false)}}
-                                        />
-                                    </View>
-                                </View>
-                                :
-                                <>
-                                    <Pressable 
-                                            style={[twrnc`border border-[#FF5F00] p-2 flex flex-row justify-center items-center  mt-2 gap-5 rounded-lg ` ,
-                                                { backgroundColor: tracker === true ? '#FF5F00' : 'transparent'}
-                                            ]}
-                                            onPress={()=>{ handleTracker(true) }}
-                                        >
-                                            <Image
-                                            source={require('../../../img/icons/trackerOn.png')}
-                                            style={[twrnc`w-7 h-7`,{
-                                                tintColor: tracker === true ? 'white' : '#FF5F00'
-                                            }]}
-                                            />
-                                            <Text style={[twrnc`font-bold w-40`,{
-                                                color: tracker === true ? 'white' : '#FF5F00'
-                                            }]}>Sim</Text>
-                                    </Pressable>
-
-                                    <Pressable 
-                                            style={[twrnc`border border-[#FF5F00] p-2 flex flex-row justify-center items-center mt-2 gap-5 rounded-lg ` ,{
-                                                backgroundColor: tracker === false ? '#FF5F00' : 'transparent'
-                                            }]}
-                                            onPress={()=>{handleTracker(false)}}
-                                        >
-                                        <Image
-                                            source={require('../../../img/icons/trackerOf.png')}
-                                            style={[twrnc`w-7 h-7`, {
-                                                tintColor: tracker === false ? 'white' : '#FF5F00'
-                                            }]}
-                                            />
-                                            <Text style={[twrnc`font-bold w-40`,{
-                                                color: tracker === false ? 'white' : '#FF5F00'
-                                            }]}>Não</Text>
-                                    </Pressable> 
-                                </>
-                            }
-
-                        </View>
-                    )} 
-
-                    {proprietario && cadastroVeiculo != false && (tracker === false || statusTracker != null && numberTracker != null && brandTracker != null ) && ( 
-                        <View style={twrnc`mt-5 px-14`}>
-                            <Text style={twrnc`text-sm`} >O veículo tem <Text style={styles.span}>Sem Parar</Text> ?</Text>
-
-                            { noStop === true ?
-                                <View style={twrnc`flex mt-2 gap-5`}>
-                                    <View style={twrnc`flex border border-[#FF5F00]`}>
-                                        <Text style={twrnc`flex text-xs ml-2 font-bold text-[#FF5F00]`}>Tag</Text>
-                                        <TextInput style={twrnc`flex p-1 pl-5`}
-                                        onChangeText={(txt)=>{setNoStopNumber(txt)}}
-                                        value={noStopNumber}
-                                        ></TextInput>
-                                    </View>
-
-                                    <View style={twrnc`flex flex-row justify-center items-center`}>
-                                        <Pressable 
-                                        style={twrnc`bg-[#FF5F00] py-2 px-3`}
-                                            onPress={()=>{
-                                                handleNoStop('back')
-                                            }}
-                                        >
-                                            <Text style={twrnc`font-bold text-white rounded-xl`}>Voltar</Text>
-
-                                        </Pressable>
-                                        <CheckBox
-                                                title="Ativo"
-                                                checkedColor= {true ? '#28a745' :"#FF5F00"}
-                                                uncheckedColor="#FF5F00"
-                                                containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                titleProps={{
-                                                    style: { 
-                                                        color: statusNoStop  ? '#28a745' :"#FF5F00",
-                                                        fontFamily:'Roboto_500Medium',
-                                                    }
-                                                    }}
-                                                    checked={statusNoStop}
-                                                    size={25}
-                                                    onPress={()=>{setStatusNoStop(true)}}
-                                        />
-                                        <CheckBox
-                                                title="Inativo"
-                                                checkedColor= {statusNoStop === false ? '#28a745' :"#FF5F00"}
-                                                uncheckedColor="#FF5F00"
-                                                containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                titleProps={{
-                                                    style: { 
-                                                        color: statusNoStop === false  ? '#28a745' :"#FF5F00",
-                                                        fontFamily:'Roboto_500Medium',
-                                                    }
-                                                    }}
-                                                    checked={statusNoStop === false }
-                                                    size={25}
-                                                    onPress={()=>{setStatusNoStop(false)}}
-                                        />
-                                    </View>
-                                </View>
-                                :
-                                <>
-                                    <Pressable 
-                                            style={[twrnc`border border-[#FF5F00] p-2 flex flex-row justify-center items-center  mt-2 gap-5 rounded-lg ` ,
-                                                { backgroundColor: noStop === true ? '#FF5F00' : 'transparent'}
-                                            ]}
-                                            onPress={()=>{handleNoStop(true) }}
-                                        >
-                                            <MaterialCommunityIcons name="flag-outline" size={24} style={twrnc`text-[#FF5F00]`} />
-                                            <Text style={[twrnc`font-bold w-40`,{
-                                                color: noStop === true ? 'white' : '#FF5F00'
-                                            }]}>Sim</Text>
-                                    </Pressable>
-
-                                    <Pressable 
-                                            style={[twrnc`border border-[#FF5F00] p-2 flex flex-row justify-center items-center mt-2 gap-5 rounded-lg ` ,{
-                                                backgroundColor: noStop === false ? '#FF5F00' : 'transparent'
-                                            }]}
-                                            onPress={()=>{handleNoStop(false)}}
-                                        >
-                                            <MaterialCommunityIcons name="flag-off-outline" size={24} style={twrnc`${noStop === false ? 'text-white': 'text-[#FF5F00]'}`} />
-                                            <Text style={[twrnc`font-bold w-40`,{
-                                                color: noStop === false ? 'white' : '#FF5F00'
-                                            }]}>Não</Text>
-                                    </Pressable> 
-                                </>
-                            }
-
-                        </View>
-                    )} 
-
                 </View>
-                {proprietario && cadastroVeiculo != false && (tracker === false || statusTracker != null && numberTracker != null && brandTracker != null ) &&  (noStop === false || statusNoStop != null && noStop != null && noStopNumber != null ) && (
-                    <View style={twrnc`mt-5 flex items-center`}>
-                        <Pressable 
-                            style={twrnc`bg-[#FF5F00] rounded py-2 px-5`}
-                            onPress={navegation}
-                        >
-                            <Text style={twrnc`font-bold text-white`}>Continuar</Text>
-                        </Pressable>
-                    </View>
-                )}
-            </View>
-
-
-            {/* <Modal
-                visible={modalVisible} animationType='slide' transparent={true}
-            >
-                        <View style={styles.modal}>
-                            <View style={styles.containerModal}>
-                                <View style={styles.modalHeader}>
-                                        <Text> </Text>
-                                        <Text style={[styles.btnTxt, {fontSize:25}]}>
-                                        {typeCar === false ? 'Escolha uma opção' :'MIX Transportes'}
-                                        </Text>
-                                        <Pressable onPress={() => {
-                                            if(typeCar === false){
-                                                modalIsVisible()
-                                            }else{
-                                                typeCars()
-                                                setTxtInputCar('')
-                                            }
-                                        }}>
-                                            <Image
-                                                style={[styles.btnIcon, {height:25, width:25, marginTop:5}]}
-                                                source={require('../../../img/icons/x.png')}
-                                            />
-                                        </Pressable>
-                                </View>
-                                {typeCar === false ?<View style={[styles.containerOpition,{marginTop:'18%'}]}>
-                                    <Pressable 
-                                        style={styles.btn}
-                                        onPress={()=>{typeCars('leve')}}
-                                    >
-                                        <View style={[styles.btnContainer, {width:'65%'}]}>
-                                            <Image 
-                                                style={[styles.btnIcon,{width:60,height:60}]}
-                                                source={require('../../../img/icons/caminhaoLeve.png')}
-                                            />
-                                            <Text style={styles.btnTxt}>Leve</Text>
-                                        </View>
-                                    </Pressable>
-
-                                    <Pressable 
-                                        style={styles.btn}
-                                        onPress={()=>{typeCars('medio')}}
-                                    >
-                                        <View style={styles.btnContainer}>
-                                            <Image
-                                                style={[styles.btnIcon,{width:60,height:60}]}
-                                                source={require('../../../img/icons/caminhaoMedio.png')}
-                                            />
-                                            <Text style={styles.btnTxt}>Médio</Text>
-                                        </View>
-                                    </Pressable>
-
-                                    <Pressable 
-                                        style={styles.btn}
-                                        onPress={()=>{typeCars('pesado')}}
-                                    >
-                                        <View style={[styles.btnContainer,{width:'74%'}]}>  
-                                            <Image
-                                                style={[styles.btnIcon,{width:60,height:60}]}
-                                                source={require('../../../img/icons/caminhaoPesado.png')}
-                                            />
-                                            <Text style={styles.btnTxt}>Pesado</Text>
-                                        </View>
-                                    </Pressable>
-                                    <View>
-                                    </View>  
-                                </View>:''}
-                                <View style={styles.containerSelect}>
-                                    {typeCar === false ? ''  : <Image
-                                        style={[styles.btnIcon, {
-                                            width:90,
-                                            height:90,
-                                            marginTop:20
-                                        }]}
-                                        source={ typeCar === 'leve' 
-                                        ? require('../../../img/icons/caminhaoLeve.png'):
-                                        typeCar === 'medio'
-                                        ? require('../../../img/icons/caminhaoMedio.png') :
-                                        typeCar === 'pesado' 
-                                        ? require('../../../img/icons/caminhaoPesado.png'):
-                                        null }
-                                    />}
-                                    
-                                    <View style={{marginTop:20,width:'100%',alignItems:'center'}}>
-                                        {typeCar === 'leve' ?
-                                        <View style={{width:'100%',alignItems:'center'}}>
-                                            { checkCar !='Outro'?
-                                            <View>
-                                            <CheckBox style={styles.checkCar}
-                                                    title="3/4"
-                                                    checkedColor= {checkCar ? '#28a745' :"#FF5F00"}
-                                                    uncheckedColor="#FF5F00"
-                                                    containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                    titleProps={{
-                                                        style: { 
-                                                            color:checkCar === '3/4' ? '#28a745' :"#FF5F00",
-                                                            fontFamily:'Roboto_500Medium',
-                                                        }
-                                                    }}
-                                                    checked={checkCar === '3/4' ? true : false}
-                                                    size={25}
-                                                    onPress={()=>{CheckCar('3/4')}}
-                                            />
-                                            <CheckBox style={styles.checkCar}
-                                                    title="Fiorino"
-                                                    checkedColor= {checkCar === 'fiorino'  ? '#28a745' :"#FF5F00"}
-                                                    uncheckedColor="#FF5F00"
-                                                    containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                    titleProps={{
-                                                        style: { 
-                                                            color:checkCar === 'fiorino' ? '#28a745' :"#FF5F00",
-                                                            fontFamily:'Roboto_500Medium',
-                                                        }
-                                                    }}
-                                                    checked={checkCar === 'fiorino' ? true : false}
-                                                    size={25}
-                                                    onPress={()=>{CheckCar('fiorino')}}
-                                            />
-                                            <CheckBox style={styles.checkCar}
-                                                    title="Toco"
-                                                    checkedColor= {checkCar ? '#28a745' :"#FF5F00"}
-                                                    uncheckedColor="#FF5F00"
-                                                    containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                    titleProps={{
-                                                        style: { 
-                                                            color:checkCar === 'toco' ? '#28a745' :"#FF5F00",
-                                                            fontFamily:'Roboto_500Medium',
-                                                        }
-                                                    }}
-                                                    checked={checkCar === 'toco' ? true : false}
-                                                    size={25}
-                                                    onPress={()=>{CheckCar('toco')}}
-                                            />
-                                            <CheckBox style={styles.checkCar}
-                                                    title="VLC"
-                                                    checkedColor= {checkCar ? '#28a745' :"#FF5F00"}
-                                                    uncheckedColor="#FF5F00"
-                                                    containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                    titleProps={{
-                                                        style: { 
-                                                            color:checkCar === 'vlc' ? '#28a745' :"#FF5F00",
-                                                            fontFamily:'Roboto_500Medium',
-                                                        }
-                                                    }}
-                                                    checked={checkCar === 'vlc' ? true : false}
-                                                    size={25}
-                                                    onPress={()=>{CheckCar('vlc')}}
-                                            />
-                                            </View> : ''}
-                                            
-                                            <View style={{width:'100%',alignItems:'center'}}>
-                                                <CheckBox style={styles.checkCar}
-                                                        title="Outro"
-                                                        checkedColor= {checkCar === "Outro" ? '#28a745' :"#FF5F00"}
-                                                        uncheckedColor="#FF5F00"
-                                                        containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                        titleProps={{
-                                                            style: { 
-                                                                color:checkCar === 'Outro' ? '#28a745' :"#FF5F00",
-                                                                fontFamily:'Roboto_500Medium',
-                                                            }
-                                                        }}
-                                                        checked={checkCar === 'Outro' ? true : false}
-                                                        size={25}
-                                                    onPress={()=>{CheckCar('Outro')}}
-                                                />
-                                            </View>     
-                                            {checkCar ==='Outro'?
-                                                <View style={[styles.containerOutro,]}><Text style={styles.labelOutro}>Digite o perfil do veículo</Text>
-                                                    <TextInput 
-                                                        style={styles.inputOutro}
-                                                        onChangeText={(txt)=>{
-                                                            setTxtInputCar(txt)
-                                                        }}
-                                                        value={txtInputCar}
-                                                    >
-                                                    </TextInput>
-                                                </View>:''}
-                                                { btnIsVisible ? 
-                                            <View style={[styles.containerBtnNext,{marginTop:
-                                                checkCar != 'Outro' ? 0 : 50
-                                            }]}>
-                                                <Pressable 
-                                                    style={[styles.btnNext, {
-                                                        padding:11,
-                                                        backgroundColor: (checkCar != false || txtInputCar.length > 1) && (checkCar != 'Outro' || txtInputCar.length > 1) ? '#FF5F00' : 'transparent'
-                                                    }]}
-                                                    onPress={navegation}
-                                                >
-                                                    <Text style={[styles.btnNextTxt,{
-                                                        color: (checkCar != false || txtInputCar.length > 1) && (checkCar != 'Outro' || txtInputCar.length > 1)   ? 'white' : '#FF5F00'
-                                                    }]}>Continuar</Text>
-                                                </Pressable>
-
-                                            </View> : ''}
-                                        </View> : ''}
-                                        
-                                        {typeCar === 'medio'? 
-                                        <View style={{width:'100%', alignItems:'center'}}>
-                                            { checkCar !='Outro'?<View>
-                                                <CheckBox style={styles.checkCar}
-                                                    title="Bitruck"
-                                                    checkedColor= {checkCar === "Bitruck" ? '#28a745' :"#FF5F00"}
-                                                    uncheckedColor="#FF5F00"
-                                                    containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                    titleProps={{
-                                                        style: { 
-                                                            color:checkCar === 'Bitruck' ? '#28a745' :"#FF5F00",
-                                                            fontFamily:'Roboto_500Medium',
-                                                        }
-                                                    }}
-                                                    checked={checkCar === 'Bitruck' ? true : false}
-                                                    size={25}
-                                                    onPress={()=>{CheckCar('Bitruck')}}
-                                                />
-
-                                                <CheckBox style={styles.checkCar}
-                                                    title="Truck"
-                                                    checkedColor= {checkCar === "Truck" ? '#28a745' :"#FF5F00"}
-                                                    uncheckedColor="#FF5F00"
-                                                    containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                    titleProps={{
-                                                        style: { 
-                                                            color:checkCar === 'Truck' ? '#28a745' :"#FF5F00",
-                                                            fontFamily:'Roboto_500Medium',
-                                                        }
-                                                    }}
-                                                    checked={checkCar === 'Truck' ? true : false}
-                                                    size={25}
-                                                onPress={()=>{CheckCar('Truck')}}
-                                            />
-                                            </View>:''}
-                                            <View style={{width:'100%',alignItems:'center'}}>
-                                                <CheckBox style={styles.checkCar}
-                                                        title="Outro"
-                                                        checkedColor= {checkCar === "Outro" ? '#28a745' :"#FF5F00"}
-                                                        uncheckedColor="#FF5F00"
-                                                        containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                        titleProps={{
-                                                            style: { 
-                                                                color:checkCar === 'Outro' ? '#28a745' :"#FF5F00",
-                                                                fontFamily:'Roboto_500Medium',
-                                                            }
-                                                        }}
-                                                        checked={checkCar === 'Outro' ? true : false}
-                                                        size={25}
-                                                    onPress={()=>{CheckCar('Outro')}}
-                                                />
-                                               
-                                                {checkCar ==='Outro'?
-                                                <View style={[styles.containerOutro,]}><Text style={styles.labelOutro}>Digite o perfil do veículo</Text>
-                                                    <TextInput 
-                                                        style={styles.inputOutro}
-                                                        onChangeText={(txt)=>{
-                                                            setTxtInputCar(txt)
-                                                        }}
-                                                        value={txtInputCar}
-                                                    >
-                                                    </TextInput>
-                                                </View>:''}
-                                                { btnIsVisible ? 
-                                            <View style={[styles.containerBtnNext,{marginTop:
-                                                checkCar != 'Outro' ? 0 : 50
-                                            }]}>
-                                                <Pressable 
-                                                    style={[styles.btnNext, {
-                                                        padding:11,
-                                                        backgroundColor: (checkCar != false || txtInputCar.length > 1) && (checkCar != 'Outro' || txtInputCar.length > 1) ? '#FF5F00' : 'transparent'
-                                                    }]}
-                                                    onPress={navegacao}
-                                                >
-                                                    <Text style={[styles.btnNextTxt,{
-                                                        color: (checkCar != false || txtInputCar.length > 1) && (checkCar != 'Outro' || txtInputCar.length > 1)   ? 'white' : '#FF5F00'
-                                                    }]}>Continuar</Text>
-                                                </Pressable>
-
-                                            </View> : ''}
-                                            </View>
-                                        </View> : ''}
-                                        
-                                        {typeCar === 'pesado'? 
-                                        <View style={{width:'100%',alignItems:'center'}}>
-                                            {checkCar !='Outro'?
-                                            <View >
-                                                <CheckBox style={styles.checkCar}
-                                                    title="Bitrem"
-                                                    checkedColor= {checkCar === "Bitrem" ? '#28a745' :"#FF5F00"}
-                                                    uncheckedColor="#FF5F00"
-                                                    containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                    titleProps={{
-                                                        style: { 
-                                                            color:checkCar === 'Bitrem' ? '#28a745' :"#FF5F00",
-                                                            fontFamily:'Roboto_500Medium',
-                                                        }
-                                                    }}
-                                                    checked={checkCar === 'Bitrem' ? true : false}
-                                                    size={25}
-                                                onPress={()=>{CheckCar('Bitrem')}}
-                                                />
-
-                                                <CheckBox style={styles.checkCar}
-                                                        title="Truck"
-                                                        checkedColor= {checkCar === "Carreta" ? '#28a745' :"#FF5F00"}
-                                                        uncheckedColor="#FF5F00"
-                                                        containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                        titleProps={{
-                                                            style: { 
-                                                                color:checkCar === 'Carreta' ? '#28a745' :"#FF5F00",
-                                                                fontFamily:'Roboto_500Medium',
-                                                            }
-                                                        }}
-                                                        checked={checkCar === 'Carreta' ? true : false}
-                                                        size={25}
-                                                    onPress={()=>{CheckCar('Carreta')}}
-                                                />
-
-                                                <CheckBox style={styles.checkCar}
-                                                        title="Carreta LS"
-                                                        checkedColor= {checkCar === "CarretaLS" ? '#28a745' :"#FF5F00"}
-                                                        uncheckedColor="#FF5F00"
-                                                        containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                        titleProps={{
-                                                            style: { 
-                                                                color:checkCar === 'CarretaLS' ? '#28a745' :"#FF5F00",
-                                                                fontFamily:'Roboto_500Medium',
-                                                            }
-                                                        }}
-                                                        checked={checkCar === 'CarretaLS' ? true : false}
-                                                        size={25}
-                                                    onPress={()=>{CheckCar('CarretaLS')}}
-                                                />
-
-                                                <CheckBox style={styles.checkCar}
-                                                        title="RodoTrem"
-                                                        checkedColor= {checkCar === "RodoTrem" ? '#28a745' :"#FF5F00"}
-                                                        uncheckedColor="#FF5F00"
-                                                        containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                        titleProps={{
-                                                            style: { 
-                                                                color:checkCar === 'RodoTrem' ? '#28a745' :"#FF5F00",
-                                                                fontFamily:'Roboto_500Medium',
-                                                            }
-                                                        }}
-                                                        checked={checkCar === 'RodoTrem' ? true : false}
-                                                        size={25}
-                                                    onPress={()=>{CheckCar('RodoTrem')}}
-                                                />
-
-                                                <CheckBox style={styles.checkCar}
-                                                        title="Vanderléia"
-                                                        checkedColor= {checkCar === "Vanderleia" ? '#28a745' :"#FF5F00"}
-                                                        uncheckedColor="#FF5F00"
-                                                        containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                        titleProps={{
-                                                            style: { 
-                                                                color:checkCar === 'Vanderleia' ? '#28a745' :"#FF5F00",
-                                                                fontFamily:'Roboto_500Medium',
-                                                            }
-                                                        }}
-                                                        checked={checkCar === 'Vanderleia' ? true : false}
-                                                        size={25}
-                                                        onPress={()=>{CheckCar('Vanderleia')}}
-                                                /> 
-                                            </View>: ''}
-
-                                            <View style={{width:'100%',alignItems:'center'}}>
-                                                <CheckBox style={styles.checkCar}
-                                                        title="Outro"
-                                                        checkedColor= {checkCar === "Outro" ? '#28a745' :"#FF5F00"}
-                                                        uncheckedColor="#FF5F00"
-                                                        containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                                        titleProps={{
-                                                            style: { 
-                                                                color:checkCar === 'Outro' ? '#28a745' :"#FF5F00",
-                                                                fontFamily:'Roboto_500Medium',
-                                                            }
-                                                        }}
-                                                        checked={checkCar === 'Outro' ? true : false}
-                                                        size={25}
-                                                    onPress={()=>{CheckCar('Outro')}}
-                                                />
-                                                {checkCar ==='Outro'?
-                                                <View style={[styles.containerOutro,]}><Text style={styles.labelOutro}>Digite o perfil do veículo</Text>
-                                                    <TextInput 
-                                                        style={styles.inputOutro}
-                                                        onChangeText={(txt)=>{
-                                                            setTxtInputCar(txt)
-                                                        }}
-                                                        value={txtInputCar}
-                                                    >
-                                                    </TextInput>
-                                                </View>:''}
-                                            </View>
-                                            { btnIsVisible ? 
-                                            <View style={[styles.containerBtnNext,{marginTop:
-                                                checkCar != 'Outro' ? 0 : 50
-                                            }]}>
-                                                <Pressable 
-                                                    style={[styles.btnNext, {
-                                                        padding:11,
-                                                        backgroundColor: (checkCar != false || txtInputCar.length > 1) && (checkCar != 'Outro' || txtInputCar.length > 1) ? '#FF5F00' : 'transparent'
-                                                    }]}
-                                                    onPress={navegacao}
-                                                >
-                                                    <Text style={[styles.btnNextTxt,{
-                                                        color: (checkCar != false || txtInputCar.length > 1) && (checkCar != 'Outro' || txtInputCar.length > 1)   ? 'white' : '#FF5F00'
-                                                    }]}>Continuar</Text>
-                                                </Pressable>
-
-                                            </View> : ''}
-
-                                        </View> : ''}
-                                    </View>
-                                </View>
-                            </View>
-                        </View>
-            </Modal> */}
-        </KeyboardAwareScrollView>
+            </ScrollView>
+        </SafeAreaView>
     )
 }
 

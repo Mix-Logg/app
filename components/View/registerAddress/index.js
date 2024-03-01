@@ -1,12 +1,15 @@
 import { useState } from "react";
-import { StyleSheet ,View, Text, Image, TextInput, Pressable, ActivityIndicator, Alert, ScrollView } from "react-native";
+import { StyleSheet ,View, Text, Image, TextInput, Pressable, ActivityIndicator, Alert, ScrollView, SafeAreaView } from "react-native";
 import MaskInput from 'react-native-mask-input';
 import api from './serviceCep'
 import { CheckBox } from 'react-native-elements';
 import { useRoute } from '@react-navigation/native';
 import twrnc from "twrnc";
 import FixBar from "../../fixBar";
+import PopUp from "../../modal";
+import Btn from "../../btn";
 export default function RegisterAddress({navigation}){
+    const route = useRoute();
     // VARIAVEIS FORM
     const [logradouro, setLogradouro] = useState('');
     const [bairro, setBairro] = useState('');
@@ -27,6 +30,7 @@ export default function RegisterAddress({navigation}){
     // LOADING and CHECK
     const [isLoading, setIsLoading] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const [popUp, setPopUp] = useState('');
 
     const buscaCep = async () => {
         try{
@@ -75,253 +79,267 @@ export default function RegisterAddress({navigation}){
         }
     }
 
-    const route = useRoute();
+    const modal = async (option) => {
+        await setPopUp('') 
+        if(option === 'cep'){
+            await setPopUp(<PopUp type={'warning'} txt={'Você deve digitar seu CEP'} show={true} />)
+            return;
+        }
+        if(option === 'street'){
+            await setPopUp(<PopUp type={'warning'} txt={'Você deve digitar seu logradouro'} show={true} />)
+            return;
+        }
+        if(option === 'number'){
+            await setPopUp(<PopUp type={'warning'} txt={'Você deve digitar seu número'} show={true} />)
+            return;
+        }
+        if(option === 'complement'){
+            await setPopUp(<PopUp type={'warning'} txt={'Você deve digitar seu complemento'} show={true} />)
+            return;
+        }
+        if(option === 'district'){
+            await setPopUp(<PopUp type={'warning'} txt={'Você deve digitar seu bairro'} show={true} />)
+            return;
+        }
+        if(option === 'city'){
+            await setPopUp(<PopUp type={'warning'} txt={'Você deve digitar sua cidade'} show={true} />)
+            return;
+        }
+        if(option === 'uf'){
+            await setPopUp(<PopUp type={'warning'} txt={'Você deve digitar seu UF'} show={true} />)
+            return;
+        }
+    }
 
+    const handleSubmit = async () => {
+        await setPopUp('')  
+        if(!cepValid){
+            modal('cep')
+            return;
+        }
+        if(!logradouroValid){
+            modal('street')
+            return;
+        }
+        if(!numeroValid){
+            modal('number')
+            return;
+        }
+        if(!complementoValid){
+            modal('complement')
+            return;
+        }
+        if(!bairroValid){
+            modal('district')
+            return;
+        }
+        if(!cidadeValid){
+            modal('city')
+            return;
+        }
+        if(!ufValid){
+            modal('uf')
+            return;
+        }
+        route.params.addres = {
+            zipCode: cepNumber,
+            street: logradouro,
+            number: numero,
+            complement: complemento,
+            district: bairro,
+            city: cidade,
+            uf: uf,
+        }
+        navigation.navigate('InfoPhotoAuMo', route.params)
+    }
 
     return(
-        <ScrollView>
-            {/* <View style={styles.container}> */}
+        <SafeAreaView style={twrnc`mt-6 bg-white h-full`}>
             <FixBar navigation={navigation} opition={'register'} />
-            <View style={[twrnc`h-180 p-3`]}>
-                <Text style={styles.h1}> Endereço </Text> 
-                <View style={styles.containerInputs}>
-                        <View style={styles.containerIcon}>
-                            <Text style={[styles.label,{
-                                color: cepValid ? '#28a745': '#FF5F00'
-                            }]}>CEP</Text>
-                            <MaskInput style={[styles.inputCep,{
-                                borderColor: cepValid ? '#28a745': '#FF5F00'
-                            }]}
-                                value={cep}
-                                keyboardType="numeric"
-                                onChangeText={(masked, unmasked) => {
-                                    setCep(masked)
-                                    setCepNumber(unmasked)
-                                    if(unmasked.length === 8){
-                                        setCepValid(true)
-                                    }else{
-                                        setCepValid(false)
-                                    }
-                                }}
-                                mask= {[ /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]}
-                            />
-                            
-                                { cepValid === true ? <Image
-                                    style={[styles.iconValid,{left:130, tintColor:'#28a745'}]}
-                                    source={require('../../../img/icons/ok.png')}
-                                /> : '' }
-                                
-                                { cepValid === false ? 
-                                    <Image
-                                        style={[styles.iconValid,{height:16,width:16,left:135,top:33}]}
-                                        source={require('../../../img/icons/x.png')}
-                                    /> : '' 
-                                }
-                            <Pressable
-                            onPress={buscaCep}
-                            >
-                                {isLoading === true ? 
-                                        <ActivityIndicator size="large" color="#FF5F00" />
-                                    : 
-                                    <View style={[styles.btnBuscaCep,{backgroundColor: cepValid === true  ? '#FF5F00' : 'transparent' }]}>
-                                        <Text style={[styles.txtBtnCep, { color: cepValid === true ? 'white' : '#FF5F00' }]}>
-                                            Buscar CEP
-                                        </Text>
-                                        <Image
-                                            style={[styles.icon, { tintColor: cepValid === true ? 'white' : '#FF5F00', transform: [{ scaleX: -1 }] }]}
-                                                source={require('../../../img/icons/buscaCep.png')}
-                                        />
-                                    </View>
-                                    
-                                }
-                            </Pressable>
-                        </View>
-
-                        <View style={styles.containerInputs}>  
-                            <View style={styles.containerInput}>
-                                <Text style={[styles.label,{
-                                    color: logradouroValid ? '#28a745' : '#FF5F00'
-                                }]}>Logradouro</Text>
-                                <TextInput style={[styles.input,{borderColor: logradouroValid === true ? '#28a745': '#FF5F00'}]}
-                                onChangeText={(txt)=>{
-                                    setLogradouro(txt)
-                                    if(txt.length > 4){
-                                        setLogradouroValid(true)
-                                    }else{
-                                        setLogradouroValid(false)
-                                    }
-                                }}
-                                value={logradouro}
-                                keyboardType="default"
-                                ></TextInput>                        
-                            </View>
-
-                            <View style={styles.containerInputCheck}>
-                                { isChecked === false ? <View style={[styles.inputNumberUf,{width:'39%' }]}>
-                                    <Text style={[styles.label,{
-                                        color: numeroValid ? '#28a745': '#FF5F00'
-                                    }]}>N°</Text>
-                                    <TextInput style={[styles.input,{height:55, paddingBottom:7,
-                                        borderColor: numeroValid ? '#28a745': '#FF5F00'
+                <ScrollView style={twrnc`p-4 bg-white`}>
+                    {popUp}
+                    <Text style={styles.h1}> Endereço </Text> 
+                    <View style={twrnc`mb-15`}>
+                            <View style={twrnc`w-full flex-row items-center gap-12 items-center mt-5`}>
+                                <View style={twrnc`w-2/6`}>
+                                    <Text style={[twrnc`text-base`,{
+                                        color: cepValid === null ? '': '#16a34a'
+                                    }]}>CEP</Text>
+                                    <MaskInput style={[twrnc`py-2 pl-5 border rounded-xl ${cepValid === null ? 'border-[#d4d4d4]': 'border-[#16a34a]'}`,{
                                     }]}
-                                        maxLength={9}
-                                        value={numero}
-                                        onChangeText={(txt)=>{
-                                            setNumero(txt)
-                                            if(txt.length === 0 ){
-                                                setNumeroValid(false)
+                                        value={cep}
+                                        keyboardType="numeric"
+                                        onChangeText={(masked, unmasked) => {
+                                            setCep(masked)
+                                            setCepNumber(unmasked)
+                                            if(unmasked.length === 8){
+                                                setCepValid(true)
                                             }else{
-                                                setNumeroValid(true)
+                                                setCepValid(false)
                                             }
                                         }}
-                                        keyboardType="numeric"
-                                    ></TextInput>
-                                </View> : ''}
-                                <CheckBox style={styles.checkNumber}
-                                    title="S/N"
-                                    checkedColor= {isChecked ? '#28a745' :"#FF5F00"}
-                                    uncheckedColor="#FF5F00"
-                                    containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
-                                    titleProps={{
-                                        style: { 
-                                            color:isChecked ? '#28a745' :"#FF5F00",
-                                            fontFamily:'Roboto_500Medium',
+                                        placeholder=""
+                                        mask= {[ /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/]}
+                                    />
+                                </View>
+                                <Pressable style={twrnc`w-2/6`}
+                                    onPress={buscaCep}
+                                >
+                                    {isLoading === true ? 
+                                            <ActivityIndicator size="large" color="#FF5F00" />
+                                        : 
+                                        <View style={[twrnc`py-1 mt-5 flex-row border border-[#d4d4d4] justify-center items-center rounded-lg ${cepValid === true ? 'bg-green-500 border-green-500 text-white' : 'transparent'}`]}>
+                                            <Text style={[styles.txtBtnCep, { color: cepValid === true ? 'white' : 'black' }]}>
+                                                Pesquisar
+                                            </Text>
+                                            <Image
+                                                style={[styles.icon, { tintColor: cepValid === true ? 'white' : 'black', transform: [{ scaleX: -1 }] }]}
+                                                    source={require('../../../img/icons/buscaCep.png')}
+                                            />
+                                        </View>
+                                        
+                                    }
+                                </Pressable>
+                            </View>
+
+                            <View style={twrnc`w-full mt-5 gap-3`}>  
+                                <View style={twrnc`flex w-5/6`}>
+                                    <Text style={[twrnc`text-base`,{
+                                        color: logradouroValid === null ? 'black' : '#28a745'
+                                    }]}>Logradouro</Text>
+                                    <TextInput style={[twrnc`py-2 pl-5 border rounded-xl`,{borderColor: logradouroValid === true ? '#28a745': '#d4d4d4'}]}
+                                    onChangeText={(txt)=>{
+                                        setLogradouro(txt)
+                                        if(txt.length > 4){
+                                            setLogradouroValid(true)
+                                        }else{
+                                            setLogradouroValid(false)
                                         }
                                     }}
-                                    checked={isChecked}
-                                    size={25}
-                                    onPress={CheckNumber}
-                                />
-                            </View>
+                                    value={logradouro}
+                                    keyboardType="default"
+                                    ></TextInput>                        
+                                </View>
 
-                            <View style={styles.containerInput}>
-                                <Text style={[styles.label,{
-                                    color: complementoValid ? '#28a745': '#FF5F00'
-                                }]}>Complemento</Text>
-                                <TextInput style={[styles.input,{
-                                    borderColor: complementoValid ? '#28a745': '#FF5F00'
-                                }]} 
-                                onChangeText={(txt)=>{
-                                    setComplemento(txt)
-                                    if(txt.length > 4){
-                                        setComplementoValid(true)
-                                    }else{
-                                        setComplementoValid(false)
-                                    }
-                                }}
-                                value={complemento}
-                                keyboardType="default"
-                                ></TextInput>
-                            </View>
+                                <View style={twrnc`flex-row items-center`}>
+                                    { isChecked === false ? 
+                                    <View style={[styles.inputNumberUf,{width:'39%' }]}>
+                                        <Text style={[twrnc`text-base`,{
+                                            color: numeroValid ? '#28a745': 'black'
+                                        }]}>N°</Text>
+                                        <TextInput style={[twrnc`py-2 pl-5 border rounded-xl`,{
+                                            borderColor: numeroValid ? '#28a745': '#d4d4d4'
+                                        }]}
+                                            maxLength={9}
+                                            value={numero}
+                                            onChangeText={(txt)=>{
+                                                setNumero(txt)
+                                                if(txt.length === 0 ){
+                                                    setNumeroValid(false)
+                                                }else{
+                                                    setNumeroValid(true)
+                                                }
+                                            }}
+                                            keyboardType="numeric"
+                                        ></TextInput>
+                                    </View> : ''}
+                                    <CheckBox
+                                        title="S/N"
+                                        checkedColor= {isChecked ? '#28a745' :"#d4d4d4"}
+                                        uncheckedColor="#d4d4d4"
+                                        containerStyle={{ backgroundColor: 'transparent', borderWidth:0 }}
+                                        titleProps={{
+                                            style: { 
+                                                color:isChecked ? '#28a745' :"black",
+                                                fontFamily:'Roboto_500Medium',
+                                            }
+                                        }}
+                                        checked={isChecked}
+                                        size={26}
+                                        onPress={CheckNumber}
+                                    />
+                                </View>
 
-                            <View style={styles.containerInput}>
-                                <Text style={[styles.label,{ color: bairroValid ? '#28a745': '#FF5F00'}]}>Bairro</Text>
-                                <TextInput style={[styles.input,{
-                                    borderColor: bairroValid ? '#28a745': '#FF5F00'
-                                }]} 
-                                onChangeText={(txt)=>{
-                                    setBairro(txt)
-                                    if( txt.length > 1){
-                                        setBairroValid(true)
-                                    }else{
-                                        setBairroValid(false)
-                                    }
-                                }}
-                                value={bairro}
-                                keyboardType="default"
-                                ></TextInput>
-                            </View>
-
-                            <View style={[styles.containerInput, {justifyContent:'space-between'}]}>
-                                <Text style={[styles.label,{ color: cidadeValid ? '#28a745': '#FF5F00' }]}>Cidade</Text>
-                                <TextInput style={[styles.input,{width:'50%',
-                                    borderColor: cidadeValid ? '#28a745': '#FF5F00'
-                                }]} 
-                                value={cidade}
-                                onChangeText={(txt)=>{
-                                    setCidade(txt)
-                                    if(txt.length > 3){
-                                        setCidadeValid(true)
-                                    }else{
-                                        setCidadeValid(false)
-                                    }
-                                }}
-                                ></TextInput>
-                                <View style={styles.inputNumberUf}>
-                                    <Text style={[styles.label,{
-                                        color: ufValid ? '#28a745': '#FF5F00'
-                                    }]}>UF</Text>
-                                    <TextInput style={[styles.input,{height:55, paddingBottom:7,
-                                        borderColor: ufValid ? '#28a745': '#FF5F00'
+                                <View style={twrnc`w-5/6`}>
+                                    <Text style={[twrnc`text-base`,{
+                                        color: complementoValid ? '#28a745': 'black'
+                                    }]}>Complemento</Text>
+                                    <TextInput style={[twrnc`py-2 pl-5 border rounded-xl`,{
+                                        borderColor: complementoValid ? '#28a745': '#d4d4d4'
                                     }]} 
                                     onChangeText={(txt)=>{
-                                        setUf(txt)
-                                        if(txt.length > 1){
-                                            setUFValid(true)
+                                        setComplemento(txt)
+                                        if(txt.length > 4){
+                                            setComplementoValid(true)
                                         }else{
-                                            setUFValid(false)
+                                            setComplementoValid(false)
                                         }
                                     }}
-                                    value={uf}
+                                    value={complemento}
                                     keyboardType="default"
-                                    maxLength={2}
                                     ></TextInput>
                                 </View>
+
+                                <View style={twrnc`w-5/6`}>
+                                    <Text style={[twrnc`text-base`,{ color: bairroValid ? '#28a745': 'black'}]}>Bairro</Text>
+                                    <TextInput style={[twrnc`py-2 pl-5 border rounded-xl`,{
+                                        borderColor: bairroValid ? '#28a745': '#d4d4d4'
+                                    }]} 
+                                    onChangeText={(txt)=>{
+                                        setBairro(txt)
+                                        if( txt.length > 1){
+                                            setBairroValid(true)
+                                        }else{
+                                            setBairroValid(false)
+                                        }
+                                    }}
+                                    value={bairro}
+                                    keyboardType="default"
+                                    ></TextInput>
+                                </View>
+
+                                <View style={[twrnc`w-5/6 flex-row items-center justify-between`]}>
+                                    <View style={twrnc`w-3/6`}>
+                                        <Text style={[twrnc`text-base`,{ color: cidadeValid ? '#28a745': 'black' }]}>Cidade</Text>
+                                        <TextInput style={[twrnc`py-2 pl-5 border rounded-xl`, {borderColor: cidadeValid ? '#28a745': '#d4d4d4'
+                                        }]} 
+                                        value={cidade}
+                                        onChangeText={(txt)=>{
+                                            setCidade(txt)
+                                            if(txt.length > 3){
+                                                setCidadeValid(true)
+                                            }else{
+                                                setCidadeValid(false)
+                                            }
+                                        }}
+                                        ></TextInput>
+                                    </View>
+                                    <View style={twrnc`w-2/6`}>
+                                        <Text style={[twrnc`text-base`,{
+                                            color: ufValid ? '#28a745': 'black'
+                                        }]}>UF</Text>
+                                        <TextInput style={[twrnc`py-2 pl-5 border rounded-xl`,{
+                                            borderColor: ufValid ? '#28a745': '#d4d4d4'
+                                        }]} 
+                                        onChangeText={(txt)=>{
+                                            setUf(txt)
+                                            if(txt.length > 1){
+                                                setUFValid(true)
+                                            }else{
+                                                setUFValid(false)
+                                            }
+                                        }}
+                                        value={uf}
+                                        keyboardType="default"
+                                        maxLength={2}
+                                        ></TextInput>
+                                    </View>
+                                </View>
                             </View>
-                        </View>
-                </View>
-                <View style={styles.containerBtn}> 
-                    <Pressable style={[styles.buttonContinue,{
-                        backgroundColor: logradouroValid && cepValid && numeroValid && complementoValid && bairroValid && cidadeValid && ufValid  ? '#FF5F00' : 'transparent'
-                    }]}
-                    onPress={() => {
-                        if (
-                        logradouroValid &&
-                        cepValid &&
-                        numeroValid &&
-                        complementoValid &&
-                        bairroValid &&
-                        cidadeValid &&
-                        ufValid
-                        ) {
-                        if (route.params.am === 'driver' || route.params.sou === 'auxiliary') {
-                            navigation.navigate('InfoPhotoAuMo', 
-                            {
-                            ...route.params,
-                            address: {
-                                zipCode: cepNumber,
-                                street: logradouro,
-                                number: numero,
-                                complement: complemento,
-                                district: bairro,
-                                city: cidade,
-                                uf: uf,
-                            },
-                            });
-                        } else if (route.params.sou === 'empresa' || route.params.sou === 'transportadora') {
-                            navigation.navigate('infoPhotoEmTr', {
-                                ...route.params,
-                            address: {
-                                cep: cepNumber,
-                                logradouro: logradouro,
-                                numero: numero,
-                                complemento: complemento,
-                                bairro: bairro,
-                                cidade: cidade,
-                                uf: uf,
-                            },
-                            });
-                        }
-                        }
-                    }}
-                    >
-                        <Text style={[styles.txtBtnContinue,{
-                            color: logradouroValid && cepValid && numeroValid && complementoValid && bairroValid && cidadeValid && ufValid  ? 'white' : '#FF5F00'
-                        }]}>Continuar</Text>
-                    </Pressable>
-                </View>
-            </View>
-        </ScrollView>
+                    </View>
+                    <Btn title={'Continue'} action={handleSubmit} />
+                </ScrollView>
+        </SafeAreaView>
     )
 }
 

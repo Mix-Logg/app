@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, StatusBar } from 'react-native';
+import { View, Image, StatusBar  } from 'react-native';
 import AllRoutes from './router';
 import {
   useFonts,
@@ -17,6 +17,7 @@ import {
   Roboto_900Black_Italic,
 } from '@expo-google-fonts/roboto';
 import 'react-native-gesture-handler';
+import twrnc from 'twrnc';
  
 export default function App() {
   const [count, setCount] = useState(false);
@@ -66,12 +67,7 @@ export default function App() {
   }
 
   return count ? 
-    <>
-      <AllRoutes /> 
-    {/* <StatusBar
-        backgroundColor='white'
-    />  */}
-    </>
+      <AllRoutes />
   : (
     <View
       style={{

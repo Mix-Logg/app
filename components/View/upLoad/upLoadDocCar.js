@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Pressable, Modal, ActivityIndicator  } from "react-native"
+import { View, Text, StyleSheet, Image, Pressable, Modal, ActivityIndicator, SafeAreaView, ScrollView } from "react-native"
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import  { useState, useEffect } from 'react';
 import * as ImagePicker from 'expo-image-picker';
@@ -414,284 +414,287 @@ export default function UpLoadDocCar({navigation}){
     return(
         <>
          {loading === false ? 
-        <KeyboardAwareScrollView style={twrnc`bg-white`}>
-            <View style={styles.container}>
-                <Text style={styles.h1}>Foto</Text>
-                <Text style={styles.txtListen}>
-                    Última coisa a verificar.
-                </Text>
-                <View style={styles.containerInfo}>
-                    <Text style={styles.txtInfo}>
-                        Lembre-se que você pode escolher tirar uma foto, selecionar um PDF, ou escolher uma foto que você  ja tenha na sua galeria
+        <SafeAreaView>
+            <ScrollView>
+                <View style={styles.container}>
+                    <Text style={styles.h1}>Foto</Text>
+                    <Text style={styles.txtListen}>
+                        Última coisa a verificar.
                     </Text>
-                    <Text style={[styles.txtInfo, {position:'absolute', left:230, top: 95}]}>
-                    {contDocument} de {numberDocument} arquivos.
-                    </Text>
-                </View>
-                <View style={{marginTop:50,}}>
-                    
-                    <Pressable
-                        onPress={()=>{openModalDocCar('clv')}}
-                        style={[styles.btn, {marginTop:0, borderColor: clvImage != null ? '#28a745' : '#FF5F00'}]}
-                    >
-                        <Image
-                            style={[styles.icon, {tintColor: clvImage != null ? '#28a745' : '#FF5F00'}]}
-                            source={require('../../../img/icons/upload.png')}
-                        />
-                        <Text style={[styles.btnTxt, {color: clvImage != null ? '#28a745' : '#FF5F00'}]}>CLV (Documento do Veículo)</Text>
-
-                        { clvImage != null ?
-                            <Image
-                            style={[styles.icon, {width:30,height:30,tintColor: clvImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../img/icons/ok.png')}
-                        /> : <View></View> }
-                    </Pressable>
-
-                    <Pressable
-                        onPress={()=>{openModalDocCar('antt')}}
-                        style={[styles.btn,{ borderColor: anttImage != null ? '#28a745' : '#FF5F00' }]}
-                    >
-                        <Image
-                            style={[styles.icon, {tintColor: anttImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../img/icons/upload.png')}
-                        />
-                        <Text style={[styles.btnTxt, {color:anttImage != null ? '#28a745' : '#FF5F00' }]}>ANTT</Text>
-                        {anttImage != null ?
-                            <Image
-                            style={[styles.icon, {width:30,height:30 ,tintColor: anttImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../img/icons/ok.png')}
-                        /> : <View></View> }
-                    </Pressable>
-
-                    {infoCadastroCar === 'juridicoEu' || infoCadastroCar === 'juridicoOutra' ?
-                    <Pressable
-                        onPress={()=>{ openModalDocCar('cnpj') }}
-                        style={[styles.btn, {borderColor: cnpjImage != null ? '#28a745' : '#FF5F00'}]}
-                    >
-                        <Image
-                            style={[styles.icon, {tintColor : cnpjImage != null ? '#28a745' : '#FF5F00'}]}
-                            source={require('../../../img/icons/upload.png')}
-                        />
-                        <Text style={[styles.btnTxt,{marginLeft:5, color: cnpjImage != null ? '#28a745' : '#FF5F00'}]}>CNPJ</Text>
-
-                        {cnpjImage != null ?
-                            <Image
-                            style={[styles.icon, {width:30,height:30,tintColor: cnpjImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../img/icons/ok.png')}
-                        /> : <View></View> }
-                    </Pressable> : ''}
-                    
-                    {infoCadastroCar === 'juridicoEu' || infoCadastroCar === 'juridicoOutra' ?
-                    <Pressable
-                        onPress={()=>{openModalDocCar('estadual')}}
-                        style={[styles.btn , {borderColor: inscricaoEstadualImage != null  ?  '#28a745' : '#FF5F00'}]}
-                    >
-                        <Image
-                            style={[styles.icon, {tintColor: inscricaoEstadualImage != null  ?  '#28a745' : '#FF5F00' }]}
-                            source={require('../../../img/icons/upload.png')}
-                        />
-                        <Text style={[styles.btnTxt, { color: inscricaoEstadualImage != null  ?  '#28a745' : '#FF5F00' }]}> Inscrição Estadual </Text>
-                        {inscricaoEstadualImage != null ?
-                            <Image
-                            style={[styles.icon, {width:30,height:30, tintColor: inscricaoEstadualImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../img/icons/ok.png')}
-                        /> : <View></View> }
-                    </Pressable> : ''}
-
-                    {infoCadastroCar === 'fisicaOutra' ?
-                    <Pressable
-                        onPress={()=>{openModalDocCar('endereco')}}
-                        style={[styles.btn , {borderColor: residenciaDonoImage != null  ?  '#28a745' : '#FF5F00'}]}
-                    >
-                        <Image
-                            style={[styles.icon, {tintColor: residenciaDonoImage != null  ?  '#28a745' : '#FF5F00' }]}
-                            source={require('../../../img/icons/upload.png')}
-                        />
-                        <Text style={[styles.btnTxt, { color: residenciaDonoImage != null  ?  '#28a745' : '#FF5F00', fontSize:15 }]}> Compravante de Resedência (DONO) </Text>
-                        {residenciaDonoImage != null ?
-                            <Image
-                            style={[styles.icon, {width:30,height:30, tintColor: residenciaDonoImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../img/icons/ok.png')}
-                        /> : <View></View> }
-                    </Pressable> : ''}
-
-                    {infoCadastroCar === 'fisicaOutra' ?
-                    <Pressable
-                        onPress={()=>{openModalDocCar('cpf')}}
-                        style={[styles.btn , {borderColor: cpfDonoImage != null  ?  '#28a745' : '#FF5F00'}]}
-                    >
-                        <Image
-                            style={[styles.icon, {tintColor: cpfDonoImage != null  ?  '#28a745' : '#FF5F00' }]}
-                            source={require('../../../img/icons/upload.png')}
-                        />
-                        <Text style={[styles.btnTxt, { color: cpfDonoImage != null  ?  '#28a745' : '#FF5F00'}]}> RG (DONO)</Text>
-                        {cpfDonoImage != null ?
-                            <Image
-                            style={[styles.icon, {width:30,height:30, tintColor: cpfDonoImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../img/icons/ok.png')}
-                        /> : <View></View> }
-                    </Pressable> : ''
-                    }
-                    {infoCadastroCar === 'fisicaOutra' && (
-                        <View style={twrnc`h-15 border-2 border-[#ff5f00] rounded-xl mt-5 `}>
-                            <Text style={twrnc`text-xs px-3 py-1 font-bold text-[#ff5f00]`}>Celular do proprietário</Text>
-                            <MaskInput
-                            style={twrnc`px-3`}
-                                value={phoneOwner}
-                                keyboardType="phone-pad"
-                                onChangeText={(masked, unmasked) => {
-                                    setPhoneOwner(unmasked);
-                                }}
-                                mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
-                            />
-                        </View>
-                    )}
-
-                </View>
-                <Modal visible={isVisible} animationType='slide' transparent={true}>
-                    {modalBtn  ?  
-                    <View style={styles.modal}>
-                        <View style={[styles.containerModal, {height:'50%'}]}>
-                            <View style={styles.modalHeader}>
-                                <Text> </Text>
-                                <Text style={styles.title}>
-                                    Escolha uma opção
-                                </Text>
-                                <Pressable onPress={showModalDoc}>
-                                    <Image
-                                        style={[styles.icon, {height:25, width:25, marginTop:5}]}
-                                        source={require('../../../img/icons/x.png')}
-                                    />
-                                </Pressable>
-                            </View>
-                            <View style={{marginBottom:15}}>
-                                <Pressable 
-                                    style={styles.btn}
-                                    onPress={() => SelectOpition('camera')}
-                                >
-                                    <View style={styles.containerBtn}>
-                                        <Image
-                                            style={styles.icon}
-                                            source={require('../../../img/icons/camera.png')}
-                                        />
-                                        <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Câmera</Text>
-                                    </View>
-                                </Pressable>
-
-                                <Pressable 
-                                    style={styles.btn}
-                                    onPress={() => SelectOpition('galeria',)}
-                                >
-                                    <View style={styles.containerBtn}>
-                                        <Image
-                                            style={styles.icon}
-                                            source={require('../../../img/icons/galeria.png')}
-                                        />
-                                        <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Galereria</Text>
-                                    </View>
-                                </Pressable>
-
-                                <Pressable 
-                                    style={styles.btn}
-                                    onPress={() => SelectOpition('arquivo')}
-                                >
-                                    <View style={[styles.containerBtn, {width:'80%'} ]}>
-                                        <Image
-                                            style={styles.icon}
-                                            source={require('../../../img/icons/arquivo.png')}
-                                        />
-                                        <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Documentos</Text>
-                                    </View>
-                                </Pressable>
-                            </View>
-                        </View>
+                    <View style={styles.containerInfo}>
+                        <Text style={styles.txtInfo}>
+                            Lembre-se que você pode escolher tirar uma foto, selecionar um PDF, ou escolher uma foto que você  ja tenha na sua galeria
+                        </Text>
+                        <Text style={[styles.txtInfo, {position:'absolute', left:230, top: 95}]}>
+                        {contDocument} de {numberDocument} arquivos.
+                        </Text>
                     </View>
-                    : <View style={styles.modal}>
-                        <View style={styles.containerModal}>
-                            
-                            <View style={styles.modalHeader}>
-                                <Text> </Text>
-                                <Text style={styles.title}>
-                                    Exemplo
-                                </Text>
-                                <Pressable onPress={openModalDocCar}>
-                                    <Image
-                                        style={[styles.icon, {height:25, width:25, marginTop:5}]}
-                                        source={require('../../../img/icons/x.png')}
-                                    />
-                                </Pressable>
-                            </View>
+                    <View style={{marginTop:50,}}>
                         
-                            <View style={styles.containerInfoModal}> 
-                                <Text style={styles.txtModal}> 
-                                    Se for tirar foto não se esqueça de abrir o documento assim como o exemplo abaixo: 
-                                </Text> 
+                        <Pressable
+                            onPress={()=>{openModalDocCar('clv')}}
+                            style={[styles.btn, {marginTop:0, borderColor: clvImage != null ? '#28a745' : '#FF5F00'}]}
+                        >
+                            <Image
+                                style={[styles.icon, {tintColor: clvImage != null ? '#28a745' : '#FF5F00'}]}
+                                source={require('../../../img/icons/upload.png')}
+                            />
+                            <Text style={[styles.btnTxt, {color: clvImage != null ? '#28a745' : '#FF5F00'}]}>CLV (Documento do Veículo)</Text>
+
+                            { clvImage != null ?
                                 <Image
-                                    style={[styles.imgExemplo, {
-                                        height: clvVisible ? 420 : anttVisible ? 390 : cnpjVisible ? 360 : 380,
-                                    }]}
-                                    source={
-                                          cpfVisible
-                                          ? require('../../../img/imgExemplo/cpfRg.png')
-                                          : clvVisible
-                                          ? require('../../../img/imgExemplo/clv.png')
-                                          : anttVisible
-                                          ? require('../../../img/imgExemplo/antt.png')
-                                          : cnpjVisible
-                                          ? require('../../../img/imgExemplo/cnpj.png')
-                                          : inscicaoEstadualVisible
-                                          ? require('../../../img/imgExemplo/inscricaoEstadual.png')
-                                          : residenciaVisible
-                                          ? require('../../../img/imgExemplo/compravanteResidencia.png')
-                                          : null // Defina um valor padrão ou nulo, se necessário
-                                      }
+                                style={[styles.icon, {width:30,height:30,tintColor: clvImage != null ? '#28a745' : '#FF5F00'} ]}
+                                source={require('../../../img/icons/ok.png')}
+                            /> : <View></View> }
+                        </Pressable>
+
+                        <Pressable
+                            onPress={()=>{openModalDocCar('antt')}}
+                            style={[styles.btn,{ borderColor: anttImage != null ? '#28a745' : '#FF5F00' }]}
+                        >
+                            <Image
+                                style={[styles.icon, {tintColor: anttImage != null ? '#28a745' : '#FF5F00'} ]}
+                                source={require('../../../img/icons/upload.png')}
+                            />
+                            <Text style={[styles.btnTxt, {color:anttImage != null ? '#28a745' : '#FF5F00' }]}>ANTT</Text>
+                            {anttImage != null ?
+                                <Image
+                                style={[styles.icon, {width:30,height:30 ,tintColor: anttImage != null ? '#28a745' : '#FF5F00'} ]}
+                                source={require('../../../img/icons/ok.png')}
+                            /> : <View></View> }
+                        </Pressable>
+
+                        {infoCadastroCar === 'juridicoEu' || infoCadastroCar === 'juridicoOutra' ?
+                        <Pressable
+                            onPress={()=>{ openModalDocCar('cnpj') }}
+                            style={[styles.btn, {borderColor: cnpjImage != null ? '#28a745' : '#FF5F00'}]}
+                        >
+                            <Image
+                                style={[styles.icon, {tintColor : cnpjImage != null ? '#28a745' : '#FF5F00'}]}
+                                source={require('../../../img/icons/upload.png')}
+                            />
+                            <Text style={[styles.btnTxt,{marginLeft:5, color: cnpjImage != null ? '#28a745' : '#FF5F00'}]}>CNPJ</Text>
+
+                            {cnpjImage != null ?
+                                <Image
+                                style={[styles.icon, {width:30,height:30,tintColor: cnpjImage != null ? '#28a745' : '#FF5F00'} ]}
+                                source={require('../../../img/icons/ok.png')}
+                            /> : <View></View> }
+                        </Pressable> : ''}
+                        
+                        {infoCadastroCar === 'juridicoEu' || infoCadastroCar === 'juridicoOutra' ?
+                        <Pressable
+                            onPress={()=>{openModalDocCar('estadual')}}
+                            style={[styles.btn , {borderColor: inscricaoEstadualImage != null  ?  '#28a745' : '#FF5F00'}]}
+                        >
+                            <Image
+                                style={[styles.icon, {tintColor: inscricaoEstadualImage != null  ?  '#28a745' : '#FF5F00' }]}
+                                source={require('../../../img/icons/upload.png')}
+                            />
+                            <Text style={[styles.btnTxt, { color: inscricaoEstadualImage != null  ?  '#28a745' : '#FF5F00' }]}> Inscrição Estadual </Text>
+                            {inscricaoEstadualImage != null ?
+                                <Image
+                                style={[styles.icon, {width:30,height:30, tintColor: inscricaoEstadualImage != null ? '#28a745' : '#FF5F00'} ]}
+                                source={require('../../../img/icons/ok.png')}
+                            /> : <View></View> }
+                        </Pressable> : ''}
+
+                        {infoCadastroCar === 'fisicaOutra' ?
+                        <Pressable
+                            onPress={()=>{openModalDocCar('endereco')}}
+                            style={[styles.btn , {borderColor: residenciaDonoImage != null  ?  '#28a745' : '#FF5F00'}]}
+                        >
+                            <Image
+                                style={[styles.icon, {tintColor: residenciaDonoImage != null  ?  '#28a745' : '#FF5F00' }]}
+                                source={require('../../../img/icons/upload.png')}
+                            />
+                            <Text style={[styles.btnTxt, { color: residenciaDonoImage != null  ?  '#28a745' : '#FF5F00', fontSize:15 }]}> Compravante de Resedência (DONO) </Text>
+                            {residenciaDonoImage != null ?
+                                <Image
+                                style={[styles.icon, {width:30,height:30, tintColor: residenciaDonoImage != null ? '#28a745' : '#FF5F00'} ]}
+                                source={require('../../../img/icons/ok.png')}
+                            /> : <View></View> }
+                        </Pressable> : ''}
+
+                        {infoCadastroCar === 'fisicaOutra' ?
+                        <Pressable
+                            onPress={()=>{openModalDocCar('cpf')}}
+                            style={[styles.btn , {borderColor: cpfDonoImage != null  ?  '#28a745' : '#FF5F00'}]}
+                        >
+                            <Image
+                                style={[styles.icon, {tintColor: cpfDonoImage != null  ?  '#28a745' : '#FF5F00' }]}
+                                source={require('../../../img/icons/upload.png')}
+                            />
+                            <Text style={[styles.btnTxt, { color: cpfDonoImage != null  ?  '#28a745' : '#FF5F00'}]}> RG (DONO)</Text>
+                            {cpfDonoImage != null ?
+                                <Image
+                                style={[styles.icon, {width:30,height:30, tintColor: cpfDonoImage != null ? '#28a745' : '#FF5F00'} ]}
+                                source={require('../../../img/icons/ok.png')}
+                            /> : <View></View> }
+                        </Pressable> : ''
+                        }
+                        {infoCadastroCar === 'fisicaOutra' && (
+                            <View style={twrnc`h-15 border-2 border-[#ff5f00] rounded-xl mt-5 `}>
+                                <Text style={twrnc`text-xs px-3 py-1 font-bold text-[#ff5f00]`}>Celular do proprietário</Text>
+                                <MaskInput
+                                style={twrnc`px-3`}
+                                    value={phoneOwner}
+                                    keyboardType="phone-pad"
+                                    onChangeText={(masked, unmasked) => {
+                                        setPhoneOwner(unmasked);
+                                    }}
+                                    mask={['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
                                 />
                             </View>
-                            
-                            <View style={styles.containerBtnModal}>
-                                <Pressable style={styles.btnModal}
-                                    onPress={showModalDoc}
-                                >
-                                    <Text style={styles.btnTxtModal}>Continuar</Text>
-                                </Pressable>
-                            </View>
+                        )}
 
+                    </View>
+                    <Modal visible={isVisible} animationType='slide' transparent={true}>
+                        {modalBtn  ?  
+                        <View style={styles.modal}>
+                            <View style={[styles.containerModal, {height:'50%'}]}>
+                                <View style={styles.modalHeader}>
+                                    <Text> </Text>
+                                    <Text style={styles.title}>
+                                        Escolha uma opção
+                                    </Text>
+                                    <Pressable onPress={showModalDoc}>
+                                        <Image
+                                            style={[styles.icon, {height:25, width:25, marginTop:5}]}
+                                            source={require('../../../img/icons/x.png')}
+                                        />
+                                    </Pressable>
+                                </View>
+                                <View style={{marginBottom:15}}>
+                                    <Pressable 
+                                        style={styles.btn}
+                                        onPress={() => SelectOpition('camera')}
+                                    >
+                                        <View style={styles.containerBtn}>
+                                            <Image
+                                                style={styles.icon}
+                                                source={require('../../../img/icons/camera.png')}
+                                            />
+                                            <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Câmera</Text>
+                                        </View>
+                                    </Pressable>
+
+                                    <Pressable 
+                                        style={styles.btn}
+                                        onPress={() => SelectOpition('galeria',)}
+                                    >
+                                        <View style={styles.containerBtn}>
+                                            <Image
+                                                style={styles.icon}
+                                                source={require('../../../img/icons/galeria.png')}
+                                            />
+                                            <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Galereria</Text>
+                                        </View>
+                                    </Pressable>
+
+                                    <Pressable 
+                                        style={styles.btn}
+                                        onPress={() => SelectOpition('arquivo')}
+                                    >
+                                        <View style={[styles.containerBtn, {width:'80%'} ]}>
+                                            <Image
+                                                style={styles.icon}
+                                                source={require('../../../img/icons/arquivo.png')}
+                                            />
+                                            <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Documentos</Text>
+                                        </View>
+                                    </Pressable>
+                                </View>
+                            </View>
                         </View>
-                    </View>  }
-                </Modal>
-                <View style={styles.containerInfo}>
-                <Pressable 
-                        onPress={navegacao}
-                        style={[
-                            styles.btnContinue,
-                            {
-                                backgroundColor: (
+                        : <View style={styles.modal}>
+                            <View style={styles.containerModal}>
+                                
+                                <View style={styles.modalHeader}>
+                                    <Text> </Text>
+                                    <Text style={styles.title}>
+                                        Exemplo
+                                    </Text>
+                                    <Pressable onPress={openModalDocCar}>
+                                        <Image
+                                            style={[styles.icon, {height:25, width:25, marginTop:5}]}
+                                            source={require('../../../img/icons/x.png')}
+                                        />
+                                    </Pressable>
+                                </View>
+                            
+                                <View style={styles.containerInfoModal}> 
+                                    <Text style={styles.txtModal}> 
+                                        Se for tirar foto não se esqueça de abrir o documento assim como o exemplo abaixo: 
+                                    </Text> 
+                                    <Image
+                                        style={[styles.imgExemplo, {
+                                            height: clvVisible ? 420 : anttVisible ? 390 : cnpjVisible ? 360 : 380,
+                                        }]}
+                                        source={
+                                            cpfVisible
+                                            ? require('../../../img/imgExemplo/cpfRg.png')
+                                            : clvVisible
+                                            ? require('../../../img/imgExemplo/clv.png')
+                                            : anttVisible
+                                            ? require('../../../img/imgExemplo/antt.png')
+                                            : cnpjVisible
+                                            ? require('../../../img/imgExemplo/cnpj.png')
+                                            : inscicaoEstadualVisible
+                                            ? require('../../../img/imgExemplo/inscricaoEstadual.png')
+                                            : residenciaVisible
+                                            ? require('../../../img/imgExemplo/compravanteResidencia.png')
+                                            : null // Defina um valor padrão ou nulo, se necessário
+                                        }
+                                    />
+                                </View>
+                                
+                                <View style={styles.containerBtnModal}>
+                                    <Pressable style={styles.btnModal}
+                                        onPress={showModalDoc}
+                                    >
+                                        <Text style={styles.btnTxtModal}>Continuar</Text>
+                                    </Pressable>
+                                </View>
+
+                            </View>
+                        </View>  }
+                    </Modal>
+                    <View style={styles.containerInfo}>
+                    <Pressable 
+                            onPress={navegacao}
+                            style={[
+                                styles.btnContinue,
+                                {
+                                    backgroundColor: (
+                                        (infoCadastroCar === 'fisicaEu' && clvImage != null && anttImage != null) ||
+                                        (infoCadastroCar === 'fisicaOutra' && clvImage != null && anttImage != null && residenciaDonoImage != null && cpfDonoImage != null) ||
+                                        (infoCadastroCar === 'juridicoEu' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null) ||
+                                        (infoCadastroCar === 'juridicoOutra' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null)
+                                    ) ? '#FF5F00' : 'transparent',
+                                }
+                            ]}
+                        >
+
+                            <Text style={{
+                                fontSize: 15,
+                                fontFamily: 'Roboto_500Medium',
+                                color: (
                                     (infoCadastroCar === 'fisicaEu' && clvImage != null && anttImage != null) ||
                                     (infoCadastroCar === 'fisicaOutra' && clvImage != null && anttImage != null && residenciaDonoImage != null && cpfDonoImage != null) ||
                                     (infoCadastroCar === 'juridicoEu' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null) ||
                                     (infoCadastroCar === 'juridicoOutra' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null)
-                                ) ? '#FF5F00' : 'transparent',
-                            }
-                        ]}
-                    >
-
-                        <Text style={{
-                            fontSize: 15,
-                            fontFamily: 'Roboto_500Medium',
-                            color: (
-                                (infoCadastroCar === 'fisicaEu' && clvImage != null && anttImage != null) ||
-                                (infoCadastroCar === 'fisicaOutra' && clvImage != null && anttImage != null && residenciaDonoImage != null && cpfDonoImage != null) ||
-                                (infoCadastroCar === 'juridicoEu' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null) ||
-                                (infoCadastroCar === 'juridicoOutra' && clvImage != null && anttImage != null && cnpjImage != null && inscricaoEstadualImage != null)
-                            ) ? 'white' : '#FF5F00',
-                            }}
-                        >
-                            Continuar
-                        </Text>
-                    </Pressable>
-                </View>
-            </View> 
-        </KeyboardAwareScrollView>: ''}
+                                ) ? 'white' : '#FF5F00',
+                                }}
+                            >
+                                Continuar
+                            </Text>
+                        </Pressable>
+                    </View>
+                </View> 
+            </ScrollView>
+        </SafeAreaView>
+        : ''}
 
         
         { loading ? 

@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet,Pressable } from "react-native";
+import { View, Text, Image, StyleSheet,Pressable,ScrollView,SafeAreaView } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useRoute } from '@react-navigation/native';
 import FixBar from "../../fixBar";
@@ -7,72 +7,74 @@ import twrnc from "twrnc";
 export default function InfoPhoto({navigation}){
     const route = useRoute();
     return(
-    <KeyboardAwareScrollView style={twrnc`bg-white`}>
-        <FixBar navigation={navigation} opition={'register'} />
-        <View style={styles.container}>
-            <Text style={styles.h1}>Foto</Text>
+    <SafeAreaView style={twrnc`h-full mt-6`}>
+        <ScrollView style={twrnc`bg-white`}>
+            <FixBar navigation={navigation} opition={'register'} />
+            <View style={styles.container}>
+                <Text style={styles.h1}>Foto</Text>
 
-            <View style={styles.containerListen}>
-                <Text style={styles.h2}> 
-                    Leia atentamente as instruções 
-                </Text>
-            </View>
-
-            <View style={styles.containerInfoOne}>
-                <Text style={styles.txtInfoOne}>
-                    Tenha em mãos os seguintes documentos.
-                </Text>
-            </View>
-
-            <View style={styles.containerIcons}>
-                <View style={styles.containerInstrution}>
-                    <Image style={styles.iconNumber}
-                        source={require('../../../img/icons/1.png')}
-                    />
-                    <Text style={styles.label}>RG e CPF</Text>
+                <View style={styles.containerListen}>
+                    <Text style={styles.h2}> 
+                        Leia atentamente as instruções 
+                    </Text>
                 </View>
 
-                <View style={[styles.containerInstrution,{marginTop:15,marginBottom:15}]}>
-                    <Image style={styles.iconNumber}
-                            source={require('../../../img/icons/2.png')}
-                    />
-                    <Text style={styles.label}>CNH { route.params.am === 'auxiliary' ? <Text>(opcional)</Text>:''} </Text>
+                <View style={styles.containerInfoOne}>
+                    <Text style={styles.txtInfoOne}>
+                        Tenha em mãos os seguintes documentos.
+                    </Text>
                 </View>
 
-                <View style={styles.containerInstrution}>
-                    <Image style={styles.iconNumber}
-                            source={require('../../../img/icons/3.png')}
-                    />
-                    <Text style={styles.label}>Comprovante de Residência</Text>
-                </View>
-            </View>
-            <View style={styles.containerInfoTwo}>
-                <Text style={styles.txtInfoTwo}>
-                    Lembre-se de tirar as fotos legíveis, em um ambiente bem iluminado.
-                </Text>
-            </View>
-            <View style={styles.containerListen}>
-                <Text style={styles.h2}>E por fim, uma selfie bem centralizada !</Text>
-            </View> 
-            <View style={styles.containerBtn}>
-                <Pressable 
-                    style={styles.btn}
-                    onPress={() => {
-                        navigation.navigate('RegisterUploadEntregador',route.params)
-                        // console.log('route:', route.params)
-                    }}
-                >
-                    <Text style={styles.btnTxt}>Vamos lá!</Text>
-                </Pressable>
-                <Image
-                    style={styles.imgSelfie}
-                    source={require('../../../img/icons/selfie.png')}
+                <View style={styles.containerIcons}>
+                    <View style={styles.containerInstrution}>
+                        <Image style={styles.iconNumber}
+                            source={require('../../../img/icons/1.png')}
+                        />
+                        <Text style={styles.label}>RG e CPF</Text>
+                    </View>
 
-                />
+                    <View style={[styles.containerInstrution,{marginTop:15,marginBottom:15}]}>
+                        <Image style={styles.iconNumber}
+                                source={require('../../../img/icons/2.png')}
+                        />
+                        <Text style={styles.label}>CNH { route.params.am === 'auxiliary' ? <Text>(opcional)</Text>:''} </Text>
+                    </View>
+
+                    <View style={styles.containerInstrution}>
+                        <Image style={styles.iconNumber}
+                                source={require('../../../img/icons/3.png')}
+                        />
+                        <Text style={styles.label}>Comprovante de Residência</Text>
+                    </View>
+                </View>
+                <View style={styles.containerInfoTwo}>
+                    <Text style={styles.txtInfoTwo}>
+                        Lembre-se de tirar as fotos legíveis, em um ambiente bem iluminado.
+                    </Text>
+                </View>
+                <View style={styles.containerListen}>
+                    <Text style={styles.h2}>E por fim, uma selfie bem centralizada !</Text>
+                </View> 
+                <View style={styles.containerBtn}>
+                    <Pressable 
+                        style={styles.btn}
+                        onPress={() => {
+                            navigation.navigate('RegisterUploadEntregador',route.params)
+                            // console.log('route:', route.params)
+                        }}
+                    >
+                        <Text style={styles.btnTxt}>Vamos lá!</Text>
+                    </Pressable>
+                    <Image
+                        style={styles.imgSelfie}
+                        source={require('../../../img/icons/selfie.png')}
+
+                    />
+                </View>
+                
             </View>
-            
-        </View>
-    </KeyboardAwareScrollView>
+        </ScrollView>
+    </SafeAreaView>
     )
 }
 

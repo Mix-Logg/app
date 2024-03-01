@@ -50,6 +50,10 @@ export default function Login({navigation}){
         }
     }
 
+    const handleNoCadastre = async () => {
+        navigation.navigate('RegisterCarProfile')
+    }
+
     // useEffect(() => {
     //     const fetchData = async () => {
     //         isLoggedIn.current = true;
@@ -79,9 +83,9 @@ export default function Login({navigation}){
     );
 
     return(
-        <View style={twrnc`bg-white`}>
+        <View style={twrnc`bg-white h-full`}>
         { !waiting ?
-            <View style={[twrnc`flex items-center  justify-center h-full `]} >
+            <View style={[twrnc`flex items-center  justify-center h-full`]} >
                 <View style={[twrnc`flex w-full items-center mt-3`,{height:'20%'} ]}>
                     <Image style={[twrnc``, {width:'45%', height:'90%',} ] }
                     source={require('../../../img/logo/logoAsa.png')}
@@ -138,7 +142,7 @@ export default function Login({navigation}){
                     </Pressable>
                     {/* CADASTRAR  */}
                     <Pressable style={twrnc`border border-[#FF5F00] font-bold flex justify-center flex-row py-5 rounded-lg`}
-                        onPress={()=>{navigation.navigate('Register')}}
+                        onPress={handleNoCadastre}
                         >
                         <Text style={twrnc`font-bold text-[#FF5F00]`}>Não sou cadastrado</Text>
                     </Pressable>

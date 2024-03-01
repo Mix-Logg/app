@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Pressable, Modal, ActivityIndicator  } from "react-native"
+import { View, Text, StyleSheet, Image, Pressable, Modal, ActivityIndicator, ScrollView, SafeAreaView  } from "react-native"
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import  { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
@@ -7,7 +7,10 @@ import GetPath from "../../../function/getPathPicture";
 import FixBar from "../../fixBar";
 import PopUp from "../../modal";
 import twrnc from "twrnc";
-
+import Btn from "../../btn";
+import { AntDesign } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons';
+import Help from "../../help";
 export default function UpLoadEntregador({navigation}){
     const route = useRoute();
     const [loading, setLoading] = useState(false);
@@ -25,6 +28,7 @@ export default function UpLoadEntregador({navigation}){
     const [cnhImage, setCnhImage] = useState(null);
     const [selfieImage, setSelfieImage] = useState(null);
     const [modal, setModal] = useState(null);
+    const [popUp, setPopUp] = useState('');
 
     const [api, setApi] = useState(null);
     const newParam = {
@@ -138,7 +142,73 @@ export default function UpLoadEntregador({navigation}){
         setModalBtnVisible(!modalBtnVisible)
     }
 
-    const navegacao = async () => {
+    const modalInfo = async (option) => {
+        setPopUp('')
+        if(option === 'cnh'){
+            await setPopUp(<PopUp type={'warning'} txt={'Você deve enviar a imagem da sua CNH'} show={true} />);
+            return;
+        }
+        if(option === 'cpf'){
+            await setPopUp(<PopUp type={'warning'} txt={'Você deve enviar a imagem do seu RG/CPF'} show={true} />);
+            return;
+        }
+        if(option === 'address'){
+            await setPopUp(<PopUp type={'warning'} txt={'Você deve enviar a imagem do seu endereço'} show={true} />);
+            return;
+        }
+        if(option === 'selfie'){
+            await setPopUp(<PopUp type={'warning'} txt={'Você deve enviar uma selfie'} show={true} />);
+            return;
+        }
+    }
+
+    const handleSubmit = async () => {
+        await setPopUp('')
+        const am = route.params.user.am
+        const picture = {
+            human: {
+                address: EnderecoImage,
+                cnh: cnhImage,
+                selfie: selfieImage,
+                cpf: cpfImage
+            }
+        };
+        route.params.picture = picture;
+        if(am === 'driver' || am === 'motorcycle' || am === 'tour'){ 
+            if(cnhImage === null){
+                await modalInfo('cnh')
+                return;
+            }
+            if(cpfImage === null){
+                await modalInfo('cpf')
+                return;
+            }
+            if(EnderecoImage === null){
+                await modalInfo('address')
+                return;
+            }
+            if(selfieImage === null){
+                await modalInfo('selfie')
+                return;
+            }
+            navigation.navigate('RegisterCar',route.params)
+            return;
+        }
+        if(route.params.am === 'auxiliary'){
+            if(cpfImage === null){
+                await modalInfo('cpf')
+                return;
+            }
+            if(EnderecoImage === null){
+                await modalInfo('address')
+                return;
+            }
+            if(selfieImage === null){
+                await modalInfo('selfie')
+                return;
+            }
+        }
+
         if(cpfImage && EnderecoImage && (route.params.am === 'auxiliary' || cnhImage) && selfieImage != null  ){
             if(route.params.am === 'driver'){
                 navigation.navigate('RegisterCar',newParam)
@@ -221,222 +291,196 @@ export default function UpLoadEntregador({navigation}){
 
     return(
     <>
-         {loading === false ? 
-        <KeyboardAwareScrollView style={twrnc`bg-white`} >
+        {popUp}
+        {loading === false ? 
+        <SafeAreaView style={twrnc`h-full mt-6`}>
             <FixBar navigation={navigation} opition={'register'} />
-            {modal}
-            <View style={styles.container}>
-                <Text style={styles.h1}>Foto</Text>
-                <Text style={styles.txtListen}>
-                    Última coisa a verificar.
-                </Text>
-                <View style={styles.containerInfo}>
-                    <Text style={styles.txtInfo}>
-                        Lembre-se que você pode escolher tirar uma foto, selecionar um PDF, ou escolher uma foto que você  ja tenha na sua galeria
-                    </Text>
-                    <Text style={[styles.txtInfo, {position:'absolute', left:230, top: 95}]}>
-                    {contDocument} de 4 arquivos.
-                    </Text>
-                </View>
-                <View style={{marginTop:50, backgroundColor:'white'}}>
-                    
-                    <Pressable
-                        onPress={()=>{openModal('cnh')}}
-                        style={[styles.btn, {marginTop:0, borderColor: cnhImage != null ? '#28a745' : '#FF5F00'}]}
-                    >
-                        <Image
-                            style={[styles.icon, {tintColor: cnhImage != null ? '#28a745' : '#FF5F00'}]}
-                            source={require('../../../img/icons/upload.png')}
-                        />
-                        <Text style={[styles.btnTxt, {color: cnhImage != null ? '#28a745' : '#FF5F00'}]}>CNH {route.params.am === 'auxiliary'? '(opcional)' : '' } </Text>
-
-                        { cnhImage != null ?
-                            <Image
-                            style={[styles.icon, {width:30,height:30,tintColor: cnhImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../img/icons/ok.png')}
-                        /> : <View></View> }
-                    </Pressable>
-
-                    <Pressable
-                        onPress={()=>{openModal('cpf')}}
-                        style={[styles.btn,{ borderColor: cpfImage != null ? '#28a745' : '#FF5F00' }]}
-                    >
-                        <Image
-                            style={[styles.icon, {tintColor: cpfImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../img/icons/upload.png')}
-                        />
-                        <Text style={[styles.btnTxt, {color:cpfImage != null ? '#28a745' : '#FF5F00' }]}>RG/CPF</Text>
-                        {cpfImage != null ?
-                            <Image
-                            style={[styles.icon, {width:30,height:30 ,tintColor: cpfImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../img/icons/ok.png')}
-                        /> : <View></View> }
-                    </Pressable>
-
-                    <Pressable
-                        onPress={()=>{ openModal('endereco') }}
-                        style={[styles.btn, {borderColor: EnderecoImage != null ? '#28a745' : '#FF5F00'}]}
-                    >
-                        <Image
-                            style={[styles.icon, {tintColor : EnderecoImage != null ? '#28a745' : '#FF5F00'}]}
-                            source={require('../../../img/icons/upload.png')}
-                        />
-                        <Text style={[styles.btnTxt,{marginLeft:5, color: EnderecoImage != null ? '#28a745' : '#FF5F00'}]}>Comprovante de Residência</Text>
-
-                        {EnderecoImage != null ?
-                            <Image
-                            style={[styles.icon, {width:30,height:30,tintColor: EnderecoImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../img/icons/ok.png')}
-                        /> : <View></View> }
-                    </Pressable>
-                    
-                    <Pressable
-                        onPress={()=>{openModal()}}
-                        style={[styles.btn , {borderColor: selfieImage != null  ?  '#28a745' : '#FF5F00'}]}
-                    >
-                        <Image
-                            style={[styles.icon, {tintColor: selfieImage != null  ?  '#28a745' : '#FF5F00' }]}
-                            source={require('../../../img/icons/upload.png')}
-                        />
-                        <Text style={[styles.btnTxt, { color: selfieImage != null  ?  '#28a745' : '#FF5F00' }]}>Selfie</Text>
-                        {selfieImage != null ?
-                            <Image
-                            style={[styles.icon, {width:30,height:30, tintColor: selfieImage != null ? '#28a745' : '#FF5F00'} ]}
-                            source={require('../../../img/icons/ok.png')}
-                        /> : <View></View> }
-                    </Pressable>
-
-                </View>
-                <Modal visible={isVisible} animationType='slide' transparent={true}>
-                    {modalBtnVisible  ?  
-                    <View style={styles.modal}>
-                        <View style={[styles.containerModal, {height:'50%'}]}>
-                            <View style={styles.modalHeader}>
-                                <Text> </Text>
-                                <Text style={styles.title}>
-                                    Escolha uma opção
-                                </Text>
-                                <Pressable onPress={showModalOpotion}>
-                                    <Image
-                                        style={[styles.icon, {height:25, width:25, marginTop:5}]}
-                                        source={require('../../../img/icons/x.png')}
-                                    />
-                                </Pressable>
-                            </View>
-                            <View style={{marginBottom:15}}>
-                                <Pressable 
-                                    style={styles.btn}
-                                    onPress={() => SelectOpition('camera')}
-                                >
-                                    <View style={styles.containerBtn}>
-                                        <Image
-                                            style={styles.icon}
-                                            source={require('../../../img/icons/camera.png')}
-                                        />
-                                        <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Câmera</Text>
-                                    </View>
-                                </Pressable>
-
-                                <Pressable 
-                                    style={styles.btn}
-                                    onPress={() => SelectOpition('gallery')}
-                                >
-                                    <View style={styles.containerBtn}>
-                                        <Image
-                                            style={styles.icon}
-                                            source={require('../../../img/icons/galeria.png')}
-                                        />
-                                        <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Galereria</Text>
-                                    </View>
-                                </Pressable>
-
-                                <Pressable 
-                                    style={styles.btn}
-                                    onPress={() => SelectOpition('file')}
-                                >
-                                    <View style={[styles.containerBtn, {width:'80%'} ]}>
-                                        <Image
-                                            style={styles.icon}
-                                            source={require('../../../img/icons/arquivo.png')}
-                                        />
-                                        <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Documentos</Text>
-                                    </View>
-                                </Pressable>
-                            </View>
-                        </View>
+            <ScrollView style={twrnc`bg-white`} >
+                {modal}
+                <View style={styles.container}>
+                    <Text style={styles.h1}>Foto</Text>
+                    <View style={twrnc`mt-5 mb-10`}>
+                        <Help txt={'Você deve enviar as imagens para a avaliação interna, assim informaremos se você está hábito a trabalhar'} />
                     </View>
-                    : <View style={styles.modal}>
-                        <View style={styles.containerModal}>
-                            
-                            <View style={styles.modalHeader}>
-                                <Text> </Text>
-                                <Text style={styles.title}>
-                                    { cpfVisible || cnhVisible || enderecoVisible ? 'Exemplo' : 'Selfie'}
+                    <View style={twrnc`px-15 gap-5 mb-10`}>
+                        <Pressable
+                            onPress={()=>{openModal('cnh')}}
+                            style={[twrnc`flex-row border py-3 rounded-xl px-2 ${ cnhImage != null ? 'bg-[#28a745] border-[#28a745]' : ''}` ]}
+                        >
+                            <View style={twrnc`w-1/6`}>
+                                <AntDesign name="upload" size={20} style={twrnc` ${ cnhImage != null ? 'text-white font-bold' : ''}`} />
+                            </View>
+
+                            <View style={twrnc`w-4/6 justify-center`}>
+                                <Text style={[twrnc`text-center ${ cnhImage != null ? 'text-white font-bold' : ''}`]}>
+                                    CNH 
+                                    {route.params.user.am === 'auxiliary'? ' (opcional)' : '' } 
                                 </Text>
-                                <Pressable onPress={openModal}>
-                                    <Image
-                                        style={[styles.icon, {height:25, width:25, marginTop:5}]}
-                                        source={require('../../../img/icons/x.png')}
-                                    />
-                                </Pressable>
                             </View>
-                            { cpfVisible || cnhVisible || enderecoVisible ? <View style={styles.containerInfoModal}> 
-                                <Text style={styles.txtModal}> 
-                                    Se for tirar foto não se esqueça de abrir o documento assim como o exemplo abaixo: 
-                                </Text> 
-                                <Image
-                                    style={styles.imgExemplo}
-                                    source={
-                                        cpfVisible
-                                          ? require('../../../img/imgExemplo/cpfRg.png')
-                                          : enderecoVisible
-                                          ? require('../../../img/imgExemplo/compravanteResidencia.png')
-                                          : cnhVisible
-                                          ? require('../../../img/imgExemplo/cnhFisica.png')
-                                          : null // Defina um valor padrão ou nulo, se necessário
-                                      }
-                                />
-                            </View> : 
-                            <View>
-                                <Text style={[styles.title,{marginTop:20}]}>Instruções:</Text>
-                                <View style={{marginTop:15}}>
-                                    <Text style={[styles.txtSelfie, {marginTop:0}]}>1. Retire chapéu, boné e mascara. </Text>
-                                    <Text style={styles.txtSelfie}>2. Retire óculos escuro. </Text>
-                                    <Text style={styles.txtSelfie}>3. Foto centralizada. </Text>
-                                    <Text style={styles.txtSelfie}>4. Lugar iluminado. </Text>
-                                    <Text style={styles.txtSelfie}>5. Evite flash. </Text>
-                                    <Text style={styles.txtSelfie}>6. Olhos abertos.</Text>
-                                </View>
-                                <View style={styles.containerIcon}>
-                                <Image
-                                    style={[styles.icon,{ width:200, height: 200 }]}
-                                    source={require('../../../img/icons/userSelfie.png')}
-                                />
-                                </View>
+                        </Pressable>
 
+                        <Pressable
+                            onPress={()=>{openModal('cpf')}}
+                            style={twrnc`flex-row border py-3 rounded-xl px-2 ${cpfImage != null ? 'bg-[#28a745] border-[#28a745]' : ''}`}
+                        >
+                            <View style={twrnc`w-1/6`}>
+                                <AntDesign name="upload" size={20} style={twrnc` ${ cpfImage != null ? 'text-white font-bold' : ''}`} />
                             </View>
-                            }
-                            <View style={styles.containerBtnModal}>
-                                <Pressable style={styles.btnModal}
-                                    onPress={showModalOpotion}
-                                >
-                                    <Text style={styles.btnTxtModal}>Continuar</Text>
-                                </Pressable>
+                            <View style={twrnc`w-4/6 justify-center`}>
+                                <Text style={twrnc`text-center ${ cpfImage != null ? 'text-white font-bold' : ''} `}>RG/CPF</Text>
                             </View>
+                            
+                        </Pressable>
 
+                        <Pressable
+                            onPress={()=>{ openModal('endereco') }}
+                            style={twrnc`flex-row border py-4 rounded-xl px-2 ${EnderecoImage != null ? 'bg-[#28a745] border-[#28a745]' : ''}`}
+                        >
+                            <View style={twrnc`w-1/6`}>
+                                <AntDesign name="upload" size={20} style={twrnc` ${ EnderecoImage != null ? 'text-white font-bold' : ''}`}  />
+                            </View>
+                            <View style={twrnc`w-5/6 justify-center`}>
+                                <Text style={twrnc`text-center ${ EnderecoImage != null ? 'text-white font-bold' : ''} `}>Comprovante de Residência</Text>
+                            </View>
+                        </Pressable>
+                        
+                        <Pressable
+                            onPress={()=>{openModal()}}
+                            style={twrnc`flex-row border py-4 rounded-xl px-2 ${selfieImage != null ? 'bg-[#28a745] border-[#28a745]' : ''}`}
+                        >
+                            <View style={twrnc`w-1/6`}>
+                            <AntDesign name="upload" size={20} style={twrnc` ${ selfieImage != null ? 'text-white font-bold' : ''}`}  />
+                            </View>
+                            <View style={twrnc`w-4/6 justify-center`}>
+                                <Text style={twrnc`text-center ${ selfieImage != null ? 'text-white font-bold' : ''} `}>Selfie</Text>
+                            </View>
+                        </Pressable>
+
+                    </View>
+                    <Modal visible={isVisible} animationType='slide' transparent={true}>
+                        {modalBtnVisible  ?  
+                        <View style={styles.modal}>
+                            <View style={[styles.containerModal, {height:'50%'}]}>
+                                <View style={styles.modalHeader}>
+                                    <Text> </Text>
+                                    <Text style={styles.title}>
+                                        Escolha uma opção
+                                    </Text>
+                                    <Pressable onPress={showModalOpotion}>
+                                        <Image
+                                            style={[styles.icon, {height:25, width:25, marginTop:5}]}
+                                            source={require('../../../img/icons/x.png')}
+                                        />
+                                    </Pressable>
+                                </View>
+                                <View style={{marginBottom:15}}>
+                                    <Pressable 
+                                        style={styles.btn}
+                                        onPress={() => SelectOpition('camera')}
+                                    >
+                                        <View style={styles.containerBtn}>
+                                            <Image
+                                                style={styles.icon}
+                                                source={require('../../../img/icons/camera.png')}
+                                            />
+                                            <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Câmera</Text>
+                                        </View>
+                                    </Pressable>
+
+                                    <Pressable 
+                                        style={styles.btn}
+                                        onPress={() => SelectOpition('gallery')}
+                                    >
+                                        <View style={styles.containerBtn}>
+                                            <Image
+                                                style={styles.icon}
+                                                source={require('../../../img/icons/galeria.png')}
+                                            />
+                                            <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Galereria</Text>
+                                        </View>
+                                    </Pressable>
+
+                                    <Pressable 
+                                        style={styles.btn}
+                                        onPress={() => SelectOpition('file')}
+                                    >
+                                        <View style={[styles.containerBtn, {width:'80%'} ]}>
+                                            <Image
+                                                style={styles.icon}
+                                                source={require('../../../img/icons/arquivo.png')}
+                                            />
+                                            <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Documentos</Text>
+                                        </View>
+                                    </Pressable>
+                                </View>
+                            </View>
                         </View>
-                    </View>  }
-                </Modal>
-                <View style={styles.containerInfo}>
-                    <Pressable 
-                        style={[styles.btnContinue,{backgroundColor:cpfImage && EnderecoImage && (route.params.am === 'auxiliary' || cnhImage) && selfieImage != null ? '#FF5F00' : ''}]}
-                        onPress={navegacao}
-                    >
-                        <Text style={[styles.btnTxt,{color: cpfImage && EnderecoImage && (route.params.am === 'auxiliary' || cnhImage) && selfieImage != null ? 'white' : '#FF5F00'}]}>Continuar</Text>
-                    </Pressable>
+                        : <View style={styles.modal}>
+                            <View style={styles.containerModal}>
+                                
+                                <View style={styles.modalHeader}>
+                                    <Text> </Text>
+                                    <Text style={styles.title}>
+                                        { cpfVisible || cnhVisible || enderecoVisible ? 'Exemplo' : 'Selfie'}
+                                    </Text>
+                                    <Pressable onPress={openModal}>
+                                        <Image
+                                            style={[styles.icon, {height:25, width:25, marginTop:5}]}
+                                            source={require('../../../img/icons/x.png')}
+                                        />
+                                    </Pressable>
+                                </View>
+                                { cpfVisible || cnhVisible || enderecoVisible ? <View style={styles.containerInfoModal}> 
+                                    <Text style={styles.txtModal}> 
+                                        Se for tirar foto não se esqueça de abrir o documento assim como o exemplo abaixo: 
+                                    </Text> 
+                                    <Image
+                                        style={styles.imgExemplo}
+                                        source={
+                                            cpfVisible
+                                            ? require('../../../img/imgExemplo/cpfRg.png')
+                                            : enderecoVisible
+                                            ? require('../../../img/imgExemplo/compravanteResidencia.png')
+                                            : cnhVisible
+                                            ? require('../../../img/imgExemplo/cnhFisica.png')
+                                            : null // Defina um valor padrão ou nulo, se necessário
+                                        }
+                                    />
+                                </View> : 
+                                <View>
+                                    <Text style={[styles.title,{marginTop:20}]}>Instruções:</Text>
+                                    <View style={{marginTop:15}}>
+                                        <Text style={[styles.txtSelfie, {marginTop:0}]}>1. Retire chapéu, boné e mascara. </Text>
+                                        <Text style={styles.txtSelfie}>2. Retire óculos escuro. </Text>
+                                        <Text style={styles.txtSelfie}>3. Foto centralizada. </Text>
+                                        <Text style={styles.txtSelfie}>4. Lugar iluminado. </Text>
+                                        <Text style={styles.txtSelfie}>5. Evite flash. </Text>
+                                        <Text style={styles.txtSelfie}>6. Olhos abertos.</Text>
+                                    </View>
+                                    <View style={styles.containerIcon}>
+                                    <Image
+                                        style={[styles.icon,{ width:200, height: 200 }]}
+                                        source={require('../../../img/icons/userSelfie.png')}
+                                    />
+                                    </View>
+
+                                </View>
+                                }
+                                <View style={styles.containerBtnModal}>
+                                    <Pressable style={styles.btnModal}
+                                        onPress={showModalOpotion}
+                                    >
+                                        <Text style={styles.btnTxtModal}>Continuar</Text>
+                                    </Pressable>
+                                </View>
+
+                            </View>
+                        </View>  }
+                    </Modal>
+                    <Btn title={'Continue'} action={handleSubmit} />
                 </View>
-            </View>
-        </KeyboardAwareScrollView> 
+            </ScrollView> 
+        </SafeAreaView>
         : 
             <View style={[twrnc`bg-white`,{
                     flex: 1,
@@ -491,8 +535,7 @@ const styles = StyleSheet.create({
     },
     btn:{
         backgroundColor:'white',
-        borderWidth: 2,
-        borderColor:'#FF5F00',
+        borderWidth: 1,
         flexDirection:'row',
         borderRadius:15,
         height:80,

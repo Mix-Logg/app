@@ -2,9 +2,8 @@ import { View, Text, Image, StyleSheet, Pressable, ScrollView, StatusBar, Linkin
 import { useState } from "react";
 import twrnc from 'twrnc';
 import FixBar from "../../fixBar";
-import Wheel from '../../../img/icons/volante.png'
-import Handle from '../../../img/icons/ajudante.png'
 import { FontAwesome } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 export default function Register({navigation}){
     const [numberWhats,setNumberWhats] = useState('5511978612671')
     const handleWhatsapp = () => {
@@ -12,70 +11,94 @@ export default function Register({navigation}){
         Linking.openURL(whatsappUrl)
     }
     return(
-        <ScrollView style={twrnc`bg-white`}>
-            <StatusBar
-                backgroundColor='#EFEFEF'
-            />
-            <FixBar navigation={navigation} opition={'register'} />
-            <View style={twrnc`h-200`}>
-                <View style={twrnc`h-150 justify-between`}>
-                    <View style={[twrnc`flex items-center gap-2 mt-5 w-full`,]}> 
-                        <Image  style={{ height: 50, width: 60 }}
-                            source={require('../../../img/logo/logoAsa.png')}
-                        />
-                        <Text style={twrnc`font-bold text-lg `}>O que você é ?</Text>
-                    </View>
+        // <ScrollView style={twrnc`bg-white`}>
+        //     <StatusBar
+        //         backgroundColor='#EFEFEF'
+        //     />
+        //     <FixBar navigation={navigation} opition={'register'} />
+        //     <View style={twrnc`h-200`}>
+        //         <View style={twrnc`h-150 justify-between`}>
+        //             <View style={[twrnc`flex items-center gap-2 mt-5 w-full`,]}> 
+        //                 <Image  style={{ height: 50, width: 60 }}
+        //                     source={require('../../../img/logo/logoAsa.png')}
+        //                 />
+        //                 <Text style={twrnc`font-bold text-lg `}>O que você é ?</Text>
+        //             </View>
 
-                    <View style={twrnc`w-full p-5 px-10 gap-8`}>
-                        <Pressable 
-                            style={twrnc`gap-5 p-3 h-20 flex-row items-center border border-[#FF5F00] rounded-2xl`}
-                            onPress={()=>{navigation.navigate('RegisterUser',{am:'driver'}) }}
-                        >
-                            <View style={twrnc`w-2/6 justify-center items-center`}>
-                                <Image
-                                    style={twrnc`w-3/6 h-full`}
-                                    resizeMode="contain"
-                                    source={Wheel}
-                                />
-                            </View>
-                            <View style={twrnc`w-4/6 justify-center`}>
-                                <Text style={twrnc`font-bold text-base text-[#FF5F00]`}>
-                                    Motorista
-                                </Text>
-                            </View>
-                        </Pressable>
+        //             <View style={twrnc`w-full p-5 px-10 gap-8`}>
+        //                 <Pressable 
+        //                     style={twrnc`gap-5 p-3 h-20 flex-row items-center border border-[#FF5F00] rounded-2xl`}
+        //                     onPress={()=>{navigation.navigate('RegisterUser',{am:'pilot'})}}
+        //                 >
+        //                     <View style={twrnc`w-2/6 justify-center items-center`}>
+                                
+        //                         {/* <MaterialCommunityIcons name="racing-helmet" size={50} style={twrnc`text-[#404040]`} /> */}
+        //                         {/* <Image
+        //                             style={twrnc`w-4/6 h-full`}
+        //                             resizeMode="contain"
+        //                             source={Motorcycle}
+        //                         /> */}
+        //                     </View>
+        //                     <View style={twrnc`w-4/6 justify-center`}>
+        //                         <Text style={twrnc`font-bold text-base text-[#FF5F00]`}>
+        //                             Entregador
+        //                         </Text>
+        //                     </View>
+        //                 </Pressable>
 
-                        <Pressable 
-                            style={twrnc`gap-5 p-3 h-20 flex-row items-center border border-[#FF5F00] rounded-2xl`}
-                            onPress={()=>{navigation.navigate('RegisterUser',{am:'auxiliary'})}}
-                        >
-                            <View style={twrnc`w-2/6 justify-center items-center`}>
-                                <Image
-                                    style={twrnc`w-4/6 h-full`}
-                                    resizeMode="contain"
-                                    source={Handle}
-                                />
-                            </View>
-                            <View style={twrnc`w-4/6 justify-center`}>
-                                <Text style={twrnc`font-bold text-base text-[#FF5F00]`}>
-                                    Auxiliar
-                                </Text>
-                            </View>
-                        </Pressable>
-                    </View>
+        //                 {/* <Pressable 
+        //                     style={twrnc`gap-5 p-3 h-20 flex-row items-center border border-[#FF5F00] rounded-2xl`}
+        //                     onPress={()=>{navigation.navigate('RegisterUser',{am:'driver'}) }}
+        //                 >
+        //                     <View style={twrnc`w-2/6 justify-center items-center`}>
+        //                         <Image
+        //                             style={twrnc`w-3/6 h-full`}
+        //                             resizeMode="contain"
+        //                             source={Wheel}
+        //                         />
+        //                     </View>
+        //                     <View style={twrnc`w-4/6 justify-center`}>
+        //                         <Text style={twrnc`font-bold text-base text-[#FF5F00]`}>
+        //                             Motorista
+        //                         </Text>
+        //                     </View>
+        //                 </Pressable> */}
+
+        //                 <Pressable 
+        //                     style={twrnc`p-3 h-20 flex-row items-center border border-[#FF5F00] rounded-2xl`}
+        //                     onPress={()=>{navigation.navigate('RegisterUser',{am:'auxiliary'})}}
+        //                 >
+        //                     <View style={twrnc`w-2/6 justify-center items-center`}>
+        //                         <Text style={twrnc`font-bold`}>Auxiliar</Text>
+        //                         {/* <Image
+        //                             style={twrnc`w-4/6 h-full`}
+        //                             resizeMode="contain"
+        //                             source={Helper}
+        //                         /> */}
+        //                     </View>
+        //                     <View style={twrnc`w-4/6 h-full`}>
+        //                         <Text style={twrnc`p-1 text-sm`}>
+        //                             Ideal para quem gosta de ajudar a entregar sonhos
+        //                         </Text>
+        //                     </View>
+        //                 </Pressable>
+        //             </View>
                     
-                    <Pressable style={twrnc`w-full flex flex-row items-center justify-center`}
-                        onPress={handleWhatsapp}
-                    >
-                        <View style={twrnc`flex flex-row bg-[#a3a3a3] rounded-xl px-5 py-3 items-center gap-3`}>
-                            <FontAwesome name="whatsapp" size={24} color="white" />
-                            <Text style={[twrnc`font-bold text-white` ,{fontFamily:'Roboto_300Light'}]}>Precisa de ajuda?</Text>
-                        </View>
-                    </Pressable>
-                </View>
-            </View>
-        </ScrollView>
+        //             <Pressable style={twrnc`w-full flex flex-row items-center justify-center`}
+        //                 onPress={handleWhatsapp}
+        //             >
+        //                 <View style={twrnc`flex flex-row bg-[#a3a3a3] rounded-xl px-5 py-3 items-center gap-3`}>
+        //                     <FontAwesome name="whatsapp" size={24} color="white" />
+        //                     <Text style={[twrnc`font-bold text-white` ,{fontFamily:'Roboto_300Light'}]}>Precisa de ajuda?</Text>
+        //                 </View>
+        //             </Pressable>
+        //         </View>
+        //     </View>
+        // </ScrollView>
+        <>
+        </>
     )
+
 }
 
 // const styles = StyleSheet.create({
