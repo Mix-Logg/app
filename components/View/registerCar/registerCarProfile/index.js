@@ -10,6 +10,9 @@ import Van from '../../../../img/vehicle/van.png'
 import Tour from '../../../../img/vehicle/tour.png'
 import Fiorino from '../../../../img/vehicle/fiorino.png'
 import Motorcycle from '../../../../img/vehicle/motorcycle.png'
+import Auxiliary from '../../../../img/vehicle/auxiliary.png'
+
+
 import Btn from "../../../btn";
 export default function RegisterCarProfile({navigation}){
     const [plate, setPlate] = useState(false);
@@ -94,11 +97,11 @@ export default function RegisterCarProfile({navigation}){
                             onPress={()=>handleCard('auxiliary')}
                         >
                             <View style={twrnc`w-2/6 p-2 pr-2 justify-center items-center `}>
-                                {/* <Image
-                                    style={twrnc`w-4/6 h-full`}
+                                <Image
+                                    style={twrnc`w-6/6 h-full`}
                                     resizeMode="contain"
-                                    source={Motorcycle}
-                                /> */}
+                                    source={Auxiliary}
+                                />
                             </View>
                             <View style={twrnc`w-4/6 gap-1`}>
                                 <Text style={twrnc`font-bold ${ card === 'auxiliary' ? 'text-[#FF5F00]' : ''}`} >
@@ -115,7 +118,7 @@ export default function RegisterCarProfile({navigation}){
                         <Pressable style={twrnc`bg-[#fafafa] h-25 rounded-lg p-3 flex-row gap-3 border border-white ${ card === 'motorcycle' ? 'border-[#FF5F00]' : ''}`}
                             onPress={()=>handleCard('motorcycle')}
                         >
-                            <View style={twrnc`w-2/6 p-2 pr-2 justify-center items-center `}>
+                            <View style={twrnc`w-2/6 p-2 pr-2 justify-center items-center bg-[#ff5f00] rounded-lg`}>
                                 <Image
                                     style={twrnc`w-4/6 h-full`}
                                     resizeMode="contain"
@@ -137,7 +140,7 @@ export default function RegisterCarProfile({navigation}){
                         <Pressable style={twrnc`bg-[#fafafa] h-25 rounded-lg p-3 flex-row gap-3 border border-white ${ card === 'tour' ? 'border-[#FF5F00]' : ''}`}
                             onPress={()=>handleCard('tour')}
                         >
-                            <View style={twrnc`w-2/6 p-2 pr-2 justify-center items-center `}>
+                            <View style={twrnc`w-2/6 p-2 pr-2 justify-center items-center bg-[#ff5f00] rounded-lg`}>
                                 <Image
                                     style={twrnc`w-4/6 h-full`}
                                     resizeMode="contain"
@@ -159,7 +162,7 @@ export default function RegisterCarProfile({navigation}){
                         <Pressable style={twrnc`bg-[#fafafa] h-25 rounded-lg p-3 flex-row gap-3 border border-white ${ card === 'util' ? 'border-[#FF5F00]' : ''}`}
                             onPress={()=>handleCard('util')}
                         >
-                            <View style={twrnc`w-2/6 p-2 pr-2 justify-center items-center `}>
+                            <View style={twrnc`w-2/6 p-2 pr-2 justify-center items-center bg-[#ff5f00] rounded-lg`}>
                                 <Image
                                     style={twrnc`w-4/6 h-full`}
                                     resizeMode="contain"
@@ -181,7 +184,7 @@ export default function RegisterCarProfile({navigation}){
                         <Pressable style={twrnc`bg-[#fafafa] h-25 rounded-lg p-3 flex-row gap-3 border border-white ${ card === 'van' ? 'border-[#FF5F00]' : ''}`}
                             onPress={()=>handleCard('van')}
                         >
-                            <View style={twrnc`w-2/6 p-2 pr-2 justify-center items-center `}>
+                            <View style={twrnc`w-2/6 p-2 pr-2 justify-center items-center bg-[#ff5f00] rounded-lg`}>
                                 <Image
                                     style={twrnc`w-4/6 h-full`}
                                     resizeMode="contain"
@@ -203,7 +206,7 @@ export default function RegisterCarProfile({navigation}){
                         <Pressable style={twrnc`bg-[#fafafa] h-25 rounded-lg p-3 flex-row gap-3 border border-white ${ card === 'vuc' ? 'border-[#FF5F00]' : ''}`}
                             onPress={()=>handleCard('vuc')}
                         >
-                            <View style={twrnc`w-2/6 p-2 pr-2 justify-center items-center`}>
+                            <View style={twrnc`w-2/6 p-2 pr-2 justify-center items-center bg-[#ff5f00] rounded-lg`}>
                                 <Image
                                     style={twrnc`w-4/6 h-full`}
                                     resizeMode="contain"

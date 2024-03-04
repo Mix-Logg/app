@@ -48,23 +48,22 @@ export default function RegisterUser({navigation}){
     }
 
     const handleSubmit = async () => {
-        // const cpfValid = await validateCPF(cpf);
-        // const avalid = await verifyCpf(route.params.user.am, cpf)
-        // if(!cpfValid || avalid === 200){
-        //     await modal('cpf')
-        //     return;
-        // }
-        // if(password.length != 8){
-        //     await modal('password')
-        //     return;
-        // }
-        // if(passwordAgain != password){
-        //     await modal('passwordAgain')
-        //     return;
-        // }
-        // console.log(route.params.user.am)
-        // route.params.user.login = cpf;
-        // route.params.user.password = password;
+        const cpfValid = await validateCPF(cpf);
+        const avalid = await verifyCpf(route.params.user.am, cpf)
+        if(!cpfValid || avalid === 200){
+            await modal('cpf')
+            return;
+        }
+        if(password.length != 8){
+            await modal('password')
+            return;
+        }
+        if(passwordAgain != password){
+            await modal('passwordAgain')
+            return;
+        }
+        route.params.user.login = cpf;
+        route.params.user.password = password;
         navigation.navigate('RegisterContact',route.params);
         return;
     }

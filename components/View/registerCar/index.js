@@ -87,7 +87,7 @@ export default function RegisterPhotoDoc({navigation}){
         route.params.vehicle.noStop = noStop
         route.params.vehicle.cadaster = cadastroVeiculo
         route.params.vehicle.owner = proprietario
-        navigation.navigate('RegisterCarProfile', route.params)
+        navigation.navigate('upLoadDocCar', route.params)
     }
 
     useEffect(() => {

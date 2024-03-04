@@ -3,14 +3,16 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import  { useState, useEffect } from 'react';
 import { useRoute } from '@react-navigation/native';
 import axios from "axios";
+import RegisterUser from "../../../hooks/registerUser";
 import GetPath from "../../../function/getPathPicture";
 import FixBar from "../../fixBar";
 import PopUp from "../../modal";
 import twrnc from "twrnc";
 import Btn from "../../btn";
 import { AntDesign } from '@expo/vector-icons';
-import { Entypo } from '@expo/vector-icons';
 import Help from "../../help";
+
+
 export default function UpLoadEntregador({navigation}){
     const route = useRoute();
     const [loading, setLoading] = useState(false);
@@ -43,7 +45,7 @@ export default function UpLoadEntregador({navigation}){
 
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLproduction
+    const URL = URLdevelopment
     
     
     useEffect(() => {
@@ -160,6 +162,10 @@ export default function UpLoadEntregador({navigation}){
             await setPopUp(<PopUp type={'warning'} txt={'Você deve enviar uma selfie'} show={true} />);
             return;
         }
+        if(option === 'error'){
+            await setModal(<PopUp type={'danger'} txt={'Algo deu errado, tente novamente mais tarde!'} show={true} />);
+            return;
+        }
     }
 
     const handleSubmit = async () => {
@@ -167,126 +173,54 @@ export default function UpLoadEntregador({navigation}){
         const am = route.params.user.am
         const picture = {
             human: {
-                address: EnderecoImage,
-                cnh: cnhImage,
-                selfie: selfieImage,
-                cpf: cpfImage
+                addressImage: EnderecoImage,
+                cnhImage: cnhImage,
+                selfieImage: selfieImage,
+                cpfImage: cpfImage
             }
         };
         route.params.picture = picture;
         if(am === 'driver' || am === 'motorcycle' || am === 'tour'){ 
-            if(cnhImage === null){
-                await modalInfo('cnh')
-                return;
-            }
-            if(cpfImage === null){
-                await modalInfo('cpf')
-                return;
-            }
-            if(EnderecoImage === null){
-                await modalInfo('address')
-                return;
-            }
-            if(selfieImage === null){
-                await modalInfo('selfie')
-                return;
-            }
+            // if(cnhImage === null){
+            //     await modalInfo('cnh')
+            //     return;
+            // }
+            // if(cpfImage === null){
+            //     await modalInfo('cpf')
+            //     return;
+            // }
+            // if(EnderecoImage === null){
+            //     await modalInfo('address')
+            //     return;
+            // }
+            // if(selfieImage === null){
+            //     await modalInfo('selfie')
+            //     return;
+            // }
             navigation.navigate('RegisterCar',route.params)
             return;
         }
-        if(route.params.am === 'auxiliary'){
-            if(cpfImage === null){
+        if(cpfImage === null){
                 await modalInfo('cpf')
                 return;
-            }
-            if(EnderecoImage === null){
+        }
+        if(EnderecoImage === null){
                 await modalInfo('address')
                 return;
-            }
-            if(selfieImage === null){
+        }
+        if(selfieImage === null){
                 await modalInfo('selfie')
                 return;
-            }
         }
-
-        if(cpfImage && EnderecoImage && (route.params.am === 'auxiliary' || cnhImage) && selfieImage != null  ){
-            if(route.params.am === 'driver'){
-                navigation.navigate('RegisterCar',newParam)
-            }else if(route.params.am === 'auxiliary'){
-                setLoading(true)
-                setApi('Cadastrando os dados.')
-                const resTime  = await axios.get('https://worldtimeapi.org/api/timezone/America/Sao_Paulo')
-                let auxiliaryID;
-                const auxiliary={
-                    "email":  route.params.email,
-                    "phone":  route.params.phone,
-                    "name":   route.params.name,
-                    "create_at" : resTime.data.datetime,
-                    "update_at" : null,
-                    "delete_at" : null
-                }
-                try{
-                    const res = await axios.post(URL+'auxiliary',auxiliary)
-                    auxiliaryID = res.data
-                }catch(error){
-                    console.log('Erro:', error)
-                }
-                const address = {
-                    "am" : "auxiliary",
-                    "uuid" : auxiliaryID,
-                    "zipCode" : route.params.address.zipCode,
-                    "street" : route.params.address.street,
-                    "number" : route.params.address.number,
-                    "complement" : route.params.address.complement,
-                    "district" : route.params.address.district,
-                    "city" : route.params.address.city,
-                    "uf" : route.params.address.uf,
-                    "create_at" : resTime.data.datetime,
-                    "update_at" : null,
-                    "delete_at" : null
-                }
-                try{
-                    const res  = await axios.post(URL+'address',address)
-                }catch(error){
-                    console.log('Erro Address:', error)
-                }
-                let imgDoc = {
-                    addressImage: EnderecoImage,
-                    cnhImage: cnhImage,
-                    selfieImage:  selfieImage,
-                    cpfImage:cpfImage
-                }
-                try{
-                    const promises = [];
-                    for (const chave in imgDoc) {
-                        const valor = imgDoc[chave];
-                        if (valor != null) {
-                          const filename = valor.substring(valor.lastIndexOf('/') + 1);
-                          const promise = await uploadFile(filename, valor, chave, auxiliaryID, 'auxiliary', 'physical')
-                          promises.push(promise);
-                        }
-                    }
-                    const results = await Promise.all(promises);
-                    const allTrue = results.every(result => result === true);
-                    if(!allTrue){
-                        setApi('ERRO ao enviar as fotos. Você sera redirecionado para o ínicio')
-                        setTimeout(() => {
-                            return navigation.navigate('Login');
-                        }, 5000);
-                    }else{
-                        return navigation.navigate('RegistrationStuation');
-                    }
-                }catch(error){
-                    console.log('Erro Upload Docs:', error)
-                    setApi('ERRO ao enviar as fotos. Você sera redirecionado para o ínicio')
-                    return setTimeout(() => {
-                        return navigation.navigate('Login');
-                    }, 5000);
-                }
-                
-                setLoading(false)
-            }
+        setLoading(true)
+        const res = await RegisterUser(route.params)
+        if(res == 200){
+            navigation.navigate('Welcome')
+            return;
         }
+        setLoading(false)
+        modalInfo('error')
+        return;
     }
 
     return(
@@ -477,7 +411,11 @@ export default function UpLoadEntregador({navigation}){
                             </View>
                         </View>  }
                     </Modal>
-                    <Btn title={'Continue'} action={handleSubmit} />
+                    { route.params.user.am == 'auxiliary' ? 
+                        <Btn title={'Finalizar'} action={handleSubmit} /> 
+                        :
+                        <Btn title={'Continue'} action={handleSubmit} />
+                    }
                 </View>
             </ScrollView> 
         </SafeAreaView>
@@ -487,8 +425,9 @@ export default function UpLoadEntregador({navigation}){
                     justifyContent: 'center',
                     alignItems: 'center',
                 }]}>
+                    <Text>Estamos cadastrando seus dados...</Text>
                     <ActivityIndicator size="large" color="#FF5F00" />
-                    <Text>{api}</Text>
+                    <Text style={twrnc`font-bold`}>Aguarde!</Text>
             </View>
         }
 

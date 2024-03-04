@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Image,Text ,TextInput, Pressable, RefreshControl, ScrollView, Button   } from 'react-native';
+import { View, Image,Text ,TextInput, Pressable, RefreshControl, ScrollView, Button, SafeAreaView   } from 'react-native';
 import Bar from '../../bar';
 import warningPicture from '../../warningPicture';
 import twrnc from 'twrnc';
@@ -33,25 +33,27 @@ export default function Home ({navigation}){
     }, [refreshing]);
     
     return(
-        <ScrollView
-            refreshControl={
-                <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                />
-            }
-        >
-            <View style={twrnc`flex h-200 bg-[#F4F4F4]`}>
-                <Bar navigation={navigation} />
-                { (info.picture === 'analyze' || info.picture === 'reprove' || info.picture === 'success') && plug != 4  ?
-                        timeLineView
-                    : 
-                        <View>
-                            <Text>agregado!</Text>
-                        </View>
+       <SafeAreaView style={twrnc`mt-6`}>
+            <Bar navigation={navigation} />
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />
                 }
-            </View>
-        </ScrollView>
+            >
+                <View style={twrnc`flex h-200 bg-[#F4F4F4]`}>
+                    { (info.picture === 'analyze' || info.picture === 'reprove' || info.picture === 'success') && plug != 4  ?
+                            timeLineView
+                        : 
+                            <View>
+                                <Text>agregado!</Text>
+                            </View>
+                    }
+                </View>
+            </ScrollView>
+        </SafeAreaView>
       
     )
 }

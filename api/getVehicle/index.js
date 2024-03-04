@@ -7,7 +7,7 @@ export default async function GetVehicle(){
 
     const uuid = await AsyncStorage.getItem('uuid');
     try {
-        const response = await axios.get(`${URL}vehicle/${uuid}`);
+        const response = await axios.get(`${URL}vehicle/${uuid}/`);
         return response.data
       } catch (err) {
         console.error(err);

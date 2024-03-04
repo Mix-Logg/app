@@ -1,8 +1,15 @@
 import { View,Image,Text,StyleSheet,Pressable } from "react-native";
+import twrnc from "twrnc";
 
-export default function Welcome(){
+
+export default function Welcome({navigation}){
+    
+    const handleSubitmit = () => {
+        navigation.navigate('Login')
+    }
+    
     return(
-        <View style={styles.container}>
+        <View style={[twrnc`mt-10 bg-white`,styles.container]}>
             <View style={styles.containerLogo}>
                 <Image style={styles.logo}
                     source={require('../../../img/logo/logoSemArco.png')}
@@ -22,7 +29,9 @@ export default function Welcome(){
                 />
             </View>
             <View style={styles.containerBtn}> 
-                <Pressable style={styles.btn}>
+                <Pressable style={styles.btn}
+                    onPress={handleSubitmit}
+                >
                     <Text style={styles.bntTxt}>
                         Acesse o APP
                     </Text>

@@ -141,7 +141,7 @@ export default function RegisterAddress({navigation}){
             modal('uf')
             return;
         }
-        route.params.addres = {
+        route.params.address = {
             zipCode: cepNumber,
             street: logradouro,
             number: numero,

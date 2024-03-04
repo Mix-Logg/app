@@ -1,11 +1,12 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-export default async function uploadFile(path, nameFile, functionn ) {
+
+export default async function upFile(path, nameFile, functionn, id, paramAm  ) {
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLdevelopment;
-    let uuid = await AsyncStorage.getItem('uuid');
-    let am = await AsyncStorage.getItem('am');
+
+    let uuid = id
+    let am = paramAm
     const extend = path.split('.')[3];
     const formData = new FormData();
     formData.append('file', JSON.parse(JSON.stringify({
