@@ -23,26 +23,6 @@ export default async function warningPicture(){
     const am = await AsyncStorage.getItem('am');
     const pictures = {
     }
-    if(am === 'driver' ){
-        const vehicle = await GetVehicle();
-        pictures['cpf'] = res.cpf;
-        pictures['address'] = res.address;
-        pictures['photo'] = res.photo;
-        pictures['cnh'] = res.cnh;
-        pictures['antt'] = res.antt;
-        pictures['clv'] = res.clv;
-        if(vehicle.cadastre === 'juridica'){
-            pictures['legal'] = res.legal;
-            pictures['cnpj'] = res.cnpj;
-            return pictures
-        }
-        if(vehicle.owner === "outraPessoa" && vehicle.cadastre === "fisica"){
-            pictures['cpfOwner'] = res.legal;
-            pictures['addressOwner'] = res.cnpj;
-            return pictures
-            
-        }
-    }
     if(am === 'auxiliary'){
         pictures['cpf'] = res.cpf;
         pictures['address'] = res.address;
@@ -53,6 +33,27 @@ export default async function warningPicture(){
         }
         return pictures
     }
+    const vehicle = await GetVehicle();
+    pictures['cpf'] = res.cpf;
+    pictures['address'] = res.address;
+    pictures['photo'] = res.photo;
+    pictures['cnh'] = res.cnh;
+    pictures['clv'] = res.clv;
+    if(am === 'driver' ){
+        pictures['antt'] = res.antt;
+    }
+    if(vehicle.cadastre === 'juridica'){
+        pictures['legal'] = res.legal;
+        pictures['cnpj'] = res.cnpj;
+        return pictures
+    }
+    if(vehicle.owner === "outraPessoa" && vehicle.cadastre === "fisica"){
+        pictures['cpfOwner'] = res.legal;
+        pictures['addressOwner'] = res.cnpj;
+        return pictures 
+    }
+    return pictures 
 }
+
 
 

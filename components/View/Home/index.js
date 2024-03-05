@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { View, Image,Text ,TextInput, Pressable, RefreshControl, ScrollView, Button, SafeAreaView   } from 'react-native';
+import { View, Image,Text ,TextInput, Pressable, RefreshControl, ScrollView, Button, SafeAreaView, StatusBar   } from 'react-native';
 import Bar from '../../bar';
 import warningPicture from '../../warningPicture';
 import twrnc from 'twrnc';
 import DocumentTimeline from '../../timeline';
 import Plug from '../../../api/plug';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function Home ({navigation}){
     const [refreshing, setRefreshing] = useState(false); 
     const [info, setInfo] = useState(false); 
@@ -33,7 +34,8 @@ export default function Home ({navigation}){
     }, [refreshing]);
     
     return(
-       <SafeAreaView style={twrnc`mt-6`}>
+        
+       <SafeAreaView style={twrnc`bg-white mt-6`}>
             <Bar navigation={navigation} />
             <ScrollView
                 refreshControl={
@@ -43,7 +45,7 @@ export default function Home ({navigation}){
                     />
                 }
             >
-                <View style={twrnc`flex h-200 bg-[#F4F4F4]`}>
+                <View style={twrnc`flex h-200`}>
                     { (info.picture === 'analyze' || info.picture === 'reprove' || info.picture === 'success') && plug != 4  ?
                             timeLineView
                         : 

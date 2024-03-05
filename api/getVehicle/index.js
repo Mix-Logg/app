@@ -5,9 +5,12 @@ export default async function GetVehicle(){
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLdevelopment
 
-    const uuid = await AsyncStorage.getItem('uuid');
+    let uuid = await AsyncStorage.getItem('uuid');
+    const am = await AsyncStorage.getItem('am');
+    uuid = parseInt(uuid)
+    
     try {
-        const response = await axios.get(`${URL}vehicle/${uuid}/`);
+        const response = await axios.get(`${URL}vehicle/${uuid}/${am}`);
         return response.data
       } catch (err) {
         console.error(err);
