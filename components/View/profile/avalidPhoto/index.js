@@ -283,7 +283,8 @@ export default function AvalidPhoto({ navigation }) {
         dataEffect = async () => {
             const am = await AsyncStorage.getItem('am');
             setAm(am)
-            if(am === 'driver' ){
+            console.log(am)
+            if(am === 'driver' ||  am === 'tour' ||  am === 'motorcycle' ){
                 const res = await GetVehicle();
                 await setOwnerVehicle(res.owner)
                 await setCadastreVehicle(res.cadastre)
@@ -434,7 +435,7 @@ export default function AvalidPhoto({ navigation }) {
                             </Pressable>
                         </View>
                     </View>
-                    { am == 'driver' || am == 'tour' || am == 'motorcycle' &&
+                    { (am == 'driver' || am == 'tour' || am == 'motorcycle') &&(
                     <>
                         <Text style={twrnc`font-bold text-lg`}>Veículo</Text>
                         <View style={twrnc`gap-5`}>
@@ -483,7 +484,7 @@ export default function AvalidPhoto({ navigation }) {
                             </View>
                             )}
                         </View>
-                    </>
+                    </>)
                     }
                 </View>
             </View>
