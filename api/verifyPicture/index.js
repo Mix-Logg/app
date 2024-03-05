@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default async function verifyStatus(){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLdevelopment
+    const URL = URLproduction
     
     const am = await AsyncStorage.getItem('am');
     const uuid = await AsyncStorage.getItem('uuid');
@@ -23,6 +23,7 @@ export default async function verifyStatus(){
 
     }
     if(photo != undefined){
+        console.log(photo.avalid)
         if(photo.valid == 1){
             pictures['photo'] = true;
         }else{
@@ -112,5 +113,6 @@ export default async function verifyStatus(){
     }else{
         pictures['legal'] = null;
     }
+    // console.log(pictures)
     return pictures
 }
