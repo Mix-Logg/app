@@ -283,7 +283,6 @@ export default function AvalidPhoto({ navigation }) {
         dataEffect = async () => {
             const am = await AsyncStorage.getItem('am');
             setAm(am)
-            console.log(am)
             if(am === 'driver' ||  am === 'tour' ||  am === 'motorcycle' ){
                 const res = await GetVehicle();
                 await setOwnerVehicle(res.owner)
