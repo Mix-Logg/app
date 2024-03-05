@@ -326,7 +326,7 @@ export default function AvalidPhoto({ navigation }) {
                 />
             }
         >
-            <View style={twrnc`flex h-full items-center gap-10 mb-50 mt-10s`}>
+            <View style={twrnc`flex h-full items-center gap-10 mb-50 mt-10`}>
                 <Modal 
                     isVisible={modal} 
                     // onBackdropPress={()=>setAcessModal(!acessModal)}
@@ -434,18 +434,20 @@ export default function AvalidPhoto({ navigation }) {
                             </Pressable>
                         </View>
                     </View>
-                    { am == 'driver' &&
+                    { am == 'driver' || am == 'tour' || am == 'motorcycle' &&
                     <>
                         <Text style={twrnc`font-bold text-lg`}>Veículo</Text>
                         <View style={twrnc`gap-5`}>
                             <View style={twrnc`flex-row gap-5`}>
-                                <Pressable style={twrnc`${antt === true ? 'bg-green-500' : antt === false ? 'bg-red-600' : 'bg-yellow-500'} py-5 px-8 rounded-xl justify-center items-center`}
-                                    onPress={()=>handleModal('antt', antt)}
-                                >
-                                    <Text style={twrnc`w-20 text-center text-white font-bold`}>
-                                            ANTT
-                                    </Text>
-                                </Pressable>
+                                { am != 'tour' && am != 'motorcycle' && 
+                                    <Pressable style={twrnc`${antt === true ? 'bg-green-500' : antt === false ? 'bg-red-600' : 'bg-yellow-500'} py-5 px-8 rounded-xl justify-center items-center`}
+                                        onPress={()=>handleModal('antt', antt)}
+                                    >
+                                        <Text style={twrnc`w-20 text-center text-white font-bold`}>
+                                                ANTT
+                                        </Text>
+                                    </Pressable>
+                                }
                                 <Pressable style={twrnc`${clv === true ? 'bg-green-500' : clv === false ? 'bg-red-600' : 'bg-yellow-500'}  py-5 px-8 rounded-xl justify-center items-center`}
                                     onPress={()=>handleModal('clv', clv)}
                                 >
