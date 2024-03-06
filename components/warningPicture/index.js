@@ -4,7 +4,7 @@ import { View, ScrollView, Text, RefreshControl, Pressable, SafeAreaView,Activit
 import verifyStatus from "../../api/verifyPicture";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GetVehicle from "../../api/getVehicle";
-
+import verifyPaste from "../../api/verifyPaste";
 export default async function warningPicture(){
     const info = await searchInfo()
     const analyze = Object.values(info).find(value => value === null);
@@ -29,8 +29,9 @@ export default async function warningPicture(){
         pictures['photo'] = res.photo;
         const paste = await verifyPaste()
         if( paste.length > 3 ){
-                    pictures['cnh'] = res.cnh;
+            pictures['cnh'] = res.cnh;
         }
+        console.log(pictures)
         return pictures
     }
     const vehicle = await GetVehicle();

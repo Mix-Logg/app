@@ -39,7 +39,6 @@ export default async function RegisterUser(params){
         await CadasterUser(user);
         await CadasterAddress(address);
         await CadasterImage('human',params.picture.human,id,am)
-        console.log(am)
         if(am != 'auxiliary'){
             const vehicle = {
                 am: am,  
@@ -74,7 +73,7 @@ async function CadasterAddress(address) {
     return new Promise( async (resolve, reject) => {
         try{
             const res  = await axios.post(`${URL}address`,address)
-            resolve(console.log('Endereço Cadastrado!'))
+            resolve()
             return;
         }catch(err){
             return console.log('erro endereço:', err)
@@ -108,7 +107,7 @@ async function CadasterVehicle(vehicle){
         const URL = URLproduction
         try{
             const res  = await axios.post(`${URL}vehicle`,vehicle)
-            resolve(console.log('Veículo Registrado!'))
+            resolve()
         }catch(err){
             reject(console.log('Veículo Não Registrado:', err));
         }
@@ -120,7 +119,6 @@ async function CadasterImage(action, pictures, id, am){
         for (let key in pictures) {
             if (pictures.hasOwnProperty(key)) {
                 let value = pictures[key];
-                console.log(value)
                 if(value == null){
                     continue;
                 }
