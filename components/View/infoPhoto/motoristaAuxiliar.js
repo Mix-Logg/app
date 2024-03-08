@@ -7,7 +7,7 @@ import twrnc from "twrnc";
 export default function InfoPhoto({navigation}){
     const route = useRoute();
     return(
-    <SafeAreaView style={twrnc`h-full mt-6`}>
+    <SafeAreaView style={twrnc`h-full `}>
         <ScrollView style={twrnc`bg-white`}>
             <FixBar navigation={navigation} opition={'register'} />
             <View style={styles.container}>

@@ -316,7 +316,7 @@ export default function AvalidPhoto({ navigation }) {
     
 
   return (
-    <SafeAreaView style={twrnc`mt-6 bg-white h-full`}> 
+    <SafeAreaView style={twrnc` bg-white h-full`}> 
         <FixBar navigation={navigation} opition={"avalidPhoto"}/>
         <ScrollView
             refreshControl={

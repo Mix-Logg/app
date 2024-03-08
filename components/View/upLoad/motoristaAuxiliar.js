@@ -227,7 +227,7 @@ export default function UpLoadEntregador({navigation}){
     <>
         {popUp}
         {loading === false ? 
-        <SafeAreaView style={twrnc`h-full mt-6`}>
+        <SafeAreaView style={twrnc`h-full`}>
             <FixBar navigation={navigation} opition={'register'} />
             <ScrollView style={twrnc`bg-white`} >
                 {modal}

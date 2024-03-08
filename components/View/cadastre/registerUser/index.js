@@ -90,7 +90,7 @@ export default function RegisterUser({navigation}){
 
 
     return(
-        <SafeAreaView style={twrnc`bg-white mt-6`}>
+        <SafeAreaView style={twrnc`bg-white`}>
             <FixBar navigation={navigation} opition={'register'} />
             <ScrollView style={twrnc`bg-white`}>
                 {popUp}

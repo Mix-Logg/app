@@ -95,7 +95,7 @@ export default function RegisterContact({navigation}){
     }
     
     return(
-        <SafeAreaView style={twrnc`mt-6`}>
+        <SafeAreaView >
             <FixBar navigation={navigation} opition={'register'} />
             <ScrollView style={twrnc`bg-white`}>
             {popUp}

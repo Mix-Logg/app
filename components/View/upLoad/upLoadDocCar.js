@@ -356,7 +356,7 @@ export default function UpLoadDocCar({navigation}){
     return(
         <>
          {loading === false ? 
-            <SafeAreaView style={twrnc`h-full mt-6 bg-white`}>
+            <SafeAreaView style={twrnc`h-full bg-white`}>
                 <FixBar navigation={navigation} opition={'register'} />
                 <ScrollView>
                     {modal}

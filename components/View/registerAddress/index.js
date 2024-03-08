@@ -154,7 +154,7 @@ export default function RegisterAddress({navigation}){
     }
 
     return(
-        <SafeAreaView style={twrnc`mt-6 bg-white h-full`}>
+        <SafeAreaView style={twrnc`bg-white h-full`}>
             <FixBar navigation={navigation} opition={'register'} />
                 <ScrollView style={twrnc`p-4 bg-white`}>
                     {popUp}

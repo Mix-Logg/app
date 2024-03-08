@@ -35,7 +35,7 @@ export default function Home ({navigation}){
     
     return(
         
-       <SafeAreaView style={twrnc`bg-white mt-6`}>
+       <SafeAreaView style={twrnc`bg-white `}>
             <Bar navigation={navigation} />
             <ScrollView
                 refreshControl={

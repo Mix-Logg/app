@@ -41,7 +41,7 @@ export default function Profile({navigation}){
     }, []);
 
     return(
-        <SafeAreaView style={twrnc`mt-6 bg-white h-full`}>
+        <SafeAreaView style={twrnc` bg-white h-full`}>
             <FixBar navigation={navigation} opition={'profile'}/>
             <ScrollView >
                 
