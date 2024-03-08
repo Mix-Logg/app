@@ -133,7 +133,7 @@ export default function RegisterCarProfile({navigation}){
                                     Ideal para entregar pacotes pequenos, comidas e documentos
                                 </Text>
                                 <Text style={twrnc`justify-center items-center text-xs`}>
-                                    <Feather name="box" size={15} color="black" /> até X kg
+                                    <Feather name="box" size={15} color="black" /> até 30kg
                                 </Text>
                             </View>
                         </Pressable >
@@ -155,7 +155,7 @@ export default function RegisterCarProfile({navigation}){
                                     Ideal para entregar compras, pacotes pequenos, eletrodomesticos
                                 </Text>
                                 <Text style={twrnc`justify-center items-center text-xs`}>
-                                    <Feather name="box" size={15} color="black" /> até X kg
+                                    <Feather name="box" size={15} color="black" /> até 300kg
                                 </Text>
                             </View>
                         </Pressable >

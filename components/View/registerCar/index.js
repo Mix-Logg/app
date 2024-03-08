@@ -107,11 +107,11 @@ export default function RegisterPhotoDoc({navigation}){
     
 
     return(
-        <SafeAreaView style={twrnc`bg-white mt-6`}>
+        <SafeAreaView style={twrnc`bg-white mt-6 h-full`}>
             <FixBar navigation={navigation} opition={'register'} />
-            <ScrollView>
-                <View style={twrnc`px-1 mb-10 h-200 mt-5`}>
-                    <View style={twrnc`px-2`}>
+            <ScrollView style={twrnc`h-full`}>
+                <View style={twrnc`px-1 mb-10 h-auto mt-5`}>
+                    <View style={twrnc`px-2 `}>
                         <Text style={twrnc`text-lg mt-2`}>Vamos registrar o seu veículo na <Text style={twrnc`font-bold text-[#FF5F00]`}>MIX</Text> </Text>
                     </View>
                     <View style={twrnc`mt-5 mb-10`}>
@@ -302,7 +302,7 @@ export default function RegisterPhotoDoc({navigation}){
                         )} 
 
                         {proprietario && cadastroVeiculo != false && (tracker === false || statusTracker != null && numberTracker != null && brandTracker != null ) && ( 
-                            <View style={twrnc`mt-5 px-14`}>
+                            <View style={twrnc`mt-5 px-14 `}>
                                 <Text style={twrnc`text-sm`} >O veículo tem <Text style={twrnc`font-bold`}>sem parar</Text> ?</Text>
 
                                 { noStop === true ?
