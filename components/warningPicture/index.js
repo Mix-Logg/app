@@ -31,7 +31,6 @@ export default async function warningPicture(){
         if( paste.length > 3 ){
             pictures['cnh'] = res.cnh;
         }
-        console.log(pictures)
         return pictures
     }
     const vehicle = await GetVehicle();

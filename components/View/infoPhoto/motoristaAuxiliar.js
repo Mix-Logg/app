@@ -1,4 +1,4 @@
-import { View, Text, Image, StyleSheet,Pressable,ScrollView,SafeAreaView } from "react-native";
+import { View, Text, Image, StyleSheet,Pressable,ScrollView } from "react-native";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useRoute } from '@react-navigation/native';
 import FixBar from "../../fixBar";
@@ -7,7 +7,7 @@ import twrnc from "twrnc";
 export default function InfoPhoto({navigation}){
     const route = useRoute();
     return(
-    <SafeAreaView style={twrnc`h-full `}>
+    <>
         <ScrollView style={twrnc`bg-white`}>
             <FixBar navigation={navigation} opition={'register'} />
             <View style={styles.container}>
@@ -74,7 +74,7 @@ export default function InfoPhoto({navigation}){
                 
             </View>
         </ScrollView>
-    </SafeAreaView>
+    </>
     )
 }
 

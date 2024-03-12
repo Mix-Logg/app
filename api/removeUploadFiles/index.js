@@ -4,7 +4,7 @@ import axios from 'axios';
 export default async function deleteFile(filename){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLproduction
+    const URL = URLdevelopment
 
     const uuid = await AsyncStorage.getItem('uuid');
     const am = await AsyncStorage.getItem('am');

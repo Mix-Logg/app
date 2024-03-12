@@ -5,7 +5,8 @@ import warningPicture from '../../warningPicture';
 import twrnc from 'twrnc';
 import DocumentTimeline from '../../timeline';
 import Plug from '../../../api/plug';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import Map from '../map';
+
 export default function Home ({navigation}){
     const [refreshing, setRefreshing] = useState(false); 
     const [info, setInfo] = useState(false); 
@@ -35,9 +36,9 @@ export default function Home ({navigation}){
     
     return(
         
-       <SafeAreaView style={twrnc`bg-white `}>
+       <>
             <Bar navigation={navigation} />
-            <ScrollView
+            <ScrollView style={twrnc`h-full bg-white`}
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
@@ -45,17 +46,15 @@ export default function Home ({navigation}){
                     />
                 }
             >
-                <View style={twrnc`flex h-200`}>
                     { (info.picture === 'analyze' || info.picture === 'reprove' || info.picture === 'success') && plug != 4  ?
                             timeLineView
                         : 
-                            <View>
-                                <Text>agregado!</Text>
-                            </View>
+                       <>
+                        <Map/>
+                       </>
                     }
-                </View>
             </ScrollView>
-        </SafeAreaView>
+        </>
       
     )
 }

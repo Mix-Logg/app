@@ -313,12 +313,11 @@ export default function AvalidPhoto({ navigation }) {
         dataEffect()
     }, [refreshing]);
 
-    
 
   return (
-    <SafeAreaView style={twrnc` bg-white h-full`}> 
+    <> 
         <FixBar navigation={navigation} opition={"avalidPhoto"}/>
-        <ScrollView
+        <ScrollView style={twrnc`bg-white h-full`}
             refreshControl={
                 <RefreshControl
                     refreshing={refreshing}
@@ -326,7 +325,7 @@ export default function AvalidPhoto({ navigation }) {
                 />
             }
         >
-            <View style={twrnc`flex h-full items-center gap-10 mb-50 mt-10`}>
+            <View style={twrnc`flex items-center gap-10 mb-50 mt-10`}>
                 <Modal 
                     isVisible={modal} 
                     // onBackdropPress={()=>setAcessModal(!acessModal)}
@@ -488,7 +487,7 @@ export default function AvalidPhoto({ navigation }) {
                 </View>
             </View>
         </ScrollView>
-    </SafeAreaView>
+    </>
     
   );
 }

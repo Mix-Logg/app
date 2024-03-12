@@ -1,5 +1,5 @@
 import twrnc from "twrnc";
-import { View, Image,Text ,TextInput, Pressable, ScrollView, SafeAreaView } from 'react-native';
+import { View, Image,Text ,TextInput, Pressable, ScrollView } from 'react-native';
 import { useState } from 'react';
 import { useRoute } from '@react-navigation/native';
 import MaskInput from 'react-native-mask-input';
@@ -13,7 +13,7 @@ import Btn from "../../../btn";
 export default function RegisterUser({navigation}){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLproduction
+    const URL = URLdevelopment
     const [cpf,setCpf] = useState('')
     const [password,setPassword] = useState('')
     const [passwordAgain,setPasswordAgain] = useState('')
@@ -89,85 +89,84 @@ export default function RegisterUser({navigation}){
     }
 
 
-    return(
-        <SafeAreaView style={twrnc`bg-white`}>
-            <FixBar navigation={navigation} opition={'register'} />
-            <ScrollView style={twrnc`bg-white`}>
-                {popUp}
-                <View style={twrnc`h-200`}>
-                    <Pressable style={twrnc`mt-5 p-5 gap-2 w-full justify-center items-center`}
-                        onPress={handleHelper}
-                    >
-                        <Entypo name="help-with-circle" size={40} style={twrnc`text-[#FF5F00]`} />
-                        <Text style={twrnc`text-xs font-bold`}>Clique para tirar dúvidas!</Text>
-                    </Pressable>
-                    <View style={twrnc`p-5 px-20 mt-5 justify-center gap-2 `}>
-                        <Text style={twrnc`text-base`}>Digite seu CPF</Text>
-                        <View style={twrnc`flex-row items-center`}>
-                            <MaskInput
-                                style={twrnc`p-3 text-lg bg-white rounded-lg w-full border border-[#d4d4d4]`}
-                                mask={[/\d/, /\d/, /\d/,'.', /\d/, /\d/,/\d/,'.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
-                                onChangeText={(masked, unmasked)=>handleCpf(unmasked)}
-                                value={cpf}
-                                keyboardType="numeric"
-                                placeholder=""
-                            />
-                        </View>
-                    </View>
-                    <View style={twrnc`gap-2 w-full mb-15`}>
-                        <View style={twrnc`px-20`}>
-                            <Text style={twrnc`text-base`}>Digite sua senha</Text>
-                            <View style={twrnc`items-center flex-row gap-2`}>
-                                <TextInput 
+    return(<>
+                <FixBar navigation={navigation} opition={'register'} />
+                <ScrollView style={twrnc`bg-white`}>
+                    {popUp}
+                    <View style={twrnc`h-200`}>
+                        <Pressable style={twrnc`mt-5 p-5 gap-2 w-full justify-center items-center`}
+                            onPress={handleHelper}
+                        >
+                            <Entypo name="help-with-circle" size={40} style={twrnc`text-[#FF5F00]`} />
+                            <Text style={twrnc`text-xs font-bold`}>Clique para tirar dúvidas!</Text>
+                        </Pressable>
+                        <View style={twrnc`p-5 px-20 mt-5 justify-center gap-2 `}>
+                            <Text style={twrnc`text-base`}>Digite seu CPF</Text>
+                            <View style={twrnc`flex-row items-center`}>
+                                <MaskInput
                                     style={twrnc`p-3 text-lg bg-white rounded-lg w-full border border-[#d4d4d4]`}
-                                        maxLength={8}
-                                        secureTextEntry={eye}
-                                        value={password}
-                                    onChangeText={(txt)=>{handlePassword(txt)}}
+                                    mask={[/\d/, /\d/, /\d/,'.', /\d/, /\d/,/\d/,'.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
+                                    onChangeText={(masked, unmasked)=>handleCpf(unmasked)}
+                                    value={cpf}
+                                    keyboardType="numeric"
+                                    placeholder=""
                                 />
-                                <Pressable
-                                    onPress={()=>handleEye('password')}
-                                    style={twrnc`w-2/8`}
-                                >
-                                    <View>
-                                        { eye ?
-                                            <Ionicons name="eye" size={24} color="black" />
-                                            :
-                                            <Ionicons name="eye-off" size={24} color="black" />
-                                        }
-                                    </View>
-                                </Pressable>
                             </View>
                         </View>
-                        <View style={twrnc`px-20`}>
-                            <Text style={twrnc`text-base`}>Redigite sua senha</Text>
-                            <View style={twrnc`items-center flex-row gap-2`}>
-                                <TextInput 
-                                    style={twrnc`p-3 text-lg bg-white rounded-lg w-full border border-[#d4d4d4]`}
-                                        maxLength={8}
-                                        secureTextEntry={eyeAgain}
-                                        value={passwordAgain}
-                                    onChangeText={(txt)=>{handlePasswordAgain(txt)}}
-                                />
-                                <Pressable
-                                    onPress={()=>handleEye('again')}
-                                    style={twrnc`w-2/8`}
-                                >
-                                    <View>
-                                        { eyeAgain ?
-                                            <Ionicons name="eye" size={24} color="black" />
-                                            :
-                                            <Ionicons name="eye-off" size={24} color="black" />
-                                        }
-                                    </View>
-                                </Pressable>
+                        <View style={twrnc`gap-2 w-full mb-15`}>
+                            <View style={twrnc`px-20`}>
+                                <Text style={twrnc`text-base`}>Digite sua senha</Text>
+                                <View style={twrnc`items-center flex-row gap-2`}>
+                                    <TextInput 
+                                        style={twrnc`p-3 text-lg bg-white rounded-lg w-full border border-[#d4d4d4]`}
+                                            maxLength={8}
+                                            secureTextEntry={eye}
+                                            value={password}
+                                        onChangeText={(txt)=>{handlePassword(txt)}}
+                                    />
+                                    <Pressable
+                                        onPress={()=>handleEye('password')}
+                                        style={twrnc`w-2/8`}
+                                    >
+                                        <View>
+                                            { eye ?
+                                                <Ionicons name="eye" size={24} color="black" />
+                                                :
+                                                <Ionicons name="eye-off" size={24} color="black" />
+                                            }
+                                        </View>
+                                    </Pressable>
+                                </View>
+                            </View>
+                            <View style={twrnc`px-20`}>
+                                <Text style={twrnc`text-base`}>Redigite sua senha</Text>
+                                <View style={twrnc`items-center flex-row gap-2`}>
+                                    <TextInput 
+                                        style={twrnc`p-3 text-lg bg-white rounded-lg w-full border border-[#d4d4d4]`}
+                                            maxLength={8}
+                                            secureTextEntry={eyeAgain}
+                                            value={passwordAgain}
+                                        onChangeText={(txt)=>{handlePasswordAgain(txt)}}
+                                    />
+                                    <Pressable
+                                        onPress={()=>handleEye('again')}
+                                        style={twrnc`w-2/8`}
+                                    >
+                                        <View>
+                                            { eyeAgain ?
+                                                <Ionicons name="eye" size={24} color="black" />
+                                                :
+                                                <Ionicons name="eye-off" size={24} color="black" />
+                                            }
+                                        </View>
+                                    </Pressable>
+                                </View>
                             </View>
                         </View>
+                        <Btn title={'Continue'} action={handleSubmit} />
                     </View>
-                    <Btn title={'Continue'} action={handleSubmit} />
-                </View>
-            </ScrollView>
-        </SafeAreaView>
+                </ScrollView>
+            </>
     )
 
 }

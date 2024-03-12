@@ -29,7 +29,6 @@ export default function Profile({navigation}){
     useEffect(() => {
         dataEffect = async () => {
             const delivery = await GetDelivery()
-            console.log(delivery)
             const image = await GetPicture('selfie')
             setBuffer(image[0])
             setType(image[1])
@@ -41,9 +40,9 @@ export default function Profile({navigation}){
     }, []);
 
     return(
-        <SafeAreaView style={twrnc` bg-white h-full`}>
+        <>
             <FixBar navigation={navigation} opition={'profile'}/>
-            <ScrollView >
+            <ScrollView style={twrnc`bg-white`}>
                 
                     <View style={twrnc`items-center mt-5`}>
                         <Pressable style={[twrnc`absolute flex-row gap-2 justify-center items-center`,{top:'9%'}]}
@@ -88,7 +87,7 @@ export default function Profile({navigation}){
                             </View>
                             <View style={twrnc`bg-[#191919] rounded-lg flex flex-row justify-center items-center py-3 px-2 gap-2`}>
                                 <Octicons name="key" size={24} color="white" />
-                                <Text style={twrnc`text-white`}> MUDAR SENHA</Text>
+                                <Text style={twrnc`text-white`}>MUDAR SENHA</Text>
                             </View>
                             {/* <Pressable style={twrnc`flex flex-row rounded-lg  items-center justify-center gap-2 px-2 py-3 gap-2 bg-red-500`}
                                 onPress={handleLogout}
@@ -100,6 +99,6 @@ export default function Profile({navigation}){
                     </View>
 
             </ScrollView>
-        </SafeAreaView>
+        </>
     )
 }

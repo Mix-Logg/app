@@ -356,7 +356,7 @@ export default function UpLoadDocCar({navigation}){
     return(
         <>
          {loading === false ? 
-            <SafeAreaView style={twrnc`h-full bg-white`}>
+            <>
                 <FixBar navigation={navigation} opition={'register'} />
                 <ScrollView>
                     {modal}
@@ -645,7 +645,7 @@ export default function UpLoadDocCar({navigation}){
                         </View> */}
                     </View> 
                 </ScrollView>
-            </SafeAreaView>
+            </>
         : 
             <View style={twrnc`h-full justify-center items-center `}>
                 <Text>Estamos cadastrando seus dados...</Text>

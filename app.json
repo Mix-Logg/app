@@ -6,6 +6,12 @@
         {
           "iCloudContainerEnvironment": "Production"
         }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow MIX to use your location."
+        }
       ]
     ],
     "name": "MIX",

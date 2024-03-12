@@ -107,7 +107,7 @@ export default function RegisterPhotoDoc({navigation}){
     
 
     return(
-        <SafeAreaView style={twrnc`bg-white h-full`}>
+        <>
             <FixBar navigation={navigation} opition={'register'} />
             <ScrollView style={twrnc`h-full`}>
                 <View style={twrnc`px-1 mb-10 h-auto mt-5`}>
@@ -395,7 +395,7 @@ export default function RegisterPhotoDoc({navigation}){
 
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </>
     )
 }
 

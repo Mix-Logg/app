@@ -88,7 +88,7 @@ export default function RegisterCarProfile({navigation}){
     }
     
     return(
-        <SafeAreaView >
+        < >
             <FixBar navigation={navigation} opition={'register'} />
             <ScrollView style={twrnc`bg-white`}>
                 {popUp}
@@ -246,6 +246,6 @@ export default function RegisterCarProfile({navigation}){
                     }
                     <Btn title={'Continue'} action={handleContinue} />
             </ScrollView>
-        </SafeAreaView>
+        </>
     )
 }

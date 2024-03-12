@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, StatusBar  } from 'react-native';
+import { View, Image, StatusBar, ScrollView, SafeAreaView  } from 'react-native';
 import AllRoutes from './router';
 import {
   useFonts,
@@ -67,7 +67,11 @@ export default function App() {
   }
 
   return count ? 
-      <AllRoutes />
+      <SafeAreaView style={twrnc`bg-white h-full`}>
+        <StatusBar
+          backgroundColor='#EFEFEF' />
+          <AllRoutes />
+      </SafeAreaView>
   : (
     <View
       style={{

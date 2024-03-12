@@ -16,7 +16,6 @@ export default function FixBar({navigation, opition}){
         }
     }
 
-
     useEffect(() => {
         dataEffect = async () => {
             switch (opition) {
