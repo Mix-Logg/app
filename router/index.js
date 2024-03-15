@@ -25,6 +25,7 @@ import AllAccess from '../components/access/AllAcess';
 import Race from '../components/View/race';
 import Wallet from '../components/View/wallet';
 import History from '../components/View/history';
+import InfoRace from '../components/View/infoRace';
 export default function AllRoutes() {
 
   return (
@@ -220,6 +221,15 @@ export default function AllRoutes() {
               }}
             />
             <Stack.Screen name="Race" component={Race} 
+              options={{
+                title: '',  
+                headerStyle: {
+                    backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                  },
+                  headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
+            <Stack.Screen name="InfoRace" component={InfoRace} 
               options={{
                 title: '',  
                 headerStyle: {

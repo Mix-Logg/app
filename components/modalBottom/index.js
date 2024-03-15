@@ -2,8 +2,8 @@ import { useState, ReactNode } from 'react';
 import { View, Text } from 'react-native';
 import Modal from "react-native-modal";
 import twrnc from 'twrnc';
-export default function ModalBottom({children}){
-    const [show,setShow] = useState(true)
+export default function ModalBottom({children}, visible){
+    const [show,setShow] = useState(visible)
     
     const handleModal = () => {
         setShow(!show)

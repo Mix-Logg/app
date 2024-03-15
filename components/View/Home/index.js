@@ -51,9 +51,9 @@ export default function Home ({navigation}){
                             timeLineView
                         : 
                        <View style={twrnc`gap-5 mb-20`}>
-                        <Access navigation={navigation}/>
-                        <Balance/>
-                        <Races/>
+                            <Access navigation={navigation}/>
+                            <Balance/>
+                            <Races navigation={navigation} />
                        </View>
                     }
             </ScrollView>
