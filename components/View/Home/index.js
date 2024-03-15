@@ -5,8 +5,9 @@ import warningPicture from '../../warningPicture';
 import twrnc from 'twrnc';
 import DocumentTimeline from '../../timeline';
 import Plug from '../../../api/plug';
-import Map from '../map';
-
+import Races from '../../races';
+import Access from '../../access';
+import Balance from '../../balance';
 export default function Home ({navigation}){
     const [refreshing, setRefreshing] = useState(false); 
     const [info, setInfo] = useState(false); 
@@ -49,9 +50,11 @@ export default function Home ({navigation}){
                     { (info.picture === 'analyze' || info.picture === 'reprove' || info.picture === 'success') && plug != 4  ?
                             timeLineView
                         : 
-                       <>
-                        <Map/>
-                       </>
+                       <View style={twrnc`gap-5 mb-20`}>
+                        <Access navigation={navigation}/>
+                        <Balance/>
+                        <Races/>
+                       </View>
                     }
             </ScrollView>
         </>

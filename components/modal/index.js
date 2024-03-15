@@ -29,8 +29,8 @@ import { Feather } from '@expo/vector-icons';
                             {txt}
                     </Text>
                     <Pressable style={twrnc`bg-[#FBBF24] py-2 px-5 rounded-lg`}
-                            onPress={handleClose}
-                        >
+                        onPress={()=>handleClose()}
+                    >
                             <Text style={twrnc`text-white font-bold`}>FECHAR</Text>
                     </Pressable>
                 </View>

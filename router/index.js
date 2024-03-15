@@ -1,6 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 const Stack = createNativeStackNavigator();
 
 //IMPORT VIEWS
@@ -21,6 +20,11 @@ import Profile from '../components/View/profile';
 import AvalidPhoto from '../components/View/profile/avalidPhoto';
 import RegisterUser from '../components/View/cadastre/registerUser';
 import RegisterCarProfile from '../components/View/registerCar/registerCarProfile';
+import ChangePassword from '../components/View/changePassword';
+import AllAccess from '../components/access/AllAcess';
+import Race from '../components/View/race';
+import Wallet from '../components/View/wallet';
+import History from '../components/View/history';
 export default function AllRoutes() {
 
   return (
@@ -177,7 +181,52 @@ export default function AllRoutes() {
                     backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
                   },
                   headerShown: false // Exibe o cabeçalho nesta tela
-                }}
+              }}
+            />
+            <Stack.Screen name="ChangePassword" component={ChangePassword} 
+              options={{
+                title: '',  
+                headerStyle: {
+                    backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                  },
+                  headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
+            <Stack.Screen name="AllAccess" component={AllAccess} 
+              options={{
+                title: '',  
+                headerStyle: {
+                    backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                  },
+                  headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
+            <Stack.Screen name="Wallet" component={Wallet} 
+              options={{
+                title: '',  
+                headerStyle: {
+                    backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                  },
+                  headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
+            <Stack.Screen name="History" component={History} 
+              options={{
+                title: '',  
+                headerStyle: {
+                    backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                  },
+                  headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
+            <Stack.Screen name="Race" component={Race} 
+              options={{
+                title: '',  
+                headerStyle: {
+                    backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                  },
+                  headerShown: false // Exibe o cabeçalho nesta tela
+              }}
             />
         </Stack.Navigator>
     </NavigationContainer> 
