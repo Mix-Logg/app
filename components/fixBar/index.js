@@ -5,6 +5,7 @@ import { AntDesign, Octicons, FontAwesome5, MaterialCommunityIcons  } from '@exp
 import Wallet from '../../img/icons/Wallet.png'
 import Race from '../../img/icons/road.png'
 import History from '../../img/icons/Reload.png'
+
 export default function FixBar({navigation, opition}){
     
     const [title,setTitle] = useState('')
@@ -53,6 +54,10 @@ export default function FixBar({navigation, opition}){
                     setTitle('Corridas')
                     setBack('Home')
                     break;
+                case 'infoRace':
+                    setTitle('Informações')
+                    setBack('Home')
+                    break;
                 default:
                     break;
             }
@@ -85,7 +90,7 @@ export default function FixBar({navigation, opition}){
                         : opition === 'wallet' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={Wallet} tintColor={'#7B7B7B'}/></View>
                         : opition === 'race' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={Race} tintColor={'#7B7B7B'}/></View>
                         : opition === 'history' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={History} tintColor={'#7B7B7B'}/></View>
-                        : opition === 'infoRace' ? <MaterialCommunityIcons name="door" size={20} color="#7B7B7B" />
+                        : opition === 'infoRace' ? <MaterialCommunityIcons name="car-info" size={20} color="#7B7B7B" />
                         : null }
                         <Text style={twrnc`text-[#7B7B7B] text-sm font-medium`}> {title} </Text>
                     </View>

@@ -71,15 +71,15 @@ export default function Login({navigation}){
 
     useFocusEffect(
         React.useCallback(() => {
-          const fetchData = async () => {
+        const fetchData = async () => {
             const access = await AsyncStorage.getItem('access');
             if (access === '1') {
               navigation.navigate('Home');
             } else {
               setWaiting(false);
             }
-          };
-          fetchData();
+        };
+        fetchData();
         }, [navigation])
     );
 

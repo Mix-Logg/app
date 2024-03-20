@@ -60,7 +60,7 @@ export default function AllAccess({navigation}) {
                             style={twrnc`h-7 w-7`}
                         />
                     </Pressable>
-                    <Text style={twrnc`text-[#7B7B7B]`} >Corridas </Text>
+                    <Text style={twrnc`text-[#7B7B7B]`} >Fretes </Text>
                 </View>
             </View>
         </View>

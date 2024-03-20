@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Image,Text ,TextInput, Pressable, RefreshControl, ScrollView, Button, SafeAreaView, StatusBar   } from 'react-native';
+import { View, Image,Text ,TextInput, Pressable, RefreshControl, ScrollView, Button, SafeAreaView, StatusBar, BackHandler} from 'react-native';
 import Bar from '../../bar';
 import warningPicture from '../../warningPicture';
 import twrnc from 'twrnc';
@@ -8,6 +8,7 @@ import Plug from '../../../api/plug';
 import Races from '../../races';
 import Access from '../../access';
 import Balance from '../../balance';
+
 export default function Home ({navigation}){
     const [refreshing, setRefreshing] = useState(false); 
     const [info, setInfo] = useState(false); 
@@ -34,7 +35,14 @@ export default function Home ({navigation}){
         }
         dataEffect()
     }, [refreshing]);
-    
+    useEffect( () => {
+        const backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', () => {
+            return true;
+        });
+      
+        return () => backHandlerSubscription.remove();
+    },[])
+
     return(
         
        <>

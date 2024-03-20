@@ -3,22 +3,22 @@ import MapView, { Marker, AnimatedRegion, PROVIDER_GOOGLE } from "react-native-m
 import { useState, useRef } from "react";
 import * as Location from "expo-location";
 import { useEffect } from "react";
-import { Pressable, Text,View } from "react-native";
+import { Pressable, Text, View, ActivityIndicator  } from "react-native";
+import Button from '../../../util/button'
 
 export default function Map() {
   const [location, setLocation] = useState(null);
   const [latitudeDelta, setLatitudeDelta] = useState(0.00922);
   const [longitudeDelta, setLongitudeDelta] = useState(0.00421);
-  const [errorMsg, setErrorMsg] = useState(null);
+  const [controlHeightMap, setControlHeightMap] = useState('h-full')
 
   const mapRef = useRef(null)
-
 
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
+        console.log("Permission to access location was denied");
         return;
       }
       let location = await Location.getCurrentPositionAsync({});
@@ -43,16 +43,17 @@ export default function Map() {
 
 
   return (
-    <>
+    <View style={twrnc`h-full`}>
       {location === null ? (
-        <View style={twrnc`h-100 w-full items-center justify-center`}>
-          <Text>Aguarde...</Text>
+        <View style={twrnc`h-full w-full items-center justify-center`}>
+           <ActivityIndicator size="large" color="#FF5F00" />
+           <Text style={twrnc`font-bold`}>Carregando rota</Text>
         </View>
       ) : (
-        <>
+        <View style={twrnc`h-full w-full`}>
           <MapView
             ref={mapRef}
-            style={twrnc`h-100 w-full`}
+            style={twrnc`h-full w-full`}
             initialRegion={{
               latitude: location.coords.latitude,
               longitude: location.coords.longitude,
@@ -63,7 +64,6 @@ export default function Map() {
             showsUserLocation
             showsMyLocationButton
             userInterfaceStyle
-            
           >
             {/* <Marker
               coordinate={{
@@ -73,8 +73,8 @@ export default function Map() {
               image={require("../../../img/icons/pin.png")}
             /> */}
           </MapView>
-        </>
+        </View>
       )}
-    </>
+    </View>
   );
 }
