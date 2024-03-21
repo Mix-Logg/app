@@ -66,12 +66,7 @@ export default function InfoWork({navigation}){
                                 </Text>
                             </View>
                         </View>
-                        <View style={twrnc`gap-3`}>
-                            {/* <Button handle={handleCancelRace} background={'bg-[#FF5F00]'} >
-                                <View style={twrnc`py-2`}>
-                                    <Text style={twrnc`text-lg font-bold text-white`}>Continuar frete</Text>
-                                </View>
-                            </Button> */}
+                        <View style={twrnc`gap-3 mb-20`}>
                             <Button handle={handleCancelRace} background={'bg-[#d4d4d4]'} >
                                 <View style={twrnc`py-2`}>
                                     <Text style={twrnc`text-lg font-bold text-white`}>Cancelar frete</Text>

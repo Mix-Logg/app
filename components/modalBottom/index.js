@@ -1,7 +1,8 @@
 import { useState, ReactNode } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
 import Modal from "react-native-modal";
 import twrnc from 'twrnc';
+import { AntDesign } from '@expo/vector-icons';
 export default function ModalBottom({children}, visible){
     const [show,setShow] = useState(visible)
     
@@ -17,14 +18,14 @@ export default function ModalBottom({children}, visible){
             animationInTiming={300}
             animationOutTiming={300}
             style={twrnc`justify-end p-0 m-0`}
-            swipeDirection={['down']}
-            onSwipeComplete={handleModal}
         >
             <View style={twrnc`bg-white h-6/8 rounded-t-3xl`}>
-                <View style={twrnc`items-center justify-center py-3`}>
-                    <View style={twrnc`bg-[#e5e5e5] h-2 w-1/8 rounded-full`}></View>
-                </View>
-                <View style={twrnc`mt-5 px-5`}>
+                <Pressable style={twrnc`px-5 py-2 justify-center`}
+                    onPress={()=>handleModal()}
+                >
+                    <AntDesign name="close" size={24} color="black" />
+                </Pressable>
+                <View style={twrnc`px-5`}>
                     {children}
                 </View>
             </View>
