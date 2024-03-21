@@ -15,7 +15,7 @@ export default function Races({navigation}) {
       <View style={twrnc`justify-center items-center`}>
         <ScrollView horizontal style={twrnc`w-full py-2 px-1 gap-5 rounded-xl `}>
           <View style={twrnc`gap-3 py-4 flex-row`}>
-            <Pressable style={twrnc`border border-b border-[#d4d4d4] rounded-lg gap-2 items-center py-5 px-3`}
+            <Pressable style={twrnc`border border-[#d4d4d4] rounded-lg gap-2 items-center py-5 px-3`}
                 onPress={()=>handleAcessRace()}
             >
                 <View style={twrnc`flex-row items-center gap-2 w-45`}>

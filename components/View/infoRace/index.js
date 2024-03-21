@@ -36,7 +36,7 @@ export default function InfoRace({navigation}){
                         <View style={twrnc`flex-row items-center gap-4 px-2 border-b py-3 border-[#a3a3a3]`}>
                             <MaterialIcons name="gps-fixed" size={28} color="#a3a3a3"/>
                             <View style={twrnc`flex-row items-end`}>
-                                <Text style={twrnc`text-base font-bold`}>A corrida tem 12 km</Text>
+                                <Text style={twrnc`text-base font-bold`}>A corrida tem 12km</Text>
                             </View>
                         </View>
                         <View style={twrnc`flex-row items-center gap-5`}>
