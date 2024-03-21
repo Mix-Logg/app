@@ -1,14 +1,16 @@
-import { View, Text, ScrollView}  from "react-native"
-import { FontAwesome5, MaterialCommunityIcons, MaterialIcons, Feather  } from '@expo/vector-icons';
+import { View, Text, ScrollView, Pressable, Linking}  from "react-native"
+import { FontAwesome5, MaterialCommunityIcons, MaterialIcons, Feather } from '@expo/vector-icons';
 import Button from "../../util/button";
 import twrnc from "twrnc"
 import Modal from '../modalBottom'
 
 export default function InfoWork({navigation}){
     
-    // const handleModal = () => {
-        
-    // }
+    const handlePhone = (phone) => {
+        const url = `tel:${phone}`;
+        Linking.openURL(url);
+    
+    }
 
     const handleCancelRace = () => {
         navigation.navigate('Home')
@@ -22,15 +24,20 @@ export default function InfoWork({navigation}){
                         <View>
                             <Text style={twrnc`text-2xl font-bold`}>Detalhes do frete</Text>
                         </View>
-                        <View style={twrnc`gap-5`}>
+                        <View style={twrnc`gap-8`}>
                             <View style={twrnc`flex-row gap-3 items-end`}>
                                 <FontAwesome5 name="user" size={27} color="#71717a" />
                                 <Text style={twrnc`text-base font-bold text-[#71717a]`}>Guilherme Cardoso Santos</Text>
                             </View>
-                            <View style={twrnc`flex-row gap-3 items-end`}>
-                                <Feather name="phone" size={27} color="#71717a" />
-                                <Text style={twrnc`text-base font-bold text-[#71717a]`}>(11) 9 3229-1233</Text>
-                            </View>
+                            <Pressable style={twrnc`flex-row gap-3 items-end items-center justify-between`}
+                                onPress={()=>handlePhone('11932291233')}
+                            >
+                                <View style={twrnc`flex-row gap-3`}>
+                                    <Feather name="phone" size={27} color="#71717a" />
+                                    <Text style={twrnc`text-base font-bold text-[#71717a]`}>(11) 9 3229-1233</Text>
+                                </View>
+                                <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+                            </Pressable>
                             <View style={twrnc`flex-row gap-3 items-center`}>
                                 <View style={twrnc`p-1 bg-green-200 rounded-full`}>
                                     <MaterialIcons name="attach-money" size={27} style={twrnc`text-green-600`} />
