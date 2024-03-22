@@ -19,7 +19,7 @@ export default function ModalBottom({children}, visible){
             animationOutTiming={300}
             style={twrnc`justify-end p-0 m-0`}
         >
-            <View style={twrnc`bg-white h-6/8 rounded-t-3xl`}>
+            <View style={twrnc`bg-white h-full`}>
                 <Pressable style={twrnc`px-5 py-2 justify-center`}
                     onPress={()=>handleModal()}
                 >

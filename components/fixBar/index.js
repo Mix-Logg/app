@@ -56,7 +56,7 @@ export default function FixBar({navigation, opition}){
                     break;
                 case 'infoRace':
                     setTitle('Informações')
-                    setBack('Home')
+                    setBack('Race')
                     break;
                 default:
                     break;

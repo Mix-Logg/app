@@ -1,5 +1,5 @@
 import { View, Text, ScrollView, Pressable, Linking}  from "react-native"
-import { FontAwesome5, MaterialCommunityIcons, MaterialIcons, Feather, Entypo  } from '@expo/vector-icons';
+import { FontAwesome5, MaterialCommunityIcons, MaterialIcons, Feather, AntDesign   } from '@expo/vector-icons';
 import Button from "../../util/button";
 import twrnc from "twrnc"
 import Modal from '../modalBottom'
@@ -23,38 +23,35 @@ export default function InfoWork({navigation}){
     return(
             <Modal>
                 <ScrollView>
-                    <View style={twrnc`h-full mt-5 gap-10`}>
+                    <View style={twrnc`h-full mt-5 gap-8`}>
                         <View>
                             <Text style={twrnc`text-2xl font-bold`}>Detalhes do frete</Text>
                         </View>
                         <View style={twrnc`gap-8`}>
-                            <View style={twrnc`flex-row gap-3 items-end`}>
-                                <FontAwesome5 name="user" size={27} color="#71717a" />
-                                <Text style={twrnc`text-base font-bold text-[#71717a]`}>Guilherme Cardoso Santos</Text>
+                            <View style={twrnc`flex-row gap-3 items-center`}>
+                                <AntDesign name="user" size={24} color="black" style={twrnc`text-neutral-500`} />
+                                <Text style={twrnc`text-neutral-500 font-medium`}>Guilherme Cardoso Santos</Text>
                             </View>
                             <Pressable style={twrnc`flex-row items-end items-center justify-between`}
                                 onPress={()=>handlePhone('11932291233')}
                             >
-                                <View style={twrnc`flex-row gap-3`}>
-                                    <Feather name="phone" size={27} color="#71717a" />
-                                    <Text style={twrnc`text-base font-bold text-[#71717a]`}>(11) 9 3229-1233</Text>
+                                <View style={twrnc`flex-row gap-3 items-center`}>
+                                    <AntDesign name="phone" size={24} style={twrnc`text-neutral-500`} />
+                                    <Text style={twrnc`font-medium text-neutral-500`}>(11) 9 3229-1233</Text>
                                 </View>
                                 <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
                             </Pressable>
                             <Pressable style={twrnc`flex-row items-end items-center justify-between`}
                                 onPress={()=>handleHelp()}
                             >
-                                <View style={twrnc`flex-row gap-3`}>
-                                    <Feather name="headphones" size={27} color="#FF5F00" />
-                                    <Text style={twrnc`text-base font-bold text-[#FF5F00]`}>Ajuda</Text>
+                                <View style={twrnc`flex-row gap-3 items-center`}>
+                                    <AntDesign name="customerservice" size={24} color="#FF5F00" />
+                                    <Text style={twrnc`font-medium text-[#FF5F00]`}>Ajuda</Text>
                                 </View>
                                 <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
                             </Pressable>
                             <View style={twrnc`flex-row gap-3 items-center`}>
-                                <View style={twrnc`p-1 bg-green-200 rounded-full`}>
-                                    <MaterialIcons name="attach-money" size={27} style={twrnc`text-green-600`} />
-                                </View>
-                                <Text style={twrnc`text-lg font-bold text-green-600`}>+ 3.000,00</Text>
+                                <Text style={twrnc`text-base font-bold text-green-600`}>+ R$ 145,00 reais</Text>
                             </View>
                         </View>
                         <View style={twrnc`flex-row items-center gap-2`}>
