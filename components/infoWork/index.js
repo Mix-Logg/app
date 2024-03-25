@@ -17,7 +17,8 @@ export default function InfoWork({navigation}){
     }
 
     const handleHelp = () => {
-        console.log('help')
+        const url = `https://wa.me/5511978612671`
+        Linking.openURL(url);
     }
 
     return(

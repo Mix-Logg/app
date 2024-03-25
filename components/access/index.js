@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Reload from '../../img/icons/Reload.png'
 import Wallet from '../../img/icons/Wallet.png'
-import Race from '../../img/icons/road.png'
+import Race from '../../img/icons/box.png'
 
 export default function Access({navigation}) {
 
@@ -68,10 +68,10 @@ export default function Access({navigation}) {
                     >
                         <Image 
                             source={Race}
-                            style={twrnc`h-7 w-7`}
+                            style={twrnc`h-8 w-8`}
                         />
                     </Pressable>
-                    <Text style={twrnc`text-[#7B7B7B]`} >Corridas </Text>
+                    <Text style={twrnc`text-[#7B7B7B]`} >Fretes </Text>
                 </View>
             </View>
         </ScrollView>

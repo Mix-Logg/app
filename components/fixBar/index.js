@@ -3,7 +3,7 @@ import { View, Image,Text , Pressable, StatusBar  } from 'react-native';
 import { useEffect, useState } from 'react';
 import { AntDesign, Octicons, FontAwesome5, MaterialCommunityIcons  } from '@expo/vector-icons';
 import Wallet from '../../img/icons/Wallet.png'
-import Race from '../../img/icons/road.png'
+import Race from '../../img/icons/box.png'
 import History from '../../img/icons/Reload.png'
 
 export default function FixBar({navigation, opition}){
@@ -51,7 +51,7 @@ export default function FixBar({navigation, opition}){
                     setBack('Home')
                     break
                 case 'race':
-                    setTitle('Corridas')
+                    setTitle('Fretes')
                     setBack('Home')
                     break;
                 case 'infoRace':

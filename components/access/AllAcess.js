@@ -3,7 +3,7 @@ import { View, Pressable, Text, Image } from "react-native";
 import FixBar from "../fixBar";
 import Reload from '../../img/icons/Reload.png'
 import Wallet from '../../img/icons/Wallet.png'
-import Road from '../../img/icons/road.png'
+import Road from '../../img/icons/box.png'
 
 export default function AllAccess({navigation}) {
     const handleAllAcess = (route) => {
