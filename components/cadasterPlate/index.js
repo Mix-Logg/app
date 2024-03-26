@@ -6,7 +6,7 @@ import { useState } from "react";
 import Button from '../../util/button'
 import PopUp from "../modal";
 import { MaterialIcons } from '@expo/vector-icons';
-export default function CadasterPlate({am, navigation}){
+export default function CadasterPlate({am, navigation, setModalBottom}){
     const [plate, setPlate]= useState('')
     const [popUp, setPopUp] = useState('');
 
@@ -25,6 +25,7 @@ export default function CadasterPlate({am, navigation}){
                 plate:plate
             }
         }
+        await setModalBottom('')
         navigation.navigate('RegisterUser', param)
     }
 

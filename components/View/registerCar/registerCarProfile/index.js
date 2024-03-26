@@ -1,6 +1,6 @@
 import { View, Text, Pressable, Image, ScrollView, SafeAreaView } from "react-native"
 import twrnc from 'twrnc';
-import { useState } from "react";
+import { useState, useRef } from "react";
 import FixBar from "../../../fixBar"
 import { Feather } from '@expo/vector-icons';
 import MaskInput from 'react-native-mask-input';
@@ -13,10 +13,19 @@ import Motorcycle from '../../../../img/vehicle/motorcycle.png'
 import Auxiliary from '../../../../img/vehicle/auxiliary.png'
 import CadasterPlate from "../../../cadasterPlate";
 export default function RegisterCarProfile({navigation}){
-    const [plate, setPlate] = useState(false);
+    const [am, setAm] = useState(false);
     const [card, setCard] = useState(false);
     const [modalBottom, setModalBottom] = useState('');
+    const [popUp, setPopUp] = useState('');
     
+
+    const modal = async (option) => {
+        setPopUp('')
+        if(option === 'plate'){
+            await setPopUp(<PopUp type={'warning'} txt={'Você deve digitar a placa do veículo'} show={true} />)
+            return;
+        }
+    }
 
     const handleCard = async (cardType) =>{
         let am
@@ -39,18 +48,17 @@ export default function RegisterCarProfile({navigation}){
         if( cardType === 'util' || cardType === 'van' || cardType === 'vuc'){
             am = 'driver';
         }
-        await setModalBottom(<CadasterPlate am={am} navigation={navigation} />)
+        await setModalBottom(<CadasterPlate am={am} navigation={navigation} setModalBottom={setModalBottom}/>)
         return;
     }
-
-
     
     return(
-        < >
+        <>
             <FixBar navigation={navigation} opition={'register'} />
+            {modalBottom}
             <ScrollView style={twrnc`bg-white`}>
-                {modalBottom}
                     <View style={twrnc`p-5 gap-5`}>
+                        {modalBottom}
                         <Pressable style={twrnc`bg-[#fafafa] h-25 rounded-lg p-3 flex-row gap-3 border border-white     ${ card === 'auxiliary' ? 'border-[#FF5F00]' : ''}`}
                             onPress={()=>handleCard('auxiliary')}
                         >
@@ -110,7 +118,7 @@ export default function RegisterCarProfile({navigation}){
                                     Passeio
                                 </Text>
                                 <Text style={twrnc`text-xs text-[#7B7B7B] font-medium`}>
-                                    Ideal para entregar compras, pacotes pequenos, eletrodomesticos
+                                    Ideal para entregar pacotes pequenos, eletrônicos em geral
                                 </Text>
                                 <Text style={twrnc`justify-center items-center text-xs`}>
                                     <Feather name="box" size={15} color="black" /> até 200kg
@@ -132,7 +140,7 @@ export default function RegisterCarProfile({navigation}){
                                     Utilitário
                                 </Text>
                                 <Text style={twrnc`text-xs text-[#7B7B7B] font-medium`}>
-                                    Ideal para pacotes médios, Ar condicionado, Frigobar
+                                    Ideal para entregar pacotes médios, eletrodomésticos
                                 </Text>
                                 <Text style={twrnc`justify-center items-center text-xs`}>
                                     <Feather name="box" size={15} color="black" /> até 500kg
@@ -154,7 +162,7 @@ export default function RegisterCarProfile({navigation}){
                                     Van
                                 </Text>
                                 <Text style={twrnc`text-xs text-[#7B7B7B] font-medium`}>
-                                    Ideal para pacotes grande, Geladeira, Lava e seca, Televisão, Fogão
+                                    Ideal para entregar pacotes médios, lava e seca, televisão, fogão
                                 </Text>
                                 <Text style={twrnc`justify-center items-center text-xs `}>
                                     <Feather name="box" size={15} color="black" /> até 1000kg
@@ -176,7 +184,7 @@ export default function RegisterCarProfile({navigation}){
                                         Vuc
                                     </Text>
                                     <Text style={twrnc`text-xs text-[#7B7B7B] font-medium`}>
-                                        Ideal para mudanças e pacotes grande em quantidade, Rolos de tecido 
+                                        Ideal para entregar pacotes grande, mudanças, geladeira
                                     </Text>
                                     <Text style={twrnc`justify-center items-center text-xs`}>
                                         <Feather name="box" size={15} color="black" /> até 1500kg

@@ -6,14 +6,14 @@ import Tour from "../../img/vehicle/tour.png";
 import Util from "../../img/vehicle/fiorino.png";
 import Van from "../../img/vehicle/van.png";
 import Vuc from "../../img/vehicle/cartload.png";
-export default function CardAllRace({ navigation }) {
+export default function CardAllRace({ navigation, id, isVisible }) {
   const handleRace = () => {
     navigation.navigate("InfoRace");
   };
 
   return (
     <Pressable
-      style={twrnc`border-b border-[#d4d4d4] rounded-xl p-3 gap-2 flex-row justify-between`}
+      style={twrnc`border-b border-[#d4d4d4] rounded-xl p-3 gap-2 flex-row justify-between ${isVisible == 1 ? '' : 'hidden'}`}
       onPress={() => handleRace()}
     >
       <View style={twrnc`flex-row gap-3`}>

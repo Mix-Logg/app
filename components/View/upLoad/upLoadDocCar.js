@@ -377,7 +377,7 @@ export default function UpLoadDocCar({navigation}){
 
                                 <View style={twrnc`w-4/6 justify-center`}>
                                     <Text style={[twrnc`text-center ${ clvImage != null ? 'text-white font-bold' : ''}`]}>
-                                        CLV
+                                        CLRV
                                         {/* {route.params.user.am === 'auxiliary'? ' (opcional)' : '' }  */}
                                     </Text>
                                 </View>
