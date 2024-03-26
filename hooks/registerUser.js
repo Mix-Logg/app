@@ -4,7 +4,7 @@ export default async function RegisterUser(params){
     const time  = await axios.get('https://worldtimeapi.org/api/timezone/America/Sao_Paulo')
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLdevelopment
+    const URL = URLproduction
 
     const am = params.user.am
     const user = {
@@ -69,7 +69,7 @@ export default async function RegisterUser(params){
 async function CadasterAddress(address) {
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLdevelopment
+    const URL = URLproduction
     return new Promise( async (resolve, reject) => {
         try{
             const res  = await axios.post(`${URL}address`,address)
@@ -85,7 +85,7 @@ async function CadasterAddress(address) {
 async function CadasterUser(user) {
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLdevelopment
+    const URL = URLproduction
     
     return new Promise( async (resolve, reject) => {
         try{
@@ -104,7 +104,7 @@ async function CadasterVehicle(vehicle){
     return new Promise( async (resolve, reject) => {
         const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
         const URLdevelopment = 'http://192.168.0.35:8080/'
-        const URL = URLdevelopment
+        const URL = URLproduction
         try{
             const res  = await axios.post(`${URL}vehicle`,vehicle)
             resolve()

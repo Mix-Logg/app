@@ -1,8 +1,41 @@
-import { ScrollView, View, Text } from "react-native";
+import { ScrollView, View, Text, Pressable } from "react-native";
+import { useState, useEffect } from "react";
 import FixBar from "../../fixBar";
 import twrnc from "twrnc";
 import CardAllRace from "../../cardAllRace";
+import { io } from 'socket.io-client';
 export default function Race({navigation}){
+
+    const [socket, setSocket] = useState(null);
+    const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
+    const URLdevelopment = 'http://192.168.0.35:8080/'
+    const URL = URLproduction
+
+    useEffect(() => {
+        const SocketTeste = async () => {
+            const socketIO = await io(URL);
+            socketIO.on("updateStatus", (data) => { 
+                console.log('Notificação recebida:', data); 
+            });
+            setSocket(socketIO)
+        }
+        SocketTeste()
+        
+    }, []);
+
+    // useEffect(()=> {
+    //     socket.on("updateStatus", (data) => { console.log('Notificação recebida:', data); });
+    // },[])
+
+
+    const handleIO = () => {
+        const data = {
+            id:"1",
+            isVisible:"0"
+        }
+        socket.emit('updateStatus', data); 
+    }
+    
     return(
         <>
             <FixBar navigation={navigation} opition={'race'} />
@@ -37,7 +70,11 @@ export default function Race({navigation}){
                     </View>
                 </View> */}
                 <CardAllRace navigation={navigation} />
-                
+                <Pressable style={twrnc`mt-5`}
+                    onPress={()=>{handleIO()}}
+                >
+                    <Text>Clique</Text>
+                </Pressable>
             </ScrollView>
         </>
     )
