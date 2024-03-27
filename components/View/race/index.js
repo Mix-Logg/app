@@ -9,6 +9,7 @@ export default function Race({navigation}){
     const [Allraces, setAllRace] = useState(null);
     const [socket, setSocket] = useState(null);
     const [races, setRaces] = useState(null);
+    const [listen, setListen] = useState(null);
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLdevelopment
@@ -45,7 +46,7 @@ export default function Race({navigation}){
             ));
             setAllRace(updatedAllraces);
         }
-    }, [races]);
+    }, [races, listen]);
 
     const checkRace = async (id) => {
         console.log('click')
@@ -55,6 +56,7 @@ export default function Race({navigation}){
         newRace[indexToUpdate].isVisible = "1";
         console.log(newRace)
         setRaces(newRace)
+        setListen(listen + 1)
         return
     }
 
