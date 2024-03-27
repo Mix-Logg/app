@@ -4,7 +4,7 @@ import { View, ScrollView, Text } from "react-native";
 export default function Races({navigation}) {
     
     return (
-    <View style={twrnc`w-full h-60 px-5 py-5 bg-white-600`}>
+    <View style={twrnc`w-full h-60 px-5 py-5 bg-white`}>
       <View style={twrnc`flex-row w-full justify-between items-center`}>
         <Text style={twrnc`font-bold text-[#374151]`}>Fretes </Text>
         <Text style={twrnc` text-[#374151]`}>Acesso rápido </Text>
