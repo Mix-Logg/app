@@ -1,5 +1,5 @@
 import { useState, ReactNode } from 'react';
-import { View, Text, Pressable } from 'react-native';
+import { View, Text, Pressable, SafeAreaView } from 'react-native';
 import Modal from "react-native-modal";
 import twrnc from 'twrnc';
 import { AntDesign } from '@expo/vector-icons';
@@ -11,7 +11,8 @@ export default function ModalBottom({children}, visible){
     }
     
     return(
-        <Modal
+        <SafeAreaView>
+            <Modal
             isVisible={show}
             animationIn="slideInUp"
             animationOut="slideOutDown"
@@ -20,7 +21,7 @@ export default function ModalBottom({children}, visible){
             style={twrnc`justify-end p-0 m-0`}
         >
             <View style={twrnc`bg-white h-full`}>
-                <Pressable style={twrnc`px-5 py-2 justify-center`}
+                <Pressable style={twrnc`px-5 py-10 justify-center`}
                     onPress={()=>handleModal()}
                 >
                     <AntDesign name="close" size={24} color="black" />
@@ -29,6 +30,8 @@ export default function ModalBottom({children}, visible){
                     {children}
                 </View>
             </View>
-        </Modal>
+            </Modal>
+        </SafeAreaView>
+        
     )
 }

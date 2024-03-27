@@ -32,6 +32,7 @@ export default function Wallet({navigation}){
 
     return(
         <>
+            {modal}
             <FixBar navigation={navigation} opition={'wallet'} />
             <ScrollView style={twrnc`bg-white`}>
                 <View style={twrnc`p-5 gap-10`}>
@@ -40,7 +41,7 @@ export default function Wallet({navigation}){
                             <Text style={twrnc`font-bold text-4xl`}>R$ 50,00</Text>
                     </View>
                     <View style={twrnc`gap-8`}>
-                        <Pressable style={twrnc`flex-row items-center justify-between`}
+                        <Pressable style={twrnc`flex-row items-center justify-between w-full`}
                             onPress={()=>handleAccess('rescue')}
                         > 
                                 <View style={twrnc`flex-row items-center gap-5`}>
@@ -61,7 +62,7 @@ export default function Wallet({navigation}){
                                     <Text style={twrnc`text-base text-[#737373]`}>Cadastro PIX</Text>
                                 </View>
                                 <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-                                {modal}
+                                
                         </Pressable>
                     </View>
                 </View>

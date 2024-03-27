@@ -10,7 +10,7 @@ export default function Races({navigation}) {
         <Text style={twrnc` text-[#374151]`}>Acesso rápido </Text>
       </View>
       <View style={twrnc`justify-center items-center`}>
-        <ScrollView horizontal style={twrnc`w-full py-2 gap-5 rounded-xl `}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={twrnc`w-full py-2 gap-5 rounded-xl `}>
           <View style={twrnc`gap-3 py-4 flex-row`}>
             <CardFastRace navigation={navigation}/>
             <CardFastRace navigation={navigation}/>
