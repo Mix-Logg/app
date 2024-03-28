@@ -1,5 +1,5 @@
 import twrnc from 'twrnc';
-import { View, Image,Text , Pressable } from 'react-native';
+import { View,Text , TouchableOpacity, Image } from 'react-native';
 import { useEffect, useState } from 'react';
 import GetDelivery from '../../api/getDelivery';
 import Mask from '../mask';
@@ -35,7 +35,7 @@ export default function Bar({navigation}){
                 <Text style={twrnc`text-xs`}> Bem Vindo(a) à Mix!</Text>
             </View>
             </View>
-            <Pressable style={twrnc`w-2/6 h-2/6`}
+            <TouchableOpacity style={twrnc`w-2/6 h-2/6`}
                 onPress={handleProfile}
             >
                 <Image 
@@ -43,7 +43,7 @@ export default function Bar({navigation}){
                     resizeMode="contain"
                     style={{ width: '100%', height:'100%' }}
                 />
-            </Pressable>
+            </TouchableOpacity>
         </View>
     )
 }

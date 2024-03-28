@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Image  } from "react-native"
+import { View, Text, TouchableOpacity, Image  } from "react-native"
 import { Ionicons, MaterialIcons   } from '@expo/vector-icons';
 import { useState } from "react";
 import twrnc from "twrnc"
@@ -19,7 +19,7 @@ export default function Balance(){
                 </View>
                 <View>
                     { eye ?
-                        <Pressable style={twrnc`flex-row gap-2 items-center`}
+                        <TouchableOpacity style={twrnc`flex-row gap-2 items-center`}
                             onPress={handleEye}
                         >
                             <Text style={twrnc`text-[#374151]`}>Esconder Saldo</Text>
@@ -28,16 +28,16 @@ export default function Balance(){
                             >
                                 <Ionicons name="eye-off" size={20} style={twrnc`text-[#374151]`} /> 
                             </View>
-                        </Pressable>
+                        </TouchableOpacity>
                         :
-                        <Pressable style={twrnc`flex-row gap-2 items-center `}
+                        <TouchableOpacity style={twrnc`flex-row gap-2 items-center `}
                             onPress={handleEye}
                         >
                             <Text style={twrnc`text-[#374151]`}>Mostrar Saldo</Text>
                             <View>
                                 <Ionicons name="eye" size={20} style={twrnc`text-[#374151]`} /> 
                             </View>
-                        </Pressable>
+                        </TouchableOpacity>
                     }
                 </View>
             </View>

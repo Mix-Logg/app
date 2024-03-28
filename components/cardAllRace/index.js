@@ -1,4 +1,4 @@
-import { Pressable, Text, Image, View } from "react-native";
+import { TouchableOpacity, Text, Image, View } from "react-native";
 import twrnc from "twrnc";
 import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Motorcycle from "../../img/vehicle/motorcycle.png";
@@ -7,12 +7,16 @@ import Util from "../../img/vehicle/fiorino.png";
 import Van from "../../img/vehicle/van.png";
 import Vuc from "../../img/vehicle/cartload.png";
 export default function CardAllRace({ navigation, id, isVisible }) {
+
   const handleRace = () => {
-    navigation.navigate("InfoRace");
+    const params = {
+      id:id
+    }
+    navigation.navigate("InfoRace", params);
   };
 
   return (
-    <Pressable
+    <TouchableOpacity
       style={twrnc`border-b border-[#d4d4d4] rounded-xl p-3 gap-2 flex-row justify-between ${isVisible == 1 ? '' : 'hidden'}`}
       onPress={() => handleRace()}
     >
@@ -59,6 +63,6 @@ export default function CardAllRace({ navigation, id, isVisible }) {
       <View style={twrnc`justify-center items-end `}>
         <MaterialIcons name="keyboard-arrow-right" size={24} color="#FF5F00" />
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 }

@@ -1,5 +1,5 @@
 import twrnc from 'twrnc';
-import { View, Image,Text , Pressable, StatusBar  } from 'react-native';
+import { View, Image,Text , TouchableOpacity, StatusBar  } from 'react-native';
 import { useEffect, useState } from 'react';
 import { AntDesign, Octicons, FontAwesome5, MaterialCommunityIcons  } from '@expo/vector-icons';
 import Wallet from '../../img/icons/Wallet.png'
@@ -67,7 +67,7 @@ export default function FixBar({navigation, opition}){
 
     return(
         <View style={[twrnc`bg-[#EFEFEF] flex flex-row items-center w-full justify-between py-1 px-5`,{height:'7%'}]}>
-           <Pressable style={twrnc`flex flex-row h-full items-center justify-start`}
+           <TouchableOpacity style={twrnc`flex flex-row h-full items-center justify-start`}
             onPress={handleBack}
            >
                 <View style={twrnc`w-2/8 h-3/6`}>
@@ -78,7 +78,7 @@ export default function FixBar({navigation, opition}){
                         />
                     </View>
                     <Text style={twrnc`text-[#7B7B7B] text-sm font-medium`}> voltar</Text>
-            </Pressable>
+            </TouchableOpacity>
 
             <View style={twrnc`flex flex-row h-full items-center justify-end mr-2`}>
                     <View style={twrnc`flex flex-row items-center justify-center`}>

@@ -1,4 +1,4 @@
-import { ScrollView, View, Text, Image, Pressable  } from "react-native";
+import { ScrollView, View, Text, Image, TouchableOpacity  } from "react-native";
 import FixBar from "../../fixBar";
 import twrnc from "twrnc";
 import Pix from '../../../img/icons/pix.png'
@@ -8,8 +8,10 @@ import ModalBottom from "../../modalBottom";
 import { useEffect, useState } from "react";
 import CadasterPix from "../../cadasterPix";
 import Rescue from "../../rescue";
+
 export default function Wallet({navigation}){
     const [modal,setModal] = useState('')
+    
 
     const handleAccess = async (option) => {
         await setModal('')
@@ -29,6 +31,7 @@ export default function Wallet({navigation}){
             )
         }
     }
+    
 
     return(
         <>
@@ -41,7 +44,7 @@ export default function Wallet({navigation}){
                             <Text style={twrnc`font-bold text-4xl`}>R$ 50,00</Text>
                     </View>
                     <View style={twrnc`gap-8`}>
-                        <Pressable style={twrnc`flex-row items-center justify-between w-full`}
+                        <TouchableOpacity style={twrnc`flex-row items-center justify-between w-full`}
                             onPress={()=>handleAccess('rescue')}
                         > 
                                 <View style={twrnc`flex-row items-center gap-5`}>
@@ -51,8 +54,8 @@ export default function Wallet({navigation}){
                                     <Text style={twrnc`text-base text-[#737373]`}>Resgatar</Text>
                                 </View>
                                 <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-                        </Pressable>
-                        <Pressable style={twrnc`flex-row items-center w-full justify-between gap-3`}
+                        </TouchableOpacity>
+                        <TouchableOpacity style={twrnc`flex-row items-center w-full justify-between gap-3`}
                             onPress={() => handleAccess('pix')}
                         > 
                                 <View style={twrnc`flex-row items-center gap-5`}>
@@ -63,7 +66,7 @@ export default function Wallet({navigation}){
                                 </View>
                                 <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
                                 
-                        </Pressable>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </ScrollView>

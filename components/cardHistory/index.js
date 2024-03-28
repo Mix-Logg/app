@@ -1,4 +1,4 @@
-import { Pressable, Text, View, Image } from "react-native";
+import { TouchableOpacity, Text, View, Image } from "react-native";
 import { AntDesign, Ionicons, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import InfoHistory from "../infoHistory";
 import twrnc from "twrnc";
@@ -17,11 +17,12 @@ export default function CardHistory({navigation}){
     }
 
     return(
-        <Pressable
+      <>
+        {infoHistory}
+        <TouchableOpacity
         style={twrnc`border-b border-[#d4d4d4] rounded-xl p-3 gap-2 flex-row justify-between`}
         onPress={() =>handleHistory()}
       >
-        {infoHistory}
         <View style={twrnc`flex-row gap-3`}>
           <View style={twrnc`items-center justify-center px-2`}>
             <View
@@ -55,6 +56,7 @@ export default function CardHistory({navigation}){
         <View style={twrnc`justify-center items-end `}>
           <MaterialIcons name="keyboard-arrow-right" size={24} color="#FF5F00" />
         </View>
-        </Pressable>
+        </TouchableOpacity>
+      </>
     )
 }

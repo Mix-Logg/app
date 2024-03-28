@@ -1,19 +1,85 @@
 import FixBar from "../../fixBar";
 import twrnc from "twrnc";
-import { ScrollView, View, Text, Linking, Pressable  } from "react-native";
+import { ScrollView, View, Text, Linking, Pressable, Image  } from "react-native";
 import { MaterialIcons, Ionicons , AntDesign, SimpleLineIcons} from "@expo/vector-icons";
-
-
+import { useRoute } from '@react-navigation/native';
 import Button from "../../../util/button";
-export default function InfoRace({navigation}){
+import { useEffect, useState } from "react";
+import { io } from 'socket.io-client';
+import findOneRace from "../../../hooks/findOneRace";
+import ModalMid from "../../modalMid";
+import Fly from '../../../img/uniqueIcons/fly.png'
 
-    const handleRace = () => {
+export default function InfoRace({navigation}){
+    const [socket,setSocket] = useState(null)
+    const [modal,setModal] = useState(null)
+    const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
+    const URLdevelopment = 'http://192.168.0.35:8080/'
+    const URL = URLdevelopment
+    const route = useRoute();
+
+    useEffect(()=>{
+            const socketIO = io(URL);
+            setSocket(socketIO);
+    },[])
+
+    const handleRace = async () => {
+        const infoRace = await findOneRace(route.params.id);
+        if(infoRace.isVisible === '0'){
+            await setModal('')
+            moodalRedirect()
+            return 
+        }
+        const data = {
+            id: route.params.id,
+            isVisible: "0"
+        }
+        socket.emit('updateStatus', data);
         navigation.navigate('Work')
     }
+    const handleBack = async () => {
+        navigation.navigate('Race')
+    }
 
+    const moodalRedirect = () => {
+        setModal(
+        <ModalMid>
+            <View style={twrnc`w-full bg-[#FF5F00] p-1 rounded-lg`}>
+                <View style={twrnc`flex-row px-5 bg-white rounded-lg`}>
+                    <View style={twrnc`w-1/2 py-3 gap-3`}>
+                        <View>
+                            <Text style={twrnc`text-lg font-bold text-[#FF5F00]`}>OPS!</Text>
+                        </View>
+                        <View style={twrnc`gap-5`}>
+                            <Text style={twrnc`text-neutral-500`}>Alguém já iniciou esse frete</Text>
+                            <Text style={twrnc`text-base font-medium text-neutral-500`}>Não desanime, precisamos de você</Text>
+                        </View>
+                    </View>
+                    <View style={twrnc`w-1/2 items-center justify-center`}>
+                        <View style={twrnc`h-50 w-50`}>
+                            <Image 
+                                style={twrnc`h-full w-full`}
+                                source={Fly}
+                                resizeMode="contain"
+                            />
+                        </View>
+                    </View>
+                </View>
+                <View style={twrnc`bg-[#FF5F00] rounded`}>
+                    <Button handle={handleBack}>
+                        <View style={twrnc`bg-[#FF5F00] w-full justify-center items-center`}>
+                            <Text style={twrnc`text-base font-bold text-white`}>Continuar voando</Text>
+                        </View>
+                    </Button>
+                </View>
+            </View>
+        </ModalMid>
+        )
+    }
 
     return(
         <>
+            {modal}
             <FixBar navigation={navigation} opition={'infoRace'} />
             <ScrollView style={twrnc`bg-white h-full`}>
                 <View style={twrnc`px-5 py-5 gap-2`}>

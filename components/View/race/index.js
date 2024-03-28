@@ -1,10 +1,13 @@
-import { ScrollView, View, Text, Pressable, Alert } from "react-native";
+import React from 'react';
+import { ScrollView, View, Text, Pressable, Alert,  } from "react-native";
 import { useState, useEffect } from "react";
+import { useFocusEffect } from '@react-navigation/native';
 import FixBar from "../../fixBar";
 import twrnc from "twrnc";
 import CardAllRace from "../../cardAllRace";
 import { io } from 'socket.io-client';
 import findAllRace from "../../../hooks/findAllRace";
+import WaitRace from "../../awaitRace";
 export default function Race({navigation}){
     const [Allraces, setAllRace] = useState(null);
     const [socket, setSocket] = useState(null);
@@ -14,15 +17,17 @@ export default function Race({navigation}){
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLdevelopment
 
-    useEffect(() => {
-        const SocketTeste = async () => {
-            const socketIO = await io(URL);
-            setSocket(socketIO);
-            const allRace = await findAllRace();
-            setRaces(allRace) 
-        }
-        SocketTeste();
-    }, []);
+    useFocusEffect(
+        React.useCallback(() => {
+            const SocketTeste = async () => {
+                const socketIO = await io(URL);
+                setSocket(socketIO);
+                const allRace = await findAllRace();
+                setRaces(allRace) 
+            }
+            SocketTeste();
+        }, [navigation])
+    );
 
     useEffect(() => {
         if(races != null){
@@ -33,15 +38,12 @@ export default function Race({navigation}){
     }, [socket, races]);
 
     useEffect(() => {
-        console.log('traava')
         if(races != null){
-            console.log('RACE NO MAP', races)
             const updatedAllraces = races.map(race => (
                 <CardAllRace
-                    key={race.id}
                     navigation={navigation}
                     id={race.id}
-                    isVisible={race.isVisible}
+                    isVisible={'1'}
                 />
             ));
             setAllRace(updatedAllraces);
@@ -49,36 +51,24 @@ export default function Race({navigation}){
     }, [races, listen]);
 
     const checkRace = async (id) => {
-        console.log('click')
+        let uuid = id.toString();
         const newRace = races
-        console.log(races)
-        const indexToUpdate = newRace.findIndex(race => race.id == id);
+        const indexToUpdate = newRace.findIndex(race => race.id == uuid);
         newRace[indexToUpdate].isVisible = "1";
-        console.log(newRace)
         setRaces(newRace)
         setListen(listen + 1)
         return
-    }
-
-    const handleIO = () => {
-        console.log('btn')
-        const data = {
-            id:"1",
-            isVisible:"1"
-        }
-        socket.emit('updateStatus', data); 
     }
     
     return(
         <>
             <FixBar navigation={navigation} opition={'race'} />
             <ScrollView style={twrnc`bg-white`}>
-                { Allraces }
-                <Pressable style={twrnc`mt-5 bg-green-500 py-5 items-center justify-center`}
-                    onPress={()=>handleIO()}
-                >
-                    <Text style={twrnc`text-white text-base font-bold`}>Clique</Text>
-                </Pressable>
+                { races != null && races.length == 0 ?
+                <WaitRace/>
+                : 
+                Allraces 
+                }
             </ScrollView>
         </>
     )

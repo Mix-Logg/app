@@ -8,7 +8,7 @@ import Plug from '../../../api/plug';
 import Races from '../../races';
 import Access from '../../access';
 import Balance from '../../balance';
-
+import Banner from '../../banner';
 export default function Home ({navigation}){
     const [refreshing, setRefreshing] = useState(false); 
     const [info, setInfo] = useState(false); 
@@ -61,7 +61,7 @@ export default function Home ({navigation}){
                        <View style={twrnc`gap-5 mb-20`}>
                             <Access navigation={navigation}/>
                             <Balance/>
-                            <Races navigation={navigation} />
+                            <Banner/>
                        </View>
                     }
             </ScrollView>
