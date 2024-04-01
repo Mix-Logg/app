@@ -16,16 +16,7 @@ export default function RegisterCarProfile({navigation}){
     const [am, setAm] = useState(false);
     const [card, setCard] = useState(false);
     const [modalBottom, setModalBottom] = useState('');
-    const [popUp, setPopUp] = useState('');
     
-
-    const modal = async (option) => {
-        setPopUp('')
-        if(option === 'plate'){
-            await setPopUp(<PopUp type={'warning'} txt={'Você deve digitar a placa do veículo'} show={true} />)
-            return;
-        }
-    }
 
     const handleCard = async (cardType) =>{
         let am
@@ -48,7 +39,7 @@ export default function RegisterCarProfile({navigation}){
         if( cardType === 'util' || cardType === 'van' || cardType === 'vuc'){
             am = 'driver';
         }
-        await setModalBottom(<CadasterPlate am={am} navigation={navigation} setModalBottom={setModalBottom}/>)
+        setModalBottom(<CadasterPlate am={am} navigation={navigation} setModalBottom={setModalBottom}/>)
         return;
     }
     
@@ -58,7 +49,6 @@ export default function RegisterCarProfile({navigation}){
             {modalBottom}
             <ScrollView style={twrnc`bg-white`}>
                     <View style={twrnc`p-5 gap-5`}>
-                        {modalBottom}
                         <Pressable style={twrnc`bg-[#fafafa] h-25 rounded-lg p-3 flex-row gap-3 border border-white     ${ card === 'auxiliary' ? 'border-[#FF5F00]' : ''}`}
                             onPress={()=>handleCard('auxiliary')}
                         >

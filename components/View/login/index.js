@@ -1,6 +1,6 @@
 import React from 'react';
 import twrnc from 'twrnc';
-import { View, Image,Text ,TextInput, Pressable, StatusBar } from 'react-native';
+import { View, Image,Text ,TextInput, TouchableOpacity, StatusBar } from 'react-native';
 import { useEffect, useState } from 'react';
 import MaskInput from 'react-native-mask-input';
 import Modal from "react-native-modal";
@@ -14,7 +14,6 @@ export default function Login({navigation}){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLdevelopment
-    
     const [cpf,setCpf] = useState('')
     const [password,setPassword] = useState('')
     const [acessModal,setAcessModal] = useState(false)
@@ -26,6 +25,7 @@ export default function Login({navigation}){
     }
 
     const handleAcess = async () => {
+        setWaiting(true)
         await setModal('')
         const auth = {
             cpf:cpf,
@@ -47,10 +47,12 @@ export default function Login({navigation}){
             }
             await modalOption('error')
         }catch(error){
-            console.log('erro:',error)
-            setAcessModal(!acessModal)
+            await modalOption('server')
             return
+        }finally{
+            setWaiting(false)
         }
+        
     }
 
     const handleNoCadastre = async () => {
@@ -65,6 +67,10 @@ export default function Login({navigation}){
         }
         if(option == 'warning'){
             await setModal(<PopUp type={'warning'} txt={'Acesso inválido!'} show={true} />);
+            return;
+        }
+        if(option == 'server'){
+            await setModal(<PopUp type={'danger'} txt={'Verifique sua internet ou tente mais tarde!'} show={true} />);
             return;
         }
     }
@@ -135,23 +141,23 @@ export default function Login({navigation}){
                 </View>
                 <View style={twrnc`flex w-3/6 mt-10 gap-5`}>
                     {/* ENTRAR */}
-                    <Pressable style={twrnc`bg-[#FF5F00] font-bold flex justify-center flex-row py-5 rounded-lg`}
+                    <TouchableOpacity style={twrnc`bg-[#FF5F00] font-bold flex justify-center flex-row py-5 rounded-lg`}
                         onPress={handleAcess}
                     >
                         <Text style={twrnc`font-bold text-white`}>
                             Entrar
                         </Text>
-                    </Pressable>
+                    </TouchableOpacity>
                     {/* CADASTRAR  */}
-                    <Pressable style={twrnc`border border-[#FF5F00] font-bold flex justify-center flex-row py-5 rounded-lg`}
+                    <TouchableOpacity style={twrnc`border border-[#FF5F00] font-bold flex justify-center flex-row py-5 rounded-lg`}
                         onPress={handleNoCadastre}
                         >
                         <Text style={twrnc`font-bold text-[#FF5F00]`}>Não sou cadastrado</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                     {/* ESQUECI A SENHA */}
-                    <Pressable style={twrnc`items-center`}>
+                    <TouchableOpacity style={twrnc`items-center`}>
                         <Text style={twrnc`font-bold text-[#FF5F00]`}>Esqueci minha senha</Text>
-                    </Pressable>
+                    </TouchableOpacity>
                 </View>
             </View> 
             :
