@@ -1,13 +1,10 @@
 import axios from "axios";
 
-export default async function UpdateUser(id,password){ 
+export default async function UpdateUser(id, params, ){ 
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLdevelopment
 
-    const params = { 
-        password : password
-    }
 
     console.log(`${URL}user/${id}`)
    try{

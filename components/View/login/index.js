@@ -37,7 +37,6 @@ export default function Login({navigation}){
         }
         try{
             const res = await axios.post(`${URL}user/auth`, auth)
-            console.log(res.data)
             if(res.data != 500){
                 await AsyncStorage.setItem('access', '1');
                 await AsyncStorage.setItem('am', res.data.am);
@@ -166,7 +165,6 @@ export default function Login({navigation}){
             </>
         }
         </View>
-
     )
 }
 

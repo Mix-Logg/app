@@ -63,7 +63,10 @@ export default function ChangePassword({navigation}){
             popUp('different')
             return;
         }
-        const response = await UpdateUser(user.id, newPassword)
+        const params = {
+            password : newPassword
+        }
+        const response = await UpdateUser(user.id, params)
         if(response == 200){
             popUp('success')
             return;
