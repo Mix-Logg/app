@@ -7,6 +7,7 @@ import twrnc from "twrnc";
 import CardAllRace from "../../cardAllRace";
 import { io } from 'socket.io-client';
 import findAllRace from "../../../hooks/findAllRace";
+import findAllRaceOpen from '../../../hooks/findAllOpenRace';
 import WaitRace from "../../awaitRace";
 export default function Race({navigation}){
     const [Allraces, setAllRace] = useState(null);
@@ -19,13 +20,13 @@ export default function Race({navigation}){
 
     useFocusEffect(
         React.useCallback(() => {
-            const SocketTeste = async () => {
+            const Socket = async () => {
                 const socketIO = await io(URL);
                 setSocket(socketIO);
-                const allRace = await findAllRace();
+                const allRace = await findAllRaceOpen();
                 setRaces(allRace) 
             }
-            SocketTeste();
+            Socket();
         }, [navigation])
     );
 
@@ -33,6 +34,9 @@ export default function Race({navigation}){
         if(races != null){
             socket.on("updateStatus", (data) => { 
                 checkRace(data);
+            });
+            socket.on("NewRace", (data) => { 
+                newRace(data)
             });
         }
     }, [socket, races]);
@@ -43,7 +47,12 @@ export default function Race({navigation}){
                 <CardAllRace
                     navigation={navigation}
                     id={race.id}
-                    isVisible={'1'}
+                    idClient={race.idClient}
+                    isVisible={race.isVisible}
+                    price={race.value}
+                    initial={race.initial}
+                    finish={race.finish}
+                    km={race.km}
                 />
             ));
             setAllRace(updatedAllraces);
@@ -54,12 +63,23 @@ export default function Race({navigation}){
         let uuid = id.toString();
         const newRace = races
         const indexToUpdate = newRace.findIndex(race => race.id == uuid);
-        newRace[indexToUpdate].isVisible = "1";
+        newRace[indexToUpdate].isVisible = "0";
         setRaces(newRace)
         setListen(listen + 1)
         return
     }
     
+    const newRace = async (race) => {
+        const newRace = {
+            finish: race.finish,
+            idClient: race.idClient,
+            initial: race.initial,
+            km: race.km,
+            value: race.value,
+        };
+        races.push(newRace);
+    }
+
     return(
         <>
             <FixBar navigation={navigation} opition={'race'} />

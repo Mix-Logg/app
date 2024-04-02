@@ -6,11 +6,16 @@ import Tour from "../../img/vehicle/tour.png";
 import Util from "../../img/vehicle/fiorino.png";
 import Van from "../../img/vehicle/van.png";
 import Vuc from "../../img/vehicle/cartload.png";
-export default function CardAllRace({ navigation, id, isVisible }) {
+export default function CardAllRace({ navigation, id, isVisible, price, initial, finish, km, idClient }) {
 
   const handleRace = () => {
     const params = {
-      id:id
+      id: id,
+      price: price,
+      initial: initial,
+      finish: finish,
+      km: km,
+      idClient: idClient
     }
     navigation.navigate("InfoRace", params);
   };
@@ -34,19 +39,23 @@ export default function CardAllRace({ navigation, id, isVisible }) {
         </View>
         <View style={twrnc`justify-between `}>
           <View style={twrnc`flex-row gap-2 items-center`}>
-            <Ionicons
+            {/* <Ionicons
               name="location-outline"
               size={19}
               color="#FF5F00"
             />
             <View>
-              <Text style={twrnc` text-[#191919] `}>A 4km de você</Text>
-            </View>
+              <Text style={twrnc`text-[#191919] `}>A {km}km de você</Text>
+            </View> */}
           </View>
-          <View style={twrnc`flex-row gap-2 items-center`}>
-            <AntDesign name="flag" size={17} color="#FF5F00" />
+          <View style={twrnc`flex-row gap-1 items-center`}>
+            <Ionicons
+                name="location-outline"
+                size={19}
+                color="#FF5F00"
+              />
             <View>
-              <Text style={twrnc` text-[#191919] `}>O frete possui 17 km</Text>
+              <Text style={twrnc` text-neutral-500 font-bold`}>O frete possui {km}km</Text>
             </View>
           </View>
           <View style={twrnc`flex-row gap-2`}>
@@ -54,7 +63,7 @@ export default function CardAllRace({ navigation, id, isVisible }) {
               <Text
                 style={twrnc`font-medium text-green-600 font-bold`}
               >
-                R$ 199,00 reais
+                R$ {price} reais
               </Text>
             </View>
           </View>

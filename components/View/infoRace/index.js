@@ -13,14 +13,25 @@ import Fly from '../../../img/uniqueIcons/fly.png'
 export default function InfoRace({navigation}){
     const [socket,setSocket] = useState(null)
     const [modal,setModal] = useState(null)
+    const [price,setPrice] = useState(null)
+    const [initial,setInitial] = useState(null)
+    const [finish,setFinish] = useState(null)
+    const [km,setKm] = useState(null)
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLdevelopment
     const route = useRoute();
 
     useEffect(()=>{
-            const socketIO = io(URL);
-            setSocket(socketIO);
+        const socketIO = io(URL);
+        setSocket(socketIO);
+    },[])
+
+    useEffect(()=>{
+        setPrice(route.params.price)
+        setInitial(route.params.initial)
+        setFinish(route.params.finish)
+        setKm(route.params.km)
     },[])
 
     const handleRace = async () => {
@@ -35,8 +46,9 @@ export default function InfoRace({navigation}){
             isVisible: "0"
         }
         socket.emit('updateStatus', data);
-        navigation.navigate('Work')
+        navigation.navigate('Work');
     }
+
     const handleBack = async () => {
         navigation.navigate('Race')
     }
