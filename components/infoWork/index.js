@@ -1,19 +1,35 @@
-import { View, Text, ScrollView, Pressable, Linking}  from "react-native"
+import { View, Text, ScrollView, TouchableOpacity, Linking}  from "react-native"
 import { FontAwesome5, MaterialCommunityIcons, MaterialIcons, Feather, AntDesign   } from '@expo/vector-icons';
 import Button from "../../util/button";
 import twrnc from "twrnc"
 import Modal from '../modalBottom'
-
+import { useRoute } from '@react-navigation/native';
+import { useEffect, useState } from "react";
+import Mask from "../../hooks/mask";
+import CancelRace from "../cancelRace";
 export default function InfoWork({navigation}){
-    
+    const route = useRoute();
+    const [name , setName] = useState('')
+    const [phone , setPhone] = useState('')
+    const [price , setPrice] = useState('')
+    const [modalCancel , setModalCancel] = useState('')
+
+    useEffect (() => {
+        setPrice(route.params.price)
+        setPhone(route.params.phone)
+        setName(route.params.name)
+    },[])
+
     const handlePhone = (phone) => {
         const url = `tel:${phone}`;
         Linking.openURL(url);
     
     }
 
-    const handleCancelRace = () => {
-        navigation.navigate('Home')
+    const handleCancelRace = async () => {
+        await setModalCancel('')
+        await setModalCancel(< CancelRace setModalCancel={setModalCancel} />)
+        // navigation.navigate('Home')
     }
 
     const handleHelp = () => {
@@ -23,6 +39,7 @@ export default function InfoWork({navigation}){
 
     return(
             <Modal>
+                {modalCancel}
                 <ScrollView>
                     <View style={twrnc`h-full mt-5 gap-8`}>
                         <View>
@@ -31,18 +48,20 @@ export default function InfoWork({navigation}){
                         <View style={twrnc`gap-8`}>
                             <View style={twrnc`flex-row gap-3 items-center`}>
                                 <AntDesign name="user" size={24} color="black" style={twrnc`text-neutral-500`} />
-                                <Text style={twrnc`text-neutral-500 font-medium`}>Guilherme Cardoso Santos</Text>
+                                <Text style={twrnc`text-neutral-500 font-medium`}>{name}</Text>
                             </View>
-                            <Pressable style={twrnc`flex-row items-end items-center justify-between`}
-                                onPress={()=>handlePhone('11932291233')}
+                            <TouchableOpacity style={twrnc`flex-row items-end items-center justify-between`}
+                                onPress={()=>handlePhone(phone)}
                             >
                                 <View style={twrnc`flex-row gap-3 items-center`}>
                                     <AntDesign name="phone" size={24} style={twrnc`text-neutral-500`} />
-                                    <Text style={twrnc`font-medium text-neutral-500`}>(11) 9 3229-1233</Text>
+                                    <Text style={twrnc`font-medium text-neutral-500`}>
+                                    { Mask('phone',phone) } 
+                                    </Text>
                                 </View>
                                 <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-                            </Pressable>
-                            <Pressable style={twrnc`flex-row items-end items-center justify-between`}
+                            </TouchableOpacity>
+                            <TouchableOpacity style={twrnc`flex-row items-end items-center justify-between`}
                                 onPress={()=>handleHelp()}
                             >
                                 <View style={twrnc`flex-row gap-3 items-center`}>
@@ -50,9 +69,9 @@ export default function InfoWork({navigation}){
                                     <Text style={twrnc`font-medium text-[#FF5F00]`}>Ajuda</Text>
                                 </View>
                                 <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-                            </Pressable>
+                            </TouchableOpacity>
                             <View style={twrnc`flex-row gap-3 items-center`}>
-                                <Text style={twrnc`text-base font-bold text-green-600`}>+ R$ 145,00 reais</Text>
+                                <Text style={twrnc`text-base font-bold text-green-600`}>+ R$ {price} reais</Text>
                             </View>
                         </View>
                         <View style={twrnc`flex-row items-center gap-2`}>

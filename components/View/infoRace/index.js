@@ -9,7 +9,7 @@ import { io } from 'socket.io-client';
 import findOneRace from "../../../hooks/findOneRace";
 import ModalMid from "../../modalMid";
 import Fly from '../../../img/uniqueIcons/fly.png'
-
+import FindClient from "../../../hooks/findClient";
 export default function InfoRace({navigation}){
     const [socket,setSocket] = useState(null)
     const [modal,setModal] = useState(null)
@@ -17,6 +17,7 @@ export default function InfoRace({navigation}){
     const [initial,setInitial] = useState(null)
     const [finish,setFinish] = useState(null)
     const [km,setKm] = useState(null)
+    const [clientName,setClientName] = useState('carregando...')
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLdevelopment
@@ -27,11 +28,18 @@ export default function InfoRace({navigation}){
         setSocket(socketIO);
     },[])
 
-    useEffect(()=>{
-        setPrice(route.params.price)
-        setInitial(route.params.initial)
-        setFinish(route.params.finish)
-        setKm(route.params.km)
+    useEffect( ()=>{
+        const dataUseEffect = async () => {
+            const client = await FindClient(route.params.idClient);
+            route.params.name = client.name;
+            route.params.phone = client.phone;
+            setClientName(client.name)
+            setPrice(route.params.price)
+            setInitial(route.params.initial)
+            setFinish(route.params.finish)
+            setKm(route.params.km)
+        }
+        dataUseEffect()
     },[])
 
     const handleRace = async () => {
@@ -46,7 +54,7 @@ export default function InfoRace({navigation}){
             isVisible: "0"
         }
         socket.emit('updateStatus', data);
-        navigation.navigate('Work');
+        navigation.navigate('Work', route.params);
     }
 
     const handleBack = async () => {
@@ -101,7 +109,7 @@ export default function InfoRace({navigation}){
                     <View style={twrnc` px-2 py-3 gap-3`}>
                         <View style={twrnc`flex-row items-center gap-2 px-2 border-b py-3 border-[#e5e5e5]`}>
                             <AntDesign name="user" size={20} color="#FF5F00" /> 
-                            <Text style={twrnc``}>Guilherme Cardoso Santos</Text>
+                            <Text style={twrnc``}>{clientName}</Text>
                         </View>
                         <View style={twrnc`flex-row items-center gap-2 px-2 border-b py-3 border-[#e5e5e5]`}>
                             <SimpleLineIcons name="location-pin" size={20} color="#FF5F00" />
@@ -109,10 +117,10 @@ export default function InfoRace({navigation}){
                         </View>
                         <View style={twrnc`flex-row items-center gap-2 px-2 border-b py-3 border-[#e5e5e5]`}>
                             <AntDesign name="flag" size={20} color="#FF5F00" />
-                            <Text style={twrnc``}>O frete possui 17 km</Text>
+                            <Text style={twrnc``}>O frete possui {km} km</Text>
                         </View>
                         <View style={twrnc`flex-row items-center gap-2 px-2 border-b py-3 border-[#e5e5e5]`}>
-                            <Text style={twrnc`text-green-600 font-bold text-base`}>R$ 357,00 reais</Text>
+                            <Text style={twrnc`text-green-600 font-bold text-base`}>R$ {price} reais</Text>
                         </View>
                     </View>
                 </View>

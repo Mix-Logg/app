@@ -33,6 +33,7 @@ export default function Login({navigation}){
         }
         if(cpf === '' || password === ''){
             await modalOption('warning')
+            setWaiting(false)
             return
         }
         try{
