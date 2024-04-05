@@ -1,48 +1,51 @@
 import twrnc from "twrnc";
 import MapView, { Marker, AnimatedRegion, PROVIDER_GOOGLE } from "react-native-maps";
 import Pin from './pin.png'
+import { MaterialIcons, Feather } from '@expo/vector-icons';
 import MapViewRoute from 'react-native-maps-routes';
 import { useState, useRef } from "react";
 import * as Location from "expo-location";
 import { useEffect } from "react";
-import { Pressable, Text, View, ActivityIndicator, Animated  } from "react-native";
+import { Pressable, Text, View, ActivityIndicator, Animated, TouchableOpacity  } from "react-native";
 import Button from '../../../util/button'
 import MapViewDirections from 'react-native-maps-directions';
 export default function Map() {
   const [location, setLocation] = useState(null);
   const [origin, setOrigin] = useState(null);
-  const [latitudeDelta, setLatitudeDelta] = useState(0.00922);
-  const [longitudeDelta, setLongitudeDelta] = useState(0.00421);
-  const destination = { latitude: -23.593112, longitude: -46.440739 };   
+  const [positionSubscription, setPositionSubscription] = useState(null);
+  const [modeRace, setModeRace] = useState(false)
+  const [pitchMap, setPitchMap] = useState(false)
+  const [rotateMap,setRotateMap] = useState(false)
+  const [followMap,setFollowMap] = useState(false)
+  const [zoomMap,setZoomMap] = useState(false)
+  const [scrollMap,setScrollMap] = useState(false)
+  const [cameraZoom,setCamerazoom] = useState(50)
+  const destination = { latitude: -23.593112, longitude: -46.440739, latitudeDelta: 0.00922, longitudeDelta: 0.00922 };   
   const GOOGLE_MAPS_APIKEY = 'AIzaSyDwhBCpqKMzkEpXm8w-t3Ib0KDOM9vdUPs';
   const mapRef = useRef(null)
 
-
-  // useEffect(() => {
-  //   (async () => {
-  //     let location = await Location.getCurrentPositionAsync({});
-  //     setLocation(location);
-  //     setOrigin(
-  //       {
-  //         latitude: location.coords.latitude,
-  //         longitude: location.coords.longitude 
-  //       }
-  //     )
-  //   })();
-  // }, []);
-
-  // useEffect(  ()=>{
-  //   Location.watchPositionAsync(
-  //     {
-  //       accuracy:Location.LocationAccuracy.Highest,
-  //       timeInterval:500,
-  //       distanceInterval:1
-  //     }, (res) => {
-  //       setLocation(res);
-  //       animate_point(res)
-  //     }
-  //   )
-  // },[])
+  const moveTo = async (position) => {
+    const camera = await mapRef.current?.getCamera();
+    if (camera) {
+      camera.center = position;
+      camera.zoom = 60,
+      camera.pitch = 90,
+      camera.heading = 60
+      mapRef.current?.animateCamera(
+        camera, { duration: 1000 }
+      );
+    }
+  };
+  const modeDriver = async () => {
+    setModeRace(!modeRace)
+    setPitchMap(!pitchMap)
+    setRotateMap(!rotateMap)
+    setFollowMap(!followMap)
+    setZoomMap(!zoomMap)
+    setScrollMap(!scrollMap)
+    setCamerazoom(5)
+    moveTo(origin)
+  };
 
   useEffect(() => {
     (async () => {
@@ -58,26 +61,19 @@ export default function Map() {
   }, []);
 
   useEffect(()=>{
-    Location.watchPositionAsync(
+   const localtionReal = Location.watchPositionAsync(
       {
         accuracy:Location.LocationAccuracy.Highest,
         timeInterval:500,
         distanceInterval:1
       }, (res) => {
         setLocation(res);
-        animate_point(res)
       }
     )
+    
+    setPositionSubscription(localtionReal)
   },[])
 
-  const animate_point = async (res) => {
-    mapRef.current?.animateCamera({
-      heading:60,
-      zoom: 50,
-      center:res.coords,
-      pitch: 100
-    })
-  }
 
   return (
     <View style={twrnc`h-full`}>
@@ -93,31 +89,42 @@ export default function Map() {
             style={twrnc`h-full w-full`}
             initialRegion={{
               latitude: location.coords.latitude,
-              longitude: location.coords.latitude,
-              latitudeDelta: latitudeDelta,
-              longitudeDelta: longitudeDelta,
+              longitude: location.coords.longitude,
+              latitudeDelta: 0.00922,
+              longitudeDelta: 0.00922,
             }}
             provider={PROVIDER_GOOGLE}
             // showsUserLocation
             showsMyLocationButton
             userInterfaceStyle
-            followsUserLocation={false}
-            mapType="terrain"
-            zoom={17}
+            followsUserLocation={followMap}
+            pitchEnabled={pitchMap}
+            rotateEnabled={rotateMap}
+            zoomEnabled={zoomMap}
+            scrollEnabled={scrollMap}
+            cameraZoomRange={cameraZoom}
             showsPointsOfInterest={false}
+            mapType="terrain"
+            onLayout={() => {
+              mapRef.current.animateCamera({
+                  pitch: 90,
+                  heading:60,
+                  zoom: 50,
+              })
+          }}
           >
             { origin != null &&
               <MapViewDirections
                 origin={origin}
                 destination={destination}
                 apikey={GOOGLE_MAPS_APIKEY}
-                strokeWidth={6}
+                strokeWidth={10}
                 strokeColor="#FF5F00"
                 precision={"high"}
                 mode={'DRIVING'}
+                renderDirections={true}
+                resetOnChange={true}
                 onReady={(result)=>{
-                  console.log('TEMPO:',result.duration) 
-                  console.log('KM:', result.distance) 
                 }}
               />
             } 
@@ -136,6 +143,24 @@ export default function Map() {
               image={require("./arrow-gps.png")}
             />
           </MapView> 
+          <View style={[twrnc`absolute p-1 rounded-xl border-[#a3a3a3] border h-12 w-12 items-center justify-center`, {top:'80%', left:'85%'}]}>
+              <TouchableOpacity
+                onPress={()=>moveTo(origin)}
+              >
+                <MaterialIcons name="gps-fixed" size={28} color="#FF5F00" />
+                
+              </TouchableOpacity>
+          </View>
+          <View style={[twrnc`absolute p-1 rounded-xl border-[#a3a3a3] border h-12 w-12 items-center justify-center`, {top:'69%', left:'85%'}]}>
+              <TouchableOpacity
+                onPress={()=>modeDriver()}
+              >
+                { modeRace ?
+                  <Feather name="unlock" size={24} color="#FF5F00" /> :
+                  <Feather name="lock" size={24} color="#FF5F00" />
+                }
+              </TouchableOpacity>
+          </View>
         </View>
       )}
     </View>

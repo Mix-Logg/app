@@ -3,8 +3,8 @@ import { View, Text, Pressable, SafeAreaView } from 'react-native';
 import Modal from "react-native-modal";
 import twrnc from 'twrnc';
 import { AntDesign } from '@expo/vector-icons';
-export default function ModalBottom({children}, visible){
-    const [show,setShow] = useState(visible)
+export default function ModalBottom({children}){
+    const [show,setShow] = useState(true)
     
     const handleModal = () => {
         setShow(!show)

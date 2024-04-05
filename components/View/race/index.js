@@ -45,6 +45,7 @@ export default function Race({navigation}){
         if(races != null){
             const updatedAllraces = races.map(race => (
                 <CardAllRace
+                    key={race.id}
                     navigation={navigation}
                     id={race.id}
                     idClient={race.idClient}
@@ -71,13 +72,15 @@ export default function Race({navigation}){
     
     const newRace = async (race) => {
         const newRace = {
+            key:race.id,
             finish: race.finish,
             idClient: race.idClient,
             initial: race.initial,
             km: race.km,
             value: race.value,
         };
-        races.push(newRace);
+        const updatedRaces = [...races, newRace];
+        setRaces(updatedRaces);
     }
 
     return(
