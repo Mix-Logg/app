@@ -47,6 +47,13 @@ export default function Map() {
     moveTo(origin)
   };
 
+  const getHeadingFromLocation = (coord1, coord2) => {
+    if (!coord1 || !coord2) return 0;
+    const x = coord2.longitude - coord1.longitude;
+    const y = coord2.latitude - coord1.latitude;
+    return (Math.atan2(y, x) * 180) / Math.PI;
+  };
+
   useEffect(() => {
     (async () => {
       let { status } = await Location.requestForegroundPermissionsAsync();
@@ -105,15 +112,23 @@ export default function Map() {
             cameraZoomRange={cameraZoom}
             showsPointsOfInterest={false}
             mapType="terrain"
+            onUserLocationChange={(event) => {
+              const heading = getHeadingFromLocation(
+                location,
+                event.nativeEvent.coordinate
+              );
+              if (heading !== 0) {
+                this.map.animateToBearing(heading);
+            }}}
             onLayout={() => {
               mapRef.current.animateCamera({
                   pitch: 90,
                   heading:60,
                   zoom: 50,
               })
-          }}
+            }}
           >
-            { origin != null &&
+            {/* { origin != null &&
               <MapViewDirections
                 origin={origin}
                 destination={destination}
@@ -127,7 +142,7 @@ export default function Map() {
                 onReady={(result)=>{
                 }}
               />
-            } 
+            }  */}
             <Marker
               coordinate={{
                 latitude: destination.latitude,

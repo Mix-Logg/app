@@ -45,6 +45,9 @@ export default function InfoWork({navigation}){
                         <View>
                             <Text style={twrnc`text-2xl font-bold`}>Detalhes do frete</Text>
                         </View>
+                        <View>
+                            
+                        </View>
                         <View style={twrnc`gap-8`}>
                             <View style={twrnc`flex-row gap-3 items-center`}>
                                 <AntDesign name="user" size={24} color="black" style={twrnc`text-neutral-500`} />
