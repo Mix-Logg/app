@@ -1,23 +1,36 @@
-import { View, Text, ScrollView, TouchableOpacity, Linking}  from "react-native"
-import { FontAwesome5, MaterialCommunityIcons, MaterialIcons, Feather, AntDesign   } from '@expo/vector-icons';
+import { View, Text, ScrollView, TouchableOpacity, Linking, ActivityIndicator}  from "react-native"
+import * as Clipboard from 'expo-clipboard';
+import { MaterialCommunityIcons, MaterialIcons, Feather, AntDesign, Ionicons, Octicons    } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import findOneRace from "../../hooks/findOneRace";
 import Button from "../../util/button";
 import twrnc from "twrnc"
 import Modal from '../modalBottom'
-import { useRoute } from '@react-navigation/native';
 import { useEffect, useState } from "react";
 import Mask from "../../hooks/mask";
 import CancelRace from "../cancelRace";
-export default function InfoWork({navigation}){
-    const route = useRoute();
+import findClient from "../../hooks/findClient";
+export default function InfoWork(){
     const [name , setName] = useState('')
     const [phone , setPhone] = useState('')
     const [price , setPrice] = useState('')
+    const [origin , setOrigin] = useState(false)
+    const [copied , setCopied] = useState(false)
+    const [destination , setDestination] = useState('')
     const [modalCancel , setModalCancel] = useState('')
 
     useEffect (() => {
-        setPrice(route.params.price)
-        setPhone(route.params.phone)
-        setName(route.params.name)
+        const fetchData = async () => {
+            const raceId = await AsyncStorage.getItem('raceId')
+            const raceInfo = await findOneRace(raceId)
+            const client = await findClient(raceInfo.idClient)
+            setName(client.name)
+            setPhone(client.phone)
+            setPrice(raceInfo.value)
+            setOrigin(raceInfo.initial)
+            setDestination(raceInfo.finish)
+        }
+        fetchData()
     },[])
 
     const handlePhone = (phone) => {
@@ -29,7 +42,6 @@ export default function InfoWork({navigation}){
     const handleCancelRace = async () => {
         await setModalCancel('')
         await setModalCancel(< CancelRace setModalCancel={setModalCancel} />)
-        // navigation.navigate('Home')
     }
 
     const handleHelp = () => {
@@ -37,63 +49,106 @@ export default function InfoWork({navigation}){
         Linking.openURL(url);
     }
 
+    const handleCopy = async (option) => {
+        switch (option) {
+            case 'destination':
+                await Clipboard.setStringAsync(destination);
+                break;
+            case 'origin':
+                await Clipboard.setStringAsync(origin);
+                break;
+            default:
+                break;
+        }
+        setCopied(true)
+        setTimeout(() => {
+            setCopied(false);
+        }, 2000);
+    }
+
     return(
             <Modal>
                 {modalCancel}
                 <ScrollView>
-                    <View style={twrnc`h-full mt-5 gap-8`}>
-                        <View>
-                            <Text style={twrnc`text-2xl font-bold`}>Detalhes do frete</Text>
-                        </View>
-                        <View>
-                            
-                        </View>
-                        <View style={twrnc`gap-8`}>
-                            <View style={twrnc`flex-row gap-3 items-center`}>
-                                <AntDesign name="user" size={24} color="black" style={twrnc`text-neutral-500`} />
-                                <Text style={twrnc`text-neutral-500 font-medium`}>{name}</Text>
+                    { origin != false ?
+                        <View style={twrnc`h-full mt-5 gap-8`}>
+                            <View>
+                                <Text style={twrnc`text-2xl font-bold`}>Detalhes do frete</Text>
                             </View>
-                            <TouchableOpacity style={twrnc`flex-row items-end items-center justify-between`}
-                                onPress={()=>handlePhone(phone)}
-                            >
+                            <View style={twrnc`gap-8`}>
                                 <View style={twrnc`flex-row gap-3 items-center`}>
-                                    <AntDesign name="phone" size={24} style={twrnc`text-neutral-500`} />
-                                    <Text style={twrnc`font-medium text-neutral-500`}>
-                                    { Mask('phone',phone) } 
+                                    <AntDesign name="user" size={24} color="black" style={twrnc`text-neutral-500`} />
+                                    <Text style={twrnc`text-neutral-500 font-medium`}>{name}</Text>
+                                </View>
+                                <TouchableOpacity style={twrnc`flex-row items-end items-center justify-between`}
+                                    onPress={()=>handlePhone(phone)}
+                                >
+                                    <View style={twrnc`flex-row gap-3 items-center`}>
+                                        <AntDesign name="phone" size={24} style={twrnc`text-neutral-500`} />
+                                        <Text style={twrnc`font-medium text-neutral-500`}>
+                                        { Mask('phone',phone) } 
+                                        </Text>
+                                    </View>
+                                    <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+                                </TouchableOpacity>
+                                <TouchableOpacity style={twrnc`flex-row items-end items-center justify-between`}
+                                    onPress={()=>handleHelp()}
+                                >
+                                    <View style={twrnc`flex-row gap-3 items-center`}>
+                                        <AntDesign name="customerservice" size={24} color="#FF5F00" />
+                                        <Text style={twrnc`font-medium text-[#FF5F00]`}>Ajuda</Text>
+                                    </View>
+                                    <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+                                </TouchableOpacity>
+                                <View style={twrnc`gap-1`}>
+                                        <TouchableOpacity style={twrnc`flex-row items-end items-center justify-between`}
+                                            onPress={()=>handleCopy('origin')}
+                                        >
+                                                <View style={twrnc`flex-row gap-4 items-center`}>
+                                                    <Octicons name="location" size={24} color="#FF5F00" />
+                                                    <Text style={twrnc`capitalize font-medium w-6/8`}>{origin}</Text>
+                                                </View>
+                                                <Ionicons name="copy-outline" size={20} color="black" />
+                                        </TouchableOpacity>
+                                        <View style={twrnc`rounded-lg ml-2 h-5 w-1 bg-[#FF5F00]`}></View>
+                                        <TouchableOpacity style={twrnc`flex-row items-end items-center justify-between`}
+                                                onPress={()=>handleCopy('destination')}
+                                        >
+                                                <View style={twrnc`flex-row gap-3 items-center`}>
+                                                    <Feather name="flag" size={24} color="#FF5F00" />
+                                                    <Text style={twrnc`capitalize font-medium w-6/8`}>{destination}</Text>
+                                                </View>
+                                                <Ionicons name="copy-outline" size={20} color="black" />
+                                        </TouchableOpacity>
+                                        { copied && <Text style={twrnc`text-xs font-medium text-green-600`}>Copiado com sucesso !</Text> }
+                                </View>
+                                <View style={twrnc`flex-row gap-3 items-center`}>
+                                    <Text style={twrnc`text-base font-bold text-green-600`}>+ R$ {price} reais</Text>
+                                </View>
+                            </View>
+                            <View style={twrnc`flex-row items-center gap-2`}>
+                                <MaterialCommunityIcons name="information-outline" size={24} color="#eab308" />
+                                <View>
+                                    <Text style={twrnc`text-xs px-5`}>
+                                        Caso você cancelar o frete será cobrado um valor 
+                                        significativo de <Text style={twrnc`font-bold text-[#eab308]`}>R$5 reais</Text>, evite cancelar seus fretes, contamos com você!
                                     </Text>
                                 </View>
-                                <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-                            </TouchableOpacity>
-                            <TouchableOpacity style={twrnc`flex-row items-end items-center justify-between`}
-                                onPress={()=>handleHelp()}
-                            >
-                                <View style={twrnc`flex-row gap-3 items-center`}>
-                                    <AntDesign name="customerservice" size={24} color="#FF5F00" />
-                                    <Text style={twrnc`font-medium text-[#FF5F00]`}>Ajuda</Text>
-                                </View>
-                                <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-                            </TouchableOpacity>
-                            <View style={twrnc`flex-row gap-3 items-center`}>
-                                <Text style={twrnc`text-base font-bold text-green-600`}>+ R$ {price} reais</Text>
+                            </View>
+                            <View style={twrnc`gap-3 mb-20`}>
+                                <Button handle={handleCancelRace} background={'bg-[#d4d4d4]'} >
+                                    <View style={twrnc`py-2`}>
+                                        <Text style={twrnc`text-lg font-bold text-white`}>Cancelar frete</Text>
+                                    </View>
+                                </Button>
                             </View>
                         </View>
-                        <View style={twrnc`flex-row items-center gap-2`}>
-                            <MaterialCommunityIcons name="information-outline" size={24} color="#eab308" />
-                            <View>
-                                <Text style={twrnc`text-xs px-5`}>
-                                    Caso você cancelar o frete será cobrado um valor 
-                                    significativo de <Text style={twrnc`font-bold text-[#eab308]`}>R$5 reais</Text>, evite cancelar seus fretes, contamos com você!
-                                </Text>
-                            </View>
+                        :
+                        <View style={twrnc`h-full mt-5 p-10 items-center gap-2`}>
+                            <Text style={twrnc`text-2xl`}>Carregando informações</Text>
+                            <ActivityIndicator size="large" color="#FF5F00" />
                         </View>
-                        <View style={twrnc`gap-3 mb-20`}>
-                            <Button handle={handleCancelRace} background={'bg-[#d4d4d4]'} >
-                                <View style={twrnc`py-2`}>
-                                    <Text style={twrnc`text-lg font-bold text-white`}>Cancelar frete</Text>
-                                </View>
-                            </Button>
-                        </View>
-                    </View>
+                    }
                 </ScrollView>
             </Modal>
     )

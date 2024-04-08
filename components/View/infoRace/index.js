@@ -2,6 +2,7 @@ import FixBar from "../../fixBar";
 import twrnc from "twrnc";
 import { ScrollView, View, Text, Linking, Pressable, Image  } from "react-native";
 import { MaterialIcons, Ionicons , AntDesign, SimpleLineIcons} from "@expo/vector-icons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import Button from "../../../util/button";
 import { useEffect, useState } from "react";
@@ -44,7 +45,7 @@ export default function InfoRace({navigation}){
 
     const handleRace = async () => {
         const infoRace = await findOneRace(route.params.id);
-        if(infoRace.isVisible === '0'){
+        if(infoRace.isVisible == '0'){
             await setModal('')
             moodalRedirect()
             return 
@@ -54,7 +55,8 @@ export default function InfoRace({navigation}){
             isVisible: "0"
         }
         socket.emit('updateStatus', data);
-        navigation.navigate('Work', route.params);
+        AsyncStorage.setItem('raceId', route.params.id.toString());
+        navigation.navigate('Work');
     }
 
     const handleBack = async () => {

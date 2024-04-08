@@ -3,6 +3,7 @@ import ModalMid from "../modalMid"
 import Delivery from '../../img/uniqueIcons/delivery.png'
 import { View, Text, Image, Linking, BackHandler } from "react-native"
 import Button from "../../util/button";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from "@react-navigation/native";
 export default function CancelRace({setModalCancel}){
     const navigation = useNavigation()
@@ -11,8 +12,9 @@ export default function CancelRace({setModalCancel}){
         setModalCancel('')
     }
 
-    const handleCancel = () => {
+    const handleCancel = async () => {
         setModalCancel('')
+        await AsyncStorage.removeItem('raceId');
         navigation.navigate('Home')
     }
     
@@ -29,9 +31,9 @@ export default function CancelRace({setModalCancel}){
                             </Text>
                         </View>
                         <View style={twrnc`gap-3`}>        
-                                    <Button handle={handleCancel} background={'bg-[#d4d4d4]'}>
-                                        <Text style={twrnc`text-base font-medium text-white`}>Cancelar</Text>
-                                    </Button>
+                            <Button handle={handleCancel} background={'bg-[#d4d4d4]'}>
+                                <Text style={twrnc`text-base font-medium text-white`}>Cancelar</Text>
+                            </Button>
                         </View>
                     </View>
                     <View style={twrnc`w-1/2`}>

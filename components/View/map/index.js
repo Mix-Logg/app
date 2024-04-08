@@ -1,6 +1,7 @@
 import twrnc from "twrnc";
 import MapView, { Marker, AnimatedRegion, PROVIDER_GOOGLE } from "react-native-maps";
 import Pin from './pin.png'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { MaterialIcons, Feather } from '@expo/vector-icons';
 import MapViewRoute from 'react-native-maps-routes';
 import { useState, useRef } from "react";
@@ -9,9 +10,12 @@ import { useEffect } from "react";
 import { Pressable, Text, View, ActivityIndicator, Animated, TouchableOpacity  } from "react-native";
 import Button from '../../../util/button'
 import MapViewDirections from 'react-native-maps-directions';
+import findOneRace from "../../../hooks/findOneRace";
 export default function Map() {
   const [location, setLocation] = useState(null);
   const [origin, setOrigin] = useState(null);
+  // const [origin, setOrigin] = useState(null);
+  // const [destination, setDestination] = useState(null);
   const [positionSubscription, setPositionSubscription] = useState(null);
   const [modeRace, setModeRace] = useState(false)
   const [pitchMap, setPitchMap] = useState(false)
@@ -20,7 +24,6 @@ export default function Map() {
   const [zoomMap,setZoomMap] = useState(false)
   const [scrollMap,setScrollMap] = useState(false)
   const [cameraZoom,setCamerazoom] = useState(50)
-  const destination = { latitude: -23.593112, longitude: -46.440739, latitudeDelta: 0.00922, longitudeDelta: 0.00922 };   
   const GOOGLE_MAPS_APIKEY = 'AIzaSyDwhBCpqKMzkEpXm8w-t3Ib0KDOM9vdUPs';
   const mapRef = useRef(null)
 
@@ -47,12 +50,18 @@ export default function Map() {
     moveTo(origin)
   };
 
-  const getHeadingFromLocation = (coord1, coord2) => {
-    if (!coord1 || !coord2) return 0;
-    const x = coord2.longitude - coord1.longitude;
-    const y = coord2.latitude - coord1.latitude;
-    return (Math.atan2(y, x) * 180) / Math.PI;
-  };
+
+  useEffect(()=>{
+    const fetchData = async () => {
+      const raceId = await AsyncStorage.getItem('raceId')
+      const race = await findOneRace(raceId)
+      console.log('RACE Origin:', race.origin, JSON.parse(race.origin), typeof(race.origin))
+      console.log('RACE Destination:', race.destination, JSON.parse(race.destination), typeof(race.destination))
+      // setOrigin(race.origin)
+      // setDestination(race.destination)
+    }
+    fetchData()
+  }, [])
 
   useEffect(() => {
     (async () => {
@@ -101,7 +110,6 @@ export default function Map() {
               longitudeDelta: 0.00922,
             }}
             provider={PROVIDER_GOOGLE}
-            // showsUserLocation
             showsMyLocationButton
             userInterfaceStyle
             followsUserLocation={followMap}
@@ -112,14 +120,6 @@ export default function Map() {
             cameraZoomRange={cameraZoom}
             showsPointsOfInterest={false}
             mapType="terrain"
-            onUserLocationChange={(event) => {
-              const heading = getHeadingFromLocation(
-                location,
-                event.nativeEvent.coordinate
-              );
-              if (heading !== 0) {
-                this.map.animateToBearing(heading);
-            }}}
             onLayout={() => {
               mapRef.current.animateCamera({
                   pitch: 90,
@@ -143,13 +143,13 @@ export default function Map() {
                 }}
               />
             }  */}
-            <Marker
+            {/* <Marker
               coordinate={{
                 latitude: destination.latitude,
                 longitude: destination.longitude,
               }}
               image={require("../../../img/icons/pin.png")}
-            />
+            /> */}
                <Marker
               coordinate={{
                 latitude: location.coords.latitude,

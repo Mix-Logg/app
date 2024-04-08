@@ -22,19 +22,12 @@ export default function Work({navigation}){
         return () => backHandlerSubscription.remove();
     },[])
 
-    useEffect( () => {
-        const backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', () => {
-            return true;
-        });
-      
-        return () => backHandlerSubscription.remove();
-    },[])
 
     return(
         <View style={twrnc`h-full bg-white`}>
             <View style={twrnc`bg-white h-full`} >
                 <Map/>
-                    <View style={[twrnc`absolute `, {top:'90%', left:'83%'}]}>
+                <View style={[twrnc`absolute `, {top:'90%', left:'83%'}]}>
                         <Button handle={handleInfoWork}>
                             <View style={twrnc` border p-1 rounded-xl border-[#a3a3a3] h-12 w-12 items-center justify-center`}>
                                 <Text style={twrnc`font-bold`}>
@@ -42,7 +35,7 @@ export default function Work({navigation}){
                                 </Text>
                             </View>
                         </Button>
-                    </View>
+                </View>
             </View>
             {info}
         </View>

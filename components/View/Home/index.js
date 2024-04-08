@@ -34,7 +34,16 @@ export default function Home ({navigation}){
             setTimeLineView(<DocumentTimeline navigation={navigation} status={info} plug={plug.timeline}/>);
             resolve();
         });
-    };    
+    };  
+    useEffect(()=>{
+        const fetchData = async () => {
+            const raceId = await AsyncStorage.getItem('raceId')
+            if(raceId){
+                navigation.navigate('Work')
+            }
+        }
+        fetchData()
+    })  
     useEffect(() => {
         const dataEffect = async () => {
             const info = await warningPicture()
