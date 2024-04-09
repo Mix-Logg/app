@@ -14,8 +14,9 @@ import findOneRace from "../../../hooks/findOneRace";
 export default function Map() {
   const [location, setLocation] = useState(null);
   const [origin, setOrigin] = useState(null);
-  // const [origin, setOrigin] = useState(null);
-  // const [destination, setDestination] = useState(null);
+  const [destination, setDestination] = useState(null);
+  const [nextStep, setNextStep] = useState(null);
+  const [stepRace, setStepRace] = useState(null);
   const [positionSubscription, setPositionSubscription] = useState(null);
   const [modeRace, setModeRace] = useState(false)
   const [pitchMap, setPitchMap] = useState(false)
@@ -53,12 +54,23 @@ export default function Map() {
 
   useEffect(()=>{
     const fetchData = async () => {
+      console.log('resstart')
       const raceId = await AsyncStorage.getItem('raceId')
       const race = await findOneRace(raceId)
-      console.log('RACE Origin:', race.origin, JSON.parse(race.origin), typeof(race.origin))
-      console.log('RACE Destination:', race.destination, JSON.parse(race.destination), typeof(race.destination))
-      // setOrigin(race.origin)
-      // setDestination(race.destination)
+      const originClient = await JSON.parse(race.origin);
+      const destinationClient = await JSON.parse(race.destination);
+      const originWithDeltas = {
+        ...originClient,
+        latitudeDelta: 0.00922,
+        longitudeDelta: 0.00922
+      };  
+      const destinationWithDeltas = {
+        ...destinationClient,
+        latitudeDelta: 0.00922,
+        longitudeDelta: 0.00922
+      }; 
+      setStepRace(originWithDeltas)
+      setDestination(destinationWithDeltas)
     }
     fetchData()
   }, [])
@@ -128,10 +140,11 @@ export default function Map() {
               })
             }}
           >
-            {/* { origin != null &&
+            { stepRace != null && origin != null &&
+              <>
               <MapViewDirections
                 origin={origin}
-                destination={destination}
+                destination={stepRace}
                 apikey={GOOGLE_MAPS_APIKEY}
                 strokeWidth={10}
                 strokeColor="#FF5F00"
@@ -140,16 +153,18 @@ export default function Map() {
                 renderDirections={true}
                 resetOnChange={true}
                 onReady={(result)=>{
+                  // console.log('result ', result)
                 }}
               />
-            }  */}
-            {/* <Marker
-              coordinate={{
-                latitude: destination.latitude,
-                longitude: destination.longitude,
-              }}
-              image={require("../../../img/icons/pin.png")}
-            /> */}
+               <Marker
+                  coordinate={{
+                    latitude: stepRace.latitude,
+                    longitude: stepRace.longitude,
+                  }}
+                  image={require("../../../img/icons/pin.png")}
+                /> 
+              </>
+            } 
                <Marker
               coordinate={{
                 latitude: location.coords.latitude,

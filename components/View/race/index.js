@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, View, Text, Pressable, Alert,  } from "react-native";
+import { ScrollView, View, Text, Pressable, Alert, TouchableOpacity } from "react-native";
 import { useState, useEffect } from "react";
 import { useFocusEffect } from '@react-navigation/native';
 import FixBar from "../../fixBar";
@@ -36,6 +36,7 @@ export default function Race({navigation}){
                 checkRace(data);
             });
             socket.on("NewRace", (data) => { 
+                console.log('Banqueiro emitiu uma nova corrida! ')
                 newRace(data)
             });
         }
@@ -46,7 +47,6 @@ export default function Race({navigation}){
             const updatedAllraces = races.map(race => (
                 <CardAllRace
                     key={race.id}
-                    navigation={navigation}
                     id={race.id}
                     idClient={race.idClient}
                     isVisible={race.isVisible}
@@ -58,7 +58,7 @@ export default function Race({navigation}){
             ));
             setAllRace(updatedAllraces);
         }
-    }, [races, listen]);
+    }, [listen, races]);
 
     const checkRace = async (id) => {
         let uuid = id.toString();
@@ -73,14 +73,30 @@ export default function Race({navigation}){
     const newRace = async (race) => {
         const newRace = {
             key:race.id,
-            finish: race.finish,
-            idClient: race.idClient,
-            initial: race.initial,
-            km: race.km,
-            value: race.value,
+            id:race.id,
+            idClient:race.idClient,
+            isVisible:race.isVisible,
+            value:race.price,
+            initial:race.initial,
+            finish:race.finish,
+            km:race.km
         };
         const updatedRaces = [...races, newRace];
         setRaces(updatedRaces);
+        setListen(listen+1)
+    }
+
+    const teste = async () => {
+        await socket.emit("createRace", {
+            idClient : 1,
+            km : 10,
+            vehicleType : 'motorcycle',
+            initial : 'rua teste pereira',
+            finish : 'rua teste silva',
+            value : '87.5',
+            origin : 'latitude',
+            destination : 'latitude',
+          });
     }
 
     return(
@@ -90,7 +106,14 @@ export default function Race({navigation}){
                 { races != null && races.length == 0 ?
                 <WaitRace/>
                 : 
-                Allraces 
+                <>
+                    <TouchableOpacity style={twrnc`border py-5 items-center`}
+                        onPress={()=>teste()}
+                    >
+                        <Text>EMITIR CORRIDA</Text>
+                    </TouchableOpacity>
+                    {Allraces} 
+                </>
                 }
             </ScrollView>
         </>
