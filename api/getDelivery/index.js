@@ -4,7 +4,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default async function GetDelivery(){
        const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
        const URLdevelopment = 'http://192.168.0.35:8080/'
-       const URL = URLdevelopment
+       const URL = URLproduction
+       // const URL = URLproduction
 
        const am = await AsyncStorage.getItem('am');
        const uuid = await AsyncStorage.getItem('uuid');

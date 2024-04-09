@@ -4,7 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default async function removeStatus(picture){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLdevelopment
+    const URL = URLproduction
     const uuid = await AsyncStorage.getItem('uuid');
     const id = await parseInt(uuid);
     const am = await AsyncStorage.getItem('am');

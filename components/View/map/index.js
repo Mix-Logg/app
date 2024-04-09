@@ -2,6 +2,7 @@ import twrnc from "twrnc";
 import MapView, { Marker, AnimatedRegion, PROVIDER_GOOGLE } from "react-native-maps";
 import Pin from './pin.png'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Gyroscope } from 'expo-sensors';
 import { MaterialIcons, Feather } from '@expo/vector-icons';
 import MapViewRoute from 'react-native-maps-routes';
 import { useState, useRef } from "react";
@@ -25,16 +26,17 @@ export default function Map() {
   const [zoomMap,setZoomMap] = useState(false)
   const [scrollMap,setScrollMap] = useState(false)
   const [cameraZoom,setCamerazoom] = useState(50)
+  const [mapHeading, setMapHeading] = useState(0);
   const GOOGLE_MAPS_APIKEY = 'AIzaSyDwhBCpqKMzkEpXm8w-t3Ib0KDOM9vdUPs';
   const mapRef = useRef(null)
-
-  const moveTo = async (position) => {
+  
+  const moveTo = async (res) => {
     const camera = await mapRef.current?.getCamera();
     if (camera) {
-      camera.center = position;
+      camera.center = res.coords;
       camera.zoom = 60,
       camera.pitch = 90,
-      camera.heading = 60
+      camera.heading = 70
       mapRef.current?.animateCamera(
         camera, { duration: 1000 }
       );
@@ -48,13 +50,25 @@ export default function Map() {
     setZoomMap(!zoomMap)
     setScrollMap(!scrollMap)
     setCamerazoom(5)
-    moveTo(origin)
+    moveTo(location)
   };
 
+  // useEffect(() => {
+  //   const calculateAngle = (x, y, z) => {
+  //     const heading = Math.atan2(y, x) * (180 / Math.PI);
+  //     return heading >= 0 ? heading : 360 + heading;
+  //   };
+  //   const subscription = Gyroscope.addListener(({ x, y, z }) => {
+  //     const angle = calculateAngle(x, y, z);
+  //     setMapHeading(angle)
+  //   });
+  //   return () => {
+  //     subscription.remove(); // Remove a inscrição quando o componente é desmontado
+  //   };
+  // },[])
 
   useEffect(()=>{
     const fetchData = async () => {
-      console.log('resstart')
       const raceId = await AsyncStorage.getItem('raceId')
       const race = await findOneRace(raceId)
       const originClient = await JSON.parse(race.origin);
@@ -95,10 +109,13 @@ export default function Map() {
         timeInterval:500,
         distanceInterval:1
       }, (res) => {
+        if(modeRace == true){
+          moveTo(res)
+        }
+        setOrigin( {latitude: res.coords.latitude, longitude: res.coords.longitude } )
         setLocation(res);
       }
     )
-    
     setPositionSubscription(localtionReal)
   },[])
 
@@ -135,7 +152,7 @@ export default function Map() {
             onLayout={() => {
               mapRef.current.animateCamera({
                   pitch: 90,
-                  heading:60,
+                  heading: 70,
                   zoom: 50,
               })
             }}
@@ -165,17 +182,27 @@ export default function Map() {
                 /> 
               </>
             } 
-               <Marker
-              coordinate={{
-                latitude: location.coords.latitude,
-                longitude: location.coords.longitude,
-              }}
-              image={require("./arrow-gps.png")}
-            />
+               { !modeRace ?
+                  <Marker
+                    coordinate={{
+                      latitude: location.coords.latitude,
+                      longitude: location.coords.longitude,
+                    }}
+                    image={require("./arrow-gps.png")}
+                  />
+                  :
+                  <Marker
+                    coordinate={{
+                      latitude: location.coords.latitude,
+                      longitude: location.coords.longitude,
+                    }}
+                    image={require("../../../img/icons/pin.png")}
+                  />
+                }
           </MapView> 
           <View style={[twrnc`absolute p-1 rounded-xl border-[#a3a3a3] border h-12 w-12 items-center justify-center`, {top:'80%', left:'85%'}]}>
               <TouchableOpacity
-                onPress={()=>moveTo(origin)}
+                onPress={()=>moveTo(location)}
               >
                 <MaterialIcons name="gps-fixed" size={28} color="#FF5F00" />
                 

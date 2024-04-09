@@ -16,7 +16,7 @@ export default function Race({navigation}){
     const [listen, setListen] = useState(null);
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLdevelopment
+    const URL = URLproduction
 
     useFocusEffect(
         React.useCallback(() => {
@@ -46,6 +46,7 @@ export default function Race({navigation}){
         if(races != null){
             const updatedAllraces = races.map(race => (
                 <CardAllRace
+                    navigation={navigation}
                     key={race.id}
                     id={race.id}
                     idClient={race.idClient}
@@ -76,24 +77,23 @@ export default function Race({navigation}){
             id:race.id,
             idClient:race.idClient,
             isVisible:race.isVisible,
-            value:race.price,
+            value:race.value,
             initial:race.initial,
             finish:race.finish,
             km:race.km
         };
         const updatedRaces = [...races, newRace];
         setRaces(updatedRaces);
-        setListen(listen+1)
     }
 
     const teste = async () => {
         await socket.emit("createRace", {
             idClient : 1,
-            km : 10,
+            km : '10.5',
             vehicleType : 'motorcycle',
             initial : 'rua teste pereira',
             finish : 'rua teste silva',
-            value : '87.5',
+            value : '100.5',
             origin : 'latitude',
             destination : 'latitude',
           });
@@ -107,11 +107,11 @@ export default function Race({navigation}){
                 <WaitRace/>
                 : 
                 <>
-                    <TouchableOpacity style={twrnc`border py-5 items-center`}
+                    {/* <TouchableOpacity style={twrnc`border py-5 items-center`}
                         onPress={()=>teste()}
                     >
                         <Text>EMITIR CORRIDA</Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     {Allraces} 
                 </>
                 }
