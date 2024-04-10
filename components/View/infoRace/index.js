@@ -11,6 +11,9 @@ import findOneRace from "../../../hooks/findOneRace";
 import ModalMid from "../../modalMid";
 import Fly from '../../../img/uniqueIcons/fly.png'
 import FindClient from "../../../hooks/findClient";
+import GetVehicle from "../../../api/getVehicle";
+import AllStorage from "../../../hooks/findAllStorage";
+import updateRace from "../../../hooks/updateRace";
 export default function InfoRace({navigation}){
     const [socket,setSocket] = useState(null)
     const [modal,setModal] = useState(null)
@@ -21,6 +24,9 @@ export default function InfoRace({navigation}){
     const [clientName,setClientName] = useState('carregando...')
     const [talk, setTalk] = useState(null)
     const [ioId, setIoId] = useState(null)
+    const [plate, setPlate] = useState(null)
+    const [idDriver, setIdDriver] = useState(null)
+    const [idRace, setIdRace] = useState(null)
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLdevelopment
@@ -30,27 +36,31 @@ export default function InfoRace({navigation}){
         const fetchData = async () => {
             const socketIO = await io(URL);
             setSocket(socketIO);
-            setTimeout(() => {
-                setIoId(socketIO.id)
-            }, 2500);
         }
         fetchData()
     },[])
 
-    useEffect(()=>{
-        if(ioId){
-            console.log('product', ioId)
-            socket.on('message', (message) => {
-                console.log('Received message:', message);
-            });
-        }
-    },[ioId])
+    // useEffect(()=>{
+    //     if(ioId){
+    //         console.log('product', ioId)
+    //         socket.on('message', (message) => {
+    //             console.log('Received message:', message);
+    //         });
+    //     }
+    // },[ioId])
 
     useEffect( ()=>{
         const dataUseEffect = async () => {
+            const storage = await AllStorage(); 
             const client = await FindClient(route.params.idClient);
+            const vehicle = await GetVehicle()
+            const race = await findOneRace(route.params.id)
             route.params.name = client.name;
             route.params.phone = client.phone;
+            setIdRace(route.params.id)
+            setIdDriver(storage.uuid)
+            setIoId(race.idClientIo)
+            setPlate(vehicle.plate)
             setClientName(client.name)
             setPrice(route.params.price)
             setInitial(route.params.initial)
@@ -61,11 +71,6 @@ export default function InfoRace({navigation}){
     },[])
     
     const handleRace = async () => {
-        const message = {
-            teste:'a'
-        }
-        socket.emit('talk',  ioId, message  );
-        return;
         const infoRace = await findOneRace(route.params.id);
         if(infoRace.isVisible == '0'){
             await setModal('')
@@ -77,8 +82,18 @@ export default function InfoRace({navigation}){
             isVisible: "0"
         }
         socket.emit('updateStatus', data);
+        const message = {
+            teste:'a'
+        }
+        socket.emit('talk',  ioId, message);
+        const paramsUpdateRace = {
+            plate:plate,
+            idDriver:Number(idDriver)
+        }
+        const response = await updateRace(idRace, paramsUpdateRace)
+        console.log(response)
         AsyncStorage.setItem('raceId', route.params.id.toString());
-        navigation.navigate('Work');
+        // navigation.navigate('Work');
     }
 
     const handleBack = async () => {
