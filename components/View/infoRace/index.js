@@ -19,15 +19,32 @@ export default function InfoRace({navigation}){
     const [finish,setFinish] = useState(null)
     const [km,setKm] = useState(null)
     const [clientName,setClientName] = useState('carregando...')
+    const [talk, setTalk] = useState(null)
+    const [ioId, setIoId] = useState(null)
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLproduction
+    const URL = URLdevelopment
     const route = useRoute();
 
     useEffect(()=>{
-        const socketIO = io(URL);
-        setSocket(socketIO);
+        const fetchData = async () => {
+            const socketIO = await io(URL);
+            setSocket(socketIO);
+            setTimeout(() => {
+                setIoId(socketIO.id)
+            }, 2500);
+        }
+        fetchData()
     },[])
+
+    useEffect(()=>{
+        if(ioId){
+            console.log('product', ioId)
+            socket.on('message', (message) => {
+                console.log('Received message:', message);
+            });
+        }
+    },[ioId])
 
     useEffect( ()=>{
         const dataUseEffect = async () => {
@@ -42,8 +59,13 @@ export default function InfoRace({navigation}){
         }
         dataUseEffect()
     },[])
-
+    
     const handleRace = async () => {
+        const message = {
+            teste:'a'
+        }
+        socket.emit('talk',  ioId, message  );
+        return;
         const infoRace = await findOneRace(route.params.id);
         if(infoRace.isVisible == '0'){
             await setModal('')
