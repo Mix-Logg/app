@@ -22,9 +22,9 @@ export default function Race({navigation}){
         React.useCallback(() => {
             const Socket = async () => {
                 const socketIO = await io(URL);
+                const allRace  = await findAllRaceOpen();
                 setSocket(socketIO);
-                const allRace = await findAllRaceOpen();
-                setRaces(allRace) 
+                setRaces(allRace);
             }
             Socket();
         }, [navigation])
@@ -36,7 +36,6 @@ export default function Race({navigation}){
                 checkRace(data);
             });
             socket.on("NewRace", (data) => { 
-                console.log('Banqueiro emitiu uma nova corrida! ')
                 newRace(data)
             });
         }

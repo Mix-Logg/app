@@ -1,4 +1,5 @@
 import { View, Text, TouchableOpacity, TextInput, ActivityIndicator } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Button from "../../util/button";
 import { useState } from "react";
 import React, { useRef } from "react";
@@ -15,11 +16,28 @@ export default function InfoWorkHome({dropDownDetails,setDropDownDetails}) {
       nextInputRef.current.focus();
     }
   };
+  const handleVerifyCode = async () => {
+    try{
+      setLoader(true)
+      
+    }catch(e){
+      console.log(e)
+    }finally{
+      setLoader(false)
+    }
+  };
   const input1Ref = useRef(null);
   const input2Ref = useRef(null);
   const input3Ref = useRef(null);
   const input4Ref = useRef(null);
+  const [loader, setLoader] = useState(false)
+  const [numberOne, setNumberOne] = useState(false)
+  const [numberTwo, setNumberTwo] = useState(false)
+  const [numberThree, setNumberThree] = useState(false)
+  const [numberFour, setNumberFour] = useState(false)
+
   return (
+    <KeyboardAwareScrollView>
     <View style={twrnc`h-full mt-5 gap-10`}>
       <View>
         <Text style={twrnc`text-2xl font-bold`}>Frete</Text>
@@ -35,9 +53,11 @@ export default function InfoWorkHome({dropDownDetails,setDropDownDetails}) {
                     maxLength={1}
                     style={twrnc`border border-[#737373] text-[#FF5F00] text-2xl font-bold p-5 rounded-2xl`}
                     keyboardType="numeric"
+                    value={numberOne}
                     onChangeText={(text) => {
                     if (text.length === 1) {
                         focusNextInput(input2Ref);
+                        setNumberOne(text)
                     }
                     }}
                 ></TextInput>
@@ -46,9 +66,11 @@ export default function InfoWorkHome({dropDownDetails,setDropDownDetails}) {
                     maxLength={1}
                     style={twrnc`border border-[#737373] text-[#FF5F00] text-2xl font-bold p-5 rounded-2xl`}
                     keyboardType="numeric"
+                    value={numberThree}
                     onChangeText={(text) => {
                     if (text.length === 1) {
                         focusNextInput(input3Ref);
+                        setNumberTwo(text)
                     }
                     }}
                 ></TextInput>
@@ -57,9 +79,11 @@ export default function InfoWorkHome({dropDownDetails,setDropDownDetails}) {
                     maxLength={1}
                     style={twrnc`border border-[#737373] text-[#FF5F00] text-2xl font-bold p-5 rounded-2xl`}
                     keyboardType="numeric"
+                    value={numberThree}
                     onChangeText={(text) => {
                     if (text.length === 1) {
                         focusNextInput(input4Ref);
+                        setNumberThree(text)
                     }
                     }}
                 ></TextInput>
@@ -68,16 +92,19 @@ export default function InfoWorkHome({dropDownDetails,setDropDownDetails}) {
                     ref={input4Ref}
                     maxLength={1}
                     style={twrnc`border border-[#737373] text-[#FF5F00] text-2xl font-bold p-5 rounded-2xl`}
-                    onChangeText={(text) => {}}
+                    value={numberFour}
+                    onChangeText={(text) => {
+                      setNumberFour(text)
+                    }}
                 ></TextInput>
             </View>
             <View>
-                <Button background="bg-[#FF5F00] opacity-70">
+                <Button background={`bg-[#FF5F00] ${ loader ? 'opacity-70' : ''}`} handle={handleVerifyCode}>
                     <View style={twrnc`py-1 `}>
-                        { 1 > 1 ?
-                            <Text style={twrnc`text-xl text-white font-medium `}>Verificar</Text> :
-                            <ActivityIndicator size="small" color="white" style={twrnc`py-1`}/>
-
+                        { loader ?
+                          <ActivityIndicator size="small" color="white" style={twrnc`py-1`}/>
+                          :
+                          <Text style={twrnc`text-xl text-white font-medium `}>Verificar</Text> 
                         }
                     </View>
                 </Button>
@@ -94,5 +121,6 @@ export default function InfoWorkHome({dropDownDetails,setDropDownDetails}) {
         <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
       </TouchableOpacity>
     </View>
+    </KeyboardAwareScrollView>
   );
 }

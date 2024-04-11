@@ -1,6 +1,6 @@
 import { TouchableOpacity, Text, Image, View } from "react-native";
 import twrnc from "twrnc";
-import { AntDesign, Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { AntDesign, Octicons , MaterialIcons } from "@expo/vector-icons";
 import Motorcycle from "../../img/vehicle/motorcycle.png";
 import Tour from "../../img/vehicle/tour.png";
 import Util from "../../img/vehicle/fiorino.png";
@@ -48,12 +48,8 @@ export default function CardAllRace({ navigation, id, isVisible, price, initial,
               <Text style={twrnc`text-[#191919] `}>A {km}km de você</Text>
             </View> */}
           </View>
-          <View style={twrnc`flex-row gap-1 items-center`}>
-            <Ionicons
-                name="location-outline"
-                size={19}
-                color="#FF5F00"
-              />
+          <View style={twrnc`flex-row gap-2 items-center`}>
+            <Octicons name="location" size={18} color="#FF5F00" />
             <View>
               <Text style={twrnc` text-neutral-500 font-bold`}>O frete possui {km}km</Text>
             </View>

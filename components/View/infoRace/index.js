@@ -1,7 +1,7 @@
 import FixBar from "../../fixBar";
 import twrnc from "twrnc";
-import { ScrollView, View, Text, Linking, Pressable, Image  } from "react-native";
-import { MaterialIcons, Ionicons , AntDesign, SimpleLineIcons} from "@expo/vector-icons";
+import { ScrollView, View, Text, Linking, Pressable, Image, ActivityIndicator } from "react-native";
+import { MaterialIcons, Feather , AntDesign, SimpleLineIcons , Octicons } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute } from '@react-navigation/native';
 import Button from "../../../util/button";
@@ -14,6 +14,7 @@ import FindClient from "../../../hooks/findClient";
 import GetVehicle from "../../../api/getVehicle";
 import AllStorage from "../../../hooks/findAllStorage";
 import updateRace from "../../../hooks/updateRace";
+import Wating from "../../wating";
 export default function InfoRace({navigation}){
     const [socket,setSocket] = useState(null)
     const [modal,setModal] = useState(null)
@@ -22,14 +23,14 @@ export default function InfoRace({navigation}){
     const [finish,setFinish] = useState(null)
     const [km,setKm] = useState(null)
     const [clientName,setClientName] = useState('carregando...')
-    const [talk, setTalk] = useState(null)
     const [ioId, setIoId] = useState(null)
     const [plate, setPlate] = useState(null)
     const [idDriver, setIdDriver] = useState(null)
     const [idRace, setIdRace] = useState(null)
+    const [loader, setLoader] = useState(false)
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLdevelopment
+    const URL = URLproduction
     const route = useRoute();
 
     useEffect(()=>{
@@ -40,21 +41,12 @@ export default function InfoRace({navigation}){
         fetchData()
     },[])
 
-    // useEffect(()=>{
-    //     if(ioId){
-    //         console.log('product', ioId)
-    //         socket.on('message', (message) => {
-    //             console.log('Received message:', message);
-    //         });
-    //     }
-    // },[ioId])
-
     useEffect( ()=>{
         const dataUseEffect = async () => {
             const storage = await AllStorage(); 
             const client = await FindClient(route.params.idClient);
-            const vehicle = await GetVehicle()
-            const race = await findOneRace(route.params.id)
+            const vehicle = await GetVehicle();
+            const race = await findOneRace(route.params.id);
             route.params.name = client.name;
             route.params.phone = client.phone;
             setIdRace(route.params.id)
@@ -63,37 +55,45 @@ export default function InfoRace({navigation}){
             setPlate(vehicle.plate)
             setClientName(client.name)
             setPrice(route.params.price)
-            setInitial(route.params.initial)
-            setFinish(route.params.finish)
+            setInitial(race.initial)
+            setFinish(race.finish)
             setKm(route.params.km)
         }
         dataUseEffect()
     },[])
     
     const handleRace = async () => {
-        const infoRace = await findOneRace(route.params.id);
-        if(infoRace.isVisible == '0'){
-            await setModal('')
-            moodalRedirect()
-            return 
+        try{
+            setLoader(true)
+            const infoRace = await findOneRace(route.params.id);
+            if(infoRace.isVisible == '0'){
+                await setModal('')
+                moodalRedirect()
+                return 
+            }
+            const data = {
+                id: route.params.id,
+                isVisible: "0"
+            }
+            socket.emit('updateStatus', data);
+            const message = {
+                teste:'a'
+            }
+            socket.emit('talk',  ioId, message);
+            const paramsUpdateRace = {
+                plate:plate,
+                idDriver:Number(idDriver)
+            }
+            const response = await updateRace(idRace, paramsUpdateRace)
+            console.log(ioId)
+            AsyncStorage.setItem('raceId', route.params.id.toString())
+            navigation.navigate('Work');
+        }catch(e){
+            console.log(e)
+        }finally{
+            setLoader(false)
         }
-        const data = {
-            id: route.params.id,
-            isVisible: "0"
-        }
-        socket.emit('updateStatus', data);
-        const message = {
-            teste:'a'
-        }
-        socket.emit('talk',  ioId, message);
-        const paramsUpdateRace = {
-            plate:plate,
-            idDriver:Number(idDriver)
-        }
-        const response = await updateRace(idRace, paramsUpdateRace)
-        console.log(response)
-        AsyncStorage.setItem('raceId', route.params.id.toString());
-        // navigation.navigate('Work');
+        
     }
 
     const handleBack = async () => {
@@ -140,23 +140,31 @@ export default function InfoRace({navigation}){
         <>
             {modal}
             <FixBar navigation={navigation} opition={'infoRace'} />
-            <ScrollView style={twrnc`bg-white h-full`}>
+            { km ?
+                <ScrollView style={twrnc`bg-white h-full`}>
                 <View style={twrnc`px-5 py-5 gap-2`}>
                     <Text style={twrnc`text-2xl font-bold`}>Informações do frete</Text>
                 </View>
                 <View style={twrnc`mt-10 px-5`}>
                     <View style={twrnc` px-2 py-3 gap-3`}>
                         <View style={twrnc`flex-row items-center gap-2 px-2 border-b py-3 border-[#e5e5e5]`}>
-                            <AntDesign name="user" size={20} color="#FF5F00" /> 
-                            <Text style={twrnc``}>{clientName}</Text>
+                            <AntDesign name="user" size={23} color="#FF5F00" /> 
+                            <Text style={twrnc`text-[#737373] font-medium`}>{clientName}</Text>
+                        </View>
+                        <View style={twrnc`gap-2 px-2 border-b py-3 border-[#e5e5e5]`}>
+                            <View style={twrnc`flex-row gap-2 w-5/6 items-center`}> 
+                                <Octicons name="location" size={23} color="#FF5F00" />
+                                <Text style={twrnc`text-[#737373] `}>{initial}</Text>
+                            </View>
+                            <View style={twrnc`bg-[#FF5F00] rounded-full h-5 w-1 ml-2`}></View>
+                            <View style={twrnc`flex-row gap-2 mx-1 w-5/6 items-center`}>
+                                <AntDesign name="flag" size={23} color="#FF5F00" />
+                                <Text style={twrnc`text-[#737373] `}>{finish}</Text>
+                            </View>
                         </View>
                         <View style={twrnc`flex-row items-center gap-2 px-2 border-b py-3 border-[#e5e5e5]`}>
-                            <SimpleLineIcons name="location-pin" size={20} color="#FF5F00" />
-                            <Text style={twrnc``}>Está a 4 km de distância</Text>
-                        </View>
-                        <View style={twrnc`flex-row items-center gap-2 px-2 border-b py-3 border-[#e5e5e5]`}>
-                            <AntDesign name="flag" size={20} color="#FF5F00" />
-                            <Text style={twrnc``}>O frete possui {km} km</Text>
+                            <Feather name="package" size={23} color="#FF5F00" />
+                            <Text style={twrnc`text-[#737373]`}>O frete possui {km} km</Text>
                         </View>
                         <View style={twrnc`flex-row items-center gap-2 px-2 border-b py-3 border-[#e5e5e5]`}>
                             <Text style={twrnc`text-green-600 font-bold text-base`}>R$ {price} reais</Text>
@@ -165,12 +173,19 @@ export default function InfoRace({navigation}){
                 </View>
                 <View style={twrnc`mt-20 px-10`}>
                     <View style={twrnc``}> 
-                        <Button background={'bg-[#FF5F00]'} handle={handleRace}> 
-                           <Text style={twrnc`text-base text-white font-bold py-2`}>Inciar frete </Text>
+                        <Button background={`bg-[#FF5F00] ${loader ? 'opacity-70' : '' }`} handle={handleRace}> 
+                           { loader ?
+                            <ActivityIndicator size="small" color="white" style={twrnc`py-3`} />
+                            :
+                            <Text style={twrnc`text-lg text-white font-bold py-2`}>Inciar frete </Text>
+                            }
                         </Button>
                     </View>
                 </View>
-            </ScrollView>
+                </ScrollView>
+                :
+                <Wating/>
+            }
         </>
     )
 }
