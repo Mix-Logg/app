@@ -4,6 +4,7 @@ import Button from "../../util/button";
 import { useState } from "react";
 import React, { useRef } from "react";
 import twrnc from 'twrnc';
+import AllStorage from "../../hooks/findAllStorage";
 import {
     MaterialIcons,
   } from "@expo/vector-icons";
@@ -19,6 +20,7 @@ export default function InfoWorkHome({dropDownDetails,setDropDownDetails}) {
   const handleVerifyCode = async () => {
     try{
       setLoader(true)
+      const raceId = await AllStorage();
       
     }catch(e){
       console.log(e)

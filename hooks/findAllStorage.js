@@ -4,11 +4,12 @@ export default async function AllStorage(){
     const striper = await AsyncStorage.getItem('striper');
     const am = await AsyncStorage.getItem('am');
     const uuid = await AsyncStorage.getItem('uuid');
-    
+    const raceId = await AsyncStorage.getItem('raceId');
     const storage = {
         striper:striper,
         am:am,
-        uuid:uuid
+        uuid:uuid,
+        raceId:raceId
     }
 
     return storage;
