@@ -28,6 +28,9 @@ export default function InfoRace({navigation}){
     const [idDriver, setIdDriver] = useState(null)
     const [idRace, setIdRace] = useState(null)
     const [loader, setLoader] = useState(false)
+    const [codeInitial, setCodeInitial] = useState(false)
+    const [codeFinish, setCodeFinish] = useState(false)
+    const [updateRaceParams, setUpdateRaceParams] = useState('')
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLproduction
@@ -41,17 +44,23 @@ export default function InfoRace({navigation}){
         fetchData()
     },[])
 
-    useEffect( ()=>{
+    useEffect(()=>{
         const dataUseEffect = async () => {
             const storage = await AllStorage(); 
             const client = await FindClient(route.params.idClient);
             const vehicle = await GetVehicle();
             const race = await findOneRace(route.params.id);
+            const updatRace = {
+                id: route.params.id,
+                isVisible: "0"
+            }
             route.params.name = client.name;
             route.params.phone = client.phone;
+            setUpdateRaceParams(updatRace)
+            setCodeInitial(race.codeInitial)
+            setCodeFinish(race.codeFinish)
             setIdRace(route.params.id)
             setIdDriver(storage.uuid)
-            setIoId(race.idClientIo)
             setPlate(vehicle.plate)
             setClientName(client.name)
             setPrice(route.params.price)
@@ -71,22 +80,20 @@ export default function InfoRace({navigation}){
                 moodalRedirect()
                 return 
             }
-            const data = {
-                id: route.params.id,
-                isVisible: "0"
-            }
-            socket.emit('updateStatus', data);
+            socket.emit('updateStatus', updateRaceParams);
+            const race = await findOneRace(route.params.id);
             const message = {
                 teste:'a'
             }
-            socket.emit('talk',  ioId, message);
+            socket.emit('talk', race.idClientIo, message);
             const paramsUpdateRace = {
                 plate:plate,
                 idDriver:Number(idDriver)
             }
-            const response = await updateRace(idRace, paramsUpdateRace)
-            console.log(ioId)
+            await updateRace(idRace, paramsUpdateRace)
             AsyncStorage.setItem('raceId', route.params.id.toString())
+            AsyncStorage.setItem('codeInitial', codeInitial)
+            AsyncStorage.setItem('codeFinish', codeFinish)
             navigation.navigate('Work');
         }catch(e){
             console.log(e)

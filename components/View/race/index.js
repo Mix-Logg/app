@@ -72,8 +72,8 @@ export default function Race({navigation}){
     
     const newRace = async (race) => {
         const newRace = {
-            key:race.id,
-            id:race.id,
+            key:race.idRace,
+            id:race.idRace,
             idClient:race.idClient,
             isVisible:race.isVisible,
             value:race.value,
@@ -85,18 +85,18 @@ export default function Race({navigation}){
         setRaces(updatedRaces);
     }
 
-    const teste = async () => {
-        await socket.emit("createRace", {
-            idClient : 1,
-            km : '10.5',
-            vehicleType : 'motorcycle',
-            initial : 'rua teste pereira',
-            finish : 'rua teste silva',
-            value : '100.5',
-            origin : 'latitude',
-            destination : 'latitude',
-          });
-    }
+    // const teste = async () => {
+    //     await socket.emit("createRace", {
+    //         key:race.idRace,
+    //         id:race.idRace,
+    //         idClient:race.idClient,
+    //         isVisible:race.isVisible,
+    //         value:race.value,
+    //         initial:race.initial,
+    //         finish:race.finish,
+    //         km:race.km
+    //       });
+    // }
 
     return(
         <>
