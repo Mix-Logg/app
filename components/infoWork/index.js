@@ -12,14 +12,13 @@ import { useEffect, useState } from "react";
 import findClient from "../../hooks/findClient";
 import InfoWorkDetails from "./details";
 import InfoWorkHome from "./home";
-export default function InfoWork() {
+export default function InfoWork({code, setCode}) {
   const [dropDownDetails, setDropDownDetails] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [price, setPrice] = useState("");
   const [origin, setOrigin] = useState(false);
   const [destination, setDestination] = useState("");
-  const [modalCancel, setModalCancel] = useState("");
 
 
   useEffect(() => {
@@ -43,7 +42,7 @@ export default function InfoWork() {
         {origin != false ? (
           <View>
             {!dropDownDetails ? (
-              <InfoWorkHome setDropDownDetails={setDropDownDetails} dropDownDetails={dropDownDetails} />
+              <InfoWorkHome setDropDownDetails={setDropDownDetails} dropDownDetails={dropDownDetails} code={code} setCode={setCode} />
             ) : (
               <InfoWorkDetails setDropDownDetails={setDropDownDetails} dropDownDetails={dropDownDetails} name={name} phone={phone} price={price} origin={origin} destination={destination} />
             )}

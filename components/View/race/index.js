@@ -14,6 +14,7 @@ export default function Race({navigation}){
     const [socket, setSocket] = useState(null);
     const [races, setRaces] = useState(null);
     const [listen, setListen] = useState(null);
+    const [listenOn, setListenOn] = useState(null);
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
     const URL = URLproduction
@@ -21,17 +22,17 @@ export default function Race({navigation}){
     useFocusEffect(
         React.useCallback(() => {
             const Socket = async () => {
-                const socketIO = await io(URL);
                 const allRace  = await findAllRaceOpen();
-                setSocket(socketIO);
                 setRaces(allRace);
+                const socketIO = io(URL);
+                setSocket(socketIO);
             }
             Socket();
         }, [navigation])
     );
 
     useEffect(() => {
-        if(races != null){
+        if(socket != null){
             socket.on("updateStatus", (data) => { 
                 checkRace(data);
             });
@@ -39,7 +40,7 @@ export default function Race({navigation}){
                 newRace(data)
             });
         }
-    }, [socket, races]);
+    }, [socket]);
 
     useEffect(() => {
         if(races != null){
@@ -102,7 +103,7 @@ export default function Race({navigation}){
         <>
             <FixBar navigation={navigation} opition={'race'} />
             <ScrollView style={twrnc`bg-white`}>
-                { races != null && races.length == 0 ?
+                { races != null && races.length == 0 && socket?
                 <WaitRace/>
                 : 
                 <>

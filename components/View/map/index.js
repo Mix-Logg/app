@@ -12,7 +12,9 @@ import { Pressable, Text, View, ActivityIndicator, Animated, TouchableOpacity  }
 import Button from '../../../util/button'
 import MapViewDirections from 'react-native-maps-directions';
 import findOneRace from "../../../hooks/findOneRace";
-export default function Map() {
+import { io } from 'socket.io-client';
+export default function Map({code, setCode}) {
+  const [socket, setSocket] = useState(null)
   const [location, setLocation] = useState(null);
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
@@ -29,6 +31,10 @@ export default function Map() {
   const [mapHeading, setMapHeading] = useState(0);
   const GOOGLE_MAPS_APIKEY = 'AIzaSyDwhBCpqKMzkEpXm8w-t3Ib0KDOM9vdUPs';
   const mapRef = useRef(null)
+
+  const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
+  const URLdevelopment = 'http://192.168.0.35:8080/'
+  const URL = URLproduction
   
   const moveTo = async (res) => {
     const camera = await mapRef.current?.getCamera();
@@ -69,6 +75,14 @@ export default function Map() {
 
   useEffect(()=>{
     const fetchData = async () => {
+        const socketIO = await io(URL);
+        setSocket(socketIO);
+    }
+    fetchData()
+  },[])
+
+  useEffect(()=>{
+    const fetchData = async () => {
       const raceId = await AsyncStorage.getItem('raceId')
       const race = await findOneRace(raceId)
       const originClient = await JSON.parse(race.origin);
@@ -89,13 +103,15 @@ export default function Map() {
     fetchData()
   }, [])
 
+  useEffect(()=>{
+    fetchData = async () => {
+      console.log('codigo mapa:', code)
+    }
+    fetchData()
+  },[code])
+
   useEffect(() => {
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-        return;
-      }
       let location = await Location.getCurrentPositionAsync({});
       setOrigin( {latitude: location.coords.latitude, longitude: location.coords.longitude } )
       setLocation(location);
@@ -108,16 +124,24 @@ export default function Map() {
         accuracy:Location.LocationAccuracy.Highest,
         timeInterval:500,
         distanceInterval:1
-      }, (res) => {
+      }, async (res) => {
         if(modeRace == true){
           moveTo(res)
         }
         setOrigin( {latitude: res.coords.latitude, longitude: res.coords.longitude } )
         setLocation(res);
+        if(socket){
+          // console.log('emitindo')
+          const raceId = await AsyncStorage.getItem('raceId')
+          const race = await findOneRace(raceId);
+          socket.emit('talk', race.idClientIo, {latitude: res.coords.latitude, longitude: res.coords.longitude });
+        }
       }
     )
     setPositionSubscription(localtionReal)
-  },[])
+  },[socket])
+
+  
 
 
   return (

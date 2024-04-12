@@ -15,7 +15,7 @@ import GetVehicle from "../../../api/getVehicle";
 import AllStorage from "../../../hooks/findAllStorage";
 import updateRace from "../../../hooks/updateRace";
 import Wating from "../../wating";
-export default function InfoRace({navigation}){
+export default function InfoRace({navigation, code, setCode}){
     const [socket,setSocket] = useState(null)
     const [modal,setModal] = useState(null)
     const [price,setPrice] = useState(null)
@@ -85,6 +85,7 @@ export default function InfoRace({navigation}){
             const message = {
                 teste:'a'
             }
+            console.log(race.idClientIo)
             socket.emit('talk', race.idClientIo, message);
             const paramsUpdateRace = {
                 plate:plate,

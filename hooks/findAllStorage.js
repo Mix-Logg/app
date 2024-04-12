@@ -7,17 +7,13 @@ export default async function AllStorage(){
     const raceId = await AsyncStorage.getItem('raceId');
     const codeInitial = await AsyncStorage.getItem('codeInitial');
     const codeFinish  = await AsyncStorage.getItem('codeFinish');
-    const confirmCodeInitial = await AsyncStorage.getItem('confirmCodeInitial');
-    const confirmCodeFinish  = await AsyncStorage.getItem('confirmCodeFinish');
     const storage = {
         striper:striper,
         am:am,
         uuid:uuid,
         raceId:raceId,
         codeInitial:codeInitial,
-        codeFinish:codeFinish,
-        confirmCodeInitial:confirmCodeInitial,
-        confirmCodeFinish:confirmCodeFinish
+        codeFinish:codeFinish
     }
 
     return storage;

@@ -9,12 +9,14 @@ import {
     MaterialIcons,
   } from "@expo/vector-icons";
 import findOneRace from "../../hooks/findOneRace";
-export default function InfoWorkHome({dropDownDetails,setDropDownDetails}) {
+import updateRace from "../../hooks/updateRace";
+export default function InfoWorkHome({dropDownDetails, setDropDownDetails, code, setCode}) {
   const input1Ref = useRef(null);
   const input2Ref = useRef(null);
   const input3Ref = useRef(null);
   const input4Ref = useRef(null);
   const [loader, setLoader] = useState(false)
+  const [raceId, setRaceId] = useState(false)
   const [numberOne, setNumberOne] = useState(false)
   const [numberTwo, setNumberTwo] = useState(false)
   const [numberThree, setNumberThree] = useState(false)
@@ -23,6 +25,7 @@ export default function InfoWorkHome({dropDownDetails,setDropDownDetails}) {
   const [finishCode, setFinishCode] = useState('')
   const [confirmInitialCode, setConfirmInitialCode] = useState(false)
   const [confirmFinishCode, setConfirmFinishCode] = useState(false)
+  const [codeInvalid, setCodeInvalid] = useState(false)
   const handleVisibleDetails = async () => {
     setDropDownDetails(!dropDownDetails);
   };
@@ -34,16 +37,36 @@ export default function InfoWorkHome({dropDownDetails,setDropDownDetails}) {
   const handleVerifyCode = async () => {
     try{
       setLoader(true)
-      if(confirmInitialCode != true){
-        const code = numberOne+numberTwo+numberThree+numberFour;
-        if(code == initialCode){
-          console.log('codigo correto!')
-          return;
+      const codeDelivery = numberOne+numberTwo+numberThree+numberFour
+      if(confirmInitialCode == null || confirmInitialCode == undefined){
+        if(codeDelivery === initialCode){
+          const updateInitalCode = {
+            confirmCodeInitial : codeDelivery
+          }
+          const update = await updateRace(raceId ,updateInitalCode)
+          console.log(update)
+          setCode('alterInitial')
+          return
         }
+        setCodeInvalid(true)
+        setTimeout(() => {
+          setCodeInvalid(false)
+        }, 1500);
+        return;
       }
-      if(confirmFinishCode != true){
-
+      if(confirmFinishCode == null || confirmFinishCode == undefined){
+        if(codeDelivery === finishCode){
+          const updateInitalCode = {
+            confirmCodeFinish : codeDelivery
+          }
+          const update = await updateRace(raceId ,updateInitalCode)
+          console.log(update)
+          setCode('alterFinish')
+          return
+        }
+        return;
       }
+      setCode('Alteração')
     }catch(e){
       console.log(e)
     }finally{
@@ -54,10 +77,12 @@ export default function InfoWorkHome({dropDownDetails,setDropDownDetails}) {
   useEffect(()=>{
     const fetchData = async () => {
       const storage = await AllStorage();
+      const race = await findOneRace(storage.raceId)
+      setRaceId(storage.raceId)
+      setConfirmInitialCode(race.confirmCodeInitial)
+      setConfirmFinishCode(race.confirmCodeFinish)
       setInitialCode(storage.codeInitial)
       setFinishCode(storage.codeFinish)
-      setConfirmInitialCode(storage.confirmInitialCode)
-      setConfirmFinishCode(storage.confirmCodeFinish)
     }
     fetchData()
   },[])
@@ -73,6 +98,11 @@ export default function InfoWorkHome({dropDownDetails,setDropDownDetails}) {
             <View style={twrnc``}>
                 <Text style={twrnc`text-lg text-[#FF5F00] font-medium`}>Código de segurança </Text>
                 <Text>Peça o código de segurança para o cliente para confirmar que você está com a carga antes de prosseguir.</Text>
+            </View>
+            <View style={twrnc`items-center w-1/2 rounded-r-full bg-red-600`}>
+              { codeInvalid &&
+                <Text style={twrnc` text-white text-lg font-bold`}>Código incorreto!</Text>
+              }
             </View>
             <View style={twrnc`gap-5 flex-row mt-5 justify-center`}>
                 <TextInput
