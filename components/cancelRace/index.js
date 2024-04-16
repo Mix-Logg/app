@@ -5,6 +5,7 @@ import { View, Text, Image, Linking, BackHandler } from "react-native"
 import Button from "../../util/button";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from "@react-navigation/native";
+
 export default function CancelRace({setModalCancel}){
     const navigation = useNavigation()
     

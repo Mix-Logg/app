@@ -12,7 +12,7 @@ import { useEffect, useState } from "react";
 import findClient from "../../hooks/findClient";
 import InfoWorkDetails from "./details";
 import InfoWorkHome from "./home";
-export default function InfoWork({code, setCode}) {
+export default function InfoWork({code, setCode, setInfo }) {
   const [dropDownDetails, setDropDownDetails] = useState(false);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -39,10 +39,10 @@ export default function InfoWork({code, setCode}) {
   return (
     <Modal>
       <ScrollView>
-        {origin != false ? (
+        {destination != false ? (
           <View>
             {!dropDownDetails ? (
-              <InfoWorkHome setDropDownDetails={setDropDownDetails} dropDownDetails={dropDownDetails} code={code} setCode={setCode} />
+              <InfoWorkHome setInfo={setInfo} setDropDownDetails={setDropDownDetails} dropDownDetails={dropDownDetails} code={code} setCode={setCode} />
             ) : (
               <InfoWorkDetails setDropDownDetails={setDropDownDetails} dropDownDetails={dropDownDetails} name={name} phone={phone} price={price} origin={origin} destination={destination} />
             )}

@@ -65,10 +65,11 @@ export default function Race({navigation}){
         let uuid = id.toString();
         const newRace = races
         const indexToUpdate = newRace.findIndex(race => race.id == uuid);
-        newRace[indexToUpdate].isVisible = "0";
-        setRaces(newRace)
-        setListen(listen + 1)
-        return
+        if( indexToUpdate >= 0 ){
+            newRace[indexToUpdate].isVisible = "0";
+            setRaces(newRace)
+            setListen(listen + 1)
+        }
     }
     
     const newRace = async (race) => {

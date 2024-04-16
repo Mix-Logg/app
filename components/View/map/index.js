@@ -13,14 +13,13 @@ import Button from '../../../util/button'
 import MapViewDirections from 'react-native-maps-directions';
 import findOneRace from "../../../hooks/findOneRace";
 import { io } from 'socket.io-client';
-export default function Map({code, setCode}) {
+export default function Map({code}) {
   const [socket, setSocket] = useState(null)
   const [location, setLocation] = useState(null);
   const [origin, setOrigin] = useState(null);
   const [destination, setDestination] = useState(null);
   const [nextStep, setNextStep] = useState(null);
   const [stepRace, setStepRace] = useState(null);
-  const [positionSubscription, setPositionSubscription] = useState(null);
   const [modeRace, setModeRace] = useState(false)
   const [pitchMap, setPitchMap] = useState(false)
   const [rotateMap,setRotateMap] = useState(false)
@@ -28,10 +27,8 @@ export default function Map({code, setCode}) {
   const [zoomMap,setZoomMap] = useState(false)
   const [scrollMap,setScrollMap] = useState(false)
   const [cameraZoom,setCamerazoom] = useState(50)
-  const [mapHeading, setMapHeading] = useState(0);
   const GOOGLE_MAPS_APIKEY = 'AIzaSyDwhBCpqKMzkEpXm8w-t3Ib0KDOM9vdUPs';
   const mapRef = useRef(null)
-
   const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
   const URLdevelopment = 'http://192.168.0.35:8080/'
   const URL = URLproduction
@@ -40,7 +37,7 @@ export default function Map({code, setCode}) {
     const camera = await mapRef.current?.getCamera();
     if (camera) {
       camera.center = res.coords;
-      camera.zoom = 60,
+      camera.zoom = 25,
       camera.pitch = 90,
       camera.heading = 70
       mapRef.current?.animateCamera(
@@ -59,20 +56,6 @@ export default function Map({code, setCode}) {
     moveTo(location)
   };
 
-  // useEffect(() => {
-  //   const calculateAngle = (x, y, z) => {
-  //     const heading = Math.atan2(y, x) * (180 / Math.PI);
-  //     return heading >= 0 ? heading : 360 + heading;
-  //   };
-  //   const subscription = Gyroscope.addListener(({ x, y, z }) => {
-  //     const angle = calculateAngle(x, y, z);
-  //     setMapHeading(angle)
-  //   });
-  //   return () => {
-  //     subscription.remove(); // Remove a inscrição quando o componente é desmontado
-  //   };
-  // },[])
-
   useEffect(()=>{
     const fetchData = async () => {
         const socketIO = await io(URL);
@@ -82,7 +65,7 @@ export default function Map({code, setCode}) {
   },[])
 
   useEffect(()=>{
-    const fetchData = async () => {
+    fetchData = async () => {
       const raceId = await AsyncStorage.getItem('raceId')
       const race = await findOneRace(raceId)
       const originClient = await JSON.parse(race.origin);
@@ -97,51 +80,41 @@ export default function Map({code, setCode}) {
         latitudeDelta: 0.00922,
         longitudeDelta: 0.00922
       }; 
+      if(race.confirmCodeInitial){
+        setStepRace(destinationWithDeltas)
+        return
+      }
       setStepRace(originWithDeltas)
-      setDestination(destinationWithDeltas)
-    }
-    fetchData()
-  }, [])
-
-  useEffect(()=>{
-    fetchData = async () => {
-      console.log('codigo mapa:', code)
     }
     fetchData()
   },[code])
 
-  useEffect(() => {
-    (async () => {
-      let location = await Location.getCurrentPositionAsync({});
-      setOrigin( {latitude: location.coords.latitude, longitude: location.coords.longitude } )
-      setLocation(location);
-    })();
-  }, []);
-
   useEffect(()=>{
-   const localtionReal = Location.watchPositionAsync(
-      {
-        accuracy:Location.LocationAccuracy.Highest,
-        timeInterval:500,
-        distanceInterval:1
-      }, async (res) => {
-        if(modeRace == true){
+    const fetchData = async () => {
+      const locationSubscription = await Location.watchPositionAsync(
+        {
+          accuracy: Location.LocationAccuracy.Highest,
+          timeInterval: 500,
+          distanceInterval: 1
+        },
+        async (res) => {
           moveTo(res)
+          setOrigin({ latitude: res.coords.latitude, longitude: res.coords.longitude });
+          setLocation(res);
+          if (socket) {
+            const raceId = await AsyncStorage.getItem('raceId');
+            if (raceId) {
+              const race = await findOneRace(raceId);
+              socket.emit('talk', race.idClientIo, { latitude: res.coords.latitude, longitude: res.coords.longitude });
+              return;
+            }
+            locationSubscription.remove(); 
+          }
         }
-        setOrigin( {latitude: res.coords.latitude, longitude: res.coords.longitude } )
-        setLocation(res);
-        if(socket){
-          // console.log('emitindo')
-          const raceId = await AsyncStorage.getItem('raceId')
-          const race = await findOneRace(raceId);
-          socket.emit('talk', race.idClientIo, {latitude: res.coords.latitude, longitude: res.coords.longitude });
-        }
-      }
-    )
-    setPositionSubscription(localtionReal)
+      );
+    }
+    fetchData()
   },[socket])
-
-  
 
 
   return (
@@ -154,6 +127,7 @@ export default function Map({code, setCode}) {
       ) : (
         <View style={twrnc`h-full w-full`}>
           <MapView
+            mapType="terrain"
             ref={mapRef}
             style={twrnc`h-full w-full`}
             initialRegion={{
@@ -163,21 +137,17 @@ export default function Map({code, setCode}) {
               longitudeDelta: 0.00922,
             }}
             provider={PROVIDER_GOOGLE}
-            showsMyLocationButton
-            userInterfaceStyle
-            followsUserLocation={followMap}
             pitchEnabled={pitchMap}
             rotateEnabled={rotateMap}
             zoomEnabled={zoomMap}
             scrollEnabled={scrollMap}
             cameraZoomRange={cameraZoom}
             showsPointsOfInterest={false}
-            mapType="terrain"
             onLayout={() => {
               mapRef.current.animateCamera({
                   pitch: 90,
                   heading: 70,
-                  zoom: 50,
+                  zoom: 25,
               })
             }}
           >

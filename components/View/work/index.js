@@ -9,11 +9,12 @@ import { MaterialIcons, Ionicons  } from '@expo/vector-icons';
 
 export default function Work({navigation}){
     const [code, setCode] = useState('codigo')
-    const [info, setInfo] = useState(<InfoWork code={code} setCode={setCode} navigation={navigation}/>)
+    const [info, setInfo] = useState('')
+    const [locationDelivery, setLocationDelivery] = useState('')
     
     const handleInfoWork = async () => {
         await setInfo('')
-        setInfo(<InfoWork code={code} setCode={setCode} navigation={navigation} />)
+        setInfo(<InfoWork locationDelivery={locationDelivery} setInfo={setInfo} code={code} setCode={setCode} navigation={navigation} />)
     }
 
     useEffect( () => {
@@ -28,7 +29,7 @@ export default function Work({navigation}){
     return(
         <View style={twrnc`h-full bg-white`}>
             <View style={twrnc`bg-white h-full`} >
-                <Map code={code} setCode={setCode}/>
+                <Map setLocationDelivery={setLocationDelivery} locationDelivery={locationDelivery} code={code} />
                 <View style={[twrnc`absolute `, {top:'90%', left:'83%'}]}>
                         <Button handle={handleInfoWork}>
                             <View style={twrnc` border p-1 rounded-xl border-[#a3a3a3] h-12 w-12 items-center justify-center`}>
