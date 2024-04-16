@@ -1,20 +1,49 @@
 import { TouchableOpacity, Text, View, Image } from "react-native";
 import { AntDesign, Ionicons, MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 import InfoHistory from "../infoHistory";
+import AllStorage from "../../hooks/findAllStorage";
 import twrnc from "twrnc";
 import Motorcycle from "../../img/vehicle/motorcycle.png";
 import Tour from "../../img/vehicle/tour.png";
 import Util from "../../img/vehicle/fiorino.png";
 import Van from "../../img/vehicle/van.png";
 import Vuc from "../../img/vehicle/cartload.png";
-import { useState } from "react";
-export default function CardHistory({navigation}){
+import { useEffect, useState } from "react";
+export default function CardHistory({price, raceId, km}){
     const [infoHistory, setInfoHistory] = useState('')
+    const [picture, setPicture] = useState(null)
     
     const handleHistory = async () => {
         await setInfoHistory('')
-        await setInfoHistory(<InfoHistory/>)
+        await setInfoHistory(<InfoHistory raceId={raceId}/>)
     }
+
+    useEffect(()=>{
+      const fetchData = async () => {
+        const vehicle = await AllStorage()
+        switch (vehicle.vehicle) {
+          case 'vuc':
+            setPicture(Vuc)
+            break;
+          case 'van':
+            setPicture(Van)
+            break;
+          case 'util':
+            setPicture(Util)
+            break;
+          case 'tour':
+            setPicture(Tour)
+            break;
+          case 'motorcycle':
+            setPicture(Motorcycle)
+            break;
+          default:
+            setPicture(Vuc)
+            break;
+        }
+      }
+      fetchData()
+    },[])
 
     return(
       <>
@@ -28,18 +57,20 @@ export default function CardHistory({navigation}){
             <View
               style={twrnc`h-18 w-18 border border-[#a3a3a3] bg-[#d4d4d4] p-4 rounded-xl`}
             >
+             { picture &&
               <Image
-                style={twrnc`w-full h-full`}
-                source={Vuc}
-                resizeMode={"contain"}
-              />
+                  style={twrnc`w-full h-full`}
+                  source={picture}
+                  resizeMode={"contain"}
+                />
+              }
             </View>
           </View>
           <View style={twrnc`gap-3 justify-center`}>
             <View style={twrnc`flex-row gap-2 items-center`}>
               <MaterialCommunityIcons name="history" size={20} color="#FF5F00" />
               <View>
-                <Text style={twrnc` text-[#191919] `}>Você rodou 17 km</Text>
+                <Text style={twrnc` text-[#191919] `}>Você rodou {km} km</Text>
               </View>
             </View>
             <View style={twrnc`flex-row gap-2`}>
@@ -47,7 +78,7 @@ export default function CardHistory({navigation}){
                 <Text
                   style={twrnc`font-medium text-green-600 font-bold`}
                 >
-                  R$ 199,00 reais
+                  R$ {price} reais
                 </Text>
               </View>
             </View>

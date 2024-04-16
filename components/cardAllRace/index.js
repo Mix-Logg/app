@@ -1,12 +1,15 @@
 import { TouchableOpacity, Text, Image, View } from "react-native";
 import twrnc from "twrnc";
+import { useEffect, useState } from "react";
 import { AntDesign, Octicons , MaterialIcons } from "@expo/vector-icons";
+import AllStorage from "../../hooks/findAllStorage";
 import Motorcycle from "../../img/vehicle/motorcycle.png";
 import Tour from "../../img/vehicle/tour.png";
 import Util from "../../img/vehicle/fiorino.png";
 import Van from "../../img/vehicle/van.png";
 import Vuc from "../../img/vehicle/cartload.png";
 export default function CardAllRace({ navigation, id, isVisible, price, initial, finish, km, idClient }) {
+  const [picture, setPicture] = useState(null)
 
   const handleRace = () => {
     const params = {
@@ -20,6 +23,33 @@ export default function CardAllRace({ navigation, id, isVisible, price, initial,
     navigation.navigate("InfoRace", params);
   };
 
+  useEffect(()=>{
+    const fetchData = async () => {
+      const vehicle = await AllStorage()
+      switch (vehicle.vehicle) {
+        case 'vuc':
+          setPicture(Vuc)
+          break;
+        case 'van':
+          setPicture(Van)
+          break;
+        case 'util':
+          setPicture(Util)
+          break;
+        case 'tour':
+          setPicture(Tour)
+          break;
+        case 'motorcycle':
+          setPicture(Motorcycle)
+          break;
+        default:
+          setPicture(Vuc)
+          break;
+      }
+    }
+    fetchData()
+  },[])
+
   return (
     <TouchableOpacity
       style={twrnc`border-b border-[#d4d4d4] rounded-xl p-3 gap-2 flex-row justify-between ${isVisible == 1 ? '' : 'hidden'}`}
@@ -30,11 +60,13 @@ export default function CardAllRace({ navigation, id, isVisible, price, initial,
           <View
             style={twrnc`h-18 w-18 border border-[#a3a3a3] bg-[#d4d4d4] p-4 rounded-xl`}
           >
-            <Image
+            {picture != null &&
+              <Image
               style={twrnc`w-full h-full`}
-              source={Vuc}
+              source={picture}
               resizeMode={"contain"}
             />
+            }
           </View>
         </View>
         <View style={twrnc`justify-between `}>

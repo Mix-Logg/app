@@ -135,8 +135,7 @@ export default function InfoWorkDetails({
         </TouchableOpacity>
         <View style={twrnc`flex-row gap-3 items-center`}>
           <Text style={twrnc`text-base font-bold text-green-600`}>
-            +R$ {price}
-            reais
+            +R$ {price} reais
           </Text>
         </View>
       </View>

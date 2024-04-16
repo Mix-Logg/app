@@ -19,6 +19,7 @@ import AllStorage from '../../../hooks/findAllStorage';
 import RegisterWallet from '../../../hooks/createWalletStriper';
 import UpdateUser from '../../../hooks/updateUser';
 import LocationDenied from '../../locationDenied';
+import GetVehicle from '../../../api/getVehicle';
 export default function Home ({navigation}){
     const [refreshing, setRefreshing] = useState(false); 
     const [info, setInfo] = useState(false); 
@@ -34,7 +35,18 @@ export default function Home ({navigation}){
             setTimeLineView(<DocumentTimeline navigation={navigation} status={info} plug={plug.timeline}/>);
             resolve();
         });
-    };  
+    }; 
+    useEffect(()=>{
+        fetchData = async () => {
+            const storage = await AllStorage();
+            if(storage.vehicle){
+                return
+            }
+            const vehicle = await GetVehicle();
+            await AsyncStorage.setItem('vehicle', vehicle.type);
+        }
+        fetchData()
+    },[]) 
     useEffect(()=>{
         const fetchData = async () => {
             const raceId = await AsyncStorage.getItem('raceId')
@@ -55,7 +67,7 @@ export default function Home ({navigation}){
         }
         dataEffect()
     }, [refreshing]);
-    useEffect( () => {
+    useEffect(() => {
         const backHandlerSubscription = BackHandler.addEventListener('hardwareBackPress', () => {
             return true;
         });
