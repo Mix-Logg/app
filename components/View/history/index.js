@@ -12,10 +12,10 @@ export default function History({navigation}){
             const history = await FindAllHistory();
             const cardHistory = history.map(race => (
                 <CardHistory 
-                key={race.id}
-                raceId={race.id} 
-                price={race.value} 
-                km={race.km}
+                    key={race.id}
+                    raceId={race.id} 
+                    price={race.value} 
+                    km={race.km}
                 /> 
             ));
             setCards(cardHistory);

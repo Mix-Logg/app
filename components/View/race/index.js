@@ -9,6 +9,7 @@ import { io } from 'socket.io-client';
 import findAllRace from "../../../hooks/findAllRace";
 import findAllRaceOpen from '../../../hooks/findAllOpenRace';
 import WaitRace from "../../awaitRace";
+import Wating from '../../wating';
 export default function Race({navigation}){
     const [Allraces, setAllRace] = useState(null);
     const [socket, setSocket] = useState(null);
@@ -87,36 +88,20 @@ export default function Race({navigation}){
         setRaces(updatedRaces);
     }
 
-    // const teste = async () => {
-    //     await socket.emit("createRace", {
-    //         key:race.idRace,
-    //         id:race.idRace,
-    //         idClient:race.idClient,
-    //         isVisible:race.isVisible,
-    //         value:race.value,
-    //         initial:race.initial,
-    //         finish:race.finish,
-    //         km:race.km
-    //       });
-    // }
-
     return(
         <>
             <FixBar navigation={navigation} opition={'race'} />
-            <ScrollView style={twrnc`bg-white`}>
-                { races != null && races.length == 0 && socket?
-                <WaitRace/>
-                : 
-                <>
-                    {/* <TouchableOpacity style={twrnc`border py-5 items-center`}
-                        onPress={()=>teste()}
-                    >
-                        <Text>EMITIR CORRIDA</Text>
-                    </TouchableOpacity> */}
-                    {Allraces} 
-                </>
+            { races && socket ?
+                <ScrollView style={twrnc`bg-white`}>
+                { races.length == 0  ?
+                    <WaitRace/>
+                    : 
+                    Allraces
                 }
-            </ScrollView>
+                </ScrollView>
+                    :
+                <Wating/>
+            }
         </>
     )
 }
