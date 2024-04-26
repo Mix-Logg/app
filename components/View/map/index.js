@@ -1,18 +1,16 @@
 import twrnc from "twrnc";
-import MapView, { Marker, AnimatedRegion, PROVIDER_GOOGLE } from "react-native-maps";
-import Pin from './pin.png'
+import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Gyroscope } from 'expo-sensors';
 import { MaterialIcons, Feather } from '@expo/vector-icons';
-import MapViewRoute from 'react-native-maps-routes';
+import { Alert } from 'react-native';
 import { useState, useRef } from "react";
 import * as Location from "expo-location";
 import { useEffect } from "react";
-import { Pressable, Text, View, ActivityIndicator, Animated, TouchableOpacity  } from "react-native";
-import Button from '../../../util/button'
+import {  Text, View, ActivityIndicator, TouchableOpacity  } from "react-native";
 import MapViewDirections from 'react-native-maps-directions';
 import findOneRace from "../../../hooks/findOneRace";
 import { io } from 'socket.io-client';
+import RoutesButtons from "../../routesButtons";
 export default function Map({code}) {
   const [socket, setSocket] = useState(null)
   const [location, setLocation] = useState(null);
@@ -91,27 +89,35 @@ export default function Map({code}) {
 
   useEffect(()=>{
     const fetchData = async () => {
-      const locationSubscription = await Location.watchPositionAsync(
+      try{
+        const locationSubscription = await Location.watchPositionAsync(
         {
           accuracy: Location.LocationAccuracy.Highest,
           timeInterval: 500,
           distanceInterval: 1
         },
         async (res) => {
-          moveTo(res)
-          setOrigin({ latitude: res.coords.latitude, longitude: res.coords.longitude });
-          setLocation(res);
-          if (socket) {
-            const raceId = await AsyncStorage.getItem('raceId');
-            if (raceId) {
-              const race = await findOneRace(raceId);
-              socket.emit('talk', race.idClientIo, { latitude: res.coords.latitude, longitude: res.coords.longitude });
-              return;
+          if(res !== undefined){
+            moveTo(res)
+            setOrigin({ latitude: res.coords.latitude, longitude: res.coords.longitude });
+            setLocation(res);
+            if (socket) {
+              const raceId = await AsyncStorage.getItem('raceId');
+              if (raceId) {
+                const race = await findOneRace(raceId);
+                socket.emit('talk', race.idClientIo, { latitude: res.coords.latitude, longitude: res.coords.longitude });
+                return;
+              }
+              locationSubscription.remove(); 
             }
-            locationSubscription.remove(); 
+            return
           }
-        }
-      );
+          console.log(res)
+          Alert.alert('latitude e longitude bugado')
+        });
+      }catch(e){
+        Alert.alert(e)
+      }
     }
     fetchData()
   },[socket])
@@ -125,94 +131,95 @@ export default function Map({code}) {
            <Text style={twrnc`font-bold`}>Carregando rota</Text>
         </View>
       ) : (
-        <View style={twrnc`h-full w-full`}>
-          <MapView
-            mapType="terrain"
-            ref={mapRef}
-            style={twrnc`h-full w-full`}
-            initialRegion={{
-              latitude: location.coords.latitude,
-              longitude: location.coords.longitude,
-              latitudeDelta: 0.00922,
-              longitudeDelta: 0.00922,
-            }}
-            provider={PROVIDER_GOOGLE}
-            pitchEnabled={pitchMap}
-            rotateEnabled={rotateMap}
-            zoomEnabled={zoomMap}
-            scrollEnabled={scrollMap}
-            cameraZoomRange={cameraZoom}
-            showsPointsOfInterest={false}
-            onLayout={() => {
-              mapRef.current.animateCamera({
-                  pitch: 90,
-                  heading: 70,
-                  zoom: 25,
-              })
-            }}
-          >
-            { stepRace != null && origin != null &&
-              <>
-              <MapViewDirections
-                origin={origin}
-                destination={stepRace}
-                apikey={GOOGLE_MAPS_APIKEY}
-                strokeWidth={10}
-                strokeColor="#FF5F00"
-                precision={"high"}
-                mode={'DRIVING'}
-                renderDirections={true}
-                resetOnChange={true}
-                onReady={(result)=>{
-                  // console.log('result ', result)
-                }}
-              />
-               <Marker
-                  coordinate={{
-                    latitude: stepRace.latitude,
-                    longitude: stepRace.longitude,
-                  }}
-                  image={require("../../../img/icons/pin.png")}
-                /> 
-              </>
-            } 
-               { !modeRace ?
-                  <Marker
-                    coordinate={{
-                      latitude: location.coords.latitude,
-                      longitude: location.coords.longitude,
-                    }}
-                    image={require("./arrow-gps.png")}
-                  />
-                  :
-                  <Marker
-                    coordinate={{
-                      latitude: location.coords.latitude,
-                      longitude: location.coords.longitude,
-                    }}
-                    image={require("../../../img/icons/pin.png")}
-                  />
-                }
-          </MapView> 
-          <View style={[twrnc`absolute p-1 rounded-xl border-[#a3a3a3] border h-12 w-12 items-center justify-center`, {top:'80%', left:'85%'}]}>
-              <TouchableOpacity
-                onPress={()=>moveTo(location)}
-              >
-                <MaterialIcons name="gps-fixed" size={28} color="#FF5F00" />
+        // <View style={twrnc`h-full w-full`}>
+        //   <MapView
+        //     mapType="terrain"
+        //     ref={mapRef}
+        //     style={twrnc`h-full w-full`}
+        //     initialRegion={{
+        //       latitude: location.coords.latitude,
+        //       longitude: location.coords.longitude,
+        //       latitudeDelta: 0.00922,
+        //       longitudeDelta: 0.00922,
+        //     }}
+        //     provider={PROVIDER_GOOGLE}
+        //     pitchEnabled={pitchMap}
+        //     rotateEnabled={rotateMap}
+        //     zoomEnabled={zoomMap}
+        //     scrollEnabled={scrollMap}
+        //     cameraZoomRange={cameraZoom}
+        //     showsPointsOfInterest={false}
+        //     onLayout={() => {
+        //       mapRef.current.animateCamera({
+        //           pitch: 90,
+        //           heading: 70,
+        //           zoom: 25,
+        //       })
+        //     }}
+        //   >
+        //     { stepRace != null && origin != null &&
+        //       <>
+        //       <MapViewDirections
+        //         origin={origin}
+        //         destination={stepRace}
+        //         apikey={GOOGLE_MAPS_APIKEY}
+        //         strokeWidth={10}
+        //         strokeColor="#FF5F00"
+        //         precision={"high"}
+        //         mode={'DRIVING'}
+        //         renderDirections={true}
+        //         resetOnChange={true}
+        //         onReady={(result)=>{
+        //           // console.log('result ', result)
+        //         }}
+        //       />
+        //        <Marker
+        //           coordinate={{
+        //             latitude: stepRace.latitude,
+        //             longitude: stepRace.longitude,
+        //           }}
+        //           image={require("../../../img/icons/pin.png")}
+        //         /> 
+        //       </>
+        //     } 
+        //        { !modeRace ?
+        //           <Marker
+        //             coordinate={{
+        //               latitude: location.coords.latitude,
+        //               longitude: location.coords.longitude,
+        //             }}
+        //             image={require("./arrow-gps.png")}
+        //           />
+        //           :
+        //           <Marker
+        //             coordinate={{
+        //               latitude: location.coords.latitude,
+        //               longitude: location.coords.longitude,
+        //             }}
+        //             image={require("../../../img/icons/pin.png")}
+        //           />
+        //         }
+        //   </MapView> 
+        //   <View style={[twrnc`absolute p-1 rounded-xl border-[#a3a3a3] border h-12 w-12 items-center justify-center`, {top:'80%', left:'85%'}]}>
+        //       <TouchableOpacity
+        //         onPress={()=>moveTo(location)}
+        //       >
+        //         <MaterialIcons name="gps-fixed" size={28} color="#FF5F00" />
                 
-              </TouchableOpacity>
-          </View>
-          <View style={[twrnc`absolute p-1 rounded-xl border-[#a3a3a3] border h-12 w-12 items-center justify-center`, {top:'69%', left:'85%'}]}>
-              <TouchableOpacity
-                onPress={()=>modeDriver()}
-              >
-                { modeRace ?
-                  <Feather name="unlock" size={24} color="#FF5F00" /> :
-                  <Feather name="lock" size={24} color="#FF5F00" />
-                }
-              </TouchableOpacity>
-          </View>
-        </View>
+        //       </TouchableOpacity>
+        //   </View>
+        //   <View style={[twrnc`absolute p-1 rounded-xl border-[#a3a3a3] border h-12 w-12 items-center justify-center`, {top:'69%', left:'85%'}]}>
+        //       <TouchableOpacity
+        //         onPress={()=>modeDriver()}
+        //       >
+        //         { modeRace ?
+        //           <Feather name="unlock" size={24} color="#FF5F00" /> :
+        //           <Feather name="lock" size={24} color="#FF5F00" />
+        //         }
+        //       </TouchableOpacity>
+        //   </View>
+        // </View>
+        <RoutesButtons code={code}/>
       )}
     </View>
     

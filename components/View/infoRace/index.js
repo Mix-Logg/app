@@ -83,7 +83,7 @@ export default function InfoRace({navigation, code, setCode}){
             socket.emit('updateStatus', updateRaceParams);
             const race = await findOneRace(route.params.id);
             const message = {
-                teste:'a'
+                message:'Start Race'
             }
             console.log(race.idClientIo)
             socket.emit('talk', race.idClientIo, message);

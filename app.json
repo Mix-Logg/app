@@ -1,5 +1,11 @@
 {
   "expo": {
+    "name": "MIX",
+    "slug": "MIX",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./img/icon.png",
+    "userInterfaceStyle": "light",
     "plugins": [
       [
         "expo-document-picker",
@@ -14,12 +20,6 @@
         }
       ]
     ],
-    "name": "MIX",
-    "slug": "MIX",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./img/icon.png",
-    "userInterfaceStyle": "light",
     "splash": {
       "image": "./img/splash.png",
       "resizeMode": "contain",
@@ -36,7 +36,12 @@
         "foregroundImage": "./img/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.mixtrans.MIX"
+      "package": "com.mixtrans.MIX",
+      "config":{
+        "googleMaps": {
+          "apiKey": "AIzaSyDwhBCpqKMzkEpXm8w-t3Ib0KDOM9vdUPs"
+        }
+    }
     },
     "web": {
       "favicon": "./img/favicon.png"

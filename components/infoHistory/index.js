@@ -16,6 +16,9 @@ export default function InfoHistory({raceId}){
     }
 
     function formatDate(dataHoraISO) {
+        if(!dataHoraISO){
+            return ''
+        }
         // Array com os nomes dos meses em português
         const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
       
