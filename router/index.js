@@ -27,6 +27,7 @@ import Wallet from '../components/View/wallet';
 import History from '../components/View/history';
 import InfoRace from '../components/View/infoRace';
 import Work from '../components/View/work';
+import RegisterPersonWallet from '../components/registerWallet/person';
 export default function AllRoutes() {
 
   return (
@@ -158,7 +159,7 @@ export default function AllRoutes() {
                 headerShown: false // Exibe o cabeçalho nesta tela
               }}
             />
-             <Stack.Screen name="infoPhotoEmTr" component={infoEmpresaTrans} 
+            <Stack.Screen name="infoPhotoEmTr" component={infoEmpresaTrans} 
             options={{
               title: '',  
               headerStyle: {
@@ -246,6 +247,15 @@ export default function AllRoutes() {
                     backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
                   },
                   headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
+            <Stack.Screen name="RegisterPerson" component={RegisterPersonWallet} 
+              options={{
+              title: '',  
+              headerStyle: {
+                  backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                },
+                headerShown: false // Exibe o cabeçalho nesta tela
               }}
             />
         </Stack.Navigator>

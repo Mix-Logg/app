@@ -1,73 +1,44 @@
 import { ScrollView, View, Text, Image, TouchableOpacity  } from "react-native";
-import FixBar from "../../fixBar";
-import twrnc from "twrnc";
-import Pix from '../../../img/icons/pix.png'
-import Money from '../../../img/icons/money.png'
 import { MaterialIcons } from '@expo/vector-icons';
-import ModalBottom from "../../modalBottom";
 import { useEffect, useState } from "react";
-import CadasterPix from "../../cadasterPix";
-import Rescue from "../../rescue";
-
+import FixBar from "../../fixBar";
+import Woman from '../../../img/uniqueIcons/woman.png'
 export default function Wallet({navigation}){
-    const [modal,setModal] = useState('')
-    
-
-    const handleAccess = async (option) => {
-        await setModal('')
-        if(option == 'pix'){
-            await setModal(
-                <ModalBottom>
-                    <CadasterPix/>
-                </ModalBottom>
-            )
-            return;
-        }
-        if(option == 'rescue'){
-            await setModal(
-                <ModalBottom>
-                    <Rescue/>
-                </ModalBottom>
-            )
-        }
+   
+    const handleClickContinue = () => {
+        navigation.navigate('RegisterPerson')
     }
-    
 
     return(
         <>
-            {modal}
+          
             <FixBar navigation={navigation} opition={'wallet'} />
-            <ScrollView style={twrnc`bg-white`}>
-                <View style={twrnc`p-5 gap-10`}>
-                    <View>
-                            <Text style={twrnc`text-base text-[#737373]`}>Saldo disponível</Text>
-                            <Text style={twrnc`font-bold text-4xl`}>R$ 50,00</Text>
+            <ScrollView className="bg-white py-6">
+                <View className='h-52'>
+                        <Image
+                            source={Woman}
+                            className='w-full h-full'
+                            resizeMode="contain"
+                        />
+                </View>
+                <View>
+                    <View className='items-center'>
+                        <Text className='text-xl text-primary font-extrabold'>
+                            Vamos completar seu registro !
+                        </Text>
                     </View>
-                    <View style={twrnc`gap-8`}>
-                        <TouchableOpacity style={twrnc`flex-row items-center justify-between w-full`}
-                            onPress={()=>handleAccess('rescue')}
-                        > 
-                                <View style={twrnc`flex-row items-center gap-5`}>
-                                    <View style={twrnc`w-7 h-7`}>
-                                        <Image style={twrnc`h-full w-full`} resizeMode="contain" source={Money} />
-                                    </View> 
-                                    <Text style={twrnc`text-base text-[#737373]`}>Resgatar</Text>
-                                </View>
-                                <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={twrnc`flex-row items-center w-full justify-between gap-3`}
-                            onPress={() => handleAccess('pix')}
-                        > 
-                                <View style={twrnc`flex-row items-center gap-5`}>
-                                    <View style={twrnc`w-7 h-7`}>
-                                        <Image style={twrnc`h-full w-full`} resizeMode="contain" source={Pix} />
-                                    </View> 
-                                    <Text style={twrnc`text-base text-[#737373]`}>Cadastro PIX</Text>
-                                </View>
-                                <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-                                
-                        </TouchableOpacity>
+                    <View className='px-5 items-center justify-center mt-2'>
+                        <Text className='text-xs w-60 text-neutral-400 text-justify'>
+                            Para podermos liberar o seu dinheiro, vamos criar uma carteira virtual com o nosso parceiro
+                        </Text>
                     </View>
+                </View>
+                <View className='items-center mt-10'>
+                    <TouchableOpacity className='rounded-full h-12 w-12 items-center justify-center bg-primary'
+                        onPress={()=>handleClickContinue()}
+                    >
+                        <MaterialIcons name="arrow-forward" size={30} color="white" />
+                    </TouchableOpacity>
                 </View>
             </ScrollView>
         </>

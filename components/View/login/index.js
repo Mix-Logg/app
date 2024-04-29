@@ -1,6 +1,6 @@
 import React from 'react';
 import twrnc from 'twrnc';
-import { View, Image,Text ,TextInput, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Image,Text ,TextInput, TouchableOpacity, StatusBar, } from 'react-native';
 import { useEffect, useState } from 'react';
 import MaskInput from 'react-native-mask-input';
 import Modal from "react-native-modal";

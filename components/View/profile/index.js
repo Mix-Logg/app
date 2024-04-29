@@ -13,6 +13,13 @@ export default function Profile({navigation}){
     
     const handleLogout = async () => {
         await AsyncStorage.removeItem('access');
+        await AsyncStorage.removeItem('striper');
+        await AsyncStorage.removeItem('am');
+        await AsyncStorage.removeItem('uuid');
+        await AsyncStorage.removeItem('raceId');
+        await AsyncStorage.removeItem('codeInitial');
+        await AsyncStorage.removeItem('codeFinish');
+        await AsyncStorage.removeItem('vehicle');
         navigation.navigate('Login')
     }
 

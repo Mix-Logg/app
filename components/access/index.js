@@ -1,19 +1,38 @@
 import twrnc from "twrnc";
-import { View, ScrollView, Text, Image,TouchableOpacity } from "react-native";
+import { View, ScrollView, Text, Image,TouchableOpacity, Linking, ActivityIndicator } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
-import Reload from '../../img/icons/Reload.png'
-import Wallet from '../../img/icons/Wallet.png'
-import Race from '../../img/icons/box.png'
-
+import Reload from '../../img/icons/Reload.png';
+import Wallet from '../../img/icons/Wallet.png';
+import Race from '../../img/icons/box.png';
+import LoginWallet from "../../hooks/loginWallet";
+import FindWallet from "../../hooks/findWallet";
+import { useEffect, useState } from "react";
 export default function Access({navigation}) {
+    const [ walletStatus , setWalletStatus ] = useState('')
+    // capabilities.transfers
 
-    const handleAllAcess = (route) => {
+    useEffect(()=>{
+        const fetchData = async () => {
+            const wallet = await FindWallet();
+            setWalletStatus(wallet.capabilities.transfers)
+        }
+        fetchData()
+    },[])
+
+    const handleAllAcess = async (route) => {
         switch (route) {
             case 'all':
                 navigation.navigate('AllAccess')
                 break;
             case 'wallet':
+                if(walletStatus != 'inactive'){
+                    const linkWallet = await LoginWallet();
+                    Linking.openURL(linkWallet).catch((err) =>
+                        console.error('Erro ao abrir o URL: ', err)
+                    );
+                    return;
+                }
                 navigation.navigate('Wallet')
                 break;
             case 'history':
@@ -44,10 +63,14 @@ export default function Access({navigation}) {
                     <TouchableOpacity style={twrnc`border border-[#d4d4d4] justify-center items-center px-2 h-15 w-15 rounded-xl`}
                         onPress={()=>handleAllAcess('wallet')}
                     >
-                        <Image 
+                        { 1 > 0 ?
+                            <Image 
                             source={Wallet}
                             style={twrnc`h-8 w-8`}
-                        />
+                            />
+                            :
+                            <ActivityIndicator size="small" color="#FF5F00" />
+                        }
                     </TouchableOpacity>
                     <Text style={twrnc`text-[#7B7B7B]`}>Carteira </Text>
                 </View>

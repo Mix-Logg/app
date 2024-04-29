@@ -1,16 +1,28 @@
-import { View, Text, TouchableOpacity, Image  } from "react-native"
+import { View, Text, TouchableOpacity, Image } from "react-native"
 import { Ionicons, MaterialIcons   } from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import twrnc from "twrnc"
+import FindBalance from "../../hooks/findBalance";
 import Coin from '../../img/icons/coin.png'
-
+import Mask from "../../hooks/mask";
 export default function Balance(){
     const [eye , setEye]=useState(false)
+    const [available , setAvailable]=useState(false)
+    const [pending , setPending]=useState(false)
 
     const handleEye = () => {
         setEye(!eye)
     }
+
+    useEffect(()=>{
+        const fetchData = async () => {
+            const balance  = await FindBalance();
+            setAvailable(Mask('amount',balance.available[0].amount))
+            setPending(Mask('amount',balance.pending[0].amount))
+        }
+        fetchData()
+    },[])
 
     return(
         <View className="w-full">
@@ -43,7 +55,7 @@ export default function Balance(){
                 </View>
             </View>
             <View style={twrnc`items-center p-5`}>
-                <View className="flex-row items-center border border-orange-300  w-full rounded-lg  px-5 gap-3 py-3 ">
+                <View className="flex-row items-center border border-[#d4d4d4] w-full rounded-lg  px-5 gap-3 py-3 ">
                     <View style={twrnc`bg-orange-100 rounded-lg w-10 h-10 justify-center items-center`}>
                         <View style={twrnc`h-6 w-6`}>
                             <Image 
@@ -57,14 +69,14 @@ export default function Balance(){
                         { eye ?
                             <View className="">
                                 <View className="flex-row items-center">
-                                    <Text className="text-2xl font-extrabold text-neutral-700">R$ 100,00 reais</Text>
+                                    <Text className="text-2xl font-extrabold text-neutral-700">{available} reais</Text>
                                     
                                 </View>
                                 <View className="mt-3 flex-row items-center">
                                 <View className="p-1 bg-green-100 rounded-md opacity-60">
                                     <FontAwesome6 name="arrow-trend-up" size={12} color="#16a34a" />
                                         </View>
-                                    <Text className="text-xs font-medium ml-1 text-neutral-400">R$ 50,00</Text>
+                                    <Text className="text-xs font-medium ml-1 text-neutral-400">{pending} </Text>
                                 </View>
                                 
                             </View> :

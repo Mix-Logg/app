@@ -11,6 +11,12 @@ export default function Mask(type, value){
                 maskedValue = cleanedValue.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
             }
             return maskedValue;
+        case 'amount':
+            const formattedAmount = (value / 100).toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+              });
+            return formattedAmount
         default:
             break;
     }
