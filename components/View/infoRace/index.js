@@ -8,6 +8,7 @@ import Button from "../../../util/button";
 import { useEffect, useState } from "react";
 import { io } from 'socket.io-client';
 import findOneRace from "../../../hooks/findOneRace";
+import Mask from "../../../hooks/mask";
 import ModalMid from "../../modalMid";
 import Fly from '../../../img/uniqueIcons/fly.png'
 import FindClient from "../../../hooks/findClient";
@@ -33,7 +34,7 @@ export default function InfoRace({navigation, code, setCode}){
     const [updateRaceParams, setUpdateRaceParams] = useState('')
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLproduction
+    URL = URLproduction
     const route = useRoute();
 
     useEffect(()=>{
@@ -175,7 +176,7 @@ export default function InfoRace({navigation, code, setCode}){
                             <Text style={twrnc`text-[#737373]`}>O frete possui {km} km</Text>
                         </View>
                         <View style={twrnc`flex-row items-center gap-2 px-2 border-b py-3 border-[#e5e5e5]`}>
-                            <Text style={twrnc`text-green-600 font-bold text-base`}>R$ {price} reais</Text>
+                            <Text style={twrnc`text-green-600 font-bold text-base`}>{Mask('amount',price)} reais</Text>
                         </View>
                     </View>
                 </View>

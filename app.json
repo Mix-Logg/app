@@ -3,6 +3,7 @@
     "name": "MIX",
     "slug": "MIX",
     "version": "1.0.0",
+    "runtimeVersion": "1.0.0",
     "orientation": "portrait",
     "icon": "./img/icon.png",
     "userInterfaceStyle": "light",
@@ -37,11 +38,15 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.mixtrans.MIX",
-      "config":{
+      "config": {
         "googleMaps": {
           "apiKey": "AIzaSyDwhBCpqKMzkEpXm8w-t3Ib0KDOM9vdUPs"
         }
-    }
+      },
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "favicon": "./img/favicon.png"
@@ -50,6 +55,9 @@
       "eas": {
         "projectId": "954638a6-a9ee-44c7-8b16-e0a2f88c3eb7"
       }
+    },
+    "updates": {
+      "url": "https://u.expo.dev/954638a6-a9ee-44c7-8b16-e0a2f88c3eb7"
     }
   }
 }

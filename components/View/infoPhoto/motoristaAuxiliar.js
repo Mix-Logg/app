@@ -15,7 +15,7 @@ export default function InfoPhoto({navigation}){
 
                 <View style={styles.containerListen}>
                     <Text style={styles.h2}> 
-                        Leia atentamente as instruções 
+                        Leia atentamente as instruções
                     </Text>
                 </View>
 

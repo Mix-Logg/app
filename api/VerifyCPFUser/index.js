@@ -3,7 +3,7 @@ import axios from "axios";
 export default async function VerifyCPFUser(cpf){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLproduction
+    URL = URLproduction
     
     try{
         const res = await axios.get(`${URL}user/${cpf}`)

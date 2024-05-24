@@ -27,7 +27,7 @@ import Wallet from '../components/View/wallet';
 import History from '../components/View/history';
 import InfoRace from '../components/View/infoRace';
 import Work from '../components/View/work';
-import RegisterPersonWallet from '../components/registerWallet/person';
+import RegisterWallet from '../components/registerWallet';
 export default function AllRoutes() {
 
   return (
@@ -249,7 +249,7 @@ export default function AllRoutes() {
                   headerShown: false // Exibe o cabeçalho nesta tela
               }}
             />
-            <Stack.Screen name="RegisterPerson" component={RegisterPersonWallet} 
+            <Stack.Screen name="RegisterWallet" component={RegisterWallet} 
               options={{
               title: '',  
               headerStyle: {

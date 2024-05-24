@@ -6,7 +6,7 @@ import Wallet from '../../img/icons/Wallet.png'
 import Race from '../../img/icons/box.png'
 import History from '../../img/icons/Reload.png'
 
-export default function FixBar({navigation, opition}){
+export default function FixBar({navigation, opition, color = null}){
     
     const [title,setTitle] = useState('')
     const [back,setBack] = useState('')
@@ -42,7 +42,7 @@ export default function FixBar({navigation, opition}){
                     setTitle('Todos acessos')
                     setBack('Home')
                     break
-                 case 'wallet':
+                case 'wallet':
                     setTitle('Carteira')
                     setBack('Home')
                     break
@@ -66,7 +66,7 @@ export default function FixBar({navigation, opition}){
     }, []);
 
     return(
-        <View style={[twrnc`bg-[#EFEFEF] flex flex-row items-center w-full justify-between py-1 px-5`,{height:'7%'}]}>
+        <View style={[twrnc` ${color ? 'bg-[#FF5F00]' : 'bg-[#EFEFEF]'} flex flex-row items-center w-full justify-between py-1 px-5`,{height:'7%'}]}>
            <TouchableOpacity style={twrnc`flex flex-row h-full items-center justify-start`}
             onPress={handleBack}
            >
@@ -74,10 +74,10 @@ export default function FixBar({navigation, opition}){
                         <Image 
                             source={require('../../img/icons/arrowLeft.png')}
                             resizeMode="contain"
-                            style={{ width: '100%', height:'100%', tintColor:'#7B7B7B' }}
+                            style={{ width: '100%', height:'100%', tintColor:color ? 'white' : '#7B7B7B' }}
                         />
                     </View>
-                    <Text style={twrnc`text-[#7B7B7B] text-sm font-medium`}> voltar</Text>
+                    <Text style={twrnc`${color ? 'text-white' : 'text-[#7B7B7B]'} text-sm font-medium`}> voltar</Text>
             </TouchableOpacity>
 
             <View style={twrnc`flex flex-row h-full items-center justify-end mr-2`}>
@@ -87,12 +87,12 @@ export default function FixBar({navigation, opition}){
                         : opition === 'register' ? <AntDesign name="adduser" size={18} color="#7B7B7B" /> 
                         : opition === 'changePassword' ? <Octicons name="key" size={18} color="#7B7B7B" />
                         : opition === 'allAccess' ? <MaterialCommunityIcons name="door" size={20} color="#7B7B7B" />
-                        : opition === 'wallet' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={Wallet} tintColor={'#7B7B7B'}/></View>
+                        : opition === 'wallet' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={Wallet} tintColor={color ? 'white' : 'text-[#7B7B7B]'}/></View>
                         : opition === 'race' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={Race} tintColor={'#7B7B7B'}/></View>
                         : opition === 'history' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={History} tintColor={'#7B7B7B'}/></View>
                         : opition === 'infoRace' ? <MaterialCommunityIcons name="car-info" size={20} color="#7B7B7B" />
                         : null }
-                        <Text style={twrnc`text-[#7B7B7B] text-sm font-medium`}> {title} </Text>
+                        <Text style={twrnc`${color ? 'text-white' : 'text-[#7B7B7B]'} text-sm font-medium`}> {title} </Text>
                     </View>
             </View>
         </View>

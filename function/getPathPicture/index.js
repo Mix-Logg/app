@@ -2,7 +2,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as DocumentPicker from 'expo-document-picker';
 
 
-export default async function SelectOpition(option){        
+export default async function SelectOpition(option){
     if(option === 'gallery'){
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
@@ -15,9 +15,13 @@ export default async function SelectOpition(option){
         const options = {
             allowsEditing: true, 
         };
-        const result = await ImagePicker.launchCameraAsync(options);
-        if (!result.cancelled) {
-            return result.uri
+        try{
+            const result = await ImagePicker.launchCameraAsync(options);
+            if (!result.assets.cancelled) {
+                return result.assets[0].uri
+            }
+        }catch(e){
+            console.log(e)
         }
     }
 

@@ -69,14 +69,8 @@ export default function Balance(){
                         { eye ?
                             <View className="">
                                 <View className="flex-row items-center">
-                                    <Text className="text-2xl font-extrabold text-neutral-700">{available} reais</Text>
+                                    <Text className="text-2xl font-extrabold text-neutral-700">{pending} reais</Text>
                                     
-                                </View>
-                                <View className="mt-3 flex-row items-center">
-                                <View className="p-1 bg-green-100 rounded-md opacity-60">
-                                    <FontAwesome6 name="arrow-trend-up" size={12} color="#16a34a" />
-                                        </View>
-                                    <Text className="text-xs font-medium ml-1 text-neutral-400">{pending} </Text>
                                 </View>
                                 
                             </View> :

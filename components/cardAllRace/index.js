@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AntDesign, Octicons , MaterialIcons } from "@expo/vector-icons";
 import AllStorage from "../../hooks/findAllStorage";
 import Motorcycle from "../../img/vehicle/motorcycle.png";
+import Mask from "../../hooks/mask";
 import Tour from "../../img/vehicle/tour.png";
 import Util from "../../img/vehicle/fiorino.png";
 import Van from "../../img/vehicle/van.png";
@@ -91,7 +92,7 @@ export default function CardAllRace({ navigation, id, isVisible, price, initial,
               <Text
                 style={twrnc`font-medium text-green-600 font-bold`}
               >
-                R$ {price} reais
+                {Mask('amount',price)} reais
               </Text>
             </View>
           </View>

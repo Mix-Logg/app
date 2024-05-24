@@ -16,8 +16,34 @@ export default function Mask(type, value){
                 style: 'currency',
                 currency: 'BRL'
               });
-            return formattedAmount
+            return formattedAmount;
+        case 'cpf':
+            // Máscara para CPF: xxx.xxx.xxx-xx
+            return value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        case 'firstName':
+            // Corta o primeiro nome
+            return value.split(' ')[0];
+        case 'secondName':
+            // Retorna o restante do nome (segundo nome)
+            return value.split(' ').slice(1).join(' ');
+        case 'day':
+            // Retorna o dia da data
+            return new Date(value).getDate();
+        case 'month':
+            // Retorna o mês da data
+            return new Date(value).getMonth() + 1;
+        case 'year':
+            // Retorna o ano da data
+            return new Date(value).getFullYear();
+        case 'remove':
+            return value.replace(/\D/g, '');
+        case 'amountHidden':
+            const amount = (value / 100).toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+              });
+            return amount.replace(/\d/g, '*');
         default:
-            break;
+            return value;
     }
 }

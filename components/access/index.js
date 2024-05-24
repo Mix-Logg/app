@@ -27,13 +27,10 @@ export default function Access({navigation}) {
                 break;
             case 'wallet':
                 if(walletStatus != 'inactive'){
-                    const linkWallet = await LoginWallet();
-                    Linking.openURL(linkWallet).catch((err) =>
-                        console.error('Erro ao abrir o URL: ', err)
-                    );
-                    return;
+                    navigation.navigate('Wallet')
+                    return
                 }
-                navigation.navigate('Wallet')
+                navigation.navigate('RegisterWallet')
                 break;
             case 'history':
                 navigation.navigate('History')

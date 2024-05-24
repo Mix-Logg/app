@@ -1,12 +1,12 @@
 import axios from "axios";
 
-export default async function CreatePerson(){
+export default async function CreatePerson(datePerson){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLdevelopment
+    URL = URLproduction
     
     try{
-        const res = await axios.post(`${URL}payment/person`, params)
+        const res = await axios.post(`${URL}payment/person`, datePerson)
         return res.data
     }catch(e){
         console.log(e)

@@ -29,7 +29,7 @@ export default function Map({code}) {
   const mapRef = useRef(null)
   const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
   const URLdevelopment = 'http://192.168.0.35:8080/'
-  const URL = URLproduction
+  URL = URLproduction
   
   const moveTo = async (res) => {
     const camera = await mapRef.current?.getCamera();
@@ -131,95 +131,95 @@ export default function Map({code}) {
            <Text style={twrnc`font-bold`}>Carregando rota</Text>
         </View>
       ) : (
-        // <View style={twrnc`h-full w-full`}>
-        //   <MapView
-        //     mapType="terrain"
-        //     ref={mapRef}
-        //     style={twrnc`h-full w-full`}
-        //     initialRegion={{
-        //       latitude: location.coords.latitude,
-        //       longitude: location.coords.longitude,
-        //       latitudeDelta: 0.00922,
-        //       longitudeDelta: 0.00922,
-        //     }}
-        //     provider={PROVIDER_GOOGLE}
-        //     pitchEnabled={pitchMap}
-        //     rotateEnabled={rotateMap}
-        //     zoomEnabled={zoomMap}
-        //     scrollEnabled={scrollMap}
-        //     cameraZoomRange={cameraZoom}
-        //     showsPointsOfInterest={false}
-        //     onLayout={() => {
-        //       mapRef.current.animateCamera({
-        //           pitch: 90,
-        //           heading: 70,
-        //           zoom: 25,
-        //       })
-        //     }}
-        //   >
-        //     { stepRace != null && origin != null &&
-        //       <>
-        //       <MapViewDirections
-        //         origin={origin}
-        //         destination={stepRace}
-        //         apikey={GOOGLE_MAPS_APIKEY}
-        //         strokeWidth={10}
-        //         strokeColor="#FF5F00"
-        //         precision={"high"}
-        //         mode={'DRIVING'}
-        //         renderDirections={true}
-        //         resetOnChange={true}
-        //         onReady={(result)=>{
-        //           // console.log('result ', result)
-        //         }}
-        //       />
-        //        <Marker
-        //           coordinate={{
-        //             latitude: stepRace.latitude,
-        //             longitude: stepRace.longitude,
-        //           }}
-        //           image={require("../../../img/icons/pin.png")}
-        //         /> 
-        //       </>
-        //     } 
-        //        { !modeRace ?
-        //           <Marker
-        //             coordinate={{
-        //               latitude: location.coords.latitude,
-        //               longitude: location.coords.longitude,
-        //             }}
-        //             image={require("./arrow-gps.png")}
-        //           />
-        //           :
-        //           <Marker
-        //             coordinate={{
-        //               latitude: location.coords.latitude,
-        //               longitude: location.coords.longitude,
-        //             }}
-        //             image={require("../../../img/icons/pin.png")}
-        //           />
-        //         }
-        //   </MapView> 
-        //   <View style={[twrnc`absolute p-1 rounded-xl border-[#a3a3a3] border h-12 w-12 items-center justify-center`, {top:'80%', left:'85%'}]}>
-        //       <TouchableOpacity
-        //         onPress={()=>moveTo(location)}
-        //       >
-        //         <MaterialIcons name="gps-fixed" size={28} color="#FF5F00" />
+        <View style={twrnc`h-full w-full`}>
+          <MapView
+            mapType="terrain"
+            ref={mapRef}
+            style={twrnc`h-full w-full`}
+            initialRegion={{
+              latitude: location.coords.latitude,
+              longitude: location.coords.longitude,
+              latitudeDelta: 0.00922,
+              longitudeDelta: 0.00922,
+            }}
+            provider={PROVIDER_GOOGLE}
+            pitchEnabled={pitchMap}
+            rotateEnabled={rotateMap}
+            zoomEnabled={zoomMap}
+            scrollEnabled={scrollMap}
+            cameraZoomRange={cameraZoom}
+            showsPointsOfInterest={false}
+            onLayout={() => {
+              mapRef.current.animateCamera({
+                  pitch: 90,
+                  heading: 70,
+                  zoom: 25,
+              })
+            }}
+          >
+            { stepRace != null && origin != null &&
+              <>
+              <MapViewDirections
+                origin={origin}
+                destination={stepRace}
+                apikey={GOOGLE_MAPS_APIKEY}
+                strokeWidth={10}
+                strokeColor="#FF5F00"
+                precision={"high"}
+                mode={'DRIVING'}
+                renderDirections={true}
+                resetOnChange={true}
+                onReady={(result)=>{
+                  // console.log('result ', result)
+                }}
+              />
+               <Marker
+                  coordinate={{
+                    latitude: stepRace.latitude,
+                    longitude: stepRace.longitude,
+                  }}
+                  image={require("../../../img/icons/pin.png")}
+                /> 
+              </>
+            } 
+               { !modeRace ?
+                  <Marker
+                    coordinate={{
+                      latitude: location.coords.latitude,
+                      longitude: location.coords.longitude,
+                    }}
+                    image={require("./arrow-gps.png")}
+                  />
+                  :
+                  <Marker
+                    coordinate={{
+                      latitude: location.coords.latitude,
+                      longitude: location.coords.longitude,
+                    }}
+                    image={require("../../../img/icons/pin.png")}
+                  />
+                }
+          </MapView> 
+          <View style={[twrnc`absolute p-1 rounded-xl border-[#a3a3a3] border h-12 w-12 items-center justify-center`, {top:'80%', left:'85%'}]}>
+              <TouchableOpacity
+                onPress={()=>moveTo(location)}
+              >
+                <MaterialIcons name="gps-fixed" size={28} color="#FF5F00" />
                 
-        //       </TouchableOpacity>
-        //   </View>
-        //   <View style={[twrnc`absolute p-1 rounded-xl border-[#a3a3a3] border h-12 w-12 items-center justify-center`, {top:'69%', left:'85%'}]}>
-        //       <TouchableOpacity
-        //         onPress={()=>modeDriver()}
-        //       >
-        //         { modeRace ?
-        //           <Feather name="unlock" size={24} color="#FF5F00" /> :
-        //           <Feather name="lock" size={24} color="#FF5F00" />
-        //         }
-        //       </TouchableOpacity>
-        //   </View>
-        // </View>
-        <RoutesButtons code={code}/>
+              </TouchableOpacity>
+          </View>
+          <View style={[twrnc`absolute p-1 rounded-xl border-[#a3a3a3] border h-12 w-12 items-center justify-center`, {top:'69%', left:'85%'}]}>
+              <TouchableOpacity
+                onPress={()=>modeDriver()}
+              >
+                { modeRace ?
+                  <Feather name="unlock" size={24} color="#FF5F00" /> :
+                  <Feather name="lock" size={24} color="#FF5F00" />
+                }
+              </TouchableOpacity>
+          </View>
+        </View>
+        // <RoutesButtons code={code}/>
       )}
     </View>
     

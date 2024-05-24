@@ -6,7 +6,7 @@ import { useState } from "react";
 import Button from '../../util/button'
 import PopUp from "../modal";
 import { MaterialIcons } from '@expo/vector-icons';
-export default function CadasterPlate({am, navigation, setModalBottom}){
+export default function CadasterPlate({am, navigation, setModalBottom, vehicle}){
     const [plate, setPlate]= useState('')
     const [popUp, setPopUp] = useState('');
 
@@ -21,7 +21,7 @@ export default function CadasterPlate({am, navigation, setModalBottom}){
                 am:am,
             },
             vehicle:{
-                typeVehicle: am,
+                typeVehicle: am == 'driver' ? vehicle : am,
                 plate:plate
             }
         }
@@ -54,8 +54,7 @@ export default function CadasterPlate({am, navigation, setModalBottom}){
                         placeholder="Placa do veículo"
                     />
                 </View>
-                <View style={twrnc`items-end
-                `}>
+                <View style={twrnc`items-end`}>
                     <Button handle={handleContinue}>
                         <View style={twrnc`rounded-full p-2 bg-[#FF5F00]`}>
                             <MaterialIcons name="keyboard-arrow-right" size={28} color="white" />

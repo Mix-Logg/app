@@ -15,11 +15,25 @@ import CadasterPlate from "../../../cadasterPlate";
 export default function RegisterCarProfile({navigation}){
     const [am, setAm] = useState(false);
     const [card, setCard] = useState(false);
+    const [vehicle, setVehicle] = useState('')
     const [modalBottom, setModalBottom] = useState('');
     
 
     const handleCard = async (cardType) =>{
         let am
+        switch (cardType) {
+            case 'util':
+                setVehicle('util')
+                break;
+            case 'van':
+                setVehicle('van')
+                break;
+            case 'vuc':
+                setVehicle('vuc')
+                break;
+            default:
+                break;
+        }
         if(cardType === 'auxiliary'){
             const param = {
                 user:{
@@ -37,9 +51,10 @@ export default function RegisterCarProfile({navigation}){
             am = 'tour';
         }
         if( cardType === 'util' || cardType === 'van' || cardType === 'vuc'){
+            
             am = 'driver';
         }
-        setModalBottom(<CadasterPlate am={am} navigation={navigation} setModalBottom={setModalBottom}/>)
+        setModalBottom(<CadasterPlate am={am} vehicle={vehicle} navigation={navigation} setModalBottom={setModalBottom}/>)
         return;
     }
     
@@ -49,7 +64,7 @@ export default function RegisterCarProfile({navigation}){
             {modalBottom}
             <ScrollView style={twrnc`bg-white`}>
                     <View style={twrnc`p-5 gap-5`}>
-                        <Pressable style={twrnc`bg-[#fafafa] h-25 rounded-lg p-3 flex-row gap-3 border border-white     ${ card === 'auxiliary' ? 'border-[#FF5F00]' : ''}`}
+                        <Pressable style={twrnc`bg-[#fafafa] h-25 rounded-lg p-3 flex-row gap-3 border border-white ${ card === 'auxiliary' ? 'border-[#FF5F00]' : ''}`}
                             onPress={()=>handleCard('auxiliary')}
                         >
                             <View style={twrnc`w-2/6 p-2 pr-2 justify-center items-center `}>

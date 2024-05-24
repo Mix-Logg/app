@@ -3,7 +3,7 @@ import axios from 'axios';
 export default async function uploadFile(path, nameFile, functionn ) {
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLproduction;
+    URL = URLproduction;
     let uuid = await AsyncStorage.getItem('uuid');
     let am = await AsyncStorage.getItem('am');
     const extend = path.split('.')[3];

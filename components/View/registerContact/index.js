@@ -12,7 +12,7 @@ import Btn from "../../btn";
 export default function RegisterContact({navigation}){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLproduction
+    URL = URLproduction
     
     const [checkPermission, setCheckPermission] = useState(false);
     const [name, setName] = useState('');
@@ -91,7 +91,7 @@ export default function RegisterContact({navigation}){
         route.params.user.email = email
         route.params.user.phone = phoneNumber
         console.log(route.params)
-        navigation.navigate ('RegisterAddress',route.params)
+        navigation.navigate ('InfoPhotoAuMo',route.params)
     }
     
     return(
