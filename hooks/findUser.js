@@ -6,7 +6,7 @@ export default async function findUser(){
     const uuid = await AsyncStorage.getItem('uuid');
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    URL = URLproduction
+    const URL = URLproduction
 
     const res = await axios.get(`${URL}user/${uuid}/${am}`)
     return res.data;

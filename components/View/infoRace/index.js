@@ -34,7 +34,7 @@ export default function InfoRace({navigation, code, setCode}){
     const [updateRaceParams, setUpdateRaceParams] = useState('')
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    URL = URLproduction
+    const URL = URLproduction
     const route = useRoute();
 
     useEffect(()=>{
@@ -152,7 +152,7 @@ export default function InfoRace({navigation, code, setCode}){
             { km ?
                 <ScrollView style={twrnc`bg-white h-full`}>
                 <View style={twrnc`px-5 py-5 gap-2`}>
-                    <Text style={twrnc`text-2xl font-bold`}>Informações do frete</Text>
+                    <Text style={twrnc`text-2xl font-bold text-[#FF5F00]`}>Informações do frete</Text>
                 </View>
                 <View style={twrnc`mt-10 px-5`}>
                     <View style={twrnc` px-2 py-3 gap-3`}>

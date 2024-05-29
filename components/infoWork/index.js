@@ -39,7 +39,7 @@ export default function InfoWork({code, setCode, setInfo }) {
   return (
     <Modal>
       <ScrollView>
-        {destination != false ? (
+        {destination ? (
           <View>
             {!dropDownDetails ? (
               <InfoWorkHome setInfo={setInfo} setDropDownDetails={setDropDownDetails} dropDownDetails={dropDownDetails} code={code} setCode={setCode} />
@@ -49,7 +49,7 @@ export default function InfoWork({code, setCode, setInfo }) {
           </View>
         ) : (
           <View style={twrnc`h-full mt-5 p-10 items-center gap-2`}>
-            <Text style={twrnc`text-2xl`}>Carregando informações</Text>
+            <Text className="font-bold text-primary" style={twrnc`text-2xl`}>Carregando informações</Text>
             <ActivityIndicator size="large" color="#FF5F00" />
           </View>
         )}

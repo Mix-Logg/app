@@ -18,7 +18,7 @@ import ConfirmCodeSuccessful from "../confirmCodeWork";
 export default function InfoWorkHome({dropDownDetails, setDropDownDetails, code, setCode, setInfo, locationDelivery}) {
   const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
   const URLdevelopment = 'http://192.168.0.35:8080/'
-  URL = URLproduction
+  const URL = URLproduction
   const navigation = useNavigation()
   const input1Ref = useRef(null);
   const input2Ref = useRef(null);
@@ -128,7 +128,7 @@ export default function InfoWorkHome({dropDownDetails, setDropDownDetails, code,
       {modalCorrectCode}
       <View style={twrnc`h-full mt-5 gap-10`}>
         <View>
-          <Text style={twrnc`text-2xl font-bold`}>Frete</Text>
+          <Text className="text-primary" style={twrnc`text-2xl font-bold `}>Frete</Text>
         </View>
         <View style={twrnc`flex-row justify-center`}>
           <View style={twrnc`gap-5 w-full`}>
@@ -219,15 +219,16 @@ export default function InfoWorkHome({dropDownDetails, setDropDownDetails, code,
               </View>
           </View>
         </View>
-        <TouchableOpacity
-          style={twrnc`flex-row justify-between items-end mt-10`}
-          onPress={() => handleVisibleDetails()}
-        >
+        <View style={twrnc`flex-row justify-between items-end mt-10`}>
           <View style={twrnc``}>
-            <Text style={twrnc`text-xl `}>Detalhes avançados</Text>
+            <Text className='font-light' style={twrnc`text-2xl`}>Detalhes avançados</Text>
           </View>
-          <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
-        </TouchableOpacity>
+          <TouchableOpacity className="p-1 bg-primary rounded-lg" 
+            onPress={() => handleVisibleDetails()}
+          >
+            <MaterialIcons name="keyboard-arrow-right" size={24} color="#FFFFFF" />
+          </TouchableOpacity>
+        </View>
       </View>
     </KeyboardAwareScrollView>
   );

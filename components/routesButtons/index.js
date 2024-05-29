@@ -57,7 +57,7 @@ export default function RoutesButtons({code}){
                </View>
             </View>
             <View className="bg-white px-5 py-2">
-                <Text className="text-lg text-neutral-400">
+                <Text className="text-lg font-light text-neutral-400">
                     Nosso mapa está em desenvolvimento, recomendamos utilizar o Waze ou Google para chegar ao local.
                 </Text>
                 <Text className="justify-end font-bold">
@@ -66,8 +66,8 @@ export default function RoutesButtons({code}){
             </View>
             <View className="p-5 gap-5">
                 <View className=" flex-row items-center">
-                        <Octicons name="location" size={20} color="#FF5F00" />
-                        <Text className="ml-2 w-5/6">{route}</Text>
+                    <Octicons name="location" size={20} color="#FF5F00" />
+                    <Text className="ml-2 w-5/6">{route}</Text>
                 </View>
                 <View>
                     <TouchableOpacity
@@ -94,7 +94,6 @@ export default function RoutesButtons({code}){
                     </TouchableOpacity>
                 </View>
             </View>
-
         </View>
     )
 }

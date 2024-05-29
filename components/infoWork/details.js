@@ -64,13 +64,16 @@ export default function InfoWorkDetails({
   return (
     <View style={twrnc`h-full mt-5 gap-8`}>
       {modalCancel}
-      <TouchableOpacity
+      <View
         style={twrnc`items-center flex-row gap-3`}
-        onPress={() => handleVisibleDetails()}
       >
-        <MaterialIcons name="keyboard-arrow-left" size={27} color="black" />
-        <Text style={twrnc`text-2xl font-bold`}> Detalhes do frete </Text>
-      </TouchableOpacity>
+        <TouchableOpacity className="rounded-lg bg-primary p-1"
+          onPress={() => handleVisibleDetails()}
+        >
+          <MaterialIcons name="keyboard-arrow-left" size={27} color={'#FFFFFF'} />
+        </TouchableOpacity>
+        <Text style={twrnc`text-2xl font-bold text-[#FF5F00]`}> Detalhes do frete </Text>
+      </View>
       <View style={twrnc`gap-8`}>
         <View style={twrnc`gap-1`}>
           <TouchableOpacity
@@ -79,9 +82,9 @@ export default function InfoWorkDetails({
           >
             <View style={twrnc`flex-row gap-4 items-center`}>
               <Octicons name="location" size={24} color="#FF5F00" />
-              <Text style={twrnc`capitalize font-medium w-6/8`}>{origin}</Text>
+              <Text style={twrnc`capitalize text-neutral-500 font-medium w-6/8`}>{origin}</Text>
             </View>
-            <Ionicons name="copy-outline" size={20} color="black" />
+            <Ionicons name="copy-outline" size={20} color="#FF5F00" />
           </TouchableOpacity>
           <View style={twrnc`rounded-lg ml-2 h-5 w-1 bg-[#FF5F00]`}></View>
           <TouchableOpacity
@@ -90,11 +93,11 @@ export default function InfoWorkDetails({
           >
             <View style={twrnc`flex-row gap-3 items-center`}>
               <Feather name="flag" size={24} color="#FF5F00" />
-              <Text style={twrnc`capitalize font-medium w-6/8`}>
+              <Text style={twrnc`capitalize text-neutral-500 font-medium w-6/8`}>
                 {destination}
               </Text>
             </View>
-            <Ionicons name="copy-outline" size={20} color="black" />
+            <Ionicons name="copy-outline" size={20} color="#FF5F00" />
           </TouchableOpacity>
           {copied && (
             <Text style={twrnc`text-xs font-medium text-green-600`}>
@@ -107,7 +110,7 @@ export default function InfoWorkDetails({
             name="user"
             size={24}
             color="black"
-            style={twrnc`text-neutral-500`}
+            style={twrnc`text-[#FF5F00]`}
           />
           <Text style={twrnc`text-neutral-500 font-medium`}> {name} </Text>
         </View>
@@ -116,12 +119,12 @@ export default function InfoWorkDetails({
           onPress={() => handlePhone(phone)}
         >
           <View style={twrnc`flex-row gap-3 items-center`}>
-            <AntDesign name="phone" size={24} style={twrnc`text-neutral-500`} />
+            <AntDesign name="phone" size={24} style={twrnc`text-[#FF5F00]`} />
             <Text style={twrnc`font-medium text-neutral-500`}>
               {Mask("phone", phone)}
             </Text>
           </View>
-          <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+          <MaterialIcons name="keyboard-arrow-right" size={24} color="#FF5F00" />
         </TouchableOpacity>
         <TouchableOpacity
           style={twrnc`flex-row items-end items-center justify-between`}
@@ -129,13 +132,13 @@ export default function InfoWorkDetails({
         >
           <View style={twrnc`flex-row gap-3 items-center`}>
             <AntDesign name="customerservice" size={24} color="#FF5F00" />
-            <Text style={twrnc`font-medium text-[#FF5F00]`}> Ajuda </Text>
+            <Text style={twrnc`font-medium text-neutral-500`}> Ajuda </Text>
           </View>
-          <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
+          <MaterialIcons name="keyboard-arrow-right" size={24} color="#FF5F00" />
         </TouchableOpacity>
         <View style={twrnc`flex-row gap-3 items-center`}>
           <Text style={twrnc`text-base font-bold text-green-600`}>
-            +R$ {price} reais
+            + {Mask('amount',price)} reais
           </Text>
         </View>
       </View>

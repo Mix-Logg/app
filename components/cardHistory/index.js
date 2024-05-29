@@ -3,6 +3,7 @@ import { AntDesign, Ionicons, MaterialIcons, MaterialCommunityIcons } from "@exp
 import InfoHistory from "../infoHistory";
 import AllStorage from "../../hooks/findAllStorage";
 import twrnc from "twrnc";
+import Mask from "../../hooks/mask";
 import Motorcycle from "../../img/vehicle/motorcycle.png";
 import Tour from "../../img/vehicle/tour.png";
 import Util from "../../img/vehicle/fiorino.png";
@@ -54,14 +55,12 @@ export default function CardHistory({price, raceId, km}){
       >
         <View style={twrnc`flex-row gap-3`}>
           <View style={twrnc`items-center justify-center px-2`}>
-            <View
-              style={twrnc`h-18 w-18 border border-[#a3a3a3] bg-[#d4d4d4] p-4 rounded-xl`}
+            <View className='h-16 w-16 border border-[#a3a3a3] bg-[#d4d4d4] rounded-xl'
             >
              { picture &&
               <Image
                   style={twrnc`w-full h-full`}
                   source={picture}
-                  resizeMode={"contain"}
                 />
               }
             </View>
@@ -70,7 +69,7 @@ export default function CardHistory({price, raceId, km}){
             <View style={twrnc`flex-row gap-2 items-center`}>
               <MaterialCommunityIcons name="history" size={20} color="#FF5F00" />
               <View>
-                <Text style={twrnc` text-[#191919] `}>Você rodou {km} km</Text>
+                <Text className='font-light' style={twrnc` text-[#191919]`}>Você rodou {km} km</Text>
               </View>
             </View>
             <View style={twrnc`flex-row gap-2`}>
@@ -78,7 +77,7 @@ export default function CardHistory({price, raceId, km}){
                 <Text
                   style={twrnc`font-medium text-green-600 font-bold`}
                 >
-                  R$ {price} reais
+                  {Mask('amount', price)} reais
                 </Text>
               </View>
             </View>

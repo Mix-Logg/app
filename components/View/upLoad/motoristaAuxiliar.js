@@ -45,7 +45,7 @@ export default function UpLoadEntregador({navigation}){
 
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    URL = URLproduction
+    const URL = URLproduction
     
     
     useEffect(() => {
@@ -227,7 +227,7 @@ export default function UpLoadEntregador({navigation}){
     <>
         {popUp}
         {loading === false ? 
-        < >
+        <>
             <FixBar navigation={navigation} opition={'register'} />
             <ScrollView style={twrnc`bg-white`} >
                 {modal}

@@ -59,7 +59,8 @@ export default function CardAllRace({ navigation, id, isVisible, price, initial,
       <View style={twrnc`flex-row gap-3`}>
         <View style={twrnc`items-center justify-center px-2`}>
           <View
-            style={twrnc`h-18 w-18 border border-[#a3a3a3] bg-[#d4d4d4] p-4 rounded-xl`}
+            className='border border-neutral-300 bg-neutral-200 rounded-xl h-16 w-16'
+            // style={twrnc`h-18 w-18 border border-[#a3a3a3] bg-[#d4d4d4] p-4 rounded-xl`}
           >
             {picture != null &&
               <Image
@@ -84,7 +85,7 @@ export default function CardAllRace({ navigation, id, isVisible, price, initial,
           <View style={twrnc`flex-row gap-2 items-center`}>
             <Octicons name="location" size={18} color="#FF5F00" />
             <View>
-              <Text style={twrnc` text-neutral-500 font-bold`}>O frete possui {km}km</Text>
+              <Text style={twrnc` text-neutral-500 font-bold font-light`}>Frete possui {km}km</Text>
             </View>
           </View>
           <View style={twrnc`flex-row gap-2`}>
