@@ -55,7 +55,7 @@ export default function CardHistory({price, raceId, km}){
       >
         <View style={twrnc`flex-row gap-3`}>
           <View style={twrnc`items-center justify-center px-2`}>
-            <View className='h-16 w-16 border border-[#a3a3a3] bg-[#d4d4d4] rounded-xl'
+            <View className='h-16 w-16 border border-neutral-300 bg-neutral-200 rounded-xl'
             >
              { picture &&
               <Image

@@ -1,5 +1,5 @@
 import { View, Text, Pressable, Linking } from "react-native"
-import { AntDesign, MaterialIcons, Ionicons, Feather, Octicons, SimpleLineIcons } from '@expo/vector-icons';
+import { AntDesign, Feather, Octicons, MaterialCommunityIcons  } from '@expo/vector-icons';
 import twrnc from "twrnc"
 import ModalBottom from "../modalBottom"
 import Wating from "../wating";
@@ -88,11 +88,11 @@ export default function InfoHistory({raceId}){
                             </View>
                             <View className={`border-b border-[#d4d4d4] flex flex-col  items-start h-fit pb-4`}>
                                 <View style={twrnc`flex-row items-end gap-3 px-1 items-center mb-3`}>
-                                    <AntDesign name="enviromento" size={22} color="#ff5f00" />
+                                    <Octicons name="location" size={21} color="#FF5F00" />
                                     <Text style={twrnc`text-[#737373] font-medium w-5/6 `}>{dateRace.initial}</Text>
                                 </View>
                                 <View style={twrnc`flex-row items-end gap-3 px-1 items-center mb-2`}>
-                                    <AntDesign name="flag" size={21} color="#FF5F00" />
+                                    <Feather name="flag" size={20} color="#FF5F00" />
                                     <Text style={twrnc`text-[#737373] font-medium w-5/6`}>{dateRace.finish}</Text>
                                 </View>
                             </View>
@@ -101,15 +101,16 @@ export default function InfoHistory({raceId}){
                             </View>
                         </View>
                     </View>
-                    <Pressable style={twrnc`flex-row items-end items-center justify-between`}
+                    
+                    <Pressable className={`flex-row items-center justify-center w-full h-fit mt-10`}
                         onPress={()=>handleHelp()}
                     >
-                        <View style={twrnc`flex-row gap-3`}>
-                            <AntDesign name="customerservice" size={24} color="#FF5F00" />
-                            <Text style={twrnc`font-bold`}>Suporte</Text>
+                        <View className={`flex-row gap-4`}>
+                            <MaterialCommunityIcons name="headset" size={24} color={'#a3a3a3'}  />
+                            <Text className='font-bold text-neutral-400' >Pedir ajuda com este frete</Text>
                         </View>
-                        <MaterialIcons name="keyboard-arrow-right" size={24} color="black" />
                     </Pressable>
+
                 </View> 
                 :
                 <Wating/>

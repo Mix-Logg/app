@@ -166,7 +166,7 @@ export default function Map({code}) {
         //       <MapViewDirections
         //         origin={origin}
         //         destination={stepRace}
-        //         apikey={GOOGLE_MAPS_APIKEY}
+        //         apikey={'AIzaSyBgk9tXTtO49lHbp3Nnd4UYeq9d3VBMFWQ'}
         //         strokeWidth={10}
         //         strokeColor="#FF5F00"
         //         precision={"high"}
