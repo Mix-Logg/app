@@ -13,7 +13,7 @@ import FixBar from "../../fixBar";
 import PopUp from "../../modal";
 import RegisterUser from "../../../hooks/registerUser";
 import { AntDesign } from '@expo/vector-icons';
-
+import GetPath from "../../../function/getPathPicture"
 export default function UpLoadDocCar({navigation}){
     const route = useRoute();
     const [loading, setLoading] = useState(false);
@@ -97,45 +97,38 @@ export default function UpLoadDocCar({navigation}){
 
     const SelectOpition = async (escolha) =>{        
         if(escolha === 'galeria'){
-            let result = await ImagePicker.launchImageLibraryAsync({
-                allowsEditing: true,
-                quality: 1,
-            });
-            // console.log(result.assets[0].uri)
+            const path = await GetPath('gallery');
             if(cpfVisible){
-                setCpfDonoImage(result.assets[0].uri)
+                setCpfDonoImage(path)
             }else if(clvVisible){
-                setClvImage(result.assets[0].uri)
+                setClvImage(path)
             }else if(anttVisible){
-                setAnttImage(result.assets[0].uri) 
+                setAnttImage(path) 
             }else if(cnpjVisible){
-                setCnpjImage(result.assets[0].uri)
+                setCnpjImage(path)
             }else if(inscicaoEstadualVisible){
-                setInscricaoEstadualImage(result.assets[0].uri)
+                setInscricaoEstadualImage(path)
             }else if(residenciaVisible){
-                setResidenciaDonoImage(result.assets[0].uri)
+                setResidenciaDonoImage(path)
             }
         }
 
         if(escolha === 'camera'){
-            const options = {
-                allowsEditing: true, // Permite a edição da imagem (opcional)
-            };
-            const result = await ImagePicker.launchCameraAsync(options);
-            if (!result.cancelled) {
+            const path = await GetPath('camera');
+            if (path) {
                 // console.log('Caminho da imagem capturada: ', result);
                 if(cpfVisible){
-                    setCpfDonoImage(result.uri)
+                    setCpfDonoImage(path)
                 }else if(clvVisible){
-                    setClvImage(result.uri)
+                    setClvImage(path)
                 }else if(anttVisible){
-                    setAnttImage(result.uri) 
+                    setAnttImage(path) 
                 }else if(cnpjVisible){
-                    setCnpjImage(result.uri)
+                    setCnpjImage(path)
                 }else if(inscicaoEstadualVisible){
-                    setInscricaoEstadualImage(result.uri)
+                    setInscricaoEstadualImage(path)
                 }else if(residenciaVisible){
-                    setResidenciaDonoImage(result.uri)
+                    setResidenciaDonoImage(path)
                 }
             }
         }
@@ -659,7 +652,8 @@ export default function UpLoadDocCar({navigation}){
 
 const styles = StyleSheet.create({
     container:{
-        padding:16
+        padding:16,
+        backgroundColor:'white'
     },
     h1:{
         fontFamily:'Roboto_500Medium',

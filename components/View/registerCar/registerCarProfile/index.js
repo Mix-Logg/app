@@ -15,24 +15,30 @@ import CadasterPlate from "../../../cadasterPlate";
 export default function RegisterCarProfile({navigation}){
     const [am, setAm] = useState(false);
     const [card, setCard] = useState(false);
-    const [vehicle, setVehicle] = useState('')
     const [modalBottom, setModalBottom] = useState('');
     
 
     const handleCard = async (cardType) =>{
         let am
+        let vehicle
         switch (cardType) {
             case 'util':
-                setVehicle('util')
+                vehicle = 'util'
                 break;
             case 'van':
-                setVehicle('van')
+                vehicle = 'van'
                 break;
             case 'vuc':
-                setVehicle('vuc')
+                vehicle = 'vuc'
+                break;
+            case 'tour':
+                vehicle = 'tour'
+                break;
+            case 'motorcycle':
+                vehicle = 'motorcycle'
                 break;
             default:
-                break;
+                break
         }
         if(cardType === 'auxiliary'){
             const param = {
