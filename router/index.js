@@ -3,6 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 const Stack = createNativeStackNavigator();
 
 //IMPORT VIEWS
+import Extract from '../components/View/extract';
 import Login from '../components/View/login'
 import Register from '../components/View/whoAreYou'
 import RegisterContact from '../components/View/registerContact';
@@ -28,6 +29,7 @@ import History from '../components/View/history';
 import InfoRace from '../components/View/infoRace';
 import Work from '../components/View/work';
 import RegisterWallet from '../components/registerWallet';
+import ExtractDetails from '../components/View/extractDetails';
 export default function AllRoutes() {
 
   return (
@@ -250,6 +252,24 @@ export default function AllRoutes() {
               }}
             />
             <Stack.Screen name="RegisterWallet" component={RegisterWallet} 
+              options={{
+              title: '',  
+              headerStyle: {
+                  backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                },
+                headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
+            <Stack.Screen name="Extract" component={Extract} 
+              options={{
+              title: '',  
+              headerStyle: {
+                  backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                },
+                headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
+            <Stack.Screen name="ExtractDetails" component={ExtractDetails} 
               options={{
               title: '',  
               headerStyle: {

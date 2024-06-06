@@ -3,9 +3,9 @@ import { Ionicons, MaterialIcons   } from '@expo/vector-icons';
 import { FontAwesome6 } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
 import twrnc from "twrnc"
-import FindBalance from "../../hooks/findBalance";
 import Coin from '../../img/icons/coin.png'
 import Mask from "../../hooks/mask";
+import FindUser from "../../hooks/findUser";
 export default function Balance(){
     const [eye , setEye]=useState(false)
     const [available , setAvailable]=useState(false)
@@ -17,9 +17,9 @@ export default function Balance(){
 
     useEffect(()=>{
         const fetchData = async () => {
-            const balance  = await FindBalance();
-            setAvailable(Mask('amount',balance.available[0].amount))
-            setPending(Mask('amount',balance.pending[0].amount))
+            const user  = await FindUser();
+            setAvailable(Mask('amount',user.amount))
+            setPending(Mask('amount',user.amount))
         }
         fetchData()
     },[])

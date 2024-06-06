@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MaterialCommunityIcons, AntDesign } from '@expo/vector-icons';
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
 import { FontAwesome6 } from '@expo/vector-icons';
 import ToastManager, { Toast } from 'toastify-react-native'
 import MaskInput,{ Masks } from 'react-native-mask-input';
@@ -13,8 +13,14 @@ import CreatePaymentDelivery from "../../hooks/createPaymentDelivery";
 import SuccessFullPix from "../successPix";
 import FindUser from "../../hooks/findUser";
 import UpdateUser from "../../hooks/updateUser";
+import Toastify from "../toastify";
 export default function ModalAdvance(){
+    const [showTreatment, setShowTreatment] = useState(false)
+    const [infoTreatment, setInfoTreatment] = useState('')
     const [key, setKey] = useState('')
+    const [create_at, setCreate_at] = useState('')
+    const [idTransaction, setIdTransaction] = useState('')
+    const [loader, setLoader] = useState(false)
     const [tax, setTax] = useState(0)
     const [taxPix, setTaxPix] = useState(0)
     const [taxFull, setTaxFull] = useState(0)
@@ -32,36 +38,42 @@ export default function ModalAdvance(){
     const [availableQuantity, setAvailableQuantity] = useState(false)
 
     const handleRetrieve = async () => {
-        if(amountRetrive < 1500){
-            setWarningValue(true)
-            setTimeout(() => {
-                setWarningValue(false)
-            }, 3000);
-            return 
-        }
-        if(type == ''){
-            setWarningType(true)
-            setTimeout(() => {
-                setWarningType(false)
-            }, 3000);
-            return 
-        }
-        if(key == ''){
-            SetWarningKey(true)
-            setTimeout(() => {
-                SetWarningKey(false)
-            }, 3000);
-            return 
-        }
         try{
+            setLoader(true)
+            if(availableQuantity){
+                return
+            }
+            if(amountRetrive < 1500){
+                setWarningValue(true)
+                setTimeout(() => {
+                    setWarningValue(false)
+                }, 3000);
+                return 
+            }
+            if(type == ''){
+                setWarningType(true)
+                setTimeout(() => {
+                    setWarningType(false)
+                }, 3000);
+                return 
+            }
+            if(key == ''){
+                SetWarningKey(true)
+                setTimeout(() => {
+                    SetWarningKey(false)
+                }, 3000);
+                return 
+            }
             const params_advance = {
               value: amountRetrive - tax,
               key : key,
               type: type
             }
             const response = await RetrievePayment(params_advance);
-            if(false){
+            if(true){
+                const user = await FindUser();
                 const params_paymentDelivery = {
+                    id_user : user.id,
                     taxFull : taxFull,
                     taxPix  : taxPix,
                     tax     : tax,
@@ -71,7 +83,9 @@ export default function ModalAdvance(){
                 }
                 const response = await CreatePaymentDelivery(params_paymentDelivery);
                 if(response.status == 201){
-                    const user = await FindUser();
+                    console.log(response)
+                    setIdTransaction(response.id)
+                    setCreate_at(response.create)
                     const params_updateUser = {
                         amount: parseInt(amount) - parseInt(amountRetrive)
                     }
@@ -81,10 +95,15 @@ export default function ModalAdvance(){
                     }
                     return;
                 }
+                setInfoError(true)
             }
-            
+            setShowTreatment(true)
+            setInfoTreatment('Algo deu errado, confirme seus dados .')
         }catch(error){
-            Toast.error('Algo deu errado, confirme os dados.')
+            setShowTreatment(true)
+            setInfoTreatment('Algo deu errado, tente mais tarde.')
+        }finally{
+            setLoader(false)
         }
     }
 
@@ -150,6 +169,7 @@ export default function ModalAdvance(){
                 <ScrollView>
                     {!success?
                         <>
+                            <Toastify setIsVisible={setShowTreatment} isVisible={showTreatment} option={'danger'} info={infoTreatment} />
                             <View className="flex w-full justify-center items-center gap-2">
                                 <Text className="font-bold text-xs text-primary">
                                     Dísponivel para saque <FontAwesome6 name="arrow-trend-up" size={12} />
@@ -175,6 +195,14 @@ export default function ModalAdvance(){
                                         <AntDesign name="warning" size={13} color="#ef4444" />
                                         <Text className='font-medium text-red-500 ml-1'> 
                                             Valor de regaste mínimo de R$ 15,00
+                                        </Text>
+                                        </View>
+                                    }
+                                    { availableQuantity &&
+                                        <View className='flex flex-row items-center'>
+                                        <AntDesign name="warning" size={13} color="#ef4444" />
+                                        <Text className='font-medium text-red-500 ml-1'> 
+                                            Valor dísponivel {amountMask}
                                         </Text>
                                         </View>
                                     }
@@ -258,17 +286,26 @@ export default function ModalAdvance(){
                                     </View>
                                 </View>
                                 <View className='w-full flex mt-5'>
-                                    <TouchableOpacity className={`bg-primary h-10 items-center flex justify-center rounded-lg ${availableQuantity && 'opacity-70'}`}
+                                    <TouchableOpacity className={`bg-primary h-10 items-center flex justify-center rounded-lg ${(loader || availableQuantity) && 'opacity-70'}`}
                                         onPress={handleRetrieve}
                                     >
-                                        <Text className='text-lg text-white font-bold'>Resgatar</Text>
+                                        { loader ?
+                                            <ActivityIndicator
+                                                size={25}
+                                                color={'white'}
+                                            />
+                                            :
+                                            <Text className='text-lg text-white font-bold'>
+                                                Resgatar
+                                            </Text>
+                                        }
                                     </TouchableOpacity>  
                                 </View>
                             </View>
                         </>
                     :
                         <>
-                        <SuccessFullPix amount={amountRetrive} tax={tax} taxPix={taxPix} taxFull={taxFull} pix={key} />
+                            <SuccessFullPix create_at={create_at} amount={amountRetrive} tax={tax} taxPix={taxPix} taxFull={taxFull} pix={key} id={idTransaction} />
                         </>
                     }
                 </ScrollView>

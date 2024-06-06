@@ -3,7 +3,7 @@ import { View, Text, Image } from 'react-native';
 import Logo from '../../img/logo/logoAsa.png'
 import Mask from '../../hooks/mask';
 import { useEffect, useState } from 'react';
-export default function SuccessFullPix({amount, tax, taxPix, taxFull, pix}){
+export default function SuccessFullPix({amount, tax, taxPix, taxFull, pix, id, create_at}){
     const [date, setDate] = useState('')
     
     const formatDate = (dataHoraISO) => {
@@ -35,14 +35,13 @@ export default function SuccessFullPix({amount, tax, taxPix, taxFull, pix}){
     }
 
     useEffect(()=>{
-        const agora = new Date();
-        const horarioBrasilia = new Date(agora.getTime() - (3 * 60 * 60 * 1000));
-        setDate(formatDate(horarioBrasilia.toISOString()))
+        console.log(create_at)
+        setDate(formatDate(create_at))
     },[])
 
     return(
         <View>
-             <View className='flex flex-row'>
+            <View className='flex flex-row'>
                         <View className='w-7 h-7 mr-3'>
                             <Image
                                 source={Logo}
@@ -50,11 +49,11 @@ export default function SuccessFullPix({amount, tax, taxPix, taxFull, pix}){
                                 className='w-full h-full'
                             />
                         </View>
-                    </View>
+            </View>
             <View className='flex justify-center items-center'>
                 <FontAwesome6 name="circle-check" size={65} color="#FF5F00" />
                 <View className='mt-8 flex items-center justify-center'>
-                    <Text className='font-bold text-base'>Operação #1</Text>
+                    <Text className='font-bold text-base'>Operação #{id}</Text>
                     <Text className='font-bold text-base'>concluída com sucesso</Text>
                 </View> 
                 <View className='bg-neutral-100 flex flex-row rounded-lg mt-5 py-3 w-full items-center justify-center'>
@@ -78,7 +77,13 @@ export default function SuccessFullPix({amount, tax, taxPix, taxFull, pix}){
                 <View className=' border-b border-secondary flex flex-row justify-evenly py-4 '>
                     <View className='w-1/2 items-center justify-center'>
                         <Text className='text-xs text-secondary font-semibold'>Taxa Adiantamento</Text>
-                        <Text className="font-bold text-lg">{Mask('amount',amount / tax)}</Text>
+                        <Text className="font-bold text-lg">
+                            { tax != null ? 
+                            Mask('amount',amount / tax)
+                            :
+                            Mask('amount', 0)
+                            }
+                        </Text>
                     </View>
                     <View className='w-1/2 items-center justify-center'>
                         <Text className='text-xs text-secondary font-semibold'>Taxa pix</Text>
@@ -86,9 +91,10 @@ export default function SuccessFullPix({amount, tax, taxPix, taxFull, pix}){
                     </View>
                 </View>
                 <View className='items-center justify-center mt-5'>
-                        <Text className='text-xs text-secondary font-semibold'>Operação realizada em</Text>
-                        <Text className="font-bold text-lg">{date}</Text>
+                    <Text className='text-xs text-secondary font-semibold'>Operação realizada em</Text>
+                    <Text className="font-bold text-lg">{date}</Text>
                 </View>
+                <Text className="mt-7 text-primary font-bold text-xs">Mix Serviços Logístico</Text>
             </View>
         </View>
     )

@@ -16,7 +16,6 @@ import Banner from '../../banner';
 import GetDelivery from '../../../api/getDelivery';
 import findUser from '../../../hooks/findUser';
 import AllStorage from '../../../hooks/findAllStorage';
-import RegisterWallet from '../../../hooks/createWalletStriper';
 import UpdateUser from '../../../hooks/updateUser';
 import LocationDenied from '../../locationDenied';
 import GetVehicle from '../../../api/getVehicle';

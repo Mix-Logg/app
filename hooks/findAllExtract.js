@@ -1,12 +1,11 @@
 import axios from "axios";
-
-export default async function CreatePerson(datePerson){
+export default async function FindAllExtract(id){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLproduction
-    
+    const URL = URLdevelopment
+
     try{
-        const res = await axios.post(`${URL}payment/person`, datePerson)
+        const res = await axios.get(`${URL}payment-delivery/${id}`)
         return res.data
     }catch(e){
         console.log(e)

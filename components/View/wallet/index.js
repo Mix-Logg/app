@@ -7,7 +7,9 @@ import RegisterWallet from "../../../hooks/registerWallet";
 import Mask from "../../../hooks/mask";
 import Wating from "../../wating";
 import ModalAdvance from "../../modalAdvance";
-export default function Wallet({navigation}){
+import { useNavigation } from "@react-navigation/native";
+export default function Wallet(){
+    const navigation = useNavigation()
     const [loader, setLoader]=useState(false)
     const [info, setInfo]=useState(false)
     const [eye, setEye]=useState(false)
@@ -47,6 +49,10 @@ export default function Wallet({navigation}){
     const handleAdvance = async () => {
         await setModalAdvance('')
         setModalAdvance(<ModalAdvance/>)
+    }
+
+    const handleExtract = async () => {
+        navigation.navigate('Extract')
     }
 
     return(
@@ -114,7 +120,9 @@ export default function Wallet({navigation}){
                                         <Text className='text-xs mt-1 text-neutral-500'>Adiantamento</Text>
                                     </View>
                                     <View className='items-center mr-5' >
-                                        <TouchableOpacity className='h-14 w-14 border border-primary rounded-xl justify-center items-center'>
+                                        <TouchableOpacity className='h-14 w-14 border border-primary rounded-xl justify-center items-center'
+                                            onPress={handleExtract}
+                                        >
                                             <Ionicons name="ticket" size={24} color="#FF5F00" />
                                         </TouchableOpacity>
                                         <Text className='mt-1 text-xs text-neutral-500'>Extrato</Text>
