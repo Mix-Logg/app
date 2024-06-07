@@ -6,7 +6,7 @@ import Mask from '../../hooks/mask';
 import { useNavigation } from "@react-navigation/native";
 export default function CardExtract({amount, tax, taxPix, taxFull, pix, id, create_at}){
     const [ icon, setIcon] = useState('')
-    const [modal, setModal] = useState('')
+    const [ modal, setModal] = useState('')
     const navigation = useNavigation()
 
     const formatDate = (dataHoraISO) => {
@@ -53,14 +53,6 @@ export default function CardExtract({amount, tax, taxPix, taxFull, pix, id, crea
 
     useEffect(()=>{
         switch (tax) {
-            case !null:
-                setIcon(
-                <AntDesign 
-                    name="rocket1" 
-                    size={30} 
-                    color="white" />
-                )
-                break;
             case null:
                 setIcon(
                     <Image
@@ -69,9 +61,11 @@ export default function CardExtract({amount, tax, taxPix, taxFull, pix, id, crea
                         tintColor={'white'}
                     />
                 )
+            break;
                 break;
             default:
-                break;
+                setIcon(<AntDesign name="rocket1" size={30} color="white" />)
+            break;
         }
     },[])
 

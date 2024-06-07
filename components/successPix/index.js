@@ -35,7 +35,6 @@ export default function SuccessFullPix({amount, tax, taxPix, taxFull, pix, id, c
     }
 
     useEffect(()=>{
-        console.log(create_at)
         setDate(formatDate(create_at))
     },[])
 

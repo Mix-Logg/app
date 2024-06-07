@@ -11,8 +11,6 @@ export default function ExtractDetails(){
         navigation.navigate('Extract')
     }
 
-    console.log(route.params)
-
     return(
         <View className='p-5 bg-white h-full'>
             <View className='w-full flex-row items-center justify-between mb-14'>
