@@ -16,7 +16,7 @@ export default function LocationDenied(){
                 <View style={twrnc`w-1/2 p-3 gap-5`}>
                     <View style={twrnc`gap-3`}>
                         <Text style={twrnc`text-2xl font-medium text-[#FF5F00]`}>Ei, atenção!</Text>
-                        <Text style={twrnc`font-medium`}>Precisamos que você libere o acesso a localização ao nosso app</Text>
+                        <Text style={twrnc`font-medium`}>Precisamos que você libere o acesso a localização E notificação ao nosso app</Text>
                         <Text style={twrnc`text-xs font-bold text-neutral-500`}>Caso você já fez esse processo, reinicie o app</Text>
                     </View>
                     <View>

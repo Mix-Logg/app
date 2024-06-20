@@ -25,7 +25,6 @@ export default function CadasterPlate({am, navigation, setModalBottom, vehicle})
                 plate:plate
             }
         }
-        console.log('veiculo registrado:', vehicle)
         await setModalBottom('')
         navigation.navigate('RegisterUser', param)
     }

@@ -19,19 +19,7 @@ buildscript {
         classpath('com.facebook.react:react-native-gradle-plugin')
         classpath('org.jetbrains.kotlin:kotlin-gradle-plugin')
     }
-    // android {
-    //     compileOptions {
-    //             sourceCompatibility = JavaVersion.VERSION_17
-    //             targetCompatibility = JavaVersion.VERSION_17
-    //     }
-
-    //     kotlinOptions {
-    //         jvmTarget = jvmTarget = '17'
-    //     }
-    // }
 }
-
-
 
 apply plugin: "com.facebook.react.rootproject"
 

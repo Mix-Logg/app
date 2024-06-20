@@ -18,7 +18,7 @@ export default function Race({navigation}){
     const [listenOn, setListenOn] = useState(null);
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLproduction
+    const URL = URLdevelopment
 
     useFocusEffect(
         React.useCallback(() => {
@@ -34,6 +34,7 @@ export default function Race({navigation}){
 
     useEffect(() => {
         if(socket != null){
+            
             socket.on("updateStatus", (data) => { 
                 checkRace(data);
             });
@@ -62,12 +63,13 @@ export default function Race({navigation}){
         }
     }, [listen, races]);
 
-    const checkRace = async (id) => {
-        let uuid = id.toString();
+    const checkRace = async (response) => {
+        console.log(response.id)
+        let uuid = response.id.toString();
         const newRace = races
         const indexToUpdate = newRace.findIndex(race => race.id == uuid);
         if( indexToUpdate >= 0 ){
-            newRace[indexToUpdate].isVisible = "0";
+            newRace[indexToUpdate].isVisible = response.isVisible;
             setRaces(newRace)
             setListen(listen + 1)
         }
@@ -88,15 +90,37 @@ export default function Race({navigation}){
         setRaces(updatedRaces);
     }
 
+    const teste = async () => {
+        socket.emit('driverCancel', 545);
+    }
+
     return(
         <>
             <FixBar navigation={navigation} opition={'race'} />
             { races && socket ?
                 <ScrollView style={twrnc`bg-white`}>
                 { races.length == 0  ?
-                    <WaitRace/>
+                <>
+                    {/* <WaitRace/> */}
+                    <View className='mt-5 items-center justify-center'>
+                        <TouchableOpacity className='border p-2 rounded'
+                            onPress={teste}
+                        >
+                            <Text>TESTE</Text>
+                        </TouchableOpacity>
+                    </View>
+                </>
                     : 
-                    Allraces
+                <>
+                    {Allraces}
+                    <View className='mt-5 items-center justify-center'>
+                        <TouchableOpacity className='border p-2 rounded'
+                            onPress={teste}
+                        >
+                            <Text>TESTE</Text>
+                        </TouchableOpacity>
+                    </View>
+                </>
                 }
                 </ScrollView>
                     :

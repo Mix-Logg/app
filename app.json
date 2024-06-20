@@ -17,7 +17,7 @@
       [
         "expo-location",
         {
-          "locationAlwaysAndWhenInUsePermission": "Allow MIX to use your location."
+          "locationAlwaysAndWhenInUsePermission": "A MIX precisa utilizar seu localização."
         }
       ]
     ],

@@ -8,6 +8,7 @@ import Race from '../../img/icons/box.png';
 import LoginWallet from "../../hooks/loginWallet";
 import FindWallet from "../../hooks/findWallet";
 import { useEffect, useState } from "react";
+import ClientCancelRace from "../../notification/clientCancelRace";
 export default function Access({navigation}) {
     const [ walletStatus , setWalletStatus ] = useState('')
     // capabilities.transfers
@@ -41,6 +42,11 @@ export default function Access({navigation}) {
             default:
                 break;
         }
+    }
+
+    const handleTeste = async () => {
+       console.log('aqui')
+       await ClientCancelRace()
     }
 
   return (
@@ -93,6 +99,17 @@ export default function Access({navigation}) {
                     </TouchableOpacity>
                     <Text style={twrnc`text-[#7B7B7B]`} >Fretes </Text>
                 </View>
+                {/* <View style={twrnc`items-center justify-center px-5 gap-1`}>
+                    <TouchableOpacity style={twrnc`border border-[#d4d4d4] justify-center items-center px-2 h-15 w-15 rounded-xl `}
+                        onPress={handleTeste}
+                    >
+                        <Image 
+                            source={Race}
+                            style={twrnc`h-8 w-8`}
+                        />
+                    </TouchableOpacity>
+                    <Text style={twrnc`text-[#7B7B7B]`} >Teste</Text>
+                </View> */}
             </View>
         </ScrollView>
     </View>

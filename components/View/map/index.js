@@ -11,6 +11,8 @@ import MapViewDirections from 'react-native-maps-directions';
 import findOneRace from "../../../hooks/findOneRace";
 import { io } from 'socket.io-client';
 import RoutesButtons from "../../routesButtons";
+import ModalClientCancelRace from "../../modalClientCancelRace";
+import ClientCancelRace from "../../../notification/clientCancelRace";
 export default function Map({code}) {
   const [socket, setSocket] = useState(null)
   const [location, setLocation] = useState(null);
@@ -24,6 +26,7 @@ export default function Map({code}) {
   const [followMap,setFollowMap] = useState(false)
   const [zoomMap,setZoomMap] = useState(false)
   const [scrollMap,setScrollMap] = useState(false)
+  const [modalCancel,setModalCancel] = useState('')
   const [cameraZoom,setCamerazoom] = useState(50)
   // PRODUCTION
   // const GOOGLE_MAPS_APIKEY = 'AIzaSyDwhBCpqKMzkEpXm8w-t3Ib0KDOM9vdUPs';
@@ -32,7 +35,7 @@ export default function Map({code}) {
   const mapRef = useRef(null)
   const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
   const URLdevelopment = 'http://192.168.0.35:8080/'
-   const URL = URLproduction
+  const URL = URLdevelopment
   
   const moveTo = async (res) => {
     const camera = await mapRef.current?.getCamera();
@@ -56,6 +59,16 @@ export default function Map({code}) {
     setCamerazoom(5)
     moveTo(location)
   };
+  const checkCancel = async (id) => {
+    await setModalCancel('')
+    const raceId = await AsyncStorage.getItem('raceId')
+    if(id == raceId){
+      await ClientCancelRace();
+      await AsyncStorage.removeItem('raceId');
+      await setModalCancel(<ModalClientCancelRace/>);
+      return
+    }
+  }
 
   useEffect(()=>{
     const fetchData = async () => {
@@ -116,18 +129,35 @@ export default function Map({code}) {
             return
           }
           console.log(res)
-          Alert.alert('latitude e longitude bugado')
         });
       }catch(e){
-        Alert.alert(e)
+        console.log(e)
       }
     }
     fetchData()
   },[socket])
 
+  useEffect(()=>{
+    const fetchData = async () => {
+      try{
+        if(socket != null){
+          socket.on("cancelRace", (id) => {
+            checkCancel(id);
+          });
+        }
+      }catch(e){
+        console.log(e)
+      }
+    }
+    fetchData()
+  },[socket])
+
+  
+
 
   return (
     <View style={twrnc`h-full`}>
+      {modalCancel}
       {location === null ? (
         <View style={twrnc`h-full w-full items-center justify-center`}>
            <ActivityIndicator size="large" color="#FF5F00" />

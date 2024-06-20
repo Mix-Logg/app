@@ -4,7 +4,7 @@ export default async function FindWallet(){
     const storage = await AllStorage();
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLproduction
+    const URL = URLdevelopment
 
     try{
         const res = await axios.get(`${URL}payment/wallet/${storage.striper}`)

@@ -34,7 +34,7 @@ export default function InfoRace({navigation, code, setCode}){
     const [updateRaceParams, setUpdateRaceParams] = useState('')
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLproduction
+    const URL = URLdevelopment
     const route = useRoute();
 
     useEffect(()=>{
@@ -71,6 +71,7 @@ export default function InfoRace({navigation, code, setCode}){
         }
         dataUseEffect()
     },[])
+
     
     const handleRace = async () => {
         try{
@@ -86,7 +87,6 @@ export default function InfoRace({navigation, code, setCode}){
             const message = {
                 message:'Start Race'
             }
-            console.log(race.idClientIo)
             socket.emit('talk', race.idClientIo, message);
             const paramsUpdateRace = {
                 plate:plate,

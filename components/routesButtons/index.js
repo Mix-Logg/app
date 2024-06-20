@@ -45,6 +45,7 @@ export default function RoutesButtons({code}){
         }
         fetchData()
     },[code])
+    
     return(
         <View className="">
             <View style={twrnc`h-50 bg-[#EFEFEF] rounded-b-3xl items-center p-5`}>

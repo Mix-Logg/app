@@ -72,33 +72,33 @@ export default function Home ({navigation}){
         });
         return () => backHandlerSubscription.remove();
     },[])
-    useEffect(()=>{
-        const dataEffect = async () => {
-            try{
-                const storage = await AllStorage()
-                if( storage.striper != null ){
-                    return;
-                }
-                const user = await findUser();
-                if(user.striper != null){
-                    await AsyncStorage.setItem('striper', user.striper);
-                    return;
-                }
-                const delivery = await GetDelivery();
-                const params = {
-                    email : delivery.email
-                }
-                const bank = await RegisterWallet(params);
-                const paramsStriper = {
-                    striper : bank
-                }
-                const registerStriper = await UpdateUser(user.id,paramsStriper);
-            }catch(e){
-                console.log('erro carteira')
-            }
-        }
-        dataEffect()
-    },[])
+    // useEffect(()=>{
+    //     const dataEffect = async () => {
+    //         try{
+    //             const storage = await AllStorage()
+    //             if( storage.striper != null ){
+    //                 return;
+    //             }
+    //             const user = await findUser();
+    //             if(user.striper != null){
+    //                 await AsyncStorage.setItem('striper', user.striper);
+    //                 return;
+    //             }
+    //             const delivery = await GetDelivery();
+    //             const params = {
+    //                 email : delivery.email
+    //             }
+    //             const bank = await RegisterWallet(params);
+    //             const paramsStriper = {
+    //                 striper : bank
+    //             }
+    //             const registerStriper = await UpdateUser(user.id,paramsStriper);
+    //         }catch(e){
+    //             console.log('erro carteira')
+    //         }
+    //     }
+    //     dataEffect()
+    // },[])
     useFocusEffect(
         React.useCallback(() => {
         const fetchData = async () => {
@@ -108,11 +108,25 @@ export default function Home ({navigation}){
                 fetchData();
                 return;
             }
+
         };
         fetchData();
-        
         }, [navigation])
     );
+    useFocusEffect(
+        React.useCallback(() => {
+        const fetchData = async () => {
+            let { status } = await Notification.requestForegroundPermissionsAsync(); 
+            if (status !== 'granted') { 
+                await setModalMid(<LocationDenied/>)
+                fetchData();
+                return;
+            }
+        };
+        fetchData();
+        }, [navigation])
+    );
+    
     return(
         
        <>

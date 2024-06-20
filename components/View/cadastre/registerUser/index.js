@@ -13,7 +13,7 @@ import Btn from "../../../btn";
 export default function RegisterUser({navigation}){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLproduction
+    const URL = URLdevelopment
     const [cpf,setCpf] = useState('')
     const [password,setPassword] = useState('')
     const [passwordAgain,setPasswordAgain] = useState('')

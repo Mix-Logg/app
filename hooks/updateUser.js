@@ -2,7 +2,7 @@ import axios from "axios";
 export default async function UpdateUser(id, params, ){ 
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLproduction
+    const URL = URLdevelopment
 
    try{
     const res = await axios.patch(`${URL}user/${id}`, params)

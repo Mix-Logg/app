@@ -18,9 +18,16 @@ import {
 } from '@expo-google-fonts/roboto';
 import 'react-native-gesture-handler';
 import twrnc from 'twrnc';
- 
+import * as Notifications from 'expo-notifications';
 export default function App() {
   const [count, setCount] = useState(false);
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+      shouldSetBadge : true,
+    }),
+  });
 
   const delayLogo = () => {
     setTimeout(() => {

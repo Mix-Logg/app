@@ -70,6 +70,7 @@ export default function ModalAdvance(){
               type: type
             }
             const response = await RetrievePayment(params_advance);
+            console.log(response)
             if(true){
                 const user = await FindUser();
                 const params_paymentDelivery = {
