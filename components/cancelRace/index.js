@@ -2,22 +2,39 @@ import twrnc from "twrnc";
 import ModalMid from "../modalMid"
 import Delivery from '../../img/uniqueIcons/delivery.png'
 import { View, Text, Image, Linking, BackHandler } from "react-native"
+import { io } from 'socket.io-client';
+import { useNavigation } from "@react-navigation/native";
+import { useEffect, useState } from "react";
 import Button from "../../util/button";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useNavigation } from "@react-navigation/native";
-
+import AllStorage from "../../hooks/findAllStorage";
 export default function CancelRace({setModalCancel}){
+    const [socket, setSocket] = useState(null);
     const navigation = useNavigation()
+    const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
+    const URLdevelopment = 'http://192.168.1.10:8080/'
+    const URL = URLproduction
     
     const handleContinue = () => {
         setModalCancel('')
     }
 
     const handleCancel = async () => {
+        const storage = await AllStorage()
+        socket.emit('driverCancel', {idRace:parseInt(storage.raceId), am:storage.am, uuid:parseInt(storage.uuid)} );
         setModalCancel('')
         await AsyncStorage.removeItem('raceId');
         navigation.navigate('Home')
+        return
     }
+
+    useEffect(()=>{
+        const Socket = async () => {
+            const socketIO = io(URL);
+            setSocket(socketIO);
+        }
+        Socket();
+    },[])
     
     
     return(
@@ -52,6 +69,5 @@ export default function CancelRace({setModalCancel}){
                 </View>
             </View>
         </ModalMid>
-       
     )
 }

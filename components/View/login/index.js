@@ -12,8 +12,8 @@ import GetDelivery from '../../../api/getDelivery';
 import PopUp from '../../modal';
 export default function Login({navigation}){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLdevelopment
+    const URLdevelopment = 'http://192.168.1.10:8080/'
+    const URL = URLproduction
     const [cpf,setCpf] = useState('')
     const [password,setPassword] = useState('')
     const [acessModal,setAcessModal] = useState(false)

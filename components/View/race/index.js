@@ -10,6 +10,7 @@ import findAllRace from "../../../hooks/findAllRace";
 import findAllRaceOpen from '../../../hooks/findAllOpenRace';
 import WaitRace from "../../awaitRace";
 import Wating from '../../wating';
+import AllStorage from '../../../hooks/findAllStorage';
 export default function Race({navigation}){
     const [Allraces, setAllRace] = useState(null);
     const [socket, setSocket] = useState(null);
@@ -17,8 +18,8 @@ export default function Race({navigation}){
     const [listen, setListen] = useState(null);
     const [listenOn, setListenOn] = useState(null);
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLdevelopment
+    const URLdevelopment = 'http://192.168.1.10:8080/'
+    const URL = URLproduction
 
     useFocusEffect(
         React.useCallback(() => {
@@ -91,7 +92,8 @@ export default function Race({navigation}){
     }
 
     const teste = async () => {
-        socket.emit('driverCancel', 545);
+        const storage = await AllStorage()
+        socket.emit('driverCancel', {idRace:545, am:storage.am, uuid:parseInt(storage.uuid)} );
     }
 
     return(

@@ -1,7 +1,6 @@
-import { View, Text, TouchableOpacity, TextInput, ActivityIndicator } from "react-native";
+import { View, Text, TouchableOpacity, TextInput, ActivityIndicator, ScrollView } from "react-native";
 import * as Location from 'expo-location';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Button from "../../util/button";
 import { useEffect, useState } from "react";
 import React, { useRef } from "react";
@@ -9,16 +8,14 @@ import twrnc from 'twrnc';
 import { io } from 'socket.io-client';
 import { useNavigation } from "@react-navigation/native";
 import AllStorage from "../../hooks/findAllStorage";
-import {
-    MaterialIcons,
-  } from "@expo/vector-icons";
+import {MaterialIcons, } from "@expo/vector-icons";
 import findOneRace from "../../hooks/findOneRace";
 import updateRace from "../../hooks/updateRace";
 import ConfirmCodeSuccessful from "../confirmCodeWork";
 export default function InfoWorkHome({dropDownDetails, setDropDownDetails, code, setCode, setInfo, locationDelivery}) {
   const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-  const URLdevelopment = 'http://192.168.0.35:8080/'
-  const URL = URLdevelopment
+  const URLdevelopment = 'http://192.168.1.10:8080/'
+  const URL = URLproduction
   const navigation = useNavigation()
   const input1Ref = useRef(null);
   const input2Ref = useRef(null);
@@ -124,9 +121,9 @@ export default function InfoWorkHome({dropDownDetails, setDropDownDetails, code,
   },[])
 
   return (
-    <KeyboardAwareScrollView>
+    <ScrollView>
       {modalCorrectCode}
-      <View style={twrnc`h-full mt-5 gap-10`}>
+      <View style={twrnc`h-full mt-5 gap-10 mb-35`}>
         <View>
           <Text className="text-primary" style={twrnc`text-2xl font-bold `}>Frete</Text>
         </View>
@@ -230,6 +227,6 @@ export default function InfoWorkHome({dropDownDetails, setDropDownDetails, code,
           </TouchableOpacity>
         </View>
       </View>
-    </KeyboardAwareScrollView>
+    </ScrollView>
   );
 }

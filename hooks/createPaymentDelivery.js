@@ -1,8 +1,8 @@
 import axios from "axios";
 export default async function CreatePaymentDelivery(payment){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.0.35:8080/'
-    const URL = URLdevelopment
+    const URLdevelopment = 'http://192.168.1.10:8080/'
+    const URL = URLproduction
 
     try{
         const  response = await axios.post(`${URL}payment-delivery`, payment)

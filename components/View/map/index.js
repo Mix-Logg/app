@@ -34,8 +34,8 @@ export default function Map({code}) {
   const GOOGLE_MAPS_APIKEY = 'AIzaSyBgk9tXTtO49lHbp3Nnd4UYeq9d3VBMFWQ';
   const mapRef = useRef(null)
   const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-  const URLdevelopment = 'http://192.168.0.35:8080/'
-  const URL = URLdevelopment
+  const URLdevelopment = 'http://192.168.1.10:8080/'
+  const URL = URLproduction
   
   const moveTo = async (res) => {
     const camera = await mapRef.current?.getCamera();

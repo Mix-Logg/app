@@ -48,7 +48,6 @@ export default function InfoHistory({raceId}){
         const fetchData = async () => {
            const race = await findOneRace(raceId)
            const client = await findClient(race.idClient)
-           console.log(race.confirmCodeInitial)
            setDateRace(race)
            setDateClient(client)
         }
