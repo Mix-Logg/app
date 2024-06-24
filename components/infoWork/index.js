@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   View,
   Text,
@@ -8,10 +9,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import findOneRace from "../../hooks/findOneRace";
 import twrnc from "twrnc";
 import Modal from "../modalBottom";
-import { useEffect, useState } from "react";
+import { useFocusEffect } from '@react-navigation/native';
+import { useEffect, useState,  } from "react";
 import findClient from "../../hooks/findClient";
 import InfoWorkDetails from "./details";
 import InfoWorkHome from "./home";
+import AllStorage from "../../hooks/findAllStorage";
 export default function InfoWork({code, setCode, setInfo }) {
   const [dropDownDetails, setDropDownDetails] = useState(false);
   const [name, setName] = useState("");
@@ -19,7 +22,7 @@ export default function InfoWork({code, setCode, setInfo }) {
   const [price, setPrice] = useState("");
   const [origin, setOrigin] = useState(false);
   const [destination, setDestination] = useState("");
-
+  const [hasCharge,setHasCharge] = useState (null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +39,18 @@ export default function InfoWork({code, setCode, setInfo }) {
   }, []);
 
 
+useFocusEffect(
+        React.useCallback(() => {
+        const fetchData = async () => {
+          const storage = await AllStorage()
+          const race = await findOneRace(storage.raceId);
+          console.log(race.confirmCodeInitial)
+          setHasCharge(race.confirmCodeInitial)
+        };
+        fetchData();
+        }, [])
+    );
+
   return (
     <Modal>
       <ScrollView>
@@ -44,7 +59,7 @@ export default function InfoWork({code, setCode, setInfo }) {
             {!dropDownDetails ? (
               <InfoWorkHome setInfo={setInfo} setDropDownDetails={setDropDownDetails} dropDownDetails={dropDownDetails} code={code} setCode={setCode} />
             ) : (
-              <InfoWorkDetails setDropDownDetails={setDropDownDetails} dropDownDetails={dropDownDetails} name={name} phone={phone} price={price} origin={origin} destination={destination} />
+              <InfoWorkDetails setDropDownDetails={setDropDownDetails} dropDownDetails={dropDownDetails} name={name} phone={phone} price={price} origin={origin} destination={destination} hasCharge={hasCharge}/>
             )}
           </View>
         ) : (

@@ -20,7 +20,8 @@ export default function InfoWorkDetails({
   origin,
   destination,
   setDropDownDetails,
-  dropDownDetails
+  dropDownDetails,
+  hasCharge
 }) {
     const [copied, setCopied] = useState(false);
     const [modalCancel, setModalCancel] = useState("");
@@ -158,13 +159,15 @@ export default function InfoWorkDetails({
           </View>
         </View>
         <View style={twrnc`gap-3 mb-30`}>
-          <Button handle={handleCancelRace} background={"bg-[#d4d4d4]"}>
+          { hasCharge == null &&
+            <Button handle={handleCancelRace} background={"bg-[#d4d4d4]"}>
             <View style={twrnc`py-2`}>
               <Text style={twrnc`text-lg font-bold text-white`}>
                 Cancelar frete
               </Text>
             </View>
           </Button>
+          }
         </View>
       </View>
     </ScrollView>

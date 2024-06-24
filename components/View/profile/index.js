@@ -1,14 +1,18 @@
 import twrnc, { style } from 'twrnc';
 import { useEffect, useState } from 'react';
-import { View, Image,Text , Pressable, StatusBar, ScrollView, SafeAreaView } from 'react-native';
+import { View, Image,Text , TouchableOpacity, StatusBar, ScrollView, SafeAreaView } from 'react-native';
+import colors from "tailwindcss/colors";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FixBar from '../../fixBar';
 import GetDelivery from '../../../api/getDelivery';
 import GetPicture from '../../../api/getPicture';
-import { Octicons } from '@expo/vector-icons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
+import {
+    AntDesign,
+    MaterialCommunityIcons,
+    MaterialIcons,
+    FontAwesome,
+    Octicons
+  } from "@expo/vector-icons";
 export default function Profile({navigation}){
     
     const handleLogout = async () => {
@@ -32,7 +36,7 @@ export default function Profile({navigation}){
     }
 
     const [email,setEmail] = useState('Aguarde...')
-    const [name,setName] = useState('Aguarde...')
+    const [name,setName] = useState('')
     const [buffer,setBuffer] = useState('')
     const [type,setType] = useState('')
     const [wait,setWait] = useState(true)
@@ -53,7 +57,73 @@ export default function Profile({navigation}){
     return(
         <>
             <FixBar navigation={navigation} opition={'profile'}/>
-            <ScrollView style={twrnc`bg-white`}>
+            <ScrollView className="bg-white p-3">
+                <View className='flex-row w-full mt-3 p-3'>
+                    <View className={`h-20 w-20 rounded-full ${ wait && 'bg-primary'}`}>
+                        { wait ?
+                            <Image
+                            source={require('../../../img/logo/logoComplement1.png')}
+                            style={twrnc`h-full w-full`}
+                            resizeMode="contain"
+                            />
+                                :
+                            <Image
+                                source={{ uri: `data:${type};base64,${buffer}` }}
+                                className='h-full w-full rounded-full'
+     
+                            />
+                        }
+                    </View>
+                    <View className='ml-2 justify-center'>
+                        <Text className='text-2xl font-bold w-5/6 text-primary'>{name}</Text>
+                    </View>
+                </View>
+                <View className='p-2 mt-9'>
+                    {/* <TouchableOpacity className="flex-row p-3 rounded-lg w-full text-neutral-600 justify-start items-center">
+                        <AntDesign
+                            name="retweet"
+                            size={24}
+                            color={colors.neutral[500]}
+                        />
+                        <Text className="ml-4 text-sm text-left text-neutral-600 font-bold w-40">Dados perfil</Text>
+                    </TouchableOpacity> */}
+                    <TouchableOpacity className="flex-row p-3 rounded-lg w-full text-neutral-600 justify-start items-center"
+                        onPress={handleAvalidPhoto}
+                    >
+                        <FontAwesome name="picture-o" size={22} color={colors.neutral[500]}  />
+                        <Text className="ml-4 text-sm text-left text-neutral-600 font-bold w-40">Fotos</Text>
+                    </TouchableOpacity >
+                    <TouchableOpacity className="flex-row p-3 rounded-lg w-full text-neutral-600 justify-start items-center"
+                        onPress={handleChangePassword}
+                    >
+                        <Octicons name="key" size={22} color={colors.neutral[500]} />
+                        <Text className="ml-4 text-sm text-left text-neutral-600 font-bold w-40">Editar senha</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity className="flex-row p-3 rounded-lg w-full text-neutral-600 justify-start items-center">
+                        <MaterialCommunityIcons
+                            name="headset"
+                            size={24}
+                            color={colors.neutral[500]}
+                        />
+                        <Text className="ml-4 text-sm text-left text-neutral-600 font-bold w-40">Ajuda</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity className="flex-row p-3 rounded-lg w-full text-neutral-600 justify-start items-center"
+                        onPress={handleLogout}
+                    > 
+                        <MaterialIcons
+                            name="logout"
+                            size={24}
+                            color={colors.red[500]}
+                        />
+                        <Text className="ml-4 text-sm text-left text-red-500 font-bold w-40">Sair</Text>
+                    </TouchableOpacity>
+                    
+                    <View className="flex-row p-3 rounded-lg w-full justify-start items-start mt-2">
+                        <Text className="text-sm text-left text-neutral-400 font-medium w-40">Version actual 6.0v</Text>
+                    </View>
+                </View>
+            </ScrollView>
+            {/* <ScrollView style={twrnc`bg-white`}>
                     <View style={twrnc`items-center mt-5`}>
                         <Pressable style={[twrnc`absolute flex-row gap-2 justify-center items-center`,{top:'9%'}]}
                             onPress={handleLogout}
@@ -104,7 +174,7 @@ export default function Profile({navigation}){
                         </View>
                     </View>
 
-            </ScrollView>
+            </ScrollView> */}
         </>
     )
 }

@@ -1,28 +1,19 @@
 import { ScrollView, View, Text, Image, TouchableOpacity, Linking, ActivityIndicator } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
-import FixBar from "../fixBar";
 import Woman from '../../img/uniqueIcons/woman.png'
 import RegisterWallet from "../../hooks/registerWallet";
-export default function Wallet({navigation}){
+import { useNavigation } from "@react-navigation/native";
+export default function WalletRegister(){
     const [loader,setLoader]=useState(false)
-   
+    const navigation = useNavigation()
+
     const handleClickContinue = async () => {
-        setLoader(true)
-        setTimeout(() => {
-            setLoader(false)
-        }, 5000);
-        const linkRegister = await RegisterWallet();
-        Linking.openURL(linkRegister.url).catch((err) =>
-            console.error('Erro ao abrir o URL: ', err)
-        );
-        return;
+        navigation.navigate('RegisterWalletStepOne')
     }
 
     return(
         <>
-          
-            <FixBar navigation={navigation} opition={'wallet'} />
             <ScrollView className="bg-white py-6">
                 <View className='h-52'>
                         <Image

@@ -30,6 +30,7 @@ import InfoRace from '../components/View/infoRace';
 import Work from '../components/View/work';
 import RegisterWallet from '../components/registerWallet';
 import ExtractDetails from '../components/View/extractDetails';
+import RegisterWalletStepOne from '../components/registerWallet/stepOne';
 export default function AllRoutes() {
 
   return (
@@ -215,6 +216,24 @@ export default function AllRoutes() {
                   headerShown: false // Exibe o cabeçalho nesta tela
               }}
             />
+            <Stack.Screen name="RegisterWallet" component={RegisterWallet} 
+              options={{
+              title: '',  
+              headerStyle: {
+                  backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                },
+                headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
+             <Stack.Screen name="RegisterWalletStepOne" component={RegisterWalletStepOne} 
+              options={{
+              title: '',  
+              headerStyle: {
+                  backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                },
+                headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
             <Stack.Screen name="History" component={History} 
               options={{
                 title: '',  
@@ -251,15 +270,7 @@ export default function AllRoutes() {
                   headerShown: false // Exibe o cabeçalho nesta tela
               }}
             />
-            <Stack.Screen name="RegisterWallet" component={RegisterWallet} 
-              options={{
-              title: '',  
-              headerStyle: {
-                  backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
-                },
-                headerShown: false // Exibe o cabeçalho nesta tela
-              }}
-            />
+            
             <Stack.Screen name="Extract" component={Extract} 
               options={{
               title: '',  

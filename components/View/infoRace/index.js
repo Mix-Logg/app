@@ -77,7 +77,7 @@ export default function InfoRace({navigation, code, setCode}){
         try{
             setLoader(true)
             const infoRace = await findOneRace(route.params.id);
-            if(infoRace.isVisible == '0'){
+            if(infoRace.isVisible == '0' || infoRace.delete_at != null){
                 await setModal('')
                 moodalRedirect()
                 return 
