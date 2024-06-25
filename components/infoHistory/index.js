@@ -1,4 +1,4 @@
-import { View, Text, Pressable, Linking } from "react-native"
+import { View, Text, TouchableOpacity, Linking } from "react-native"
 import { AntDesign, Feather, Octicons, MaterialCommunityIcons  } from '@expo/vector-icons';
 import twrnc from "twrnc"
 import ModalBottom from "../modalBottom"
@@ -12,9 +12,13 @@ export default function InfoHistory({raceId}){
     const [ dateClient, setDateClient ] = useState(null)
 
     const handleHelp = () => {
-        const url = `https://wa.me/5511978612671`
-        Linking.openURL(url);
-    }
+        const phoneNumber = '5511978612671';
+        const message = `Olá, preciso de ajuda com a corrida #${raceId}.`;
+        const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        
+        Linking.openURL(url)
+            .catch(err => console.error('Erro ao abrir o WhatsApp:', err));
+    };
 
     function formatDate(dataHoraISO) {
         if(!dataHoraISO){
@@ -63,7 +67,7 @@ export default function InfoHistory({raceId}){
                     <View>
                         <View className='gap-1 w-full'>
                             <Text className='text-2xl font-semibold text-primary'>
-                                Detalhes do Frete
+                                Detalhes do Frete 
                             </Text>
                             <View className='flex flex-row items-center text-center w-fit'>
                                 <AntDesign name="user" size={19} color="#737373" />
@@ -77,13 +81,13 @@ export default function InfoHistory({raceId}){
                         <View className='flex gap-8'>
                             <View className={`border-b border-[#d4d4d4] flex flex-row  items-start h-12`}>
                                 <Feather name="clock" size={22} color="#FF5F00" />
-                                <Text style={twrnc`text-[#737373] font-medium`}>
-                                    {formatDate(dateRace.confirmCodeInitial)}
+                                <Text style={twrnc`ml-3 text-[#737373] font-medium`}>
+                                    {formatDate(dateRace.delete_at)}
                                 </Text>
                             </View>
                             <View className={`border-b border-[#d4d4d4] flex flex-row  items-start h-12`}>
                                 <AntDesign name="dashboard" size={21} color="#FF5F00" />
-                                <Text className={`text-[#737373] font-medium ml-3`}>{dateRace.km} km</Text>
+                                <Text className={`text-[#737373] font-medium ml-3`}>{Mask('km',dateRace.km)} km</Text>
                             </View>
                             <View className={`border-b border-[#d4d4d4] flex flex-col  items-start h-fit pb-4`}>
                                 <View style={twrnc`flex-row items-end gap-3 px-1 items-center mb-3`}>
@@ -101,14 +105,14 @@ export default function InfoHistory({raceId}){
                         </View>
                     </View>
                     
-                    <Pressable className={`flex-row items-center justify-center w-full h-fit mt-10`}
+                    <TouchableOpacity className={`flex-row items-center justify-center w-full h-fit mt-10`}
                         onPress={()=>handleHelp()}
                     >
                         <View className={`flex-row gap-4`}>
                             <MaterialCommunityIcons name="headset" size={24} color={'#a3a3a3'}  />
                             <Text className='font-bold text-neutral-400' >Pedir ajuda com este frete</Text>
                         </View>
-                    </Pressable>
+                    </TouchableOpacity>
 
                 </View> 
                 :

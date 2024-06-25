@@ -69,7 +69,7 @@ export default function CardHistory({price, raceId, km}){
             <View style={twrnc`flex-row gap-2 items-center`}>
               <MaterialCommunityIcons name="history" size={20} color="#FF5F00" />
               <View>
-                <Text className='font-light' style={twrnc` text-[#191919]`}>Você rodou {km} km</Text>
+                <Text className='font-light' style={twrnc` text-[#191919]`}>Você rodou {Mask('km',km)} km</Text>
               </View>
             </View>
             <View style={twrnc`flex-row gap-2`}>

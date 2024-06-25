@@ -1,5 +1,5 @@
 import { ScrollView, View, Text, Image, TouchableOpacity, Linking, ActivityIndicator, StatusBar } from "react-native";
-import { Fontisto , Ionicons, AntDesign, FontAwesome6 } from '@expo/vector-icons';
+import { Fontisto , Ionicons, MaterialCommunityIcons, FontAwesome6 } from '@expo/vector-icons';
 import { useEffect, useState } from "react";
 import FixBar from "../../fixBar";
 import findUser from "../../../hooks/findUser";
@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import WalletRegister from "../../registerWallet";
 export default function Wallet(){
     const navigation = useNavigation()
+    const [idUser, setUser]=useState('0')
     const [loader, setLoader]=useState(false)
     const [info, setInfo]=useState(false)
     const [eye, setEye]=useState(false)
@@ -22,12 +23,21 @@ export default function Wallet(){
     useEffect(()=>{
         const fetchData = async () => {
             const user  = await findUser();
+            setUser(user.id)
             setCheckRegister(user.galaxHash)
             setAmount(Mask('amount',user.amount))
             setAmountHidden(Mask('amountHidden', user.amount))
         }
         fetchData()
     },[])
+
+    const handleHelp = async () => {
+        const phoneNumber = '5511978612671';
+        const message = `Olá, preciso de ajuda com minha carteira #${idUser}`
+        const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+        Linking.openURL(url)
+            .catch(err => console.error('Erro ao abrir o WhatsApp:', err));
+    };
    
     const handleClickContinue = async () => {
         setLoader(true)
@@ -64,7 +74,7 @@ export default function Wallet(){
             <>
                 <FixBar navigation={navigation} opition={'wallet'} color={true}/>
                 <StatusBar backgroundColor='#FF5F00' />
-                {checkRegister ?
+                {!checkRegister ?
                     <>
                         {modalAdvance}
                             {info && 
@@ -138,14 +148,20 @@ export default function Wallet(){
                                             </TouchableOpacity>
                                             <Text className='text-xs text-neutral-500 mt-1'>Editar dados</Text>
                                         </View>
-                                        {/* <View className='items-center '>
-                                            <TouchableOpacity className='h-14 w-14 border border-primary rounded-full items-center justify-center'>
-                                                <Fontisto name="info" size={24} color="#ff5f00" />
+                                        <View className='items-center '>
+                                            <TouchableOpacity className='h-14 w-14 border border-primary rounded-xl items-center justify-center'
+                                                onPress={handleHelp}
+                                            >
+                                                <MaterialCommunityIcons
+                                                    name="headset"
+                                                    size={26}
+                                                    color={'#FF5F00'}
+                                                />
                                             </TouchableOpacity>
                                             <Text className='text-xs text-neutral-500 mt-1'>
-                                                informações
+                                                Suporte
                                             </Text>
-                                        </View> */}
+                                        </View>
                                 </View>
                                 </View>
                                 <View>

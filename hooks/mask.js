@@ -43,6 +43,10 @@ export default function Mask(type, value){
                 currency: 'BRL'
               });
             return amount.replace(/\d/g, '*');
+        case 'km':
+            const  km = parseFloat(value)
+            const  formattedNumber = km.toFixed(2);
+            return formattedNumber
         default:
             return value;
     }

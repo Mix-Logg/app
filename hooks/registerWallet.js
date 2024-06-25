@@ -3,11 +3,16 @@ import AllStorage from "./findAllStorage";
 export default async function RegisterWallet(){
     const storage = await AllStorage();
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.1.10:8080/'
-    const URL = URLproduction
+    const URLdevelopment = 'http://192.168.0.35:8080/'
+    const URL = URLdevelopment
+
+    const wallet = {
+        idDelivery : parseInt(storage.uuid),
+        am         : storage.am
+    }
 
     try{
-        const res = await axios.get(`${URL}payment/register/${storage.striper}`)
+        const res = await axios.post(`${URL}cel-cash/wallet`, wallet)
         return res.data
     }catch(e){
         console.log(e)

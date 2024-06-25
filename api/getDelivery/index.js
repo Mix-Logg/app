@@ -5,7 +5,7 @@ export default async function GetDelivery(){
        const URLdevelopment = 'http://192.168.1.10:8080/'
        const URL = URLproduction
 
-       const am = await AsyncStorage.getItem('am');
+       const am   = await AsyncStorage.getItem('am');
        const uuid = await AsyncStorage.getItem('uuid');
        try{
         const res = await axios.get(`${URL}${am}/${uuid}`);

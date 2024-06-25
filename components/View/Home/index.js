@@ -19,6 +19,7 @@ import AllStorage from '../../../hooks/findAllStorage';
 import UpdateUser from '../../../hooks/updateUser';
 import LocationDenied from '../../locationDenied';
 import GetVehicle from '../../../api/getVehicle';
+import RegisterWallet from '../../../hooks/registerWallet';
 export default function Home ({navigation}){
     const [refreshing, setRefreshing] = useState(false); 
     const [info, setInfo] = useState(false); 
@@ -75,26 +76,14 @@ export default function Home ({navigation}){
     // useEffect(()=>{
     //     const dataEffect = async () => {
     //         try{
-    //             const storage = await AllStorage()
-    //             if( storage.striper != null ){
-    //                 return;
+    //             const user = await  findUser();
+    //             if(user.galaxHash){
+    //                 return console.log('tem carteira criada;')
     //             }
-    //             const user = await findUser();
-    //             if(user.striper != null){
-    //                 await AsyncStorage.setItem('striper', user.striper);
-    //                 return;
-    //             }
-    //             const delivery = await GetDelivery();
-    //             const params = {
-    //                 email : delivery.email
-    //             }
-    //             const bank = await RegisterWallet(params);
-    //             const paramsStriper = {
-    //                 striper : bank
-    //             }
-    //             const registerStriper = await UpdateUser(user.id,paramsStriper);
+    //             const response = await RegisterWallet();
+    //             console.log(response)
     //         }catch(e){
-    //             console.log('erro carteira')
+    //             console.log('erro wallet')
     //         }
     //     }
     //     dataEffect()
@@ -108,27 +97,11 @@ export default function Home ({navigation}){
                 fetchData();
                 return;
             }
-
         };
         fetchData();
         }, [navigation])
     );
-    useFocusEffect(
-        React.useCallback(() => {
-        const fetchData = async () => {
-            let { status } = await Notification.requestForegroundPermissionsAsync(); 
-            if (status !== 'granted') { 
-                await setModalMid(<LocationDenied/>)
-                fetchData();
-                return;
-            }
-        };
-        fetchData();
-        }, [navigation])
-    );
-    
     return(
-        
        <>
             <Bar navigation={navigation} />
             {modalMid}
