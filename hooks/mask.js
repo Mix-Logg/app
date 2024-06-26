@@ -47,6 +47,33 @@ export default function Mask(type, value){
             const  km = parseFloat(value)
             const  formattedNumber = km.toFixed(2);
             return formattedNumber
+        case 'dateFormat':
+            if(!value){
+                return ''
+            }
+            // Array com os nomes dos meses em português
+            const meses = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+          
+            // Quebrando a string
+            const partes = value.split('T');
+            const data = partes[0].split('-');
+            const hora = partes[1].split(':');
+          
+            // Extraindo e formatando as partes
+            const ano = data[0];
+            const mesIndex = parseInt(data[1]) - 1; // Subtraindo 1 porque os meses em JavaScript são indexados em 0
+            const mes = meses[mesIndex];
+            const dia = data[2].padStart(2, '0');
+            const horas = hora[0].padStart(2, '0');
+            const minutos = hora[1].padStart(2, '0');
+            const segundos = hora[2];
+            const fusoHorario = 'UTC';
+          
+            // Formatando a data e hora
+            const dataFormatada = `dia ${dia} de ${mes} de ${ano} às ${horas}:${minutos}`;
+          
+            return dataFormatada;
+            return
         default:
             return value;
     }

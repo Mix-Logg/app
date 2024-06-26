@@ -66,7 +66,7 @@ export default function FixBar({navigation, opition, color = null}){
     }, []);
 
     return(
-        <View style={[twrnc` ${color ? 'bg-[#FF5F00]' : 'bg-[#EFEFEF]'} flex flex-row items-center w-full justify-between py-1 px-5`,{height:'7%'}]}>
+        <View style={[twrnc` ${color ? 'bg-[#FF5F00]' : 'bg-[#FF5F00]'} flex flex-row items-center w-full justify-between py-1 px-5`,{height:'7%'}]}>
            <TouchableOpacity style={twrnc`flex flex-row h-full items-center justify-start`}
             onPress={handleBack}
            >
@@ -74,25 +74,25 @@ export default function FixBar({navigation, opition, color = null}){
                         <Image 
                             source={require('../../img/icons/arrowLeft.png')}
                             resizeMode="contain"
-                            style={{ width: '100%', height:'100%', tintColor:color ? 'white' : '#7B7B7B' }}
+                            style={{ width: '100%', height:'100%', tintColor:color ? 'white' : 'white' }}
                         />
                     </View>
-                    <Text style={twrnc`${color ? 'text-white' : 'text-[#7B7B7B]'} text-sm font-medium`}> voltar</Text>
+                    <Text style={twrnc`${color ? 'text-white' : 'text-white'} text-sm font-medium`}> voltar</Text>
             </TouchableOpacity>
 
             <View style={twrnc`flex flex-row h-full items-center justify-end mr-2`}>
                     <View style={twrnc`flex flex-row items-center justify-center`}>
-                        { opition === 'profile' ? <FontAwesome5 name="user-circle" size={18} color="#7B7B7B" /> 
-                        : opition === 'avalidPhoto' ? <FontAwesome5 name="clipboard-list" size={18} color="#7B7B7B" />
-                        : opition === 'register' ? <AntDesign name="adduser" size={18} color="#7B7B7B" /> 
-                        : opition === 'changePassword' ? <Octicons name="key" size={18} color="#7B7B7B" />
-                        : opition === 'allAccess' ? <MaterialCommunityIcons name="door" size={20} color="#7B7B7B" />
-                        : opition === 'wallet' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={Wallet} tintColor={color ? 'white' : 'text-[#7B7B7B]'}/></View>
-                        : opition === 'race' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={Race} tintColor={'#7B7B7B'}/></View>
-                        : opition === 'history' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={History} tintColor={'#7B7B7B'}/></View>
-                        : opition === 'infoRace' ? <MaterialCommunityIcons name="car-info" size={20} color="#7B7B7B" />
+                        { opition === 'profile' ? <FontAwesome5 name="user-circle" size={18} color="white" /> 
+                        : opition === 'avalidPhoto' ? <FontAwesome5 name="clipboard-list" size={18} color="white" />
+                        : opition === 'register' ? <AntDesign name="adduser" size={18} color="white" /> 
+                        : opition === 'changePassword' ? <Octicons name="key" size={18} color="white" />
+                        : opition === 'allAccess' ? <MaterialCommunityIcons name="door" size={20} color="white" />
+                        : opition === 'wallet' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={Wallet} tintColor={color ? 'white' : 'text-white'}/></View>
+                        : opition === 'race' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={Race} tintColor={'white'}/></View>
+                        : opition === 'history' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={History} tintColor={'white'}/></View>
+                        : opition === 'infoRace' ? <MaterialCommunityIcons name="car-info" size={20} color="white" />
                         : null }
-                        <Text style={twrnc`${color ? 'text-white' : 'text-[#7B7B7B]'} text-sm font-medium`}> {title} </Text>
+                        <Text style={twrnc`${color ? 'text-white' : 'text-white'} text-sm font-medium`}> {title} </Text>
                     </View>
             </View>
         </View>

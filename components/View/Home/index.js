@@ -102,10 +102,10 @@ export default function Home ({navigation}){
         }, [navigation])
     );
     return(
-       <>
+       <View className='bg-primary'>
             <Bar navigation={navigation} />
             {modalMid}
-            <ScrollView style={twrnc`h-full bg-white`}
+            <ScrollView style={twrnc`h-full bg-white rounded-3xl`}
                 refreshControl={
                     <RefreshControl
                         refreshing={refreshing}
@@ -123,7 +123,7 @@ export default function Home ({navigation}){
                        </View>
                     }
             </ScrollView>
-        </>
+        </View>
       
     )
 }

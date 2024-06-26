@@ -61,6 +61,7 @@ export default function Race({navigation}){
                 />
             ));
             setAllRace(updatedAllraces);
+            console.log(races.length)
         }
     }, [listen, races]);
 
@@ -103,25 +104,12 @@ export default function Race({navigation}){
                 <ScrollView style={twrnc`bg-white`}>
                 { races.length == 0  ?
                 <>
-                    {/* <WaitRace/> */}
-                    <View className='mt-5 items-center justify-center'>
-                        <TouchableOpacity className='border p-2 rounded'
-                            onPress={teste}
-                        >
-                            <Text>TESTE</Text>
-                        </TouchableOpacity>
-                    </View>
+                    <WaitRace/>
                 </>
                     : 
                 <>
                     {Allraces}
-                    <View className='mt-5 items-center justify-center'>
-                        <TouchableOpacity className='border p-2 rounded'
-                            onPress={teste}
-                        >
-                            <Text>TESTE</Text>
-                        </TouchableOpacity>
-                    </View>
+
                 </>
                 }
                 </ScrollView>

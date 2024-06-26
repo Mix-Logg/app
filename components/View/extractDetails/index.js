@@ -24,7 +24,7 @@ export default function ExtractDetails(){
                 </Text>
             </View>
             <View className='bg-white'>
-                <SuccessFullPix create_at={route.params.create_at} amount={route.params.amount} tax={route.params.tax} taxPix={route.params.taxPix} taxFull={route.params.taxFull} pix={route.params.pix} id={route.params.id} />
+                <SuccessFullPix status={route.params.status} create_at={route.params.create_at} amount={route.params.amount} tax={route.params.tax} taxPix={route.params.taxPix} taxFull={route.params.taxFull} pix={route.params.pix} id={route.params.id} />
             </View>
         </View>
     )

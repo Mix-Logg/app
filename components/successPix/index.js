@@ -3,7 +3,8 @@ import { View, Text, Image } from 'react-native';
 import Logo from '../../img/logo/logoAsa.png'
 import Mask from '../../hooks/mask';
 import { useEffect, useState } from 'react';
-export default function SuccessFullPix({amount, tax, taxPix, taxFull, pix, id, create_at}){
+
+export default function SuccessFullPix({status ,amount, tax, taxPix, taxFull, pix, id, create_at}){
     const [date, setDate] = useState('')
     
     const formatDate = (dataHoraISO) => {
@@ -35,6 +36,7 @@ export default function SuccessFullPix({amount, tax, taxPix, taxFull, pix, id, c
     }
 
     useEffect(()=>{
+        console.log(status)
         setDate(formatDate(create_at))
     },[])
 
@@ -50,10 +52,20 @@ export default function SuccessFullPix({amount, tax, taxPix, taxFull, pix, id, c
                         </View>
             </View>
             <View className='flex justify-center items-center'>
-                <FontAwesome6 name="circle-check" size={65} color="#FF5F00" />
+                { status == 'pay' ?
+                    <FontAwesome6 name="circle-check" size={65} color="#FF5F00" />
+                    :
+                    <FontAwesome6 name="clock" size={65} color="#FF5F00" />
+                }
                 <View className='mt-8 flex items-center justify-center'>
                     <Text className='font-bold text-base'>Operação #{id}</Text>
-                    <Text className='font-bold text-base'>concluída com sucesso</Text>
+                    <Text className='font-bold text-base'>
+                        { status == 'pay' ?
+                        'concluída com sucesso'
+                        :
+                        'Pendente'
+                        }
+                    </Text>
                 </View> 
                 <View className='bg-neutral-100 flex flex-row rounded-lg mt-5 py-3 w-full items-center justify-center'>
                     <FontAwesome6 name="pix" size={18} color="#FF5F00" />

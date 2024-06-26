@@ -1,6 +1,6 @@
 import axios from "axios";
 import AllStorage from "./findAllStorage";
-export default async function RetrievePayment(params_retrieve){
+export default async function CreatePayment(params_retrieve){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.1.10:8080/'
     const URL = URLproduction

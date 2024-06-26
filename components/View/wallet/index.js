@@ -142,12 +142,12 @@ export default function Wallet(){
                                             </TouchableOpacity>
                                             <Text className='mt-1 text-xs text-neutral-500'>Extrato</Text>
                                         </View>
-                                        <View className='items-center mr-5'>
+                                        {/* <View className='items-center mr-5'>
                                             <TouchableOpacity className='h-14 w-14 border border-primary rounded-xl items-center justify-center'>
                                                 <Ionicons name="settings-sharp" size={24} color="#FF5F00" />
                                             </TouchableOpacity>
                                             <Text className='text-xs text-neutral-500 mt-1'>Editar dados</Text>
-                                        </View>
+                                        </View> */}
                                         <View className='items-center '>
                                             <TouchableOpacity className='h-14 w-14 border border-primary rounded-xl items-center justify-center'
                                                 onPress={handleHelp}

@@ -8,7 +8,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import Mask from "../../hooks/mask";
 import findUser from "../../hooks/findUser";
 import ModalBottom from "../modalBottom";
-import RetrievePayment from "../../hooks/retrievePayment";
+import RetrievePayment from "../../hooks/createPayment";
 import CreatePaymentDelivery from "../../hooks/createPaymentDelivery";
 import SuccessFullPix from "../successPix";
 import FindUser from "../../hooks/findUser";
@@ -69,8 +69,7 @@ export default function ModalAdvance(){
               key : key,
               type: type
             }
-            const response = await RetrievePayment(params_advance);
-            console.log(response)
+            // const response = await RetrievePayment(params_advance);r
             if(true){
                 const user = await FindUser();
                 const params_paymentDelivery = {
@@ -83,8 +82,8 @@ export default function ModalAdvance(){
                     amount_out: amountRetrive
                 }
                 const response = await CreatePaymentDelivery(params_paymentDelivery);
+                console.log(response)
                 if(response.status == 201){
-                    console.log(response)
                     setIdTransaction(response.id)
                     setCreate_at(response.create)
                     const params_updateUser = {

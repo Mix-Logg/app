@@ -10,11 +10,14 @@ import Util from "../../img/vehicle/fiorino.png";
 import Van from "../../img/vehicle/van.png";
 import Vuc from "../../img/vehicle/cartload.png";
 import { useEffect, useState } from "react";
-export default function CardHistory({price, raceId, km}){
+export default function CardHistory({price, raceId, km, cancel, cancelDate, tax}){
     const [infoHistory, setInfoHistory] = useState('')
     const [picture, setPicture] = useState(null)
     
     const handleHistory = async () => {
+        if(cancel){
+          return
+        }
         await setInfoHistory('')
         await setInfoHistory(<InfoHistory raceId={raceId}/>)
     }
@@ -67,25 +70,48 @@ export default function CardHistory({price, raceId, km}){
           </View>
           <View style={twrnc`gap-3 justify-center`}>
             <View style={twrnc`flex-row gap-2 items-center`}>
-              <MaterialCommunityIcons name="history" size={20} color="#FF5F00" />
-              <View>
-                <Text className='font-light' style={twrnc` text-[#191919]`}>Você rodou {Mask('km',km)} km</Text>
-              </View>
+              { cancel ?
+                <View>
+                  <Text className='font-light text-red-600'>
+                    Você cancelou
+                  </Text>
+                  <Text className='font-light'>
+                    {Mask('dateFormat', cancelDate)}
+                  </Text>
+                </View>
+                :
+                <>
+                  <MaterialCommunityIcons name="history" size={20} color="#FF5F00" />
+                  <View>
+                    <Text className='font-light' style={twrnc` text-[#191919]`}>Você rodou {Mask('km',km)} km</Text>
+                  </View>
+                </>
+              }
             </View>
             <View style={twrnc`flex-row gap-2`}>
-              <View style={twrnc`justify-center`}>
-                <Text
-                  style={twrnc`font-medium text-green-600 font-bold`}
-                >
-                  {Mask('amount', price)} reais
-                </Text>
-              </View>
+              { cancel ?
+                <View>
+                  <Text className='text-red-600 font-bold'>
+                    -{Mask('amount',tax)}
+                  </Text>
+                </View>
+                :
+                <View style={twrnc`justify-center`}>
+                  <Text
+                    style={twrnc`text-green-600 font-bold`}
+                  >
+                    {Mask('amount', price)} reais
+                  </Text>
+                </View>
+              }
             </View>
           </View>
         </View>
-        <View style={twrnc`justify-center items-end `}>
-          <MaterialIcons name="keyboard-arrow-right" size={24} color="#FF5F00" />
-        </View>
+        { !cancel &&
+          <View style={twrnc`justify-center items-end `}>
+            <MaterialIcons name="keyboard-arrow-right" size={24} color="#FF5F00" />
+          </View>
+        }
         </TouchableOpacity>
       </>
     )

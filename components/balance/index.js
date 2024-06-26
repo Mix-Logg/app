@@ -54,7 +54,7 @@ export default function Balance(){
                     }
                 </View>
             </View>
-            <View style={twrnc`items-center p-5`}>
+            <View style={twrnc`items-center w-full p-5 `}>
                 <View className="flex-row items-center border border-[#d4d4d4] w-full rounded-lg  px-5 gap-3 py-3 ">
                     <View style={twrnc`bg-orange-100 rounded-lg w-10 h-10 justify-center items-center`}>
                         <View style={twrnc`h-6 w-6`}>

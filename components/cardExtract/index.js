@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, Image } from "react-native"
 import Pix from '../../img/icons/pix.png'
 import Mask from '../../hooks/mask';
 import { useNavigation } from "@react-navigation/native";
-export default function CardExtract({amount, tax, taxPix, taxFull, pix, id, create_at}){
+export default function CardExtract({status,amount, tax, taxPix, taxFull, pix, id, create_at}){
     const [ icon, setIcon] = useState('')
     const [ modal, setModal] = useState('')
     const navigation = useNavigation()
@@ -39,6 +39,7 @@ export default function CardExtract({amount, tax, taxPix, taxFull, pix, id, crea
 
     const handleDetails = async () => {
         const params = {
+            status:status,
             create_at:create_at,
             id:id,
             amount:amount,
