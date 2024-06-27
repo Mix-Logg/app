@@ -12,6 +12,8 @@ import {MaterialIcons, } from "@expo/vector-icons";
 import findOneRace from "../../hooks/findOneRace";
 import updateRace from "../../hooks/updateRace";
 import ConfirmCodeSuccessful from "../confirmCodeWork";
+import UpdateUser from "../../hooks/updateUser";
+import FindUser from "../../hooks/findUser";
 export default function InfoWorkHome({dropDownDetails, setDropDownDetails, code, setCode, setInfo, locationDelivery}) {
   const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
   const URLdevelopment = 'http://192.168.1.10:8080/'
@@ -34,6 +36,7 @@ export default function InfoWorkHome({dropDownDetails, setDropDownDetails, code,
   const [confirmFinishCode, setConfirmFinishCode] = useState(false)
   const [codeInvalid, setCodeInvalid] = useState(false)
   const [modalCorrectCode, setModalCorrectCode] = useState('')
+  const [valueRace, setValueRace] = useState('')
   const handleVisibleDetails = async () => {
     setDropDownDetails(!dropDownDetails);
   };
@@ -76,6 +79,12 @@ export default function InfoWorkHome({dropDownDetails, setDropDownDetails, code,
           const update = await updateRace(raceId ,updateFinishCode)
           if(update.status === 200){
             socket.emit('talk', race.idClientIo, 'finishRace');
+            const user = await FindUser()
+            const newValue = parseInt(user.amount) + parseInt(valueRace)
+            const payDriver = {
+              amount: newValue.toString()
+            }
+            await UpdateUser(user.id,payDriver);
             await AsyncStorage.removeItem('raceId');
             navigation.navigate('Home')
           }
@@ -104,6 +113,7 @@ export default function InfoWorkHome({dropDownDetails, setDropDownDetails, code,
       const storage = await AllStorage();
       const race = await findOneRace(storage.raceId)
       setRaceId(storage.raceId)
+      setValueRace(race.value)
       setConfirmInitialCode(race.confirmCodeInitial)
       setConfirmFinishCode(race.confirmCodeFinish)
       setInitialCode(storage.codeInitial)

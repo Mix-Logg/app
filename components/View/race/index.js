@@ -66,7 +66,6 @@ export default function Race({navigation}){
     }, [listen, races]);
 
     const checkRace = async (response) => {
-        console.log(response.id)
         let uuid = response.id.toString();
         const newRace = races
         const indexToUpdate = newRace.findIndex(race => race.id == uuid);

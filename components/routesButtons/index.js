@@ -48,8 +48,8 @@ export default function RoutesButtons({code}){
     
     return(
         <View className="">
-            <View style={twrnc`h-50 bg-[#EFEFEF] rounded-b-3xl items-center p-5`}>
-               <View className=" rounded-xl w-5/6 bg-white">
+            <View className={`h-44 bg-primary rounded-b-3xl items-center p-5`}>
+               <View className=" rounded-xl w-5/6  bg-white">
                     <Image
                         source={People}
                         resizeMode="contain"
