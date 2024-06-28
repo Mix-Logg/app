@@ -41,7 +41,7 @@ export default function Access({navigation}) {
             case 'profile':
                 navigation.navigate('Profile')
                 break;
-            case 'profile':
+            case 'operation':
                 navigation.navigate('Operation')
                 break;
             default:

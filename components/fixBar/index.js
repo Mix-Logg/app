@@ -1,7 +1,7 @@
 import twrnc from 'twrnc';
 import { View, Image,Text , TouchableOpacity, StatusBar  } from 'react-native';
 import { useEffect, useState } from 'react';
-import { AntDesign, Octicons, FontAwesome5, MaterialCommunityIcons  } from '@expo/vector-icons';
+import { AntDesign, Octicons, FontAwesome5, MaterialCommunityIcons, Feather  } from '@expo/vector-icons';
 import Wallet from '../../img/icons/Wallet.png'
 import Race from '../../img/icons/box.png'
 import History from '../../img/icons/Reload.png'
@@ -58,6 +58,10 @@ export default function FixBar({navigation, opition, color = null}){
                     setTitle('Informações')
                     setBack('Race')
                     break;
+                case 'operation':
+                    setTitle('Operação')
+                    setBack('Home')
+                    break;
                 default:
                     break;
             }
@@ -91,6 +95,7 @@ export default function FixBar({navigation, opition, color = null}){
                         : opition === 'race' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={Race} tintColor={'white'}/></View>
                         : opition === 'history' ? <View style={twrnc`w-4 h-4 `}><Image style={twrnc`w-full h-full`} resizeMode='contain' source={History} tintColor={'white'}/></View>
                         : opition === 'infoRace' ? <MaterialCommunityIcons name="car-info" size={20} color="white" />
+                        : opition === 'operation' ? <Feather name="truck" size={20} color="white" />
                         : null }
                         <Text style={twrnc`${color ? 'text-white' : 'text-white'} text-sm font-medium`}> {title} </Text>
                     </View>

@@ -31,6 +31,8 @@ import Work from '../components/View/work';
 import RegisterWallet from '../components/registerWallet';
 import ExtractDetails from '../components/View/extractDetails';
 import RegisterWalletStepOne from '../components/registerWallet/stepOne';
+import Operation from '../components/View/operation/';
+
 export default function AllRoutes() {
 
   return (
@@ -270,7 +272,6 @@ export default function AllRoutes() {
                   headerShown: false // Exibe o cabeçalho nesta tela
               }}
             />
-            
             <Stack.Screen name="Extract" component={Extract} 
               options={{
               title: '',  
@@ -281,6 +282,15 @@ export default function AllRoutes() {
               }}
             />
             <Stack.Screen name="ExtractDetails" component={ExtractDetails} 
+              options={{
+              title: '',  
+              headerStyle: {
+                  backgroundColor: '#FF5F00', // Define a cor de fundo do cabeçalho
+                },
+                headerShown: false // Exibe o cabeçalho nesta tela
+              }}
+            />
+            <Stack.Screen name="Operation" component={Operation} 
               options={{
               title: '',  
               headerStyle: {
