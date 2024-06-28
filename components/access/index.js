@@ -1,6 +1,6 @@
 import twrnc from "twrnc";
 import { View, ScrollView, Text, Image,TouchableOpacity, Linking, ActivityIndicator } from "react-native";
-import { Ionicons, FontAwesome6  } from '@expo/vector-icons';
+import { Feather, FontAwesome6  } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import Reload from '../../img/icons/Reload.png';
 import Wallet from '../../img/icons/Wallet.png';
@@ -40,6 +40,9 @@ export default function Access({navigation}) {
                 break;
             case 'profile':
                 navigation.navigate('Profile')
+                break;
+            case 'profile':
+                navigation.navigate('Operation')
                 break;
             default:
                 break;
@@ -113,6 +116,15 @@ export default function Access({navigation}) {
                     </TouchableOpacity>
                     <Text style={twrnc`text-[#7B7B7B]`} >Histórico </Text>
                 </View>
+                <View style={twrnc`items-center justify-center px-5 gap-1`}>
+                    <TouchableOpacity style={twrnc`border border-[#d4d4d4] justify-center items-center px-2 h-15 w-15 rounded-xl `}
+                        onPress={()=>handleAllAcess('operation')}
+                    >
+                        <Feather name="truck" size={30} color="#FF5F00" />
+                    </TouchableOpacity>
+                    <Text style={twrnc`text-[#7B7B7B]`} >Operação</Text>
+                </View>
+                {/* <Feather name="truck" size={24} color="black" /> */}
                 {/* <View style={twrnc`items-center justify-center px-5 gap-1`}>
                     <TouchableOpacity style={twrnc`border border-[#d4d4d4] justify-center items-center px-2 h-15 w-15 rounded-xl `}
                         onPress={handleTeste}
