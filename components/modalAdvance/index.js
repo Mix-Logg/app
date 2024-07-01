@@ -117,6 +117,7 @@ export default function ModalAdvance(){
         }
         fetchData()
     },[])
+    
     useEffect(()=>{
         const fetchData = async () => {
             setAmountRetriveMask( Mask('amount', amountRetrive) )
@@ -137,6 +138,7 @@ export default function ModalAdvance(){
         }
         fetchData()
     },[amountRetrive])
+    
     useEffect(()=>{
         const fetchData = async () => { 
             setKey('')
@@ -226,10 +228,10 @@ export default function ModalAdvance(){
                                     </View>
                                     { warningType &&
                                         <View className='flex flex-row items-center'>
-                                        <AntDesign name="warning" size={13} color="#ef4444" />
-                                        <Text className='font-medium text-red-500 ml-1'> 
-                                            Selecione o tipo da chave
-                                        </Text>
+                                            <AntDesign name="warning" size={13} color="#ef4444" />
+                                            <Text className='font-medium text-red-500 ml-1'> 
+                                                Selecione o tipo da chave
+                                            </Text>
                                         </View>
                                     }
                                 </View>
