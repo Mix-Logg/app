@@ -284,7 +284,7 @@ export default function FastShop(){
                                                     </>
                                                 :
                                                     <>
-                                                        { !timeStartExpired ?
+                                                        { timeStartExpired ?
                                                             <>
                                                                 <View className='items-center'>
                                                                     <Text className='text-2xl font-bold text-red-600'>
