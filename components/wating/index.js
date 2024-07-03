@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator, View, Text, Image } from "react-native";
+import { ActivityIndicator, View, Text, Image, StatusBar } from "react-native";
 
 export default function Wating() {
   const Primary = require('../../img/logo/logoAsa.png');

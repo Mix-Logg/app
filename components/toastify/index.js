@@ -38,13 +38,13 @@ export default function Toastify({setIsVisible, isVisible ,option, info}){
             <View className='h-full w-full py-7'>
                 <View className='bg-white flex-row rounded-t-lg'>
                     <View className='w-full flex-row justify-between py-2'>
-                        <View className='bg-pink py-3 px-3 flex-row'>
+                        <View className='bg-pink py-3 px-3 flex-row '>
                             {icon}
-                            <View className='h-fit '>
-                                <Text className='ml-3'>
-                                    {info}
-                                </Text>
-                            </View>
+                        <View className='h-fit w-5/6'>
+                            <Text className='ml-3 w-6/6'>
+                                {info}
+                            </Text>
+                        </View>
                         </View>
                         <TouchableOpacity className='px-2'
                             onPress={()=>setIsVisible(false)}
