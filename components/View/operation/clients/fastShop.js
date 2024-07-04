@@ -69,8 +69,7 @@ export default function FastShop(){
                 return
             }
             setLoaderCheckIn(true)
-            const check = await ValidDistanceCheck(-23.528626301684948, -46.7395953836054, 1000);
-            // const check = await ValidDistanceCheck(-23.3503845779703, -46.845062403937504, 1000);
+            const check = await ValidDistanceCheck(-23.350355027592585, -46.84510531928067, 1000);
             if(check === false){
                 setLoaderCheckIn(false)
                 setToastCheckDistance(true)
