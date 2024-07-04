@@ -303,7 +303,7 @@ export default function FastShop(){
                     <View className='h-20 bg-primary rounded-b-3xl justify-center px-3'>
                         <View className='justify-between flex-row items-center'>
                             <TouchableOpacity className='flex-row items-center'
-                                onPress={() => navigation.navigate('Home')}
+                                onPress={() => navigation.navigate('Operation')}
                             >
                                 <AntDesign name="arrowleft" size={18} color="white" />
                                 <Text className='text-white text-lg ml-2'>voltar</Text>

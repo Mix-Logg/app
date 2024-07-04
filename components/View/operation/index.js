@@ -1,10 +1,8 @@
-import NoHaveOperation from "./noHaveOperation";
 import { useEffect, useState} from "react";
-import { View, Text } from "react-native";
-import BarOperation from "../../barOperation";
+import NoHaveOperation from "./noHaveOperation";
 import findOneOperation from "../../../hooks/findOneOperation";
 import Wating from "../../wating";
-import Work from "./work";
+import OperationHome from "./home";
 export default function Operation(){
     const [haveOperation, setHaveOperation] = useState(null)
     
@@ -26,9 +24,9 @@ export default function Operation(){
             <Wating/>
             :
             haveOperation ?
-            <Work/>
+                <OperationHome/>
             :
-            <NoHaveOperation/>
+                <NoHaveOperation/>
         }
        </>
     )

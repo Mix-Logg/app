@@ -7,7 +7,7 @@ import findOneOperation from "../../../hooks/findOneOperation"
 import Wating from "../../wating"
 import FastShop from "./clients/fastShop"
 import Frubana  from "./clients/frubana"
-export default function Work(){
+export default function WorkOperationToday(){
     const [operation, setOperation] = useState('')
     const [operationDetails, setOperationDetails] = useState(null)
     const navigation = useNavigation();
