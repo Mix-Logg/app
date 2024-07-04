@@ -112,7 +112,7 @@ export default function FastShop(){
         const currentMinutes = today.getMinutes();
         const currentHour    = today.getHours();
         setHour(currentHour)
-        if ( currentHour > 8  && currentHour < 14 ) {
+        if ( currentHour >= 8  && currentHour <= 14 ) {
             setTimeExpired(false);
         } else {
             setTimeExpired(true);
@@ -235,7 +235,7 @@ export default function FastShop(){
         <>
             {modalCancel}
             <Toastify isVisible={toast} setIsVisible={setToast}  option={'warning'}  info={'Para confirmar sua chegada, você deve estar pelo menos a 1 km do Centro de Distribuição (CD)'}/>
-            { vehicle && auxiliary && driver && dateWork && hour && timeExpired && checkFetch ?
+            { vehicle && auxiliary && driver && dateWork && hour && timeExpired != null && checkFetch ?
                 <>
                     <View className='h-20 bg-primary rounded-b-3xl justify-center px-3'>
                         <View className='justify-between flex-row items-center'>
