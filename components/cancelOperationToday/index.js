@@ -3,13 +3,14 @@ import { Feather } from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
 import ModalBottom from "../modalBottom";
 import { useState } from "react";
-import FastShopLogo from '../../img/partners/logoFastShop.png'
+import LogoMix from '../../img/logo/logoAsa.png'
 import FindOneOperationToday from "../../hooks/findOneOperationToday";
 import UpdateOperationToday from "../../hooks/updateOperationToday";
-import DeleteOperationToday  from "../../hooks/deleteOperationToday";
+import DeleteOperationToday from "../../hooks/deleteOperationToday";
+import CreateOperationToday from "../../hooks/createOperationToday";
 import Toastify from "../toastify";
 import { useNavigation } from "@react-navigation/native";
-export default function CancelOperationToday({status}){
+export default function CancelOperationToday({unavailable, driver, auxiliary, idAuxiliary, idDriver, dateWork}){
     const navigation = useNavigation()
 
     const [showSuccess, setShowSuccess] = useState(false)
@@ -26,13 +27,35 @@ export default function CancelOperationToday({status}){
             setLoader(false)
             return
         }
+        if(unavailable){
+            const paramsConfirm = {
+                date       :dateWork,
+                team       :JSON.stringify({
+                                driver   :driver,
+                                auxiliary:auxiliary
+                            }),
+                operation  :'Fast-Shop',
+                idAuxiliary:idAuxiliary,
+                idDriver   :idDriver,
+                status     :'unavailable',
+                occurrence: occurrence == 'other' ? txtOccurrence : occurrence
+            };
+            const response = await CreateOperationToday(paramsConfirm);
+            if(response.status == 201){
+                setLoader(false)
+                navigation.navigate('Home')
+                return
+            }
+            setShowDanger(true)
+            return
+        }
         const operation = await FindOneOperationToday();
         const operation_param = {
             occurrence: occurrence == 'other' ? txtOccurrence : occurrence
         }
         const response = await DeleteOperationToday(operation.id);
         if(response.status == 200){
-            await UpdateOperationToday (operation.id,operation_param)
+            await UpdateOperationToday (operation.id, operation_param)
             setShowSuccess(true)
             setLoader(false)
             navigation.navigate('Home')
@@ -53,7 +76,7 @@ export default function CancelOperationToday({status}){
                 <View className='mb-10'>
                     <View className='h-20 w-20'>
                         <Image
-                            source={FastShopLogo}
+                            source={LogoMix}
                             className='h-full w-full'
                             resizeMode="contain"
                         />
@@ -61,7 +84,7 @@ export default function CancelOperationToday({status}){
                 </View>
                 <View className={``}>
                     <Text className='text-sm font-semibold'>
-                        Motivo do cancelamento
+                        Motivo da ausência
                     </Text>
                     { occurrence == 'other' ?
                         <TextInput
@@ -105,7 +128,7 @@ export default function CancelOperationToday({status}){
                                 color={'#FFFFFF'}
                             />
                             :
-                            <Text className='text-white text-lg font-bold'>Cancelar</Text>
+                            <Text className='text-white text-lg font-bold'>Confirmar ausência</Text>
                         }
                     </TouchableOpacity>
                 </View>

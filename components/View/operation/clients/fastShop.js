@@ -15,8 +15,10 @@ import DeleteOperationToday from "../../../../hooks/deleteOperationToday";
 import UpdateOperationToday from "../../../../hooks/updateOperationToday";
 export default function FastShop(){
     const navigation = useNavigation();
-    
-    const [toast, setToast] = useState(false);
+    const [unavailable, setUnavailable] = useState(false)
+    const [toastCheckDistance, setToastCheckDistance] = useState(false);
+    const [toastSuccessFinishUnavailable, setToastSuccessFinishUnavailable] = useState(false);
+    const [toastFailFinishUnavailable   , setFailFinishUnavailable] = useState(false);
     const [checkFetch, setCheckFetch] = useState(false);
     const [today, setToday]   = useState('00/00/0000');
     const [hour, setHour]     = useState(null);
@@ -27,6 +29,7 @@ export default function FastShop(){
     const [idDriver, setIdDriver]   = useState(null);
     const [vehicle, setVehicle]     = useState(null);
     const [id, setId]               = useState(null);
+    const [idOperationToday, setIdOperationToday] = useState(null);
     const [status, setStatus]     = useState(null);
     const [hasConfirm, setHasConfirm] = useState(null);
     const [hasStart, setHasStart]     = useState(null);
@@ -35,6 +38,7 @@ export default function FastShop(){
     const [modalCancel, setModalCancel]   = useState(null);
     const [loaderConfirm, setLoaderConfirm]   = useState(null);
     const [loaderCheckIn, setLoaderCheckIn]   = useState(null);
+    const [loaderUnavailable, setLoaderUnavailable]   = useState(null);
 
     const handleHelp = async () => {
         const phoneNumber = '5511978612671';
@@ -43,6 +47,21 @@ export default function FastShop(){
         Linking.openURL(url)
             .catch(err => console.error('Erro ao abrir o WhatsApp:', err));
     };  
+
+    const handleFinishUnavailable = async () => {
+        setLoaderUnavailable(true)
+        const response = await DeleteOperationToday(idOperationToday);
+            if(response.status == 200){
+                setHasStart(null)
+                setHasConfirm(null)
+                setStatus(null)
+                setUnavailable(false)
+                setToastSuccessFinishUnavailable(true)
+                return
+            }
+            setFailFinishUnavailable(true)
+            return
+    }
 
     const handleStart = async () => {
         try{
@@ -54,8 +73,8 @@ export default function FastShop(){
             // const check = await ValidDistanceCheck(-23.3503845779703, -46.845062403937504, 1000);
             if(check === false){
                 setLoaderCheckIn(false)
-                setToast(true)
-                return console.log('ei você não chegou no local ainda!')
+                setToastCheckDistance(true)
+                return
             }
             if(check === true){
                 const today = await findOneOperationToday();
@@ -101,12 +120,12 @@ export default function FastShop(){
         }
     };
 
-    const handleCancel = async () => {
+    const handleCancel = async (unavailable) => {
         await setModalCancel('')
-        setModalCancel(<CancelOperationToday status={status}/>)
+        setModalCancel(<CancelOperationToday unavailable={unavailable} dateWork={dateWork} driver={driver} auxiliary={auxiliary} idAuxiliary={idAuxiliary} idDriver={idDriver}/>)
     };
 
-    const getTomorrowDate =  () => {
+    const getTomorrowDate = () => {
         const today = new Date();
         const tomorrow = new Date(today);
         const currentMinutes = today.getMinutes();
@@ -155,8 +174,12 @@ export default function FastShop(){
                 setDateWork(date)
                 const check = await findOneOperationToday()
                 if(check.status != 500 ){
+                    setIdOperationToday(check.id)
                     if(check.date == date){
                         let team = JSON.parse(check.team)
+                        if(check.status == 'unavailable'){
+                            setUnavailable(true)
+                        }
                         setHasConfirm(true)
                         setHasStart(check.start)
                         setStatus(check.status)
@@ -190,8 +213,42 @@ export default function FastShop(){
                             setDateWork(date)
                             return
                         }
+                        if(check.status == 'pending'){
+                            const response = await DeleteOperationToday(check.id);
+                            if(response.status == 200){
+                                const operation_param = {
+                                    occurrence: 'Cliente sem carga - pendente'
+                                }
+                                await UpdateOperationToday(check.id,operation_param)
+                                    setHasStart(null)
+                                    setHasConfirm(null)
+                                    setStatus(null)
+                                    setDateWork(date)
+                                return
+                            }
+                            setHasStart(null)
+                            setHasConfirm(null)
+                            setStatus(null)
+                            setDateWork(date)
+                            return
+                        }
+                        if(check.status == 'unavailable'){
+                            const response = await DeleteOperationToday(check.id);
+                            if(response.status == 200){
+                                setHasStart(null)
+                                setHasConfirm(null)
+                                setStatus(null)
+                                setDateWork(date)
+                                return
+                            }
+                            setHasStart(null)
+                            setHasConfirm(null)
+                            setStatus(null)
+                            setDateWork(date)
+                            return
+                        }
                         if(check.status == 'confirm'){
-                            if(check.start != null && hour > 8){
+                            if(check.start != null && hour >= 8){
                                 const response = await DeleteOperationToday(check.id);
                                 if(response.status == 200){
                                     const operation_param = {
@@ -210,13 +267,17 @@ export default function FastShop(){
                                 setDateWork(date)
                                 return
                             }
-                            if(hour > 8){
+                            if(hour >= 8){
                                 const response = await DeleteOperationToday(check.id);
                                 if(response.status == 200){
                                     const operation_param = {
                                         occurrence: 'Motorista atrasou'
                                     }
                                     await UpdateOperationToday(check.id, operation_param)
+                                    setHasStart(null)
+                                    setHasConfirm(null)
+                                    setStatus(null)
+                                    setDateWork(date)
                                     return
                                 }
                                 return
@@ -234,7 +295,9 @@ export default function FastShop(){
     return(
         <>
             {modalCancel}
-            <Toastify isVisible={toast} setIsVisible={setToast}  option={'warning'}  info={'Para confirmar sua chegada, você deve estar pelo menos a 1 km do Centro de Distribuição (CD)'}/>
+            <Toastify isVisible={toastCheckDistance} setIsVisible={setToastCheckDistance}  option={'warning'}  info={'Para confirmar sua chegada, você deve estar pelo menos a 1 km do Centro de Distribuição (CD)'}/>
+            <Toastify isVisible={toastSuccessFinishUnavailable} setIsVisible={setToastSuccessFinishUnavailable}  option={'success'}  info={'Ainda bem que mudou de ideia! Agora, você pode confirmar sua disponibilidade.'}/>
+            <Toastify isVisible={toastFailFinishUnavailable} setIsVisible={setFailFinishUnavailable}  option={'danger'}   info={'Algo deu errado. Tente novamente mais tarde ou entre em contato com o suporte.'}/>
             { vehicle && auxiliary && driver && dateWork && hour && timeExpired != null && checkFetch ?
                 <>
                     <View className='h-20 bg-primary rounded-b-3xl justify-center px-3'>
@@ -291,7 +354,7 @@ export default function FastShop(){
                                                                         Você se atrasou!
                                                                     </Text>
                                                                     <Text className='mt-5 font-light'>
-                                                                        Volte após as 12:00 para confirma carga
+                                                                        Volte após as 8:00 para confirma carga
                                                                         para amanhã
                                                                     </Text>
                                                                 </View>
@@ -367,66 +430,96 @@ export default function FastShop(){
                                             </> 
                                             :
                                             <>
-                                                <View className='flex-row items-center'>
-                                                    <View className='mr-2'>
-                                                        {   status == 'pending'  ?
-                                                                <Feather name="clock" size={22} color="#ca8a04" />
-                                                            :
-                                                            status == 'cancel' ?
-                                                                <Feather name="x-circle" size={22} color="#dc2626" />
-                                                            :
-                                                                <Feather name="check-circle" size={22} color={`#16a34a`} />
-                                                        }
-                                                    </View>
-                                                    <Text className={`text-lg font-bold mr-5 ${ status == 'pending'  ? 'text-yellow-600' : status == 'cancel'  ? 'text-red-600' : 'text-green-600'}`}>
-                                                        {dateWork}
-                                                    </Text>
-                                                </View>
-                                                <View className='mt-3 p-3 rounded-lg border border-neutral-300 bg-white'>
-                                                    <View className='flex-row'>
-                                                        <View className='w-8'>
-                                                                <MaterialCommunityIcons name="steering" size={24} color="#FF5F00"/>
+                                                {  unavailable ?
+                                                    <>
+                                                        <View>
+                                                            <Text className='text-lg font-light'>
+                                                            Verificamos que você não estará disponível para amanhã. {"\n"}
+                                                            Caso mude de ideia, clique em confirmar.
+                                                            </Text>
                                                         </View>
-                                                        <Text className='text-base font-light'>{driver}</Text>
-                                                    </View>
-                                                    { vehicle != 'util' && 
-                                                        <View className='mt-3 flex-row'>
-                                                            <View className='w-8'>
-                                                                <MaterialCommunityIcons name="handshake-outline" size={24} color="#FF5F00" />
+                                                        <View className='mt-10'>
+                                                                <View className='items-center w-full'>
+                                                                    <TouchableOpacity className={`bg-primary w-5/6 h-8 rounded items-center justify-center ${loaderUnavailable && 'opacity-70'}`}
+                                                                        onPress={()=>handleFinishUnavailable()}
+                                                                    > 
+                                                                        {  loaderUnavailable ?
+                                                                            <ActivityIndicator
+                                                                                color={'white'}
+                                                                            />
+                                                                            :
+                                                                            <Text className={`text-lg text-white font-bold `}>
+                                                                                Confirmar
+                                                                            </Text>
+                                                                        }
+                                                                    </TouchableOpacity>
+                                                                </View>
+                                                        </View>
+                                                    </>
+                                                    :
+                                                    <>
+                                                        <View className='flex-row items-center'>
+                                                            <View className='mr-2'>
+                                                                {   status == 'pending'  ?
+                                                                        <Feather name="clock" size={22} color="#ca8a04" />
+                                                                    :
+                                                                    status == 'cancel' ?
+                                                                        <Feather name="x-circle" size={22} color="#dc2626" />
+                                                                    :
+                                                                        <Feather name="check-circle" size={22} color={`#16a34a`} />
+                                                                }
                                                             </View>
-                                                            <Text className='text-base font-light'> {auxiliary} </Text>
+                                                            <Text className={`text-lg font-bold mr-5 ${ status == 'pending'  ? 'text-yellow-600' : status == 'cancel'  ? 'text-red-600' : 'text-green-600'}`}>
+                                                                {dateWork}
+                                                            </Text>
                                                         </View>
-                                                    }
-                                                    <View className='mt-3 flex-row'>
-                                                        <View className='w-8'>
-                                                            <Octicons name="location" size={22} color="#FF5F00" />
+                                                        <View className='mt-3 p-3 rounded-lg border border-neutral-300 bg-white'>
+                                                            <View className='flex-row'>
+                                                                <View className='w-8'>
+                                                                        <MaterialCommunityIcons name="steering" size={24} color="#FF5F00"/>
+                                                                </View>
+                                                                <Text className='text-base font-light'>{driver}</Text>
+                                                            </View>
+                                                            { vehicle != 'util' && 
+                                                                <View className='mt-3 flex-row'>
+                                                                    <View className='w-8'>
+                                                                        <MaterialCommunityIcons name="handshake-outline" size={24} color="#FF5F00" />
+                                                                    </View>
+                                                                    <Text className='text-base font-light'> {auxiliary} </Text>
+                                                                </View>
+                                                            }
+                                                            <View className='mt-3 flex-row'>
+                                                                <View className='w-8'>
+                                                                    <Octicons name="location" size={22} color="#FF5F00" />
+                                                                </View>
+                                                                <Text className='text-base font-light'> 
+                                                                    CD - Fast Shop {"\n"} 
+                                                                    Rod Anhanguera Km 37,5 {"\n"} 
+                                                                    Cep: 07789-100 {"\n"}
+                                                                    Bairro: Jordanesia
+                                                                </Text>
+                                                            </View>
                                                         </View>
-                                                        <Text className='text-base font-light'> 
-                                                            CD - Fast Shop {"\n"} 
-                                                            Rod Anhanguera Km 37,5 {"\n"} 
-                                                            Cep: 07789-100 {"\n"}
-                                                            Bairro: Jordanesia
-                                                        </Text>
-                                                    </View>
-                                                </View>
-                                                <View className='mt-8 items-center'>
-                                                    { status == 'pending'  ?
-                                                        <Text className='font-light text-2xl'>
-                                                            Disponibilidade confirmada para amanhã !
-                                                        </Text>
-                                                        :
-                                                        status == 'cancel' ?
-                                                        <Text className='font-light text-2xl'>
-                                                            Infelizmente, você não tem carga para amanhã. Em caso de dúvidas, 
-                                                            entre em contato com o suporte
-                                                        </Text>
-                                                        :
-                                                        <Text className='font-light text-2xl w-5/6'>
-                                                            Carga confirmada para amanhã. Você deve estar no CD às 5:00 e, 
-                                                            ao chegar, confirmar no aplicativo.
-                                                        </Text>
-                                                    }
-                                                </View>
+                                                        <View className='mt-8 items-center'>
+                                                            { status == 'pending'  ?
+                                                                <Text className='font-light text-2xl'>
+                                                                    Disponibilidade confirmada para amanhã !
+                                                                </Text>
+                                                                :
+                                                                status == 'cancel' ?
+                                                                <Text className='font-light text-2xl'>
+                                                                    Infelizmente, você não tem carga para amanhã. Em caso de dúvidas, 
+                                                                    entre em contato com o suporte
+                                                                </Text>
+                                                                :
+                                                                <Text className='font-light text-2xl w-5/6'>
+                                                                    Carga confirmada para amanhã. Você deve estar no CD às 5:00 e, 
+                                                                    ao chegar, confirmar no aplicativo.
+                                                                </Text>
+                                                            }
+                                                        </View>
+                                                    </>
+                                                }
                                             </>
                                         }
                                     </>
@@ -503,6 +596,16 @@ export default function FastShop(){
                                                                     Confirmar
                                                                 </Text>
                                                             }
+                                                        </TouchableOpacity>
+                                                    </View>
+                                                    <View className='items-center w-full mt-5'>
+                                                        <TouchableOpacity className={`bg-secondary w-5/6 h-8 rounded items-center justify-center ${loaderConfirm && 'opacity-70'}`}
+                                                            onPress={()=>handleCancel(true)}
+                                                        > 
+                                                            <Text className={`text-lg text-white font-bold `}>
+                                                                Indisponível
+                                                            </Text>
+                                                            
                                                         </TouchableOpacity>
                                                     </View>
                                                 </View>
