@@ -15,6 +15,7 @@ import DeleteOperationToday from "../../../../hooks/deleteOperationToday";
 import UpdateOperationToday from "../../../../hooks/updateOperationToday";
 export default function FastShop(){
     const navigation = useNavigation();
+
     const [unavailable, setUnavailable] = useState(false)
     const [toastCheckDistance, setToastCheckDistance] = useState(false);
     const [toastSuccessFinishUnavailable, setToastSuccessFinishUnavailable] = useState(false);
@@ -322,153 +323,239 @@ export default function FastShop(){
                                 Disponibilidade 
                             </Text>
                         </View>
-                        {   !dateWork ?
+                        { !id ?
                             <>
-                                <View className='items-center mt-5'>
-                                    <Text className='font-light text-lg'>Amanhã não tem carregamento</Text>
+                                <View className='p-5'>
+                                    <Text className='text-lg font-light'>
+                                        Você ainda não tem uma equipe formada, entre em
+                                        contato com o suporte.
+                                    </Text>
                                 </View>
                             </>
                             :
                             <>
-                                { hasConfirm ?
+                                {   !dateWork ?
                                     <>
-                                        { today == dateWork ? 
+                                        <View className='items-center mt-5'>
+                                            <Text className='font-light text-lg'>Amanhã não tem carregamento</Text>
+                                        </View>
+                                    </>
+                                    :
+                                    <>
+                                        { hasConfirm ?
                                             <>
-                                                { hasStart ?
+                                                { today == dateWork ? 
                                                     <>
-                                                        <View className='mt-5 p-2'>
-                                                            <Text className='text-xl font-bold'>Obrigado!</Text>
-                                                            <Text className='mt-3 font-light text-lg'>
-                                                                Chegada registrada, obrigado pela confirmação. {"\n"}
-                                                                Volte às 8:00 para confirmar a carga de amanhã.
-                                                            </Text>
-                                                        </View>
-                                                    </>
-                                                :
-                                                    <>
-                                                        { timeStartExpired ?
+                                                        { hasStart ?
                                                             <>
-                                                                <View className='items-center'>
-                                                                    <Text className='text-2xl font-bold text-red-600'>
-                                                                        Você se atrasou!
-                                                                    </Text>
-                                                                    <Text className='mt-5 font-light'>
-                                                                        Volte após as 8:00 para confirma carga
-                                                                        para amanhã
+                                                                <View className='mt-5 p-2'>
+                                                                    <Text className='text-xl font-bold'>Obrigado!</Text>
+                                                                    <Text className='mt-3 font-light text-lg'>
+                                                                        Chegada registrada, obrigado pela confirmação. {"\n"}
+                                                                        Volte às 8:00 para confirmar a carga de amanhã.
                                                                     </Text>
                                                                 </View>
                                                             </>
                                                         :
                                                             <>
-                                                                <View>
-                                                                    <View>
-                                                                        <Text className='text-xl font-bold'>Bom dia!</Text>
-                                                                        <Text className='text-base font-light'>
-                                                                                                Pronto para mais um dia de trabalho? 
-                                                                                                Assim que chegar ao CD, confirme aqui 
-                                                                                                no app.
-                                                                        </Text>
-                                                                        <View className='mt-3 p-3 rounded-lg border border-neutral-300 bg-white'>
-                                                                        <View className='flex-row'>
-                                                                            <View className='w-8'>
-                                                                                    <MaterialCommunityIcons name="steering" size={24} color="#FF5F00"/>
-                                                                            </View>
-                                                                            <Text className='text-base font-light'>{driver}</Text>
+                                                                { timeStartExpired ?
+                                                                    <>
+                                                                        <View className='items-center'>
+                                                                            <Text className='text-2xl font-bold text-red-600'>
+                                                                                Você se atrasou!
+                                                                            </Text>
+                                                                            <Text className='mt-5 font-light'>
+                                                                                Volte após as 8:00 para confirma carga
+                                                                                para amanhã
+                                                                            </Text>
                                                                         </View>
-                                                                        { vehicle != 'util' && 
-                                                                            <View className='mt-3 flex-row'>
-                                                                                <View className='w-8'>
-                                                                                    <MaterialCommunityIcons name="handshake-outline" size={24} color="#FF5F00" />
+                                                                    </>
+                                                                :
+                                                                    <>
+                                                                        <View>
+                                                                            <View>
+                                                                                <Text className='text-xl font-bold'>Bom dia!</Text>
+                                                                                <Text className='text-base font-light'>
+                                                                                                        Pronto para mais um dia de trabalho? 
+                                                                                                        Assim que chegar ao CD, confirme aqui 
+                                                                                                        no app.
+                                                                                </Text>
+                                                                                <View className='mt-3 p-3 rounded-lg border border-neutral-300 bg-white'>
+                                                                                <View className='flex-row'>
+                                                                                    <View className='w-8'>
+                                                                                            <MaterialCommunityIcons name="steering" size={24} color="#FF5F00"/>
+                                                                                    </View>
+                                                                                    <Text className='text-base font-light'>{driver}</Text>
                                                                                 </View>
-                                                                                <Text className='text-base font-light'> {auxiliary} </Text>
+                                                                                { vehicle != 'util' && 
+                                                                                    <View className='mt-3 flex-row'>
+                                                                                        <View className='w-8'>
+                                                                                            <MaterialCommunityIcons name="handshake-outline" size={24} color="#FF5F00" />
+                                                                                        </View>
+                                                                                        <Text className='text-base font-light'> {auxiliary} </Text>
+                                                                                    </View>
+                                                                                }
+                                                                                <View className='mt-3 flex-row'>
+                                                                                    <View className='w-8'>
+                                                                                        <Octicons name="location" size={22} color="#FF5F00" />
+                                                                                    </View>
+                                                                                    <Text className='text-base font-light'> 
+                                                                                        CD - Fast Shop {"\n"} 
+                                                                                        Rod Anhanguera Km 37,5 {"\n"} 
+                                                                                        Cep: 07789-100 {"\n"}
+                                                                                        Bairro: Jordanesia
+                                                                                    </Text>
+                                                                                </View>
+                                                                                </View>
+                                                                                <Text className='mt-2 text-lg font-light'>
+                                                                                    Confirmação até <Text className='font-bold text-xl'>
+                                                                                        5:30
+                                                                                    </Text>
+                                                                                </Text>
                                                                             </View>
+                                                                        </View>
+                                                                        <View className='mt-10 items-center'>
+                                                                            <TouchableOpacity className={`bg-primary h-10 w-5/6 items-center justify-center rounded mb-5 ${ loaderCheckIn && 'opacity-80'}`}
+                                                                                onPress={handleStart}
+                                                                            >
+                                                                                { loaderCheckIn ?
+                                                                                    <ActivityIndicator
+                                                                                        color={'white'}
+                                                                                    />
+                                                                                    :
+                                                                                    <Text className='text-lg text-white font-bold'>
+                                                                                        Confirmar
+                                                                                    </Text>
+                                                                                }
+                                                                            </TouchableOpacity>
+                                                                            <TouchableOpacity className='bg-secondary h-10 w-5/6 items-center justify-center rounded'
+                                                                                onPress={handleCancel}
+                                                                            >
+                                                                                <Text className='text-lg text-white font-bold'>Justificar ausência</Text>
+                                                                            </TouchableOpacity>
+                                                                        </View>
+                                                                    </>
+                                                                }
+                                                            </>
+                                                        }
+                                                    </> 
+                                                    :
+                                                    <>
+                                                        {  unavailable ?
+                                                            <>
+                                                                <View>
+                                                                    <Text className='text-lg font-light'>
+                                                                    Verificamos que você não estará disponível para amanhã. {"\n"}
+                                                                    Caso mude de ideia, clique em confirmar.
+                                                                    </Text>
+                                                                </View>
+                                                                <View className='mt-10'>
+                                                                        <View className='items-center w-full'>
+                                                                            <TouchableOpacity className={`bg-primary w-5/6 h-8 rounded items-center justify-center ${loaderUnavailable && 'opacity-70'}`}
+                                                                                onPress={()=>handleFinishUnavailable()}
+                                                                            > 
+                                                                                {  loaderUnavailable ?
+                                                                                    <ActivityIndicator
+                                                                                        color={'white'}
+                                                                                    />
+                                                                                    :
+                                                                                    <Text className={`text-lg text-white font-bold `}>
+                                                                                        Confirmar
+                                                                                    </Text>
+                                                                                }
+                                                                            </TouchableOpacity>
+                                                                        </View>
+                                                                </View>
+                                                            </>
+                                                            :
+                                                            <>
+                                                                <View className='flex-row items-center'>
+                                                                    <View className='mr-2'>
+                                                                        {   status == 'pending'  ?
+                                                                                <Feather name="clock" size={22} color="#ca8a04" />
+                                                                            :
+                                                                            status == 'cancel' ?
+                                                                                <Feather name="x-circle" size={22} color="#dc2626" />
+                                                                            :
+                                                                                <Feather name="check-circle" size={22} color={`#16a34a`} />
                                                                         }
+                                                                    </View>
+                                                                    <Text className={`text-lg font-bold mr-5 ${ status == 'pending'  ? 'text-yellow-600' : status == 'cancel'  ? 'text-red-600' : 'text-green-600'}`}>
+                                                                        {dateWork}
+                                                                    </Text>
+                                                                </View>
+                                                                <View className='mt-3 p-3 rounded-lg border border-neutral-300 bg-white'>
+                                                                    <View className='flex-row'>
+                                                                        <View className='w-8'>
+                                                                                <MaterialCommunityIcons name="steering" size={24} color="#FF5F00"/>
+                                                                        </View>
+                                                                        <Text className='text-base font-light'>{driver}</Text>
+                                                                    </View>
+                                                                    { vehicle != 'util' && 
                                                                         <View className='mt-3 flex-row'>
                                                                             <View className='w-8'>
-                                                                                <Octicons name="location" size={22} color="#FF5F00" />
+                                                                                <MaterialCommunityIcons name="handshake-outline" size={24} color="#FF5F00" />
                                                                             </View>
-                                                                            <Text className='text-base font-light'> 
-                                                                                CD - Fast Shop {"\n"} 
-                                                                                Rod Anhanguera Km 37,5 {"\n"} 
-                                                                                Cep: 07789-100 {"\n"}
-                                                                                Bairro: Jordanesia
-                                                                            </Text>
+                                                                            <Text className='text-base font-light'> {auxiliary} </Text>
                                                                         </View>
+                                                                    }
+                                                                    <View className='mt-3 flex-row'>
+                                                                        <View className='w-8'>
+                                                                            <Octicons name="location" size={22} color="#FF5F00" />
                                                                         </View>
-                                                                        <Text className='mt-2 text-lg font-light'>
-                                                                            Confirmação até <Text className='font-bold text-xl'>
-                                                                                5:30
-                                                                            </Text>
+                                                                        <Text className='text-base font-light'> 
+                                                                            CD - Fast Shop {"\n"} 
+                                                                            Rod Anhanguera Km 37,5 {"\n"} 
+                                                                            Cep: 07789-100 {"\n"}
+                                                                            Bairro: Jordanesia
                                                                         </Text>
                                                                     </View>
                                                                 </View>
-                                                                <View className='mt-10 items-center'>
-                                                                    <TouchableOpacity className={`bg-primary h-10 w-5/6 items-center justify-center rounded mb-5 ${ loaderCheckIn && 'opacity-80'}`}
-                                                                        onPress={handleStart}
-                                                                    >
-                                                                        { loaderCheckIn ?
-                                                                            <ActivityIndicator
-                                                                                color={'white'}
-                                                                            />
-                                                                            :
-                                                                            <Text className='text-lg text-white font-bold'>
-                                                                                Confirmar
-                                                                            </Text>
-                                                                        }
-                                                                    </TouchableOpacity>
-                                                                    <TouchableOpacity className='bg-secondary h-10 w-5/6 items-center justify-center rounded'
-                                                                        onPress={handleCancel}
-                                                                    >
-                                                                        <Text className='text-lg text-white font-bold'>Justificar ausência</Text>
-                                                                    </TouchableOpacity>
+                                                                <View className='mt-8 items-center'>
+                                                                    { status == 'pending'  ?
+                                                                        <Text className='font-light text-2xl'>
+                                                                            Disponibilidade confirmada para amanhã !
+                                                                        </Text>
+                                                                        :
+                                                                        status == 'cancel' ?
+                                                                        <Text className='font-light text-2xl'>
+                                                                            Infelizmente, você não tem carga para amanhã. Em caso de dúvidas, 
+                                                                            entre em contato com o suporte
+                                                                        </Text>
+                                                                        :
+                                                                        <Text className='font-light text-2xl w-5/6'>
+                                                                            Carga confirmada para amanhã. Você deve estar no CD às 5:00 e, 
+                                                                            ao chegar, confirmar no aplicativo.
+                                                                        </Text>
+                                                                    }
                                                                 </View>
                                                             </>
                                                         }
                                                     </>
                                                 }
-                                            </> 
+                                            </>
                                             :
                                             <>
-                                                {  unavailable ?
+                                                { timeExpired ?
                                                     <>
-                                                        <View>
-                                                            <Text className='text-lg font-light'>
-                                                            Verificamos que você não estará disponível para amanhã. {"\n"}
-                                                            Caso mude de ideia, clique em confirmar.
+                                                        <View className='mt-5'>
+                                                            <Text className='text-xl font-bold'>
+                                                                Confirmação disponível:
                                                             </Text>
-                                                        </View>
-                                                        <View className='mt-10'>
-                                                                <View className='items-center w-full'>
-                                                                    <TouchableOpacity className={`bg-primary w-5/6 h-8 rounded items-center justify-center ${loaderUnavailable && 'opacity-70'}`}
-                                                                        onPress={()=>handleFinishUnavailable()}
-                                                                    > 
-                                                                        {  loaderUnavailable ?
-                                                                            <ActivityIndicator
-                                                                                color={'white'}
-                                                                            />
-                                                                            :
-                                                                            <Text className={`text-lg text-white font-bold `}>
-                                                                                Confirmar
-                                                                            </Text>
-                                                                        }
-                                                                    </TouchableOpacity>
-                                                                </View>
-                                                        </View>
+                                                            <Text className='mt-7 text-lg font-light'>
+                                                                Segunda a sábado: 8:00 às 14:00
+                                                                {"\n"}
+                                                                Domingos das <Text>8:00 a 12:00</Text>
+                                                            </Text>
+                                                        </View>   
                                                     </>
                                                     :
                                                     <>
-                                                        <View className='flex-row items-center'>
-                                                            <View className='mr-2'>
-                                                                {   status == 'pending'  ?
-                                                                        <Feather name="clock" size={22} color="#ca8a04" />
-                                                                    :
-                                                                    status == 'cancel' ?
-                                                                        <Feather name="x-circle" size={22} color="#dc2626" />
-                                                                    :
-                                                                        <Feather name="check-circle" size={22} color={`#16a34a`} />
-                                                                }
+                                                        <View className='flex-row'>
+                                                            <View className='ml-1 w-8 justify-center'>
+                                                                <FontAwesome name="calendar" size={20} color="#FF5F00" />
                                                             </View>
-                                                            <Text className={`text-lg font-bold mr-5 ${ status == 'pending'  ? 'text-yellow-600' : status == 'cancel'  ? 'text-red-600' : 'text-green-600'}`}>
+                                                            <Text className='font-bold text-lg text-primary'>
                                                                 {dateWork}
                                                             </Text>
                                                         </View>
@@ -499,118 +586,45 @@ export default function FastShop(){
                                                                 </Text>
                                                             </View>
                                                         </View>
-                                                        <View className='mt-8 items-center'>
-                                                            { status == 'pending'  ?
-                                                                <Text className='font-light text-2xl'>
-                                                                    Disponibilidade confirmada para amanhã !
+                                                        <View className='mt-8 flex-row items-center'>
+                                                                <MaterialCommunityIcons name="information-outline" size={20} color="#ca8a04" />
+                                                                <Text className='ml-2 text-yellow-600 font-semibold'>
+                                                                    Se houver alguma informção incorreta, entre em contato 
+                                                                    com suporte para atualizá-lo.
                                                                 </Text>
-                                                                :
-                                                                status == 'cancel' ?
-                                                                <Text className='font-light text-2xl'>
-                                                                    Infelizmente, você não tem carga para amanhã. Em caso de dúvidas, 
-                                                                    entre em contato com o suporte
-                                                                </Text>
-                                                                :
-                                                                <Text className='font-light text-2xl w-5/6'>
-                                                                    Carga confirmada para amanhã. Você deve estar no CD às 5:00 e, 
-                                                                    ao chegar, confirmar no aplicativo.
-                                                                </Text>
-                                                            }
+                                                        </View>
+                                                        <View className='mt-10'>
+                                                            <View className='items-center w-full'>
+                                                                <TouchableOpacity className={`bg-primary w-5/6 h-8 rounded items-center justify-center ${loaderConfirm && 'opacity-70'}`}
+                                                                    onPress={()=>handleSubmitConfirm()}
+                                                                > 
+                                                                    {  loaderConfirm ?
+                                                                        <ActivityIndicator
+                                                                            color={'white'}
+                                                                        />
+                                                                        :
+                                                                        <Text className={`text-lg text-white font-bold `}>
+                                                                            Confirmar
+                                                                        </Text>
+                                                                    }
+                                                                </TouchableOpacity>
+                                                            </View>
+                                                            <View className='items-center w-full mt-5'>
+                                                                <TouchableOpacity className={`bg-secondary w-5/6 h-8 rounded items-center justify-center ${loaderConfirm && 'opacity-70'}`}
+                                                                    onPress={()=>handleCancel(true)}
+                                                                > 
+                                                                    <Text className={`text-lg text-white font-bold `}>
+                                                                        Indisponível
+                                                                    </Text>
+                                                                    
+                                                                </TouchableOpacity>
+                                                            </View>
                                                         </View>
                                                     </>
                                                 }
-                                            </>
+                                            </> 
                                         }
                                     </>
-                                    :
-                                    <>
-                                        { timeExpired ?
-                                            <>
-                                                <View className='mt-5'>
-                                                    <Text className='text-xl font-bold'>
-                                                        Confirmação disponível:
-                                                    </Text>
-                                                    <Text className='mt-7 text-lg font-light'>
-                                                        Segunda a sábado: 8:00 às 14:00
-                                                        {"\n"}
-                                                        Domingos das <Text>8:00 a 12:00</Text>
-                                                    </Text>
-                                                </View>   
-                                            </>
-                                            :
-                                            <>
-                                                <View className='flex-row'>
-                                                    <View className='ml-1 w-8 justify-center'>
-                                                        <FontAwesome name="calendar" size={20} color="#FF5F00" />
-                                                    </View>
-                                                    <Text className='font-bold text-lg text-primary'>
-                                                        {dateWork}
-                                                    </Text>
-                                                </View>
-                                                <View className='mt-3 p-3 rounded-lg border border-neutral-300 bg-white'>
-                                                    <View className='flex-row'>
-                                                        <View className='w-8'>
-                                                                <MaterialCommunityIcons name="steering" size={24} color="#FF5F00"/>
-                                                        </View>
-                                                        <Text className='text-base font-light'>{driver}</Text>
-                                                    </View>
-                                                    { vehicle != 'util' && 
-                                                        <View className='mt-3 flex-row'>
-                                                            <View className='w-8'>
-                                                                <MaterialCommunityIcons name="handshake-outline" size={24} color="#FF5F00" />
-                                                            </View>
-                                                            <Text className='text-base font-light'> {auxiliary} </Text>
-                                                        </View>
-                                                    }
-                                                    <View className='mt-3 flex-row'>
-                                                        <View className='w-8'>
-                                                            <Octicons name="location" size={22} color="#FF5F00" />
-                                                        </View>
-                                                        <Text className='text-base font-light'> 
-                                                            CD - Fast Shop {"\n"} 
-                                                            Rod Anhanguera Km 37,5 {"\n"} 
-                                                            Cep: 07789-100 {"\n"}
-                                                            Bairro: Jordanesia
-                                                        </Text>
-                                                    </View>
-                                                </View>
-                                                <View className='mt-8 flex-row items-center'>
-                                                        <MaterialCommunityIcons name="information-outline" size={20} color="#ca8a04" />
-                                                        <Text className='ml-2 text-yellow-600 font-semibold'>
-                                                            Se houver alguma informção incorreta, entre em contato 
-                                                            com suporte para atualizá-lo.
-                                                        </Text>
-                                                </View>
-                                                <View className='mt-10'>
-                                                    <View className='items-center w-full'>
-                                                        <TouchableOpacity className={`bg-primary w-5/6 h-8 rounded items-center justify-center ${loaderConfirm && 'opacity-70'}`}
-                                                            onPress={()=>handleSubmitConfirm()}
-                                                        > 
-                                                            {  loaderConfirm ?
-                                                                <ActivityIndicator
-                                                                    color={'white'}
-                                                                />
-                                                                :
-                                                                <Text className={`text-lg text-white font-bold `}>
-                                                                    Confirmar
-                                                                </Text>
-                                                            }
-                                                        </TouchableOpacity>
-                                                    </View>
-                                                    <View className='items-center w-full mt-5'>
-                                                        <TouchableOpacity className={`bg-secondary w-5/6 h-8 rounded items-center justify-center ${loaderConfirm && 'opacity-70'}`}
-                                                            onPress={()=>handleCancel(true)}
-                                                        > 
-                                                            <Text className={`text-lg text-white font-bold `}>
-                                                                Indisponível
-                                                            </Text>
-                                                            
-                                                        </TouchableOpacity>
-                                                    </View>
-                                                </View>
-                                            </>
-                                        }
-                                    </> 
                                 }
                             </>
                         }
