@@ -186,15 +186,14 @@ export default function FastShop(){
                         setAuxiliary(team.auxiliary)
                         setDriver(team.driver)
                     }
-                    if(check.date == today){
-                        let team = JSON.parse(check.team)
-                        setDateWork(check.date)
-                        setHasConfirm(true)
-                        setHasStart(check.start)
-                        setStatus(check.status)
-                        setAuxiliary(team.auxiliary)
-                        setDriver(team.driver)
-                        if(check.status == 'cancel'){
+                    let team = JSON.parse(check.team)
+                    setDateWork(check.date)
+                    setHasConfirm(true)
+                    setHasStart(check.start)
+                    setStatus(check.status)
+                    setAuxiliary(team.auxiliary)
+                    setDriver(team.driver)
+                    if(check.status == 'cancel'){
                             const response = await DeleteOperationToday(check.id);
                             if(response.status == 200){
                                 const operation_param = {
@@ -212,8 +211,8 @@ export default function FastShop(){
                             setStatus(null)
                             setDateWork(date)
                             return
-                        }
-                        if(check.status == 'pending'){
+                    }
+                    if(check.status == 'pending'){
                             const response = await DeleteOperationToday(check.id);
                             if(response.status == 200){
                                 const operation_param = {
@@ -231,8 +230,8 @@ export default function FastShop(){
                             setStatus(null)
                             setDateWork(date)
                             return
-                        }
-                        if(check.status == 'unavailable'){
+                    }
+                    if(check.status == 'unavailable'){
                             const response = await DeleteOperationToday(check.id);
                             if(response.status == 200){
                                 setHasStart(null)
@@ -246,8 +245,8 @@ export default function FastShop(){
                             setStatus(null)
                             setDateWork(date)
                             return
-                        }
-                        if(check.status == 'confirm'){
+                    }
+                    if(check.status == 'confirm'){
                             if(check.start != null && hour >= 8){
                                 const response = await DeleteOperationToday(check.id);
                                 if(response.status == 200){
@@ -282,7 +281,6 @@ export default function FastShop(){
                                 }
                                 return
                             }
-                        }
                     }
                 }
                 setTimeout(() => {

@@ -2,11 +2,12 @@
 import { View, Text, Image, TouchableOpacity} from "react-native";
 import { useEffect, useState} from "react";
 import BarOperation from "../../barOperation";
+import FindOneOperationToday from "../../../hooks/findOneOperationToday";
+import TimeLineOperationToday from "../../timeLineOperationToday";
 import Wating from "../../wating";
 import GetPicture  from "../../../api/getPicture";
 import GetDelivery from "../../../api/getDelivery";
 import Mask from "../../../hooks/mask";
-import TimeLineOperationToday from "../../timeLineOperationToday";
 import Access from "./access";
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from "@react-navigation/native";
@@ -17,6 +18,7 @@ export default function OperationHome(){
     const [name,setName] = useState('')
     const [buffer,setBuffer] = useState(null)
     const [type,setType] = useState(null)
+    
 
     const handleBack = () => {
         navigation.navigate('Home')
