@@ -21,7 +21,7 @@ export default async function SelectOpition(option){
                 return result.assets[0].uri
             }
         }catch(e){
-            console.log(e)
+            return 'cancel'
         }
     }
 

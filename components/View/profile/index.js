@@ -77,7 +77,7 @@ export default function Profile({navigation}){
                     <View className={`h-20 w-20 rounded-full ${ wait && 'bg-primary p-2'}`}>
                         { wait ?
                             <Image
-                            source={require('../../../img/logo/logoComplement1.png')}
+                            source={require('../../../img/logo/logoAsa.png')}
                             style={twrnc`h-full w-full`}
                             resizeMode="contain"
                             />
@@ -93,7 +93,7 @@ export default function Profile({navigation}){
                     <View className='ml-2'>
                         <View className='flex-row items-end'>
                             {/* <AntDesign name="user" size={18} color="#FF5F00" /> */}
-                            <Text className='text-lg font-bold w-6/6 text-primary'>{name}</Text>
+                            <Text className='text-lg font-bold w-5/6 text-primary'>{name}</Text>
                         </View>
                         <View className='flex-row items-end'>
                             <AntDesign name="phone" size={18} color={'#FF5F00'}/>
@@ -148,62 +148,10 @@ export default function Profile({navigation}){
                     </TouchableOpacity>
                     
                     <View className="flex-row p-3 rounded-lg w-full justify-start items-start mt-2">
-                        <Text className="text-sm text-left text-neutral-400 font-medium w-40">Version actual 7.0v</Text>
+                        <Text className="text-sm text-left text-neutral-400 font-medium w-40">Version actual 2.3.0v</Text>
                     </View>
                 </View>
-            </ScrollView>
-            {/* <ScrollView style={twrnc`bg-white`}>
-                    <View style={twrnc`items-center mt-5`}>
-                        <Pressable style={[twrnc`absolute flex-row gap-2 justify-center items-center`,{top:'9%'}]}
-                            onPress={handleLogout}
-                        >
-                            <Text style={twrnc`text-red-600`}>Sair</Text>
-                            <Ionicons name="exit-outline" size={24} style={twrnc`text-red-600`} /> 
-                        </Pressable>
-                    </View>
-                    <View style={twrnc`mt-20 items-center h-180`}>
-                        <View style={[twrnc`w-full justify-center items-center absolute`, { width:'38%', height:'21%'}]}>
-                            <View style={[twrnc`rounded-full border-2 absolute`, {zIndex:0, width:'100%', height:'100%'}]}>
-                            { wait ?
-                                <Image
-                                    source={require('../../../img/logo/logoAsa.png')}
-                                    style={twrnc`h-full w-full rounded-full`}
-                                    resizeMode="contain"
-                                />
-                                :
-                                <Image
-                                    source={{ uri: `data:${type};base64,${buffer}` }}
-                                    style={twrnc`w-full h-full rounded-full`}
-                                    
-                                />
-                            }
-                            </View>
-                            <Pressable onPress={handleAvalidPhoto}
-                            style={[twrnc`rounded-full border-2 w-9 h-9 justify-center items-center bg-white`,{left:'40%', top:'30%', zIndex:5}]}>
-                                <Octicons name="pencil" size={24} color="black" />
-                            </Pressable>
-                        </View>
-                        <View style={twrnc`justify-center items-center h-full gap-20`}>
-                            <View style={twrnc`w-full h-20 gap-5`}>
-                                <View style={twrnc`py-3 px-5 bg-[#EFEFEF] flex flex-row items-center gap-2`}>
-                                    <AntDesign name="user" size={24} color="black" />
-                                    <Text style={twrnc`text-[#7B7B7B]`}>{name}</Text>
-                                </View>
-                                <View style={twrnc`py-3 px-5 bg-[#EFEFEF] flex flex-row items-center gap-2`}>
-                                    <MaterialCommunityIcons name="email-outline" size={24} color="black" />
-                                    <Text style={twrnc`text-[#7B7B7B]`}>{email}</Text>
-                                </View>
-                            </View>
-                            <Pressable style={twrnc`bg-[#191919] rounded-lg flex flex-row justify-center items-center py-3 px-2 gap-2`}
-                                onPress={()=>handleChangePassword()}
-                            >
-                                <Octicons name="key" size={24} color="white" />
-                                <Text style={twrnc`text-white`}>MUDAR SENHA</Text>
-                            </Pressable>
-                        </View>
-                    </View>
-
-            </ScrollView> */}
+            </ScrollView>           
         </>
     )
 }

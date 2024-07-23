@@ -16,8 +16,8 @@ import UpdateUser from "../../hooks/updateUser";
 import FindUser from "../../hooks/findUser";
 export default function InfoWorkHome({dropDownDetails, setDropDownDetails, code, setCode, setInfo, locationDelivery}) {
   const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-  const URLdevelopment = 'http://192.168.1.10:8080/'
-  const URL = URLproduction
+  const URLdevelopment = 'http://192.168.0.35:8080/'
+  const URL = URLdevelopment
   const navigation = useNavigation()
   const input1Ref = useRef(null);
   const input2Ref = useRef(null);

@@ -1,7 +1,6 @@
 import React from "react";
 import twrnc from "twrnc";
 import { View, ScrollView, Text, RefreshControl, Pressable, SafeAreaView,ActivityIndicator, Button  } from "react-native";
-import Modal from "react-native-modal";
 import verifyStatus from '../../../../api/verifyPicture'
 import FixBar from "../../../fixBar";
 import { useEffect, useState } from "react";
@@ -15,6 +14,7 @@ import SelectOpition from "../../../../function/getPathPicture";
 import uploadFile from "../../../../api/upLoadFiles";
 import deleteFile from "../../../../api/removeUploadFiles";
 import removeStatus from "../../../../api/removeStatusPicture";
+import OptionChangePhoto from "./modal";
 export default function AvalidPhoto({ navigation }) {
     const [am,setAm] = useState('')
     const [ownerVehicle,setOwnerVehicle] = useState('')
@@ -36,22 +36,45 @@ export default function AvalidPhoto({ navigation }) {
     const [refreshing, setRefreshing] = useState(false); 
     const [wating, setWating] = useState(false); 
     const [sendPicture, setSendPicture] = useState(false); 
+    const [modalChange, setModalChange] = useState('');
 
-    const handleModal = (picture, pictureAvalid) => {
+    const handleModal = async (picture, pictureAvalid) => {
         if(pictureAvalid || pictureAvalid == null){
             return
         }
-        if(!modal){
-            setModal(true)
-            setPicture(picture)
-            setPictureAvalid(pictureAvalid)
+        await setModalChange('')
+        switch (picture) {
+            case 'cpf':
+                setModalChange(<OptionChangePhoto picture={picture} setChange={setCpf}/>)
+                break
+            case 'address':
+                setModalChange(<OptionChangePhoto picture={picture} setChange={setAddress}/>)
+                break
+            case 'photo':
+                setModalChange(<OptionChangePhoto picture={picture} setChange={setPhoto}/>)
+                break
+            case 'cnh':
+                setModalChange(<OptionChangePhoto picture={picture} setChange={setCnh}/>)
+                break
+            case 'antt':
+                setModalChange(<OptionChangePhoto picture={picture} setChange={setAntt}/>)
+                break
+            case 'clv':
+                setModalChange(<OptionChangePhoto picture={picture} setChange={setClv}/>)
+                break
+            case 'cpfOwner':
+                setModalChange(<OptionChangePhoto picture={picture} setChange={setCpfOwner}/>)
+                break
+            case 'addressOwner':
+                setModalChange(<OptionChangePhoto picture={picture} setChange={setAddressOwner}/>)
+                break;
+            case 'legal':
+                setModalChange(<OptionChangePhoto picture={picture} setChange={setLegal}/>)
+                break
+            case 'cnpj':
+                setModalChange(<OptionChangePhoto picture={picture} setChange={setCnpj}/>)
+                break
         }
-    }
-
-    const closeModal = () => {
-        setModal(false)
-        setSendPicture(false)
-        setWating(false)
     }
 
     const handleSelectPicture = async (option) => {
@@ -273,7 +296,7 @@ export default function AvalidPhoto({ navigation }) {
             default:
                 break;
         }
-    }
+    };
 
     const onRefresh = () => {
         setRefreshing(true);
@@ -317,6 +340,7 @@ export default function AvalidPhoto({ navigation }) {
   return (
     <> 
         <FixBar navigation={navigation} opition={"avalidPhoto"}/>
+        {modalChange}
         <ScrollView style={twrnc`bg-white h-full`}
             refreshControl={
                 <RefreshControl
@@ -326,7 +350,7 @@ export default function AvalidPhoto({ navigation }) {
             }
         >
             <View style={twrnc`flex items-center gap-10 mb-50 mt-10`}>
-                <Modal 
+                {/* <Modal 
                     isVisible={modal} 
                     // onBackdropPress={()=>setAcessModal(!acessModal)}
                     animationIn="slideInUp"
@@ -390,7 +414,7 @@ export default function AvalidPhoto({ navigation }) {
                             }
                         </View>
                     </View>
-                </Modal>
+                </Modal> */}
                 <View style={twrnc`gap-5 flex flex-row`}>
                 <View style={twrnc`flex flex-row gap-1`}>
                     <View style={twrnc`bg-yellow-500 p-3 rounded`}></View>
@@ -450,7 +474,7 @@ export default function AvalidPhoto({ navigation }) {
                                 <Pressable style={twrnc`${clv === true ? 'bg-green-500' : clv === false ? 'bg-red-600' : 'bg-yellow-500'}  py-5 px-8 rounded-xl justify-center items-center`}
                                     onPress={()=>handleModal('clv', clv)}
                                 >
-                                    <Text style={twrnc`w-20 text-center text-white font-bold`}>CLV</Text>
+                                    <Text style={twrnc`w-20 text-center text-white font-bold`}>CRLV</Text>
                                 </Pressable>
                             </View>
                             { ownerVehicle === "outraPessoa" && cadastreVehicle === "fisica" &&( 

@@ -18,8 +18,8 @@ export default function Race({navigation}){
     const [listen, setListen] = useState(null);
     const [listenOn, setListenOn] = useState(null);
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.1.10:8080/'
-    const URL = URLproduction
+    const URLdevelopment = 'http://192.168.0.35:8080/'
+    const URL = URLdevelopment
 
     useFocusEffect(
         React.useCallback(() => {

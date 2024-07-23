@@ -41,6 +41,7 @@
     "react-native": "0.74.2",
     "react-native-axios": "^0.17.1",
     "react-native-blob-util": "^0.19.1",
+    "react-native-bouncy-checkbox": "^4.0.1",
     "react-native-elements": "^3.4.3",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "~2.16.1",

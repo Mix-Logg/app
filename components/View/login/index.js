@@ -1,6 +1,7 @@
 import React from 'react';
 import twrnc from 'twrnc';
-import { View, Image,Text ,TextInput, TouchableOpacity, StatusBar, } from 'react-native';
+import { Feather, Ionicons } from '@expo/vector-icons';
+import { View, Image,Text ,TextInput, TouchableOpacity, StatusBar, Pressable, } from 'react-native';
 import { useEffect, useState } from 'react';
 import MaskInput from 'react-native-mask-input';
 import Modal from "react-native-modal";
@@ -10,15 +11,17 @@ import { useFocusEffect } from '@react-navigation/native';
 import Wating from '../../wating';
 import GetDelivery from '../../../api/getDelivery';
 import PopUp from '../../modal';
+import BouncyCheckbox from "react-native-bouncy-checkbox";
 export default function Login({navigation}){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.1.10:8080/'
-    const URL = URLproduction
+    const URLdevelopment = 'http://192.168.0.35:8080/'
+    const URL = URLdevelopment
     const [cpf,setCpf] = useState('')
     const [password,setPassword] = useState('')
     const [acessModal,setAcessModal] = useState(false)
     const [waiting,setWaiting] = useState(true)
     const [modal,setModal] = useState('')
+    const [passIsVisible, setPassIsVisible] = useState(false)
 
     const handleCpf = async (txt) => {
         setCpf(txt)
@@ -91,75 +94,114 @@ export default function Login({navigation}){
 
     return(
         <View style={twrnc`bg-white h-full`}>
-            {/* <StatusBar
-            backgroundColor='#fff' /> */}
+            <StatusBar
+            backgroundColor='#FF5F00' />
         { !waiting ?
-            <View style={[twrnc`flex items-center  justify-center h-full`]} >
+            <View className='bg-primary h-full'>
                 {modal}
-                <View style={[twrnc`flex w-full items-center mt-3`,{height:'20%'} ]}>
-                    <Image style={[twrnc``, {width:'45%', height:'90%',} ] }
-                    source={require('../../../img/logo/logoAsa.png')}
-                    resizeMode="contain"
-                    />
-                </View>
-                <View style={twrnc`w-full gap-5`}>
-                    <View style={twrnc`px-5`}>
-                        <Text style={twrnc`text-[#FF5F00] font-bold text-sm px-4`}>CPF</Text>
-                        <View style={twrnc`w-full border border-[#FF5F00] rounded-xl flex flex-row items-center p-2`}>
-                            <Image
-                                style={[twrnc``, {width:'7%', height:'55%',tintColor: '#FF5F00'}]}
-                                source={require('../../../img/icons/user.png')}/>
-                            {/* <TextInput style={twrnc`p-2 w-full text-lg`}
-                                keyboardType="numeric"
-
-                            />   */}
-                            <MaskInput
-                                style={twrnc`p-2 w-full text-lg`}
-                                mask={[/\d/, /\d/, /\d/,'.', /\d/, /\d/,/\d/,'.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
-                                onChangeText={(masked, unmasked)=>handleCpf(unmasked)}
-                                value={cpf}
-                                keyboardType="numeric"
-                                placeholder=''
+                <View className='items-center justify-center'>
+                    <View className='mt-14 items-center'>
+                        <View className='rounded-full border-primary h-36 w-36 items-center justify-center '>
+                            <Image className={`w-22 h-28`}
+                            source={require('../../../img/logo/logoComplement1.png')}
+                            resizeMode="contain"
                             />
                         </View>
                     </View>
-
-                    <View style={twrnc`px-5`}>
-                        <Text style={twrnc`text-[#FF5F00] font-bold text-sm px-4`}>Senha</Text>
-                        <View style={twrnc`w-full border border-[#FF5F00] rounded-xl flex flex-row items-center p-2`}>
-                            <Image
-                                style={[twrnc``, {width:'7%', height:'55%',tintColor: '#FF5F00'}]}
-                                source={require('../../../img/icons/senha.png')}/>
-                            <TextInput style={twrnc`p-2 w-full text-lg`}
-                                secureTextEntry
-                                maxLength={8}
-                                value={password}
-                                onChangeText={ (txt)=>{setPassword(txt)} }
-                            />
+                    <View className=' items-center justify-center w-5/6 p-3 rounded-3xl bg-white shadow-lg shadow-black'>
+                        <View>
+                            <Text className='text-primary font-semibold'>Mix Serviços Logísticos</Text>
+                        </View>
+                        <View className='mt-10 w-5/6'>
+                            <View>
+                                <View className='absolute top-3 left-2'>
+                                    <Feather name="user" size={22} color="#FF5F00" />
+                                </View>
+                                <MaskInput
+                                    className={`p-2 text-lg border border-primary rounded-3xl text-center font-light `}
+                                    mask={[/\d/, /\d/, /\d/,'.', /\d/, /\d/,/\d/,'.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]}
+                                    onChangeText={(masked, unmasked)=>handleCpf(unmasked)}
+                                    value={cpf}
+                                    keyboardType="numeric"
+                                    placeholder='CPF'
+                                />
+                            </View>
+                            <View className='mt-5'>
+                                <View className={`p-2 justify-between items-center flex-row text-lg border border-primary rounded-3xl text-center font-light`}>
+                                    <View >
+                                        <Feather name="lock" size={20} color="#FF5F00" />
+                                    </View>
+                                    <TextInput 
+                                        className='text-lg text-center font-light w-36 h-7'
+                                        secureTextEntry={passIsVisible}
+                                        maxLength={8}
+                                        placeholder='Senha'
+                                        value={password}
+                                        onChangeText={ (txt)=>{setPassword(txt)} }
+                                    />  
+                                    <TouchableOpacity
+                                        onPress={()=>setPassIsVisible(!passIsVisible)}
+                                    >
+                                        { passIsVisible ? 
+                                            <Ionicons name="eye-off-outline" size={24} color="#FF5F00" />
+                                            :
+                                            <Ionicons name="eye-outline"     size={24} color="#FF5F00" />
+                                        }
+                                    </TouchableOpacity>                              
+                                </View>
+                            </View>
+                        </View>
+                        <View>
+                            <View className='flex-row justify-between w-full px-5 mt-3 items-center'>
+                                <View className='flex-row w-24 items-center'
+                                    onPress={()=>console.log('xx')}
+                                >
+                                    <View className='w-5'>
+                                        <BouncyCheckbox
+                                            disabled
+                                            isChecked={true}
+                                            size={16}
+                                            fillColor="#ff5f00"
+                                            unfillColor="#f4f4f4"
+                                            iconStyle={{ borderColor: "#ff5f00" }}
+                                            innerIconStyle={{ borderWidth: 1 }}
+                                            
+                                        />
+                                    </View>
+                                    <Text className='text-xs text-secondary'>Lembrar de mim</Text>
+                                </View>
+                                    
+                                <TouchableOpacity
+                                    onPress={()=>navigation.navigate('ForgotPassword')}
+                                >
+                                    <Text className='text-xs text-secondary '>
+                                        Esqueci minha senha 
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View className='mt-5 items-center'>
+                                <TouchableOpacity className='bg-primary w-1/2 rounded-3xl px-5 py-2 items-center justify-center'
+                                    onPress={handleAcess}
+                                >
+                                    <Text className='text-lg text-white font-bold'>
+                                        Entrar
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+                            <View className='mt-14 items-center'>
+                                <Text className='font-light text-secondary'>
+                                    Não é registrado?
+                                </Text>
+                                <TouchableOpacity className='rounded-3xl px-5 py-2' 
+                                    onPress={handleNoCadastre}
+                                >
+                                    <Text className='text-primary'>Criar conta</Text>
+                                </TouchableOpacity>
+                            </View>
                         </View>
                     </View>
                 </View>
-                <View style={twrnc`flex w-3/6 mt-10 gap-5`}>
-                    {/* ENTRAR */}
-                    <TouchableOpacity style={twrnc`bg-[#FF5F00] font-bold flex justify-center flex-row py-5 rounded-lg`}
-                        onPress={handleAcess}
-                    >
-                        <Text style={twrnc`font-bold text-white`}>
-                            Entrar
-                        </Text>
-                    </TouchableOpacity>
-                    {/* CADASTRAR  */}
-                    <TouchableOpacity style={twrnc`border border-[#FF5F00] font-bold flex justify-center flex-row py-5 rounded-lg`}
-                        onPress={handleNoCadastre}
-                        >
-                        <Text style={twrnc`font-bold text-[#FF5F00]`}>Não sou cadastrado</Text>
-                    </TouchableOpacity>
-                    {/* ESQUECI A SENHA */}
-                    <TouchableOpacity style={twrnc`items-center`}>
-                        <Text style={twrnc`font-bold text-[#FF5F00]`}>Esqueci minha senha</Text>
-                    </TouchableOpacity>
-                </View>
-            </View> 
+            </View>
             :
             <>
                 <Wating/>
