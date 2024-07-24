@@ -1,13 +1,14 @@
 import { useState } from "react";
 import Modal from "react-native-modal";
 import { View, Text, Pressable, Button, TouchableOpacity, ActivityIndicator } from "react-native";
-import { AntDesign, Feather } from '@expo/vector-icons';
+import { AntDesign, Feather, FontAwesome6 } from '@expo/vector-icons';
 import SelectOpition from "../../../../function/getPathPicture";
 import uploadFile   from "../../../../api/upLoadFiles";
 import deleteFile   from "../../../../api/removeUploadFiles";
 import removeStatus from "../../../../api/removeStatusPicture";
-import { FontAwesome6 } from '@expo/vector-icons';
+import Toastify from "../../../toastify";
 export default function OptionChangePhoto({picture, setChange}){
+    const [alert, setAlert] = useState(false);
     const [visible, setVisible] = useState(true);
     const [wating, setWating] = useState(false);
     const [sendPicture, setSendPicture] = useState(false); 
@@ -33,6 +34,10 @@ export default function OptionChangePhoto({picture, setChange}){
         }
         const path = await SelectOpition(option)
         if(path == 'cancel'){
+            return
+        }
+        if(path.option == 'file'){
+            setAlert(true)
             return
         }
         switch (picture) {
@@ -167,7 +172,7 @@ export default function OptionChangePhoto({picture, setChange}){
                     if(respo){
                         const res = await removeStatus('cpfOwner')
                         if(res === 200){
-                            setCpfOwner(null)
+                            setChange(null)
                             setSendPicture(true)
                         }else{
                             console.log('erro')
@@ -252,6 +257,7 @@ export default function OptionChangePhoto({picture, setChange}){
             animationInTiming={300}
             animationOutTiming={300}
         >
+                <Toastify isVisible={alert} setIsVisible={setAlert} option={'danger'} info={'Arquivo muito grande, tente diminuir ou use outro arquivo.'}/>
             <View className={`justify-center items-center w-fit`}>
                 <View className={`bg-white rounded-lg h-auto p-5 justify-center items-center w-5/6`}>
 

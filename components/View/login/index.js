@@ -21,7 +21,8 @@ export default function Login({navigation}){
     const [acessModal,setAcessModal] = useState(false)
     const [waiting,setWaiting] = useState(true)
     const [modal,setModal] = useState('')
-    const [passIsVisible, setPassIsVisible] = useState(false)
+    const [remember, setRemember] = useState(false)
+    const [passIsVisible, setPassIsVisible] = useState(true)
 
     const handleCpf = async (txt) => {
         setCpf(txt)
@@ -42,7 +43,11 @@ export default function Login({navigation}){
         try{
             const res = await axios.post(`${URL}user/auth`, auth)
             if(res.data != 500){
-                await AsyncStorage.setItem('access', '1');
+                if(remember){
+                    await AsyncStorage.setItem('access', '1');
+                }else{
+                    await AsyncStorage.setItem('access', '0');
+                }
                 await AsyncStorage.setItem('am', res.data.am);
                 await AsyncStorage.setItem('uuid', res.data.uuid.toString());
                 navigation.navigate('Home');
@@ -158,14 +163,12 @@ export default function Login({navigation}){
                                 >
                                     <View className='w-5'>
                                         <BouncyCheckbox
-                                            disabled
-                                            isChecked={true}
                                             size={16}
                                             fillColor="#ff5f00"
                                             unfillColor="#f4f4f4"
                                             iconStyle={{ borderColor: "#ff5f00" }}
                                             innerIconStyle={{ borderWidth: 1 }}
-                                            
+                                            onPress={()=>setRemember(!remember)}
                                         />
                                     </View>
                                     <Text className='text-xs text-secondary'>Lembrar de mim</Text>

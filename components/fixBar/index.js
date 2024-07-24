@@ -74,14 +74,10 @@ export default function FixBar({navigation, opition, color = null}){
            <TouchableOpacity style={twrnc`flex flex-row h-full items-center justify-start`}
             onPress={handleBack}
            >
-                <View style={twrnc`w-2/8 h-3/6`}>
-                        <Image 
-                            source={require('../../img/icons/arrowLeft.png')}
-                            resizeMode="contain"
-                            style={{ width: '100%', height:'100%', tintColor:color ? 'white' : 'white' }}
-                        />
-                    </View>
-                    <Text style={twrnc`${color ? 'text-white' : 'text-white'} text-sm font-medium`}> voltar</Text>
+                <View>
+                    <AntDesign name="left" size={16} color="white" />
+                </View>
+                <Text className='ml-3 text-white'>Voltar</Text>
             </TouchableOpacity>
 
             <View style={twrnc`flex flex-row h-full items-center justify-end mr-2`}>
