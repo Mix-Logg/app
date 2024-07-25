@@ -18,7 +18,7 @@ export default function RetrieveCode({code, setCodeConfirm, setCode}){
         const userCode = codeOne+codeTwo+codeThree+codeFour
         console.log('code:' ,codeOne)
         if(userCode.length != 4 ){
-            setNotify(true)
+            setWarning(true)
             return
         }
         if(code === userCode){
