@@ -1,8 +1,9 @@
 import { AntDesign, Feather, Octicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { View, Text, TouchableOpacity, Linking } from "react-native"
+import { View, Text, TouchableOpacity, Linking, ActivityIndicator } from "react-native"
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import AndYou from './andYou';
+import RetrieveCode from './retrieveCode';
 import MaskInput     from 'react-native-mask-input';
 import FindUserCpf   from '../../../hooks/findUserByCpf';
 import Toastify from '../../toastify';
@@ -10,8 +11,11 @@ import colors from 'tailwindcss/colors';
 export default function ForgotPassword(){
     const navagation = useNavigation()
     const [cpf,setCpf] = useState('')
+    const [code, setCode] = useState(false)
+    const [codeConfirm, setCodeConfirm] = useState(false)
     const [user,setUser] = useState(false)
     const [notify, setNotify] = useState('')
+    const [loader, setLoader] = useState(false)
     const [notifyIsVisible, setNotifyIsVisible] = useState(true)
 
     const handleHelp = async () => {
@@ -23,20 +27,28 @@ export default function ForgotPassword(){
     };
 
     const handleRetrieve = async () => {
+        if(loader == true){
+            return
+        }
         if(cpf.length != 11){
             setNotify( <Toastify option={'warning'} info={'CPF não foi digitado corretamente.'} isVisible={notifyIsVisible} setIsVisible={setNotify}/>)
             return
         }
+        setLoader(true)
         await setNotify('')
         const response = await FindUserCpf(cpf)
         switch (response.status) {
             case 500:
                 setNotify( <Toastify option={'danger'} info={'CPF não foi encontrado, verifique se digitou corretamente'} isVisible={notifyIsVisible} setIsVisible={setNotify}/>)
+                setLoader(false)
                 break;
             default:
-                setUser(response)
+                setTimeout(() => {
+                    setUser(response)
+                    setLoader(false)
+                }, 2000);
                 break
-        }
+            }
     };
 
     return(
@@ -80,10 +92,16 @@ export default function ForgotPassword(){
                                 </View>
                             </View>
                             <View className='items-center mt-10'>
-                                <TouchableOpacity className='bg-primary w-5/6 rounded-3xl h-10 items-center justify-center'
+                                <TouchableOpacity className={`bg-primary w-5/6 rounded-3xl h-10 items-center justify-center ${loader && 'opacity-80'}`}
                                     onPress={handleRetrieve}
                                 >
-                                    <Text className='text-white font-bold text-lg'>Recuperar</Text>
+                                    { loader ?
+                                        <ActivityIndicator 
+                                        color={'white'}
+                                        />
+                                        :
+                                        <Text className='text-white font-bold text-lg'>Recuperar</Text>
+                                    }
                                 </TouchableOpacity>
                             </View>
                             <View className='items-center justify-center w-full mt-16'>
@@ -100,7 +118,16 @@ export default function ForgotPassword(){
                             </View>
                         </>
                     :
-                        <AndYou user={user}/>
+                        <>
+                            { code ?
+                                codeConfirm ?
+                                    <></>
+                                    :
+                                    <RetrieveCode code={code} setCode={setCode} setCodeConfirm={setCodeConfirm}/>
+                                :
+                                <AndYou user={user} setUser={setUser} setCode={setCode}/>
+                            }
+                        </>
                     }
                 </View>
             </View>

@@ -74,6 +74,18 @@ export default function Mask(type, value){
           
             return dataFormatada;
             return
+        case 'hiddenPhone':
+            const telefoneLimpo = value.replace(/\D/g, '');
+            return  `(${telefoneLimpo.slice(0, 2)}) ${telefoneLimpo.slice(2, 7)}-****`
+            break
+        case 'hiddenEmail':
+            const [usuario, dominio] = value.split('@');
+            const usuarioMascarado = usuario.length > 4 
+                ? `${usuario.slice(0, 4)}${'*'.repeat(usuario.length - 4)}`
+                : usuario;
+            
+            return `${usuarioMascarado}@${dominio}`;
+            break
         default:
             return value;
     }
