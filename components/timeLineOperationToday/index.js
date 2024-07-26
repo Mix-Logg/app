@@ -70,7 +70,6 @@ export default function timeLineOperationToday(){
                                 occurrence: 'Cliente sem carga'
                             }
                             await UpdateOperationToday(operationToday.id, operation_param)
-                            status = 'default'
                             return
                         }
                         break;
@@ -158,6 +157,7 @@ export default function timeLineOperationToday(){
                 const operationToday = await FindOneOperationToday();
                 if(operationToday.status != 500 ){
                     let response
+
                     switch (operationToday.status) {
                         case 'cancel':
                             if(operationToday.date == dateWork){
@@ -168,7 +168,8 @@ export default function timeLineOperationToday(){
                                 setStepTwo  (false)
                                 setCheck    (false)
                                 setDateWork(operationToday.date)
-                                break
+                                return
+                                
                             }
                             setDateWork(dateWork)
                             response = await DeleteOperationToday(operationToday.id);
@@ -177,7 +178,6 @@ export default function timeLineOperationToday(){
                                     occurrence: 'Cliente sem carga'
                                 }
                                 await UpdateOperationToday(operationToday.id, operation_param)
-                                status = 'default'
                                 return
                             }
                             break;
@@ -190,7 +190,7 @@ export default function timeLineOperationToday(){
                                 setStepTwo  (null)
                                 setCheck    (null)
                                 setDateWork(operationToday.date)
-                                break
+                                return
                             }
                             setDateWork(dateWork)
                             response = await DeleteOperationToday(operationToday.id);
@@ -207,7 +207,7 @@ export default function timeLineOperationToday(){
                                 // 1 dia antes do trabalho 
                                 setUnavailable(true)
                                 setDateWork(operationToday.date)
-                                break
+                                return
                             }
                             setDateWork(dateWork)
                             response = await DeleteOperationToday(operationToday.id);
@@ -223,7 +223,7 @@ export default function timeLineOperationToday(){
                                 setStepOne  (true)
                                 setFreight  (true)
                                 setStepTwo  (true)
-                                break
+                                return
                             }
                             setDateWork(dateWork)
                             if(operationToday.start != null && hour >= 8){
@@ -313,7 +313,7 @@ export default function timeLineOperationToday(){
                                             <Feather name="x-circle" size={24} color="#ef4444" />
                                     }
                                     <Text className={`text-xs font-bold ${check === null ?'text-yellow-500' : check === true ? 'text-green-500' : 'text-red-500'}`}>
-                                        chegada
+                                        check-in
                                     </Text>
                                 </View>
                         </View>

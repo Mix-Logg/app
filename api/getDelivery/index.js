@@ -2,7 +2,7 @@ import axios from "axios"
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export default async function GetDelivery(am = null, id = null){
        const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-       const URLdevelopment = 'http://192.168.0.35:8080/'
+       const URLdevelopment = 'http://192.168.1.5:8080/'
        const URL = URLdevelopment
 
        if(am == null && id == null){

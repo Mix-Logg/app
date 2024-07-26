@@ -164,11 +164,12 @@ export default function FastShop(){
     useEffect(()=>{
         const fetchData = async () => {
                 const team = await FindOneTeam();
+                setIdAuxiliary(team.idAuxiliary)
+                setAuxiliary  (team.nameAuxiliary)
+                setStatus(null)
                 setId(team.id)
-                setAuxiliary(team.nameAuxiliary)
                 setDriver(team.nameDriver)
                 setIdDriver(team.idDriver)
-                setIdAuxiliary(team.idAuxiliary)
                 setVehicle(team.vehicle)
                 const date  = getTomorrowDate();
                 setDateWork(date)
@@ -193,67 +194,48 @@ export default function FastShop(){
                     setStatus(check.status)
                     setAuxiliary(team.auxiliary)
                     setDriver(team.driver)
-                    if(check.status == 'cancel'){
-                            const response = await DeleteOperationToday(check.id);
-                            if(response.status == 200){
-                                const operation_param = {
-                                    occurrence: 'Cliente sem carga'
+                    if(today == check.date){
+                        if(check.status == 'cancel'){
+                                const response = await DeleteOperationToday(check.id);
+                                if(response.status == 200){
+                                    const operation_param = {
+                                        occurrence: 'Cliente sem carga'
+                                    }
+                                    await UpdateOperationToday(check.id,operation_param)
+                                        setHasStart(null)
+                                        setHasConfirm(null)
+                                        setStatus(null)
+                                        setDateWork(date)
+                                    return
                                 }
-                                await UpdateOperationToday(check.id,operation_param)
-                                    setHasStart(null)
-                                    setHasConfirm(null)
-                                    setStatus(null)
-                                    setDateWork(date)
-                                return
-                            }
-                            setHasStart(null)
-                            setHasConfirm(null)
-                            setStatus(null)
-                            setDateWork(date)
-                            return
-                    }
-                    if(check.status == 'pending'){
-                            const response = await DeleteOperationToday(check.id);
-                            if(response.status == 200){
-                                const operation_param = {
-                                    occurrence: 'Cliente sem carga - pendente'
-                                }
-                                await UpdateOperationToday(check.id,operation_param)
-                                    setHasStart(null)
-                                    setHasConfirm(null)
-                                    setStatus(null)
-                                    setDateWork(date)
-                                return
-                            }
-                            setHasStart(null)
-                            setHasConfirm(null)
-                            setStatus(null)
-                            setDateWork(date)
-                            return
-                    }
-                    if(check.status == 'unavailable'){
-                            const response = await DeleteOperationToday(check.id);
-                            if(response.status == 200){
                                 setHasStart(null)
                                 setHasConfirm(null)
                                 setStatus(null)
                                 setDateWork(date)
                                 return
-                            }
-                            setHasStart(null)
-                            setHasConfirm(null)
-                            setStatus(null)
-                            setDateWork(date)
-                            return
-                    }
-                    if(check.status == 'confirm'){
-                            if(check.start != null && hour >= 8){
+                        }
+                        if(check.status == 'pending'){
                                 const response = await DeleteOperationToday(check.id);
                                 if(response.status == 200){
                                     const operation_param = {
-                                        occurrence: 'Motorista carregou'
+                                        occurrence: 'Cliente sem carga - pendente'
                                     }
-                                    await UpdateOperationToday(check.id, operation_param)
+                                    await UpdateOperationToday(check.id,operation_param)
+                                        setHasStart(null)
+                                        setHasConfirm(null)
+                                        setStatus(null)
+                                        setDateWork(date)
+                                    return
+                                }
+                                setHasStart(null)
+                                setHasConfirm(null)
+                                setStatus(null)
+                                setDateWork(date)
+                                return
+                        }
+                        if(check.status == 'unavailable'){
+                                const response = await DeleteOperationToday(check.id);
+                                if(response.status == 200){
                                     setHasStart(null)
                                     setHasConfirm(null)
                                     setStatus(null)
@@ -265,22 +247,43 @@ export default function FastShop(){
                                 setStatus(null)
                                 setDateWork(date)
                                 return
-                            }
-                            if(hour >= 8){
-                                const response = await DeleteOperationToday(check.id);
-                                if(response.status == 200){
-                                    const operation_param = {
-                                        occurrence: 'Motorista atrasou'
+                        }
+                        if(check.status == 'confirm'){
+                                if(check.start != null && hour >= 8){
+                                    const response = await DeleteOperationToday(check.id);
+                                    if(response.status == 200){
+                                        const operation_param = {
+                                            occurrence: 'Motorista carregou'
+                                        }
+                                        await UpdateOperationToday(check.id, operation_param)
+                                        setHasStart(null)
+                                        setHasConfirm(null)
+                                        setStatus(null)
+                                        setDateWork(date)
+                                        return
                                     }
-                                    await UpdateOperationToday(check.id, operation_param)
                                     setHasStart(null)
                                     setHasConfirm(null)
                                     setStatus(null)
                                     setDateWork(date)
                                     return
                                 }
-                                return
-                            }
+                                if(hour >= 8){
+                                    const response = await DeleteOperationToday(check.id);
+                                    if(response.status == 200){
+                                        const operation_param = {
+                                            occurrence: 'Motorista atrasou'
+                                        }
+                                        await UpdateOperationToday(check.id, operation_param)
+                                        setHasStart(null)
+                                        setHasConfirm(null)
+                                        setStatus(null)
+                                        setDateWork(date)
+                                        return
+                                    }
+                                    return
+                                }
+                        }
                     }
                 }
                 setTimeout(() => {
@@ -288,7 +291,7 @@ export default function FastShop(){
                 }, 3000);
         }
         fetchData()
-    },[today])
+    },[])
 
     return(
         <>
@@ -296,7 +299,7 @@ export default function FastShop(){
             <Toastify isVisible={toastCheckDistance} setIsVisible={setToastCheckDistance}  option={'warning'}  info={'Para confirmar sua chegada, você deve estar pelo menos a 1 km do Centro de Distribuição (CD)'}/>
             <Toastify isVisible={toastSuccessFinishUnavailable} setIsVisible={setToastSuccessFinishUnavailable}  option={'success'}  info={'Ainda bem que mudou de ideia! Agora, você pode confirmar sua disponibilidade.'}/>
             <Toastify isVisible={toastFailFinishUnavailable} setIsVisible={setFailFinishUnavailable}  option={'danger'}   info={'Algo deu errado. Tente novamente mais tarde ou entre em contato com o suporte.'}/>
-            { vehicle && auxiliary && driver && dateWork && hour && timeExpired != null && checkFetch ?
+            { vehicle && driver && dateWork && hour && timeExpired != null && checkFetch ?
                 <>
                     <View className='h-20 bg-primary rounded-b-3xl justify-center px-3'>
                         <View className='justify-between flex-row items-center'>
@@ -318,7 +321,11 @@ export default function FastShop(){
                     <ScrollView className='p-5'>
                         <View className='w-full my-10'>
                             <Text className='text-2xl font-bold text-primary'> 
-                                Disponibilidade 
+                                { today == dateWork && status == 'confirm' ?
+                                    'Check-In'
+                                    :
+                                    'Disponibilidade'
+                                }
                             </Text>
                         </View>
                         { !id ?
@@ -359,13 +366,34 @@ export default function FastShop(){
                                                                 { timeStartExpired ?
                                                                     <>
                                                                         <View className='items-center'>
-                                                                            <Text className='text-2xl font-bold text-red-600'>
-                                                                                Você se atrasou!
-                                                                            </Text>
-                                                                            <Text className='mt-5 font-light'>
-                                                                                Volte após as 8:00 para confirma carga
-                                                                                para amanhã
-                                                                            </Text>
+                                                                            <View className='items-center'>
+                                                                                <Text className='text-2xl font-bold text-red-600'>
+                                                                                    Você se atrasou!
+                                                                                </Text>
+                                                                                <Text className='font-light'>
+                                                                                    Mas ainda assim você pode marcar o check-in
+                                                                                </Text>
+                                                                            </View>
+                                                                            <View className='mt-10 items-center w-full'>
+                                                                                <TouchableOpacity className={`bg-primary h-10 w-5/6 items-center justify-center rounded mb-5 ${ loaderCheckIn && 'opacity-80'}`}
+                                                                                    onPress={handleStart}
+                                                                                >
+                                                                                    { loaderCheckIn ?
+                                                                                        <ActivityIndicator
+                                                                                            color={'white'}
+                                                                                        />
+                                                                                        :
+                                                                                        <Text className='text-lg text-white font-bold'>
+                                                                                            Confirmar
+                                                                                        </Text>
+                                                                                    }
+                                                                                </TouchableOpacity>
+                                                                                <TouchableOpacity className='bg-secondary h-10 w-5/6 items-center justify-center rounded'
+                                                                                    onPress={handleCancel}
+                                                                                >
+                                                                                    <Text className='text-lg text-white font-bold'>Justificar ausência</Text>
+                                                                                </TouchableOpacity>
+                                                                            </View>
                                                                         </View>
                                                                     </>
                                                                 :
@@ -374,9 +402,9 @@ export default function FastShop(){
                                                                             <View>
                                                                                 <Text className='text-xl font-bold'>Bom dia!</Text>
                                                                                 <Text className='text-base font-light'>
-                                                                                                        Pronto para mais um dia de trabalho? 
-                                                                                                        Assim que chegar ao CD, confirme aqui 
-                                                                                                        no app.
+                                                                                    Pronto para mais um dia de trabalho? 
+                                                                                    Assim que chegar ao CD, confirme aqui 
+                                                                                    no app.
                                                                                 </Text>
                                                                                 <View className='mt-3 p-3 rounded-lg border border-neutral-300 bg-white'>
                                                                                 <View className='flex-row'>
@@ -385,7 +413,7 @@ export default function FastShop(){
                                                                                     </View>
                                                                                     <Text className='text-base font-light'>{driver}</Text>
                                                                                 </View>
-                                                                                { vehicle != 'util' && 
+                                                                                { idAuxiliary  && 
                                                                                     <View className='mt-3 flex-row'>
                                                                                         <View className='w-8'>
                                                                                             <MaterialCommunityIcons name="handshake-outline" size={24} color="#FF5F00" />
@@ -447,7 +475,7 @@ export default function FastShop(){
                                                                     Caso mude de ideia, clique em confirmar.
                                                                     </Text>
                                                                 </View>
-                                                                <View className='mt-10'>
+                                                                <View className='mt-10 w-full'>
                                                                         <View className='items-center w-full'>
                                                                             <TouchableOpacity className={`bg-primary w-5/6 h-8 rounded items-center justify-center ${loaderUnavailable && 'opacity-70'}`}
                                                                                 onPress={()=>handleFinishUnavailable()}

@@ -12,7 +12,7 @@ import { Entypo } from '@expo/vector-icons';
 import Btn from "../../../btn";
 export default function RegisterUser({navigation}){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.0.35:8080/'
+    const URLdevelopment = 'http://192.168.1.5:8080/'
     
     const URL = URLdevelopment
     const [cpf,setCpf] = useState('')

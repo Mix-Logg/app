@@ -12,7 +12,7 @@ export default function CancelRace({setModalCancel}){
     const [socket, setSocket] = useState(null);
     const navigation = useNavigation()
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.0.35:8080/'
+    const URLdevelopment = 'http://192.168.1.5:8080/'
     const URL = URLdevelopment
     
     const handleContinue = () => {

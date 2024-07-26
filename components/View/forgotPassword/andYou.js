@@ -27,11 +27,15 @@ export default function AndYou({user, setUser, setCode}){
 
     useEffect(()=>{
         const fetchData = async () => {
-            const response = await GetDelivery(user.am, user.uuid);
-            setDelivery(response)
-            const image = await GetPicture('selfie', user.am, user.uuid)
-            setBuffer(image[0])
-            setType(image[1])
+            try{
+                const response = await GetDelivery(user.am, user.uuid);
+                setDelivery(response)
+                const image = await GetPicture('selfie', user.am, user.uuid)
+                setBuffer(image[0])
+                setType(image[1])
+            }catch(e){
+                console.log(e)
+            }
         }
         fetchData()
     },[])

@@ -2,12 +2,14 @@ import { AntDesign, Feather, Octicons, MaterialCommunityIcons } from '@expo/vect
 import { View, Text, TouchableOpacity, Linking, ActivityIndicator } from "react-native"
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import AndYou from './andYou';
-import RetrieveCode from './retrieveCode';
-import MaskInput     from 'react-native-mask-input';
-import FindUserCpf   from '../../../hooks/findUserByCpf';
-import Toastify from '../../toastify';
-import colors from 'tailwindcss/colors';
+import AndYou         from './andYou';
+import RetrieveCode   from './retrieveCode';
+import MaskInput      from 'react-native-mask-input';
+import FindUserCpf    from '../../../hooks/findUserByCpf';
+import Toastify       from '../../toastify';
+import colors         from 'tailwindcss/colors';
+import ChangePassword from './changePassword';
+
 export default function ForgotPassword(){
     const navagation = useNavigation()
     const [cpf,setCpf] = useState('')
@@ -121,7 +123,7 @@ export default function ForgotPassword(){
                         <>
                             { code ?
                                 codeConfirm ?
-                                    <></>
+                                    <ChangePassword user={user}/>
                                     :
                                     <RetrieveCode code={code} setCode={setCode} setCodeConfirm={setCodeConfirm}/>
                                 :
