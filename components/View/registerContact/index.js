@@ -12,7 +12,7 @@ import Btn from "../../btn";
 export default function RegisterContact({navigation}){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.1.5:8080/'
-    const URL = URLdevelopment
+    const URL = URLproduction
     
     const [checkPermission, setCheckPermission] = useState(false);
     const [name, setName] = useState('');

@@ -34,7 +34,7 @@ export default function InfoRace({navigation, code, setCode}){
     const [updateRaceParams, setUpdateRaceParams] = useState('')
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.1.5:8080/'
-    const URL = URLdevelopment
+    const URL = URLproduction
     const route = useRoute();
 
     useEffect(()=>{

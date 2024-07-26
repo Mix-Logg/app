@@ -3,7 +3,7 @@ import axios from 'axios';
 export default async function upFile(path, nameFile, functionn, id, paramAm  ) {
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.1.5:8080/'
-    const URL = URLdevelopment;
+    const URL = URLproduction;
 
     let uuid = id
     let am = paramAm

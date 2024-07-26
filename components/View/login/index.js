@@ -15,7 +15,7 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 export default function Login({navigation}){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
     const URLdevelopment = 'http://192.168.1.5:8080/'
-    const URL = URLdevelopment
+    const URL = URLproduction
     const [cpf,setCpf] = useState('')
     const [password,setPassword] = useState('')
     const [acessModal,setAcessModal] = useState(false)
