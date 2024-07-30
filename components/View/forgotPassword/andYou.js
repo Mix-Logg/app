@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react"
-import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native"
+import { View, Text, Image, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native"
 import { AntDesign,Fontisto } from '@expo/vector-icons';
 import GetDelivery from "../../../api/getDelivery"
 import GetPicture  from "../../../api/getPicture"
 import Mask        from "../../../hooks/mask"
 import Wating      from "../../wating"
 import codeForgot  from "../../../hooks/createCodeForgot";
+import Toastify from "../../toastify";
 export default function AndYou({user, setUser, setCode}){
-
+    const [visible, setVisible] = useState(false)
+    const [loaderWhatsapp, setLoaderWhatsapp] = useState(false)
     const [buffer,setBuffer] = useState(false)
     const [type,setType]     = useState(false)
     const [delivery, setDelivery]     = useState(false)
@@ -17,12 +19,15 @@ export default function AndYou({user, setUser, setCode}){
     };
     
     const handleRetreiveWhatsapp = async () => {
+        setLoaderWhatsapp(true)
         const response = await codeForgot(delivery.phone, 'whatsapp');
         if(response.status == 200){
             setCode(response.code)
+            setLoaderWhatsapp(false)
             return
         }
-        console.log('bug')
+        setLoaderWhatsapp(false)
+        setVisible(true)
     };
 
     useEffect(()=>{
@@ -42,6 +47,7 @@ export default function AndYou({user, setUser, setCode}){
 
     return(
         <>
+        <Toastify isVisible={visible} setIsVisible={setVisible} option={'warning'} info={'Erro no serivdor interno, tente mais tarde!'}/>
             { buffer && type && delivery ?
                 <ScrollView>
                     <View className='items-center justify-center mt-5'>
@@ -88,9 +94,17 @@ export default function AndYou({user, setUser, setCode}){
                                 <TouchableOpacity className='rounded-full bg-primary flex-row mt-3 w-5/6 justify-between h-10 items-center px-5'
                                     onPress={handleRetreiveWhatsapp}                     
                                 >
-                                    <Fontisto name="whatsapp" size={20} color="white" />
-                                    <Text className='w-20 text-white text-base font-semibold'> Whatsapp</Text>
-                                    <AntDesign name="right" size={12} color="white" />
+                                    { loaderWhatsapp ?
+                                        <View className='items-center justify-center w-full '>
+                                            <ActivityIndicator color={'#FFFFFf'}/>
+                                        </View>
+                                        :
+                                        <>
+                                            <Fontisto name="whatsapp" size={20} color="white" />
+                                                <Text className='w-20 text-white text-base font-semibold'> Whatsapp</Text>
+                                            <AntDesign name="right" size={12} color="white" />
+                                        </>
+                                    }
                                 </TouchableOpacity>
                                 <View className='rounded-full bg-primary flex-row mt-3 w-5/6 justify-between h-10 items-center px-5 opacity-80'>
                                     <Fontisto name="email" size={20} color="#FFFFFF" />

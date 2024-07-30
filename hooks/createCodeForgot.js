@@ -3,7 +3,7 @@ export default async function codeForgot(number,option){
 
     const URLproduction  = 'http://whatsapp-mix-active.shop/'
     const URLdevelopment = 'http://192.168.1.5:5050/'
-    const URL            = URLdevelopment
+    const URL            = URLproduction
     const randomNumber = Math.floor(Math.random() * 10000);
     const randomCode   = String(randomNumber).padStart(4, '0');
     let   response;
