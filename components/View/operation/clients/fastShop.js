@@ -120,7 +120,7 @@ export default function FastShop(){
         }
     };
 
-    const handleCancel = async (unavailable) => {
+    const handleCancel = async () => {
         await setModalCancel('')
         setModalCancel(<CancelOperationToday unavailable={unavailable} dateWork={dateWork} driver={driver} auxiliary={auxiliary} idAuxiliary={idAuxiliary} idDriver={idDriver}/>)
     };
@@ -637,7 +637,7 @@ export default function FastShop(){
                                                             </View>
                                                             <View className='items-center w-full mt-5'>
                                                                 <TouchableOpacity className={`bg-secondary w-5/6 h-8 rounded items-center justify-center ${loaderConfirm && 'opacity-70'}`}
-                                                                    onPress={()=>handleCancel(true)}
+                                                                    onPress={handleCancel}
                                                                 > 
                                                                     <Text className={`text-lg text-white font-bold `}>
                                                                         Indisponível

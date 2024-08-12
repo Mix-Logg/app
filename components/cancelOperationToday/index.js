@@ -82,7 +82,7 @@ export default function CancelOperationToday({unavailable, driver, auxiliary, id
                         />
                     </View>
                 </View>
-                <View className={``}>
+                <View>
                     <Text className='text-sm font-semibold'>
                         Motivo da ausência
                     </Text>

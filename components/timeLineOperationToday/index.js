@@ -144,7 +144,9 @@ export default function timeLineOperationToday(){
                     default:
                         break;
                 }
+                return
             }
+            setDateWork(dateWork)
         }
         fetchData()
     },[timeStartExpired])

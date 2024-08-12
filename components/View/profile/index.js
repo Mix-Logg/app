@@ -15,8 +15,15 @@ import {
     FontAwesome,
     Octicons,
     Fontisto 
-  } from "@expo/vector-icons";
+} from "@expo/vector-icons";
 export default function Profile({navigation}){
+
+    const [phone,setPhone] = useState('')
+    const [email,setEmail] = useState('')
+    const [name,setName] = useState('')
+    const [buffer,setBuffer] = useState('')
+    const [type,setType] = useState('')
+    const [wait,setWait] = useState(true)
     
     const handleLogout = async () => {
         await AsyncStorage.removeItem('access');
@@ -28,15 +35,15 @@ export default function Profile({navigation}){
         await AsyncStorage.removeItem('codeFinish');
         await AsyncStorage.removeItem('vehicle');
         navigation.navigate('Login')
-    }
+    };
 
     const handleAvalidPhoto = async () => {
         navigation.navigate('AvalidPhoto')
-    }
+    };
 
     const handleChangePassword = async () => {
         navigation.navigate('ChangePassword')
-    }
+    };
 
     const handleHelp = async () => {
         const storage = await AllStorage();
@@ -46,13 +53,6 @@ export default function Profile({navigation}){
         Linking.openURL(url)
             .catch(err => console.error('Erro ao abrir o WhatsApp:', err));
     };
-
-    const [phone,setPhone] = useState('')
-    const [email,setEmail] = useState('')
-    const [name,setName] = useState('')
-    const [buffer,setBuffer] = useState('')
-    const [type,setType] = useState('')
-    const [wait,setWait] = useState(true)
 
     useEffect(() => {
         dataEffect = async () => {
@@ -148,7 +148,7 @@ export default function Profile({navigation}){
                     </TouchableOpacity>
                     
                     <View className="flex-row p-3 rounded-lg w-full justify-start items-start mt-2">
-                        <Text className="text-sm text-left text-neutral-400 font-medium w-40">Version actual 2.3.0v</Text>
+                        <Text className="text-sm text-left text-neutral-400 font-medium w-40">Version actual 2.5.0v</Text>
                     </View>
                 </View>
             </ScrollView>           
