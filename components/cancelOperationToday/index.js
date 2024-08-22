@@ -1,3 +1,4 @@
+import React from "react";
 import { View, Text, TextInput ,TouchableOpacity, Image, ActivityIndicator } from "react-native";
 import { Feather } from '@expo/vector-icons';
 import RNPickerSelect from 'react-native-picker-select';
@@ -5,12 +6,12 @@ import ModalBottom from "../modalBottom";
 import { useState } from "react";
 import LogoMix from '../../img/logo/logoAsa.png'
 import FindOneOperationToday from "../../hooks/findOneOperationToday";
-import UpdateOperationToday from "../../hooks/updateOperationToday";
-import DeleteOperationToday from "../../hooks/deleteOperationToday";
-import CreateOperationToday from "../../hooks/createOperationToday";
+import UpdateOperationToday  from "../../hooks/updateOperationToday";
+import DeleteOperationToday  from "../../hooks/deleteOperationToday";
+import CreateOperationToday  from "../../hooks/createOperationToday";
 import Toastify from "../toastify";
 import { useNavigation } from "@react-navigation/native";
-export default function CancelOperationToday({unavailable, driver, auxiliary, idAuxiliary, idDriver, dateWork}){
+export default function CancelOperationToday({status ,unavailable, driver, auxiliary, idAuxiliary, idDriver, dateWork}){
     const navigation = useNavigation()
 
     const [showSuccess, setShowSuccess] = useState(false)
@@ -37,7 +38,7 @@ export default function CancelOperationToday({unavailable, driver, auxiliary, id
                 operation  :'Fast-Shop',
                 idAuxiliary:idAuxiliary,
                 idDriver   :idDriver,
-                status     :'unavailable',
+                status     :status == 'confirm' ? 'confirm' : 'unavailable',
                 occurrence: occurrence == 'other' ? txtOccurrence : occurrence
             };
             const response = await CreateOperationToday(paramsConfirm);
@@ -65,7 +66,6 @@ export default function CancelOperationToday({unavailable, driver, auxiliary, id
         setLoader(false)
         return
     }
-
    
     return(
         <ModalBottom>

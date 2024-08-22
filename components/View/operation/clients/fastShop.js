@@ -122,7 +122,10 @@ export default function FastShop(){
 
     const handleCancel = async () => {
         await setModalCancel('')
-        setModalCancel(<CancelOperationToday unavailable={unavailable} dateWork={dateWork} driver={driver} auxiliary={auxiliary} idAuxiliary={idAuxiliary} idDriver={idDriver}/>)
+        setTimeout(async () => {
+            await setModalCancel(<CancelOperationToday status={status} unavailable={unavailable} dateWork={dateWork} driver={driver} auxiliary={auxiliary} idAuxiliary={idAuxiliary} idDriver={idDriver}/>)
+            
+        }, 1000);
     };
 
     const getTomorrowDate = () => {
@@ -178,7 +181,7 @@ export default function FastShop(){
                     setIdOperationToday(check.id)
                     if(check.date == date){
                         let team = JSON.parse(check.team)
-                        if(check.status == 'unavailable'){
+                        if(check.status == 'unavailable' || check.status == 'exception'){
                             setUnavailable(true)
                         }
                         setHasConfirm(true)
@@ -272,7 +275,7 @@ export default function FastShop(){
                                     const response = await DeleteOperationToday(check.id);
                                     if(response.status == 200){
                                         const operation_param = {
-                                            occurrence: 'Motorista atrasou'
+                                            occurrence: 'Motorista faltou'
                                         }
                                         await UpdateOperationToday(check.id, operation_param)
                                         setHasStart(null)
@@ -299,6 +302,7 @@ export default function FastShop(){
             <Toastify isVisible={toastCheckDistance} setIsVisible={setToastCheckDistance}  option={'warning'}  info={'Para confirmar sua chegada, você deve estar pelo menos a 1 km do Centro de Distribuição (CD)'}/>
             <Toastify isVisible={toastSuccessFinishUnavailable} setIsVisible={setToastSuccessFinishUnavailable}  option={'success'}  info={'Ainda bem que mudou de ideia! Agora, você pode confirmar sua disponibilidade.'}/>
             <Toastify isVisible={toastFailFinishUnavailable} setIsVisible={setFailFinishUnavailable}  option={'danger'}   info={'Algo deu errado. Tente novamente mais tarde ou entre em contato com o suporte.'}/>
+            {/* <CancelOperationToday status={status} unavailable={unavailable} dateWork={dateWork} driver={driver} auxiliary={auxiliary} idAuxiliary={idAuxiliary} idDriver={idDriver}/> */}
             { vehicle && driver && dateWork && hour && timeExpired != null && checkFetch ?
                 <>
                     <View className='h-20 bg-primary rounded-b-3xl justify-center px-3'>
@@ -467,11 +471,11 @@ export default function FastShop(){
                                                     </> 
                                                     :
                                                     <>
-                                                        {  unavailable ?
+                                                        {  unavailable  ?
                                                             <>
                                                                 <View>
                                                                     <Text className='text-lg font-light'>
-                                                                    Verificamos que você não estará disponível para amanhã. {"\n"}
+                                                                    Verificamos que você não estará disponível {"\n"}
                                                                     Caso mude de ideia, clique em confirmar.
                                                                     </Text>
                                                                 </View>

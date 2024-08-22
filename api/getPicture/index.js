@@ -7,7 +7,6 @@ export default async function GetPicture(picture, am = null, id = null,){
     let img = picture
     let pictureInfo = []
     try{
-        console.log('aqui')
 
         if (am === null) {
             am = await AsyncStorage.getItem('am');

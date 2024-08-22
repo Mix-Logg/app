@@ -50,7 +50,6 @@ export default function Access({navigation}) {
     }
 
     const handleTeste = async () => {
-       console.log('aqui')
        await ClientCancelRace()
     }
 

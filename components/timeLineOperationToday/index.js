@@ -14,6 +14,7 @@ export default function timeLineOperationToday(){
     const [freight    , setFreight]     = useState(null)
     const [stepTwo    , setStepTwo]     = useState(null)
     const [check      , setCheck]       = useState(null)
+    const [exception  , setException]   = useState(null)
     const [unavailable, setUnavailable] = useState(null)
     const [dateWork   , setDateWork]    = useState(null);
     const [hour       , setHour]        = useState(null);
@@ -52,7 +53,21 @@ export default function timeLineOperationToday(){
             if(operationToday.status != 500 ){
                 let response
                 switch (operationToday.status) {
+                    case 'exception':
+                        if(operationToday.date == dateWork){
+                            setException(true)
+                            setDateWork(operationToday.date)
+                            break
+                        }
+                        setDateWork(dateWork)
+                        response = await DeleteOperationToday(operationToday.id);
+                        console.log(response)
+                        if(response.status == 200){
+                            break
+                        }
+                        break
                     case 'cancel':
+                        
                         if(operationToday.date == dateWork){
                             // 1 dia antes do trabalho 
                             setAvailable(true)
@@ -74,6 +89,7 @@ export default function timeLineOperationToday(){
                         }
                         break;
                     case 'pending':
+                        
                         if(operationToday.date == dateWork){
                             // 1 dia antes do trabalho 
                             setAvailable(true)
@@ -108,6 +124,7 @@ export default function timeLineOperationToday(){
                         }
                         break;
                     case 'confirm':
+                        console.log(operationToday.date, dateWork)
                         if(operationToday.date == dateWork){
                             // 1 dia antes do trabalho 
                             setDateWork (operationToday.date)
@@ -268,11 +285,17 @@ export default function timeLineOperationToday(){
             </View>
             {
                 <>
-                    { unavailable ?
+                    { unavailable ||  exception ?
                         <View className='mt-4 items-center'>
-                            <Text className='mb-2 text-lg font-light'>
-                                Ausência registrada, obrigado por avisar.
-                            </Text>
+                            { unavailable ?
+                                <Text className='mb-2 text-lg font-light'>
+                                    Ausência registrada, obrigado por avisar.
+                                </Text>
+                                :
+                                <Text className='mb-2 text-lg font-light'>
+                                    Exceção registrada, obrigado por avisar.
+                                </Text>
+                            }
                             <Feather name="check-circle" size={24} color="#22c55e" />
                         </View>
                         :
