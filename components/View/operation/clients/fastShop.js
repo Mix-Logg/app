@@ -134,7 +134,8 @@ export default function FastShop(){
         const currentMinutes = today.getMinutes();
         const currentHour    = today.getHours();
         setHour(currentHour)
-        if ( currentHour >= 8  && currentHour <= 14 ) {
+        console.log(currentHour)
+        if ( currentHour >= 8  && currentHour < 14 ) {
             setTimeExpired(false);
         } else {
             setTimeExpired(true);
@@ -147,7 +148,7 @@ export default function FastShop(){
             return false;
         }
         if (tomorrow.getDay() == 1) {
-            if ( currentHour >= 8  && currentHour <= 12 ) {
+            if ( currentHour >= 8  && currentHour < 14 ) {
                 setTimeExpired(false);
             }else{
                 setTimeExpired(true);
@@ -163,6 +164,15 @@ export default function FastShop(){
         // setToday(`${day}/${month}/${year}`)
         return `${day}/${month}/${year}`;
     };
+
+    const checkDateDisponibility = async () => {
+        const check = await findOneOperationToday()
+        if(check.status != 500 ){
+        }
+        setTimeout(() => {
+            setCheckFetch(true)
+        }, 3000);
+    }
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -289,11 +299,9 @@ export default function FastShop(){
                         }
                     }
                 }
-                setTimeout(() => {
-                    setCheckFetch(true)
-                }, 3000);
         }
         fetchData()
+        checkDateDisponibility()
     },[])
 
     return(
@@ -422,7 +430,7 @@ export default function FastShop(){
                                                                                         <View className='w-8'>
                                                                                             <MaterialCommunityIcons name="handshake-outline" size={24} color="#FF5F00" />
                                                                                         </View>
-                                                                                        <Text className='text-base font-light'> {auxiliary} </Text>
+                                                                                        <Text className='text-base font-light capitalize'> {auxiliary} </Text>
                                                                                     </View>
                                                                                 }
                                                                                 <View className='mt-3 flex-row'>
@@ -575,7 +583,7 @@ export default function FastShop(){
                                                             <Text className='mt-7 text-lg font-light'>
                                                                 Segunda a sábado: 8:00 às 14:00
                                                                 {"\n"}
-                                                                Domingos das <Text>8:00 a 12:00</Text>
+                                                                Domingos das <Text>8:00 a 14:00</Text>
                                                             </Text>
                                                         </View>   
                                                     </>
@@ -601,7 +609,7 @@ export default function FastShop(){
                                                                     <View className='w-8'>
                                                                         <MaterialCommunityIcons name="handshake-outline" size={24} color="#FF5F00" />
                                                                     </View>
-                                                                    <Text className='text-base font-light'> {auxiliary} </Text>
+                                                                    <Text className='text-base font-light capitalize'> {auxiliary} </Text>
                                                                 </View>
                                                             }
                                                             <View className='mt-3 flex-row'>

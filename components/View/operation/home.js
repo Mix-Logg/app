@@ -1,5 +1,5 @@
 
-import { View, Text, Image, TouchableOpacity} from "react-native";
+import { View, Text, Image, TouchableOpacity, ActivityIndicator} from "react-native";
 import { useEffect, useState} from "react";
 import BarOperation from "../../barOperation";
 import FindOneOperationToday from "../../../hooks/findOneOperationToday";
@@ -18,6 +18,7 @@ export default function OperationHome(){
     const [name,setName] = useState('')
     const [buffer,setBuffer] = useState(null)
     const [type,setType] = useState(null)
+    const [wait,setWait] = useState(null)
     
 
     const handleBack = () => {
@@ -69,11 +70,18 @@ export default function OperationHome(){
                         <View className='bg-primary'>
                             <View className='px-2 py-4 rounded-t-3xl bg-white'>
                                 <View className>
-                                    <TimeLineOperationToday/>
+                                    <TimeLineOperationToday setWait={setWait}/>
                                 </View>
-                                <View>
-                                    <Access/>
-                                </View>
+                                { wait ?
+                                    <View>
+                                        <Access/>
+                                    </View>
+                                    :
+                                    <View className='mt-10 items-center'>
+                                        <Text className='text-xs font-bold text-[#374151]'>atualizando</Text>
+                                        <ActivityIndicator color={'#FF5F00'} className='mt-2'/>
+                                    </View>
+                                }
                             </View>
                         </View>
             </View>

@@ -7,7 +7,7 @@ import { Feather } from '@expo/vector-icons';
 import FindOneOperationToday from "../../hooks/findOneOperationToday"
 import DeleteOperationToday from "../../hooks/deleteOperationToday";
 import UpdateOperationToday from "../../hooks/updateOperationToday";
-export default function timeLineOperationToday(){
+export default function timeLineOperationToday({setWait}){
     const navigation = useNavigation()
     const [available  , setAvailable]   = useState(null)
     const [stepOne    , setStepOne]     = useState(null)
@@ -45,128 +45,128 @@ export default function timeLineOperationToday(){
         return `${day}/${month}/${year}`;
     };
     
-    useEffect(()=>{
+    useEffect(() => {
         const fetchData = async () => {
-            const today    = getTomorrowDate('today')
-            const dateWork = getTomorrowDate()
-            const operationToday = await FindOneOperationToday();
-            if(operationToday.status != 500 ){
-                let response
-                switch (operationToday.status) {
-                    case 'exception':
-                        if(operationToday.date == dateWork){
-                            setException(true)
-                            setDateWork(operationToday.date)
-                            break
-                        }
-                        setDateWork(dateWork)
-                        response = await DeleteOperationToday(operationToday.id);
-                        console.log(response)
-                        if(response.status == 200){
-                            break
-                        }
-                        break
-                    case 'cancel':
-                        
-                        if(operationToday.date == dateWork){
-                            // 1 dia antes do trabalho 
-                            setAvailable(true)
-                            setStepOne  (true)
-                            setFreight  (false)
-                            setStepTwo  (false)
-                            setCheck    (false)
-                            setDateWork(operationToday.date)
-                            break
-                        }
-                        setDateWork(dateWork)
-                        response = await DeleteOperationToday(operationToday.id);
-                        if(response.status == 200){
-                            const operation_param = {
-                                occurrence: 'Cliente sem carga'
+            const today = getTomorrowDate('today');
+            const dateWork = getTomorrowDate();
+            let operationToday;
+    
+            do {
+                operationToday = await FindOneOperationToday();
+                if (operationToday.status !== 500) {
+                    let response;
+                    switch (operationToday.status) {
+                        case 'exception':
+                            if (operationToday.date === dateWork) {
+                                setException(true);
+                                setDateWork(operationToday.date);
+                                break;
                             }
-                            await UpdateOperationToday(operationToday.id, operation_param)
-                            return
-                        }
-                        break;
-                    case 'pending':
-                        
-                        if(operationToday.date == dateWork){
-                            // 1 dia antes do trabalho 
-                            setAvailable(true)
-                            setStepOne  (true)
-                            setFreight  (null)
-                            setStepTwo  (null)
-                            setCheck    (null)
-                            setDateWork(operationToday.date)
-                            break
-                        }
-                        setDateWork(dateWork)
-                        response = await DeleteOperationToday(operationToday.id);
-                        if(response.status == 200){
-                            const operation_param = {
-                                occurrence: 'Cliente sem carga - pendente'
+                            setDateWork(dateWork);
+                            response = await DeleteOperationToday(operationToday.id);
+                            if (response.status === 200) {
+                                // continue to next operation
+                                continue;
                             }
-                            await UpdateOperationToday(operationToday.id,operation_param)
-                            break
-                        }
-                        break;
-                    case 'unavailable':
-                        if(operationToday.date == dateWork){
-                            // 1 dia antes do trabalho 
-                            setUnavailable(true)
-                            setDateWork(operationToday.date)
-                            break
-                        }
-                        setDateWork(dateWork)
-                        response = await DeleteOperationToday(operationToday.id);
-                        if(response.status == 200){
-                            break
-                        }
-                        break;
-                    case 'confirm':
-                        console.log(operationToday.date, dateWork)
-                        if(operationToday.date == dateWork){
-                            // 1 dia antes do trabalho 
-                            setDateWork (operationToday.date)
-                            setAvailable(true)
-                            setStepOne  (true)
-                            setFreight  (true)
-                            setStepTwo  (true)
-                            break
-                        }
-                        setDateWork(dateWork)
-                        if(operationToday.start != null && hour >= 8){
-                            const response = await DeleteOperationToday(operationToday.id);
-                            if(response.status == 200){
+                            break;
+                        case 'cancel':
+                            if (operationToday.date === dateWork) {
+                                setAvailable(true);
+                                setStepOne(true);
+                                setFreight(false);
+                                setStepTwo(false);
+                                setCheck(false);
+                                setDateWork(operationToday.date);
+                                break;
+                            }
+                            setDateWork(dateWork);
+                            response = await DeleteOperationToday(operationToday.id);
+                            if (response.status === 200) {
                                 const operation_param = {
-                                    occurrence: 'Motorista carregou'
-                                }
-                                await UpdateOperationToday(operationToday.id, operation_param)
-                                break
+                                    occurrence: 'Cliente sem carga'
+                                };
+                                await UpdateOperationToday(operationToday.id, operation_param);
+                                continue;
                             }
-                            break
-                        }
-                        if(hour >= 8){
-                            const response = await DeleteOperationToday(operationToday.id);
-                            if(response.status == 200){
+                            break;
+                        case 'pending':
+                            if (operationToday.date === dateWork) {
+                                setAvailable(true);
+                                setStepOne(true);
+                                setFreight(null);
+                                setStepTwo(null);
+                                setCheck(null);
+                                setDateWork(operationToday.date);
+                                break;
+                            }
+                            setDateWork(dateWork);
+                            response = await DeleteOperationToday(operationToday.id);
+                            if (response.status === 200) {
                                 const operation_param = {
-                                    occurrence: 'Motorista atrasou'
-                                }
-                                await UpdateOperationToday(operationToday.id, operation_param)
-                                break
+                                    occurrence: 'Cliente sem carga - pendente'
+                                };
+                                await UpdateOperationToday(operationToday.id, operation_param);
+                                continue;
                             }
-                            break
-                        }
-                        break;
-                    default:
-                        break;
+                            break;
+                        case 'unavailable':
+                            if (operationToday.date === dateWork) {
+                                setUnavailable(true);
+                                setDateWork(operationToday.date);
+                                break;
+                            }
+                            setDateWork(dateWork);
+                            response = await DeleteOperationToday(operationToday.id);
+                            if (response.status === 200) {
+                                continue;
+                            }
+                            break;
+                        case 'confirm':
+                            if (operationToday.date === dateWork) {
+                                setDateWork(operationToday.date);
+                                setAvailable(true);
+                                setStepOne(true);
+                                setFreight(true);
+                                setStepTwo(true);
+                                break;
+                            }
+                            setDateWork(dateWork);
+                            if (operationToday.start != null && hour >= 8) {
+                                response = await DeleteOperationToday(operationToday.id);
+                                if (response.status === 200) {
+                                    const operation_param = {
+                                        occurrence: 'Motorista carregou'
+                                    };
+                                    await UpdateOperationToday(operationToday.id, operation_param);
+                                    continue;
+                                }
+                                break;
+                            }
+                            if (hour >= 8) {
+                                response = await DeleteOperationToday(operationToday.id);
+                                if (response.status === 200) {
+                                    const operation_param = {
+                                        occurrence: 'Motorista atrasou'
+                                    };
+                                    await UpdateOperationToday(operationToday.id, operation_param);
+                                    continue;
+                                }
+                                break;
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                } else {
+                    setDateWork(dateWork);
                 }
-                return
-            }
-            setDateWork(dateWork)
-        }
-        fetchData()
-    },[timeStartExpired])
+            } while (operationToday.status !== 500);
+            setWait(true)
+        };
+    
+        fetchData();
+    }, [timeStartExpired]);
+    
 
     useFocusEffect(
         React.useCallback(() => {
