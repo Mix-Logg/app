@@ -47,14 +47,21 @@ export default function timeLineOperationToday({setWait}){
     
     useEffect(() => {
         const fetchData = async () => {
-            const today = getTomorrowDate('today');
-            const dateWork = getTomorrowDate();
+            const today = getTomorrowDate('today'); // Data de hoje
+            const dateWork = getTomorrowDate(); // Data de amanhã (dia de trabalho)
             let operationToday;
-    
+            const currentHour = new Date().getHours(); // Obter a hora atual do sistema
+        
             do {
+                // Buscar a operação do dia atual ou anterior
                 operationToday = await FindOneOperationToday();
-                if (operationToday.status !== 500) {
-                    let response;
+                if (!operationToday || !operationToday.date) {
+                    break; // Sair do loop se não encontrar operação
+                }
+        
+                // Verificação para dias anteriores ou operação inválida
+                if (operationToday.date !== today) {
+                    // Lógica de finalização baseada no status da operação
                     switch (operationToday.status) {
                         case 'exception':
                             if (operationToday.date === dateWork) {
@@ -63,12 +70,9 @@ export default function timeLineOperationToday({setWait}){
                                 break;
                             }
                             setDateWork(dateWork);
-                            response = await DeleteOperationToday(operationToday.id);
-                            if (response.status === 200) {
-                                // continue to next operation
-                                continue;
-                            }
-                            break;
+                            await DeleteOperationToday(operationToday.id);
+                            continue;
+        
                         case 'cancel':
                             if (operationToday.date === dateWork) {
                                 setAvailable(true);
@@ -80,15 +84,13 @@ export default function timeLineOperationToday({setWait}){
                                 break;
                             }
                             setDateWork(dateWork);
-                            response = await DeleteOperationToday(operationToday.id);
-                            if (response.status === 200) {
-                                const operation_param = {
-                                    occurrence: 'Cliente sem carga'
-                                };
+                            const cancelResponse = await DeleteOperationToday(operationToday.id);
+                            if (cancelResponse.status === 200) {
+                                const operation_param = { occurrence: 'Cliente sem carga' };
                                 await UpdateOperationToday(operationToday.id, operation_param);
-                                continue;
                             }
-                            break;
+                            continue;
+        
                         case 'pending':
                             if (operationToday.date === dateWork) {
                                 setAvailable(true);
@@ -100,15 +102,13 @@ export default function timeLineOperationToday({setWait}){
                                 break;
                             }
                             setDateWork(dateWork);
-                            response = await DeleteOperationToday(operationToday.id);
-                            if (response.status === 200) {
-                                const operation_param = {
-                                    occurrence: 'Cliente sem carga - pendente'
-                                };
+                            const pendingResponse = await DeleteOperationToday(operationToday.id);
+                            if (pendingResponse.status === 200) {
+                                const operation_param = { occurrence: 'Cliente sem carga - pendente' };
                                 await UpdateOperationToday(operationToday.id, operation_param);
-                                continue;
                             }
-                            break;
+                            continue;
+        
                         case 'unavailable':
                             if (operationToday.date === dateWork) {
                                 setUnavailable(true);
@@ -116,11 +116,9 @@ export default function timeLineOperationToday({setWait}){
                                 break;
                             }
                             setDateWork(dateWork);
-                            response = await DeleteOperationToday(operationToday.id);
-                            if (response.status === 200) {
-                                continue;
-                            }
-                            break;
+                            await DeleteOperationToday(operationToday.id);
+                            continue;
+        
                         case 'confirm':
                             if (operationToday.date === dateWork) {
                                 setDateWork(operationToday.date);
@@ -131,38 +129,42 @@ export default function timeLineOperationToday({setWait}){
                                 break;
                             }
                             setDateWork(dateWork);
-                            if (operationToday.start != null && hour >= 8) {
-                                response = await DeleteOperationToday(operationToday.id);
-                                if (response.status === 200) {
-                                    const operation_param = {
-                                        occurrence: 'Motorista carregou'
-                                    };
+                            if (operationToday.start != null && currentHour >= 8) {
+                                const confirmResponse = await DeleteOperationToday(operationToday.id);
+                                if (confirmResponse.status === 200) {
+                                    const operation_param = { occurrence: 'Motorista carregou' };
                                     await UpdateOperationToday(operationToday.id, operation_param);
-                                    continue;
                                 }
-                                break;
-                            }
-                            if (hour >= 8) {
-                                response = await DeleteOperationToday(operationToday.id);
-                                if (response.status === 200) {
-                                    const operation_param = {
-                                        occurrence: 'Motorista atrasou'
-                                    };
+                            } else if (currentHour >= 8) {
+                                const lateResponse = await DeleteOperationToday(operationToday.id);
+                                if (lateResponse.status === 200) {
+                                    const operation_param = { occurrence: 'Motorista atrasou' };
                                     await UpdateOperationToday(operationToday.id, operation_param);
-                                    continue;
                                 }
-                                break;
                             }
-                            break;
+                            continue;
+        
                         default:
                             break;
                     }
-                } else {
-                    setDateWork(dateWork);
+                } else if (operationToday.date === today) {
+                    // Hoje: Verificar se a hora é maior que 8 para poder finalizar
+                    if (currentHour >= 8) {
+                        const response = await DeleteOperationToday(operationToday.id);
+                        if (response.status === 200) {
+                            const operation_param = { occurrence: 'Atraso / Falta' };
+                            await UpdateOperationToday(operationToday.id, operation_param);
+                        }
+                    } else {
+                        // Se a hora for menor que 8, não finaliza hoje, continua aguardando
+                        break;
+                    }
                 }
-            } while (operationToday.status !== 500);
-            setWait(true)
+            } while (operationToday && operationToday.date !== dateWork);
+        
+            setWait(true); // Operação finalizada corretamente
         };
+        
     
         fetchData();
     }, [timeStartExpired]);

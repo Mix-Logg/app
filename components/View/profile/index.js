@@ -148,7 +148,7 @@ export default function Profile({navigation}){
                     </TouchableOpacity>
                     
                     <View className="flex-row p-3 rounded-lg w-full justify-start items-start mt-2">
-                        <Text className="text-sm text-left text-neutral-400 font-medium w-40">Version actual 2.7.0v</Text>
+                        <Text className="text-sm text-left text-neutral-400 font-medium w-40">Version actual 2.9.0v</Text>
                     </View>
                 </View>
             </ScrollView>           
