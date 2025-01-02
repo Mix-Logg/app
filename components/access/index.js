@@ -78,7 +78,7 @@ export default function Access({navigation}) {
                     </TouchableOpacity>
                     <Text style={twrnc`text-[#7B7B7B]`}>Perfil </Text>
                 </View>
-                <View style={twrnc`items-center justify-center px-5 gap-1`}>
+                {/* <View style={twrnc`items-center justify-center px-5 gap-1`}>
                     <TouchableOpacity style={twrnc`border border-[#d4d4d4] justify-center items-center px-2 h-15 w-15 rounded-xl`}
                         onPress={()=>handleAllAcess('wallet')}
                     >
@@ -92,7 +92,7 @@ export default function Access({navigation}) {
                         }
                     </TouchableOpacity>
                     <Text style={twrnc`text-[#7B7B7B]`}>Carteira </Text>
-                </View>
+                </View> */}
                 <View style={twrnc`items-center justify-center px-5 gap-1`}>
                     <TouchableOpacity style={twrnc`border border-[#d4d4d4] justify-center items-center px-2 h-15 w-15 rounded-xl `}
                         onPress={()=>handleAllAcess('race')}
