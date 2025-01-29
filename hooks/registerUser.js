@@ -1,12 +1,16 @@
 import axios from "axios"
 import UpFile from "./uploadFile"
+import moment from 'moment-timezone';
 export default async function RegisterUser(params){
-    const time  = await axios.get('https://worldtimeapi.org/api/timezone/America/Sao_Paulo')
+    // const time  = await axios.get('https://worldtimeapi.org/api/timezone/America/Sao_Paulo')
+    const today = new Date();
+    const formattedDate = moment().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss');
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.1.5:8080/'
+    const URLdevelopment = 'http://10.253.252.115:8080/'
     const URL = URLproduction
-
+    
     const am = params.user.am
+
     const user = {
         uuid: '',
         am: am,
@@ -14,21 +18,27 @@ export default async function RegisterUser(params){
         phone:  params.user.phone , 
         name :  params.user.name , 
         cpf  :  params.user.login,
-        create_at : time.data.datetime
+        create_at : formattedDate
     }
+
     const address = {
         am : am,
         uuid : '',
     }
+
     try{
         const newCadaster = await axios.post(`${URL}${am}`, user)
+        console.log('cadastro',newCadaster) 
         const id = newCadaster.data
         user.uuid = id;
         user.password = params.user.password;
         address.uuid = id;
+        console.log('user',user)    
         await CadasterUser(user);
-        await CadasterAddress(address);
+        await CadasterAddress(address)
+        console.log('address',address)
         await CadasterImage('human',params.picture.human,id,am)
+        console.log('params.picture.human',params.picture.human)
         if(am != 'auxiliary'){
             const vehicle = {
                 am: am,  
@@ -53,16 +63,16 @@ export default async function RegisterUser(params){
         console.log(err)
         return 500
     }
-    
 }
 
 async function CadasterAddress(address) {
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.1.5:8080/'
+    const URLdevelopment = 'http://10.253.252.115:8080/'
     const URL = URLproduction
     return new Promise( async (resolve, reject) => {
         try{
             const res  = await axios.post(`${URL}address`, address)
+            console.log('endereço',res)
             resolve()
             return;
         }catch(err){
@@ -74,12 +84,13 @@ async function CadasterAddress(address) {
 
 async function CadasterUser(user) {
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.1.5:8080/'
+    const URLdevelopment = 'http://10.253.252.115:8080/'
     const URL = URLproduction
     
     return new Promise( async (resolve, reject) => {
         try{
             const res  = await axios.post(`${URL}user`,user)
+            console.log('usuario',res)
             if(res.data == 200){
                 resolve('Usuario Registrado!');
             }
@@ -93,7 +104,7 @@ async function CadasterUser(user) {
 async function CadasterVehicle(vehicle){
     return new Promise( async (resolve, reject) => {
         const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-        const URLdevelopment = 'http://192.168.1.5:8080/'
+        const URLdevelopment = 'http://10.253.252.115:8080/'
         const URL = URLproduction
         try{
             const res  = await axios.post(`${URL}vehicle`,vehicle)
@@ -113,6 +124,7 @@ async function CadasterImage(action, pictures, id, am){
                     continue;
                 }
                 let res = await UpFile(value, key, 'physical', id, am)
+                console.log('imagem',res)
             }
         }
         return;

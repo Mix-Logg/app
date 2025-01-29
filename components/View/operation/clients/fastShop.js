@@ -62,7 +62,7 @@ export default function FastShop(){
             }
             setFailFinishUnavailable(true)
             return
-    }
+    };
 
     const handleStart = async () => {
         try{
@@ -70,7 +70,7 @@ export default function FastShop(){
                 return
             }
             setLoaderCheckIn(true)
-            const check = await ValidDistanceCheck(-23.350355027592585, -46.84510531928067, 1000);
+            const check = await ValidDistanceCheck(-23.350355027592585, -46.84510531928067, 4000);
             if(check === false){
                 setLoaderCheckIn(false)
                 setToastCheckDistance(true)
@@ -172,7 +172,7 @@ export default function FastShop(){
         setTimeout(() => {
             setCheckFetch(true)
         }, 3000);
-    }
+    };
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -307,7 +307,7 @@ export default function FastShop(){
     return(
         <>
             {modalCancel}
-            <Toastify isVisible={toastCheckDistance} setIsVisible={setToastCheckDistance}  option={'warning'}  info={'Para confirmar sua chegada, você deve estar pelo menos a 1 km do Centro de Distribuição (CD)'}/>
+            <Toastify isVisible={toastCheckDistance} setIsVisible={setToastCheckDistance}  option={'warning'}  info={'Para confirmar sua chegada, você deve estar pelo menos a 4 km do Centro de Distribuição (CD)'}/>
             <Toastify isVisible={toastSuccessFinishUnavailable} setIsVisible={setToastSuccessFinishUnavailable}  option={'success'}  info={'Ainda bem que mudou de ideia! Agora, você pode confirmar sua disponibilidade.'}/>
             <Toastify isVisible={toastFailFinishUnavailable} setIsVisible={setFailFinishUnavailable}  option={'danger'}   info={'Algo deu errado. Tente novamente mais tarde ou entre em contato com o suporte.'}/>
             {/* <CancelOperationToday status={status} unavailable={unavailable} dateWork={dateWork} driver={driver} auxiliary={auxiliary} idAuxiliary={idAuxiliary} idDriver={idDriver}/> */}

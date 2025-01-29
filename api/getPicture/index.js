@@ -2,7 +2,7 @@ import axios from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export default async function GetPicture(picture, am = null, id = null,){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.1.5:8080/'
+    const URLdevelopment = 'http://10.253.252.115:8080/'
     const URL = URLproduction
     let img = picture
     let pictureInfo = []

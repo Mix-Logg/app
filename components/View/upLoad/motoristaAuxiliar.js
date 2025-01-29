@@ -44,7 +44,7 @@ export default function UpLoadEntregador({navigation}){
     };
 
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.1.5:8080/'
+    const URLdevelopment = 'http://10.253.252.115:8080/'
     const URL = URLproduction
     
     
@@ -212,15 +212,23 @@ export default function UpLoadEntregador({navigation}){
                 await modalInfo('selfie')
                 return;
         }
-        setLoading(true)
-        const res = await RegisterUser(route.params)
-        if(res == 200){
-            navigation.navigate('Welcome')
+        // setLoading(true)
+        try{
+            console.log('registrando')
+            const res = await RegisterUser(route.params)
+            // const res = await RegisterUser(route.params)
+            console.log('registerUser',res)
+            if(res == 200){
+                navigation.navigate('Welcome')
+                return;
+            }
+            setLoading(false)
+            modalInfo('error')
             return;
+        }catch(error){
+            console.log('error',error)
         }
-        setLoading(false)
-        modalInfo('error')
-        return;
+       
     }
 
     return(
@@ -291,125 +299,136 @@ export default function UpLoadEntregador({navigation}){
                         </Pressable>
 
                     </View>
+
                     <Modal visible={isVisible} animationType='slide' transparent={true}>
                         {modalBtnVisible  ?  
-                        <View style={styles.modal}>
-                            <View style={[styles.containerModal, {height:'50%'}]}>
-                                <View style={styles.modalHeader}>
-                                    <Text> </Text>
-                                    <Text style={styles.title}>
-                                        Escolha uma opção
-                                    </Text>
-                                    <Pressable onPress={showModalOpotion}>
-                                        <Image
-                                            style={[styles.icon, {height:25, width:25, marginTop:5}]}
-                                            source={require('../../../img/icons/x.png')}
-                                        />
-                                    </Pressable>
-                                </View>
-                                <View style={{marginBottom:15}}>
-                                    <Pressable 
-                                        style={styles.btn}
-                                        onPress={() => SelectOpition('camera')}
-                                    >
-                                        <View style={styles.containerBtn}>
+                            <View style={styles.modal}>
+                                <View style={[styles.containerModal, {height:'90%'}]}>
+                                    <View style={styles.modalHeader}>
+                                        <Text> </Text>
+                                        <Text style={styles.title}>
+                                            Escolha uma opção
+                                        </Text>
+                                        <Pressable onPress={showModalOpotion}>
                                             <Image
-                                                style={styles.icon}
-                                                source={require('../../../img/icons/camera.png')}
+                                                style={[styles.icon, {height:25, width:25, marginTop:5}]}
+                                                source={require('../../../img/icons/x.png')}
                                             />
-                                            <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Câmera</Text>
-                                        </View>
-                                    </Pressable>
+                                        </Pressable>
+                                    </View>
 
-                                    <Pressable 
-                                        style={styles.btn}
-                                        onPress={() => SelectOpition('gallery')}
-                                    >
-                                        <View style={styles.containerBtn}>
-                                            <Image
-                                                style={styles.icon}
-                                                source={require('../../../img/icons/galeria.png')}
-                                            />
-                                            <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Galereria</Text>
-                                        </View>
-                                    </Pressable>
+                                    <View style={{marginBottom:15}}>
+                                        <Pressable 
+                                            style={styles.btn}
+                                            onPress={() => SelectOpition('camera')}
+                                        >
+                                            <View style={styles.containerBtn}>
+                                                <Image
+                                                    style={styles.icon}
+                                                    source={require('../../../img/icons/camera.png')}
+                                                />
+                                                <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Câmera</Text>
+                                            </View>
+                                        </Pressable>
 
-                                    <Pressable 
-                                        style={styles.btn}
-                                        onPress={() => SelectOpition('file')}
-                                    >
-                                        <View style={[styles.containerBtn, {width:'80%'} ]}>
-                                            <Image
-                                                style={styles.icon}
-                                                source={require('../../../img/icons/arquivo.png')}
-                                            />
-                                            <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Documentos</Text>
-                                        </View>
-                                    </Pressable>
+                                        <Pressable 
+                                            style={styles.btn}
+                                            onPress={() => SelectOpition('gallery')}
+                                        >
+                                            <View style={styles.containerBtn}>
+                                                <Image
+                                                    style={styles.icon}
+                                                    source={require('../../../img/icons/galeria.png')}
+                                                />
+                                                <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Galereria</Text>
+                                            </View>
+                                        </Pressable>
+
+                                        <Pressable 
+                                            style={styles.btn}
+                                            onPress={() => SelectOpition('file')}
+                                        >
+                                            <View style={[styles.containerBtn, {width:'80%'} ]}>
+                                                <Image
+                                                    style={styles.icon}
+                                                    source={require('../../../img/icons/arquivo.png')}
+                                                />
+                                                <Text style={[styles.btnTxt,{marginLeft:0}]}>Abrir Documentos</Text>
+                                            </View>
+                                        </Pressable>
+                                    </View>
                                 </View>
                             </View>
-                        </View>
-                        : <View style={styles.modal}>
-                            <View style={styles.containerModal}>
+                        : 
+                            <View style={styles.modal} >
                                 
-                                <View style={styles.modalHeader}>
-                                    <Text> </Text>
-                                    <Text style={styles.title}>
-                                        { cpfVisible || cnhVisible || enderecoVisible ? 'Exemplo' : 'Selfie'}
-                                    </Text>
-                                    <Pressable onPress={openModal}>
-                                        <Image
-                                            style={[styles.icon, {height:25, width:25, marginTop:5}]}
-                                            source={require('../../../img/icons/x.png')}
-                                        />
-                                    </Pressable>
-                                </View>
-                                { cpfVisible || cnhVisible || enderecoVisible ? <View style={styles.containerInfoModal}> 
-                                    <Text style={styles.txtModal}> 
-                                        Se for tirar foto não se esqueça de abrir o documento assim como o exemplo abaixo: 
-                                    </Text> 
-                                    <Image
-                                        style={styles.imgExemplo}
-                                        source={
-                                            cpfVisible
-                                            ? require('../../../img/imgExemplo/cpfRg.png')
-                                            : enderecoVisible
-                                            ? require('../../../img/imgExemplo/compravanteResidencia.png')
-                                            : cnhVisible
-                                            ? require('../../../img/imgExemplo/cnhFisica.png')
-                                            : null // Defina um valor padrão ou nulo, se necessário
-                                        }
-                                    />
-                                </View> : 
-                                <View>
-                                    <Text style={[styles.title,{marginTop:20}]}>Instruções:</Text>
-                                    <View style={{marginTop:15}}>
-                                        <Text style={[styles.txtSelfie, {marginTop:0}]}>1. Retire chapéu, boné e mascara. </Text>
-                                        <Text style={styles.txtSelfie}>2. Retire óculos escuro. </Text>
-                                        <Text style={styles.txtSelfie}>3. Foto centralizada. </Text>
-                                        <Text style={styles.txtSelfie}>4. Lugar iluminado. </Text>
-                                        <Text style={styles.txtSelfie}>5. Evite flash. </Text>
-                                        <Text style={styles.txtSelfie}>6. Olhos abertos.</Text>
-                                    </View>
-                                    <View style={styles.containerIcon}>
-                                    <Image
-                                        style={[styles.icon,{ width:200, height: 200 }]}
-                                        source={require('../../../img/icons/userSelfie.png')}
-                                    />
-                                    </View>
+                                    <View  style={styles.containerModal}>
+                                            <View style={styles.modalHeader}>
+                                                <Text> </Text>
+                                                <Text style={styles.title}>
+                                                    { cpfVisible || cnhVisible || enderecoVisible ? 'Exemplo' : 'Selfie'}
+                                                </Text>
+                                                <Pressable onPress={openModal}>
+                                                    <Image
+                                                        style={[styles.icon, {height:25, width:25, marginTop:5}]}
+                                                        source={require('../../../img/icons/x.png')}
+                                                    />
+                                                </Pressable>
+                                            </View>
+                                        <ScrollView className='h-full'>
+                                            { cpfVisible || cnhVisible || enderecoVisible ? 
+                                            <View style={styles.containerInfoModal}> 
+                                                <Text style={styles.txtModal}> 
+                                                    Se for tirar foto não se esqueça de abrir o documento assim como o exemplo abaixo: 
+                                                </Text> 
+                                                <View className={'w-full my-5'}>
+                                                    <Image
+                                                        resizeMode="contain"
+                                                        className={'w-full h-auto p-0 m-0'}
+                                                        style={{height: 300}}
+                                                        source={
+                                                            cpfVisible
+                                                            ? require('../../../img/imgExemplo/cpfRg.png')
+                                                            : enderecoVisible
+                                                            ? require('../../../img/imgExemplo/compravanteResidencia.png')
+                                                            : cnhVisible
+                                                            ? require('../../../img/imgExemplo/cnhFisica.png')
+                                                            : null // Defina um valor padrão ou nulo, se necessário
+                                                        }
+                                                    />
+                                                </View>
+                                            </View> 
+                                            : 
+                                            <View>
+                                                <Text style={[styles.title,{marginTop:20}]}>Instruções:</Text>
+                                                <View style={{marginTop:15}}>
+                                                    <Text style={[styles.txtSelfie, {marginTop:0}]}>1. Retire chapéu, boné e mascara. </Text>
+                                                    <Text style={styles.txtSelfie}>2. Retire óculos escuro. </Text>
+                                                    <Text style={styles.txtSelfie}>3. Foto centralizada. </Text>
+                                                    <Text style={styles.txtSelfie}>4. Lugar iluminado. </Text>
+                                                    <Text style={styles.txtSelfie}>5. Evite flash. </Text>
+                                                    <Text style={styles.txtSelfie}>6. Olhos abertos.</Text>
+                                                </View>
+                                                <View style={styles.containerIcon}>
+                                                <Image
+                                                    style={[styles.icon,{ width:200, height: 200 }]}
+                                                    source={require('../../../img/icons/userSelfie.png')}
+                                                />
+                                                </View>
 
-                                </View>
-                                }
-                                <View style={styles.containerBtnModal}>
-                                    <Pressable style={styles.btnModal}
-                                        onPress={showModalOpotion}
-                                    >
-                                        <Text style={styles.btnTxtModal}>Continuar</Text>
-                                    </Pressable>
-                                </View>
-
-                            </View>
-                        </View>  }
+                                            </View>
+                                            }
+                                            <View  style={styles.containerBtnModal}>
+                                                <Pressable style={styles.btnModal}
+                                                    onPress={showModalOpotion}
+                                                >
+                                                    <Text style={styles.btnTxtModal}>Continuar</Text>
+                                                </Pressable>
+                                            </View>
+                                        </ScrollView>
+                                    </View>
+                            </View>  
+                        }
                     </Modal>
                     { route.params.user.am == 'auxiliary' ? 
                         <Btn title={'Finalizar'} action={handleSubmit} /> 
@@ -505,14 +524,14 @@ const styles = StyleSheet.create({
         width:'90%',
         height:'90%',
         padding:16,
-        justifyContent:'space-between'
+        // justifyContent:'space-between'
     },
     modalHeader:{
         flexDirection:'row',
         justifyContent:'space-between',
     },
     title:{
-        fontSize:23,
+        fontSize:20,
         color:'#FF5F00',
         fontFamily:'Roboto_500Medium',
     },

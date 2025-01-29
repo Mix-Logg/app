@@ -1,4 +1,4 @@
-import { View,Image,Text,StyleSheet,TouchableOpacity, StatusBar } from "react-native";
+import { View,Image,Text,StyleSheet,TouchableOpacity, StatusBar,ScrollView } from "react-native";
 import twrnc from "twrnc";
 
 
@@ -10,6 +10,7 @@ export default function Welcome({navigation}){
     
     return(
         <View style={[twrnc`bg-white`,styles.container]}>
+            <ScrollView>
             <StatusBar
             backgroundColor='#FFFFFF' />
             <View style={styles.containerLogo}>
@@ -39,6 +40,7 @@ export default function Welcome({navigation}){
                     </Text>
                 </TouchableOpacity>
            </View>
+           </ScrollView>
         </View>
     )
 }

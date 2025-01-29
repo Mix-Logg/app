@@ -1,7 +1,7 @@
 import axios from "axios";
 export default async function FindAllExtract(id){
     const URLproduction  = 'https://seashell-app-inyzf.ondigitalocean.app/'
-    const URLdevelopment = 'http://192.168.1.5:8080/'
+    const URLdevelopment = 'http://10.253.252.115:8080/'
     const URL = URLproduction
 
     try{

@@ -2,7 +2,7 @@ import axios from "axios";
 export default async function codeForgot(number,option){
 
     const URLproduction  = 'http://whatsapp-mix-active.shop/'
-    const URLdevelopment = 'http://192.168.1.5:5050/'
+    const URLdevelopment = 'http://10.253.252.115:5050/'
     const URL            = URLproduction
     const randomNumber = Math.floor(Math.random() * 10000);
     const randomCode   = String(randomNumber).padStart(4, '0');
